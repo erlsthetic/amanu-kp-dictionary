@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "499568652123",
+    "firebase_url": "https://amanu-kpd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "amanu-kpd",
+    "storage_bucket": "amanu-kpd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499568652123:android:392fd7547bd1f64fc2347e",
+        "android_client_info": {
+          "package_name": "com.hauckdogs.amanu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499568652123-oobg0tkpo7md3gathd4ukq748bi134rl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJE_iDwHhgELmAVYlkDoGtiWmYK_UjV8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499568652123-oobg0tkpo7md3gathd4ukq748bi134rl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "499568652123-7aht1987bmetgoagf2dbv82mcailhkvv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hauckdogs.amanu"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
