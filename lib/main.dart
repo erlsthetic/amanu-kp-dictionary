@@ -1,6 +1,5 @@
 import 'package:amanu/firebase_options.dart';
-import 'package:amanu/screens/home_screen/home_screen.dart';
-import 'package:amanu/screens/user_tools/recording_studio.dart';
+import 'package:amanu/screens/user_tools/kulitan_editor.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +31,7 @@ class Amanu extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
-      home: RecordingStudioPage(),
+      home: KulitanEditorPage(),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:amanu/screens/user_tools/controllers/recorder_controller.dart';
+import 'package:amanu/screens/user_tools/controllers/kulitan_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:coast/coast.dart';
@@ -11,7 +11,7 @@ class KulitanEditorPage extends StatelessWidget {
     super.key,
   });
 
-  final controller = Get.put(StudioController());
+  final controller = Get.put(KulitanController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +30,74 @@ class KulitanEditorPage extends StatelessWidget {
               ),
               height: size.height - 110,
               width: size.width,
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-                  child: Column(
-                    children: [],
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 55,
+                    child: Container(
+                      width: double.infinity,
+                      color: orangeCard,
+                      padding: EdgeInsets.fromLTRB(40, 40, 40, 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: pureWhite,
+                              ),
+                              BoxShadow(
+                                color: muteBlack.withOpacity(0.25),
+                              ),
+                              BoxShadow(
+                                  offset: Offset(1, 1),
+                                  color: pureWhite,
+                                  blurStyle: BlurStyle.inner)
+                            ]),
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 40, horizontal: 30),
+                            child: Column(
+                              children: [],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Expanded(
+                    flex: 45,
+                    child: Container(
+                      width: double.infinity,
+                      color: pureWhite,
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          offset: Offset(1, 5),
+                                          color: primaryOrangeDark
+                                              .withOpacity(0.25),
+                                          blurRadius: 15),
+                                    ],
+                                    color: pureWhite,
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )),
         ),
         Positioned(
@@ -67,7 +127,7 @@ class KulitanEditorPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Crab(
-                      tag: 'HamburgerMenu',
+                      tag: 'BackButton',
                       child: IconButton(
                         onPressed: () => Get.back(),
                         icon: Icon(
@@ -79,7 +139,7 @@ class KulitanEditorPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      tRecordStudio,
+                      tKulitanEditor,
                       style: GoogleFonts.robotoSlab(
                           fontSize: 24,
                           color: pureWhite,
