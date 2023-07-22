@@ -141,7 +141,7 @@ class ReportProblemPage extends StatelessWidget {
                                 controller.subject = value!;
                               },
                               validator: (value) {
-                                if (value == null || value?.trim() == "") {
+                                if (value == null || value.trim() == "") {
                                   return "Please give a brief subject on the report.";
                                 } else {
                                   return null;
@@ -163,7 +163,7 @@ class ReportProblemPage extends StatelessWidget {
                                 controller.reportDetail = value!;
                               },
                               validator: (value) {
-                                if (value == null || value?.trim() == "") {
+                                if (value == null || value.trim() == "") {
                                   return "Please provide details about the problem.";
                                 } else {
                                   return null;

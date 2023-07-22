@@ -21,7 +21,9 @@ class FeedbackPage extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            controller.sendFeedback();
+          },
           label: Text(
             tFeedback.toUpperCase(),
             textAlign: TextAlign.center,
@@ -49,6 +51,7 @@ class FeedbackPage extends StatelessWidget {
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Form(
+                      key: controller.feedbackFormKey,
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 40, horizontal: 30),
@@ -108,17 +111,10 @@ class FeedbackPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             TextFormField(
-                              //controller: controller.exBioController,
+                              controller: controller.notesController,
                               onSaved: (value) {
-                                //controller.exBio = value!;
+                                controller.additionalNotes = value!;
                               },
-                              /*validator: (value) {
-                                if (value != null) {
-                                  return controller.validateBio(value);
-                                } else {
-                                  return "Please describe your self and profession.";
-                                }
-                              },*/
                               maxLines: 5,
                               decoration: InputDecoration(
                                   labelText: tFeedbackNotes,
@@ -137,6 +133,30 @@ class FeedbackPage extends StatelessWidget {
                       ),
                     ),
                   )),
+            ),
+            Obx(
+              () => controller.isProcessing.value
+                  ? Positioned(
+                      top: topPadding + 50,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: size.height - 110,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                            color: disabledGrey.withOpacity(0.25)),
+                        child: Center(
+                          child: SizedBox(
+                            height: 50.0,
+                            width: 50.0,
+                            child: CircularProgressIndicator(
+                              color: primaryOrangeDark,
+                              strokeWidth: 6.0,
+                            ),
+                          ),
+                        ),
+                      ))
+                  : Container(),
             ),
             Positioned(
               top: 0,

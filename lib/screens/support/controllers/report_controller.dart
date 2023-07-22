@@ -42,6 +42,10 @@ class ReportController extends GetxController {
     emailController.dispose();
     subjectController.dispose();
     detailsController.dispose();
+    email = '';
+    subject = '';
+    reportType = '';
+    reportDetail = '';
     fileUrl = '';
   }
 
