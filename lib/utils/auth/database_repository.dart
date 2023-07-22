@@ -9,14 +9,18 @@ class DatabaseRepository extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
-  createReportOnDB(ReportModel report) async {
-    await _db.collection("users").add(report.toJson()).whenComplete(() {
+  createReportOnDB(ReportModel report, String timestamp) async {
+    await _db
+        .collection("reports")
+        .doc(timestamp)
+        .set(report.toJson())
+        .whenComplete(() {
+      Get.back();
       Get.snackbar("Report has been sent.",
           "We'll try our best to resolve this immediately.",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: primaryOrangeDark.withOpacity(0.5),
           colorText: pureWhite);
-      // ignore: body_might_complete_normally_catch_error
     }).catchError((error, stackTrace) {
       Get.snackbar("Error", "Something went wrong. Please try again.",
           snackPosition: SnackPosition.BOTTOM,

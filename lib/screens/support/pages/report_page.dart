@@ -20,7 +20,9 @@ class ReportProblemPage extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            controller.sendReport();
+          },
           label: Text(
             tSendReport.toUpperCase(),
             textAlign: TextAlign.center,
@@ -48,6 +50,7 @@ class ReportProblemPage extends StatelessWidget {
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Form(
+                      key: controller.reportFormKey,
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 40, horizontal: 30),
@@ -77,20 +80,17 @@ class ReportProblemPage extends StatelessWidget {
                             TextFormField(
                               keyboardType: TextInputType.emailAddress,
                               autofillHints: [AutofillHints.email],
-                              /*onSaved: (value) {
+                              onSaved: (value) {
                                 controller.email = value!;
                               },
-                              onChanged: (value) {
-                                controller.checkEmail();
-                              },
                               validator: (value) {
-                                if (value != null) {
-                                  return controller.validateEmail(value);
+                                if (value == null || value == '') {
+                                  return null;
                                 } else {
-                                  return "Enter a valid email";
+                                  return controller.validateEmail(value);
                                 }
                               },
-                              controller: controller.emailController,*/
+                              controller: controller.emailController,
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.mail_outline),
                                   labelText: tReportEmail,
@@ -113,6 +113,16 @@ class ReportProblemPage extends StatelessWidget {
                               onChanged: (String? newValue) {
                                 controller.typeSelected?.value = newValue!;
                               },
+                              onSaved: (value) {
+                                controller.reportType = value!;
+                              },
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Please select a problem type.";
+                                } else {
+                                  return null;
+                                }
+                              },
                               value: controller.typeSelected?.value,
                               decoration: InputDecoration(
                                   labelText: tReportType + " *",
@@ -126,6 +136,17 @@ class ReportProblemPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             TextFormField(
+                              controller: controller.subjectController,
+                              onSaved: (value) {
+                                controller.subject = value!;
+                              },
+                              validator: (value) {
+                                if (value == null || value?.trim() == "") {
+                                  return "Please give a brief subject on the report.";
+                                } else {
+                                  return null;
+                                }
+                              },
                               decoration: InputDecoration(
                                   labelText: tReportSubject + " *",
                                   hintText: tReportSubject + " *",
@@ -137,17 +158,17 @@ class ReportProblemPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             TextFormField(
-                              //controller: controller.exBioController,
+                              controller: controller.detailsController,
                               onSaved: (value) {
-                                //controller.exBio = value!;
+                                controller.reportDetail = value!;
                               },
-                              /*validator: (value) {
-                                if (value != null) {
-                                  return controller.validateBio(value);
+                              validator: (value) {
+                                if (value == null || value?.trim() == "") {
+                                  return "Please provide details about the problem.";
                                 } else {
-                                  return "Please describe your self and profession.";
+                                  return null;
                                 }
-                              },*/
+                              },
                               maxLines: 8,
                               decoration: InputDecoration(
                                   labelText: tReportDetails + " *",
@@ -274,6 +295,30 @@ class ReportProblemPage extends StatelessWidget {
                       ),
                     ),
                   )),
+            ),
+            Obx(
+              () => controller.isProcessing.value
+                  ? Positioned(
+                      top: topPadding + 50,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: size.height - 110,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                            color: disabledGrey.withOpacity(0.25)),
+                        child: Center(
+                          child: SizedBox(
+                            height: 50.0,
+                            width: 50.0,
+                            child: CircularProgressIndicator(
+                              color: primaryOrangeDark,
+                              strokeWidth: 6.0,
+                            ),
+                          ),
+                        ),
+                      ))
+                  : Container(),
             ),
             Positioned(
               top: 0,

@@ -11,11 +11,13 @@ import 'package:intl/intl.dart';
 class ReportController extends GetxController {
   static ReportController get instance => Get.find();
   final databaseRepo = Get.put(DatabaseRepository());
+  RxBool isProcessing = false.obs;
 
   RxString? typeSelected;
 
   var email = '';
   var subject = '';
+  var reportType = '';
   var reportDetail = '';
   var fileUrl = '';
 
@@ -113,23 +115,26 @@ class ReportController extends GetxController {
 
   Future<void> sendReport() async {
     final String timestamp =
-        DateFormat('yyyy-mm-dd(HH:mm:ss)').format(DateTime.now());
+        DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
     final reportFormValid = reportFormKey.currentState!.validate();
     if (!reportFormValid || (selectEmpty == false && fileAccepted == false)) {
       return;
     }
     reportFormKey.currentState!.save();
+    isProcessing.value = true;
 
-    await uploadPhoto(timestamp);
+    if (selectEmpty == false && fileAccepted == true) {
+      await uploadPhoto(timestamp);
+    }
 
     final reportInfo = ReportModel(
         email: email != '' ? email : null,
-        problemType: typeSelected!.value,
+        problemType: reportType,
         subject: subject,
         details: reportDetail,
         timestamp: timestamp,
         imgUrl: fileUrl != '' ? fileUrl : null);
 
-    await databaseRepo.createReportOnDB(reportInfo);
+    await databaseRepo.createReportOnDB(reportInfo, timestamp);
   }
 }
