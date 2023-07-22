@@ -1,4 +1,5 @@
 import 'package:amanu/firebase_options.dart';
+import 'package:amanu/screens/support/support_screen.dart';
 import 'package:amanu/screens/user_tools/kulitan_editor.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/theme_data.dart';
@@ -31,7 +32,7 @@ class Amanu extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
-      home: KulitanEditorPage(),
+      home: SupportScreen(),
     );
   }
 }

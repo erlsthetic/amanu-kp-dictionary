@@ -1,4 +1,5 @@
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,63 @@ class SupportScreen extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: 40, horizontal: 30),
                       child: Column(
-                        children: [],
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 20.0),
+                            child: InkWell(
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(20),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                      child: Container(
+                                    height: 150,
+                                    width: 150,
+                                    child: Image.asset(iOnBoardingAnim1),
+                                  )),
+                                  Ink(
+                                    height: 120,
+                                    width: double.infinity,
+                                    padding:
+                                        EdgeInsets.fromLTRB(20, 10, 10, 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: pureWhite,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: primaryOrangeDark
+                                                .withOpacity(0.5),
+                                            blurRadius: 15,
+                                            spreadRadius: -8,
+                                          ),
+                                        ]),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            child: Text(
+                                              tKulitanEditor,
+                                              overflow: TextOverflow.fade,
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 20,
+                                                  color: darkGrey,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 250,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
