@@ -27,7 +27,7 @@ class GradientElevatedButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       borderRadius: borderRad,
-      splashColor: primaryOrangeLight.withOpacity(0.5),
+      splashColor: primaryOrangeLight,
       highlightColor: primaryOrangeLight.withOpacity(0.5),
       child: Ink(
         width: width,

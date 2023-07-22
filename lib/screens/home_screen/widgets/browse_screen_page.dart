@@ -83,7 +83,7 @@ class BrowseScreenPage extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () {},
-                          splashColor: primaryOrangeDark.withOpacity(0.5),
+                          splashColor: primaryOrangeLight,
                           highlightColor: primaryOrangeLight.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(20),
                           child: Ink(

@@ -31,7 +31,7 @@ class SearchButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: InkWell(
               borderRadius: BorderRadius.circular(20),
-              splashColor: primaryOrangeDark.withOpacity(0.5),
+              splashColor: primaryOrangeLight,
               highlightColor: primaryOrangeLight.withOpacity(0.5),
               onTap: () {},
               child: Ink(

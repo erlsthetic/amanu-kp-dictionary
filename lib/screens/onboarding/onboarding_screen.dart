@@ -46,8 +46,8 @@ class OnBoardingScreen extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10),
-                    splashColor: lightGrey.withOpacity(0.5),
-                    highlightColor: lightGrey.withOpacity(0.5),
+                    splashColor: primaryOrangeLight,
+                    highlightColor: primaryOrangeLight.withOpacity(0.5),
                     onTap: () => obController.skip(),
                     child: Container(
                       padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -72,7 +72,7 @@ class OnBoardingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    splashColor: primaryOrangeLight.withOpacity(0.5),
+                    splashColor: primaryOrangeLight,
                     highlightColor: primaryOrangeLight.withOpacity(0.5),
                     onTap: () {
                       Get.off(() => WelcomeScreen());

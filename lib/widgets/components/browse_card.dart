@@ -18,6 +18,8 @@ class BrowseCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
       child: InkWell(
         onTap: () => Get.to(() => AddWordPage()),
+        splashColor: primaryOrangeLight,
+        highlightColor: primaryOrangeLight.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20),
         child: Ink(
           height: 80,
@@ -84,7 +86,7 @@ class BrowseCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    splashColor: primaryOrangeDark.withOpacity(0.5),
+                    splashColor: primaryOrangeLight,
                     highlightColor: primaryOrangeLight.withOpacity(0.5),
                     onTap: () {},
                     child: Ink(

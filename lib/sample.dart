@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'utils/constants/app_colors.dart';
+
 void main() {
   runApp(
     const MaterialApp(
@@ -150,6 +152,8 @@ class _ExpandableFabState extends State<ExpandableFab>
           elevation: 4,
           child: InkWell(
             onTap: _toggle,
+            splashColor: primaryOrangeLight,
+            highlightColor: primaryOrangeLight.withOpacity(0.5),
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Icon(

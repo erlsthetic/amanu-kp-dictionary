@@ -111,3 +111,30 @@ const String tSubmitAudio = "Submit audio";
 
 const String tKulitanEditor = "Kulitan Editor";
 const String tSubmit = "Submit";
+
+// -- Support Screen
+
+const String tSupport = "Support";
+const String tReportAProblem = "Report a Problem";
+const String tFeedback = "Send Feedback";
+const String tRateApp = "Rate Application";
+
+// -- Report Page
+
+const String tReportInstructions =
+    "Fill out the details about the problem encountered. You can also provide your email to receive updates about your concern.";
+const String tReportType = "Select problem type";
+const String tReportSubject = "Subject";
+const String tReportDetails = "Report details";
+const String tReportDetailsTip = "Write details about the problem encountered.";
+const String tReportAttach = "Attach a screenshot of the incident. (Optional)";
+const String tReportEmail = "Email (optional)";
+const String tSendReport = "Send Report";
+
+// -- Feedback Page
+
+const String tFeedbackInstructions =
+    "How's your Amanu experience? Send us a feedback using the form below.";
+const String tFeedbackRate = "Rate your experience.";
+const String tFeedbackNotes = "Additional notes";
+const String tFeedbackNotesTip = "Any comments or suggestions.";

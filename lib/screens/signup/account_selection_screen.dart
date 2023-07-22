@@ -142,7 +142,7 @@ class _OptionCard extends StatelessWidget {
             print(optionIdx);
           },
           borderRadius: BorderRadius.circular(20.0),
-          splashColor: primaryOrangeDark.withOpacity(0.5),
+          splashColor: primaryOrangeLight,
           highlightColor: primaryOrangeLight.withOpacity(0.5),
           child: Ink(
             padding: EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0),

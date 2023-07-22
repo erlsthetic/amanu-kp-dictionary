@@ -14,3 +14,9 @@ const String iExpertIllus = "assets/svg/expert-illus.svg";
 const String iResetPhone = "assets/anim/reset_Phone.png";
 const String iResetEmail = "assets/anim/reset_Email.png";
 const String iResetOTP = "assets/anim/reset_OTP.png";
+
+const String iRateVeryBad = "assets/icons/very-bad.svg";
+const String iRateBad = "assets/icons/bad.svg";
+const String iRateFair = "assets/icons/fair.svg";
+const String iRateGood = "assets/icons/good.svg";
+const String iRateVeryGood = "assets/icons/very-good.svg";

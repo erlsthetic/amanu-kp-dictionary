@@ -1,6 +1,5 @@
 import 'package:amanu/firebase_options.dart';
 import 'package:amanu/screens/support/support_screen.dart';
-import 'package:amanu/screens/user_tools/kulitan_editor.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
