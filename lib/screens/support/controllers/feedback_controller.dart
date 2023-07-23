@@ -10,6 +10,7 @@ class FeedbackController extends GetxController {
   final databaseRepo = Get.put(DatabaseRepository());
 
   RxBool isProcessing = false.obs;
+  RxBool noSelection = false.obs;
 
   var additionalNotes = '';
 
@@ -41,10 +42,11 @@ class FeedbackController extends GetxController {
   ];
 
   Future<void> sendFeedback() async {
+    selectedRate.value == 0 ? noSelection.value = true : null;
     final String timestamp =
         DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
     final feedbackFormValid = feedbackFormKey.currentState!.validate();
-    if (!feedbackFormValid || selectedRate.value == 0) {
+    if (!feedbackFormValid || selectedRate.value == 0 || noSelection == true) {
       return;
     }
     feedbackFormKey.currentState!.save();

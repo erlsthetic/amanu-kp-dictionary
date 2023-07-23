@@ -38,8 +38,8 @@ class DatabaseRepository extends GetxController {
         .set(feedback.toJson())
         .whenComplete(() {
       Get.back();
-      Get.snackbar("Report has been sent.",
-          "We'll try our best to resolve this immediately.",
+      Get.snackbar(
+          "Feedback has been sent.", "Thank you for sharing us your thoughts.",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: primaryOrangeDark.withOpacity(0.5),
           colorText: pureWhite);

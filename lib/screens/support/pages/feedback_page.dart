@@ -107,6 +107,19 @@ class FeedbackPage extends StatelessWidget {
                                 ]),
                               ),
                             ),
+                            Obx(() => controller.noSelection.value
+                                ? Container(
+                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                    width: double.infinity,
+                                    child: Text(
+                                      'Please select a rating.',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.red[700],
+                                          fontSize: 11.5),
+                                    ))
+                                : Container()),
                             SizedBox(
                               height: 15.0,
                             ),
@@ -246,6 +259,7 @@ class RateOption extends StatelessWidget {
               highlightColor: primaryOrangeLight.withOpacity(0.5),
               onTap: () {
                 controller.selectedRate.value = value;
+                controller.noSelection.value = false;
               },
               borderRadius: BorderRadius.circular(20),
               child: Ink(
@@ -276,7 +290,7 @@ class RateOption extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 10,
+          height: 5,
         ),
         Obx(() => AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
