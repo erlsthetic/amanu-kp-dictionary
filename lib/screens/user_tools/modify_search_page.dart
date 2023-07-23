@@ -8,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SupportScreen extends StatelessWidget {
-  SupportScreen({
+class ModifySearchPage extends StatelessWidget {
+  ModifySearchPage({
     super.key,
+    required this.editMode,
   });
+  final bool editMode;
 
   @override
   Widget build(BuildContext context) {
