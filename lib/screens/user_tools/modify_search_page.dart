@@ -1,7 +1,4 @@
-import 'package:amanu/screens/support/pages/feedback_page.dart';
-import 'package:amanu/screens/support/pages/report_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
@@ -40,23 +37,7 @@ class ModifySearchPage extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                       child: Column(
-                        children: [
-                          SelectionOption(
-                            title: tReportAProblem,
-                            image: iWelcomePageAnim,
-                            onPressed: () => Get.to(() => ReportProblemPage()),
-                          ),
-                          SelectionOption(
-                            title: tFeedback,
-                            image: iWelcomePageAnim,
-                            onPressed: () => Get.to(() => FeedbackPage()),
-                          ),
-                          SelectionOption(
-                            title: tRateApp,
-                            image: iWelcomePageAnim,
-                            onPressed: () {},
-                          ),
-                        ],
+                        children: [],
                       ),
                     ),
                   ),
@@ -102,7 +83,7 @@ class ModifySearchPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      tSupport,
+                      editMode ? tEditWord : tDeleteWord,
                       style: GoogleFonts.robotoSlab(
                           fontSize: 24,
                           color: pureWhite,
