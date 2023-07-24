@@ -21,6 +21,8 @@ class FeedbackPage extends StatelessWidget {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
+          splashColor: primaryOrangeLight,
+          focusColor: primaryOrangeLight.withOpacity(0.5),
           onPressed: () {
             controller.sendFeedback();
           },

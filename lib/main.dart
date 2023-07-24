@@ -1,5 +1,5 @@
 import 'package:amanu/firebase_options.dart';
-import 'package:amanu/screens/support/support_screen.dart';
+import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,7 +31,9 @@ class Amanu extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
-      home: SupportScreen(),
+      home: HomeScreen(
+        pageIndex: 1,
+      ),
     );
   }
 }

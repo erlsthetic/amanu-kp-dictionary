@@ -7,11 +7,11 @@ class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
     super.key,
     required this.size,
-    required HomePageContoller pController,
+    required HomePageController pController,
   }) : _pController = pController;
 
   final Size size;
-  final HomePageContoller _pController;
+  final HomePageController _pController;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,8 @@ class BottomNavBar extends StatelessWidget {
                 width: size.width * 0.17,
                 child: FittedBox(
                   child: FloatingActionButton(
+                      splashColor: primaryOrangeLight,
+                      focusColor: primaryOrangeLight.withOpacity(0.5),
                       backgroundColor: primaryOrangeDark,
                       child: Icon(Icons.camera),
                       elevation: 0.1,

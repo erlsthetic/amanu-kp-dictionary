@@ -1,10 +1,10 @@
-
 import 'package:coast/coast.dart';
 import 'package:get/get.dart';
 
-class HomePageContoller extends GetxController {
+class HomePageController extends GetxController {
   final RxInt currentIdx = 0.obs;
-  final coastController = new CoastController(initialPage: 0);
+  late final coastController =
+      new CoastController(initialPage: currentIdx.value);
 
   onPageChangedCallback(int activePageIndex) {
     currentIdx.value = activePageIndex;

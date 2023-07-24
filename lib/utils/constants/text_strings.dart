@@ -112,6 +112,29 @@ const String tSubmitAudio = "Submit audio";
 const String tKulitanEditor = "Kulitan Editor";
 const String tSubmit = "Submit";
 
+// -- Modify Screen
+
+const String tEditWord = "Edit word";
+const String tConfirmation = "Confirmation";
+const String tDeleteWord = "Delete word";
+const String tEditPreview = "This is a preview.";
+
+const String tEditPrompt1 = "Confirm changes to ";
+const String tEditPrompt2 = " and update dictionary?";
+const String tDeletePrompt1 = "Are you sure you want to remove ";
+const String tDeletePrompt2 = " from the dictionary?";
+
+const String tProceed = "Proceed";
+
+const String tDeleteYes = "Delete";
+const String tCancel = "Cancel";
+const String tConfirm = "Confirm";
+
+const String tDeleteRequestPrompt1 = "Send a removal request for ";
+const String tDeleteRequestPrompt2 = " from the dictionary?";
+const String tEditRequestPrompt1 = "Send edit request for ";
+const String tEditRequestPrompt2 = "?";
+
 // -- Support Screen
 
 const String tSupport = "Support";
