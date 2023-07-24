@@ -1,4 +1,3 @@
-import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 enum PanelShape { rectangle, rounded }
