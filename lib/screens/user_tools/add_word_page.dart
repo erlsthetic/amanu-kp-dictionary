@@ -736,11 +736,14 @@ class WordInfoSection extends StatelessWidget {
                           child: DropdownButtonFormField(
                             items: controller.typeDropItems,
                             onChanged: (String? newValue) {
+                              // ignore: invalid_use_of_protected_member
                               controller.typeFields.value[i] = newValue!;
                               controller.typeFields.refresh();
                             },
+                            // ignore: invalid_use_of_protected_member
                             value: controller.typeFields.value[i] == ''
                                 ? null
+                                // ignore: invalid_use_of_protected_member
                                 : controller.typeFields.value[i],
                             decoration: InputDecoration(
                                 labelText: tWordType + " *",
