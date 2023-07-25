@@ -1,4 +1,3 @@
-import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/home_screen/widgets/drawer_item.dart';
