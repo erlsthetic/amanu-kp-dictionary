@@ -1,11 +1,14 @@
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/widgets/components/browse_card.dart';
 import 'package:amanu/widgets/components/search_button.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BrowseScreenPage extends StatelessWidget {
-  const BrowseScreenPage({
+  BrowseScreenPage({
     super.key,
     required this.size,
     required this.topPadding,
@@ -13,6 +16,8 @@ class BrowseScreenPage extends StatelessWidget {
 
   final Size size;
   final double topPadding;
+
+  final drawerController = Get.find<DrawerXController>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +76,11 @@ class BrowseScreenPage extends StatelessWidget {
                     Crab(
                       tag: 'HamburgerMenu',
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          drawerController.drawerToggle(context);
+                          drawerController.currentItem.value =
+                              DrawerItems.browse;
+                        },
                         icon: Icon(Icons.menu_rounded),
                         color: pureWhite,
                         iconSize: 30,

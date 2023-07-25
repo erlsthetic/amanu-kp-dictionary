@@ -1,5 +1,6 @@
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/widgets/components/floating_button.dart';
+import 'package:get/get.dart';
 import 'widgets/browse_screen_page.dart';
 import 'package:amanu/widgets/components/bottom_nav_bar.dart';
 import 'package:coast/coast.dart';
@@ -16,33 +17,37 @@ class HomeScreen extends StatelessWidget {
   final bool isExpert = true;
   final int? pageIndex;
 
+  final controller = Get.put(HomePageController());
+
   @override
   Widget build(BuildContext context) {
+    controller.currentIdx.value = pageIndex ?? 0;
+    controller.coastController = CoastController(initialPage: pageIndex ?? 0);
     final _size = MediaQuery.of(context).size;
     final _topPadding = MediaQuery.of(context).padding.top;
-    final _pController = HomePageController();
-    _pController.currentIdx.value = pageIndex ?? 0;
     return Scaffold(
       body: Stack(
         children: [
           Coast(
             beaches: [
               Beach(
-                  builder: (context) =>
-                      HomeScreenPage(size: _size, topPadding: _topPadding)),
+                  builder: (context) => HomeScreenPage(
+                        size: _size,
+                        topPadding: _topPadding,
+                      )),
               Beach(
                   builder: (context) => BrowseScreenPage(
                         size: _size,
                         topPadding: _topPadding,
                       )),
             ],
-            controller: _pController.coastController,
+            controller: controller.coastController,
             onPageChanged: (page) {
-              _pController.currentIdx.value = page;
+              controller.currentIdx.value = page;
             },
             observers: [CrabController()],
           ),
-          BottomNavBar(size: _size, pController: _pController),
+          BottomNavBar(size: _size, pController: controller),
           CustomFloatingPanel(
             onPressed: (index) {
               print("Clicked $index");

@@ -1,3 +1,5 @@
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/support/pages/feedback_page.dart';
 import 'package:amanu/screens/support/pages/report_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -5,6 +7,7 @@ import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,6 +15,8 @@ class SupportScreen extends StatelessWidget {
   SupportScreen({
     super.key,
   });
+
+  final drawerController = Get.find<DrawerXController>();
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +93,14 @@ class SupportScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Crab(
-                      tag: 'BackButton',
+                      tag: 'HamburgerMenu',
                       child: IconButton(
-                        onPressed: () => Get.back(),
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          weight: 10,
-                        ),
+                        onPressed: () {
+                          drawerController.drawerToggle(context);
+                          drawerController.currentItem.value =
+                              DrawerItems.support;
+                        },
+                        icon: Icon(Icons.menu_rounded),
                         color: pureWhite,
                         iconSize: 30,
                       ),

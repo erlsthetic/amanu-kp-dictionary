@@ -1,14 +1,18 @@
 import 'dart:math';
 
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/widgets/components/search_button.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../controllers/drawerx_controller.dart';
+
 class HomeScreenPage extends StatelessWidget {
-  const HomeScreenPage({
+  HomeScreenPage({
     super.key,
     required this.size,
     required this.topPadding,
@@ -17,13 +21,17 @@ class HomeScreenPage extends StatelessWidget {
   final Size size;
   final double topPadding;
 
+  final drawerController = Get.find<DrawerXController>();
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         SliverPersistentHeader(
-          delegate:
-              SliverSearchAppBar(screenSize: size, topPadding: topPadding),
+          delegate: SliverSearchAppBar(
+              screenSize: size,
+              topPadding: topPadding,
+              drawerController: drawerController),
           pinned: true,
         ),
         SliverList(
@@ -61,9 +69,13 @@ class HomeScreenPage extends StatelessWidget {
 }
 
 class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
-  SliverSearchAppBar({required this.screenSize, required this.topPadding});
+  SliverSearchAppBar(
+      {required this.screenSize,
+      required this.topPadding,
+      required this.drawerController});
   final Size screenSize;
   final double topPadding;
+  final DrawerXController drawerController;
 
   @override
   Widget build(
@@ -129,7 +141,11 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                       Crab(
                         tag: 'HamburgerMenu',
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            drawerController.drawerToggle(context);
+                            drawerController.currentItem.value =
+                                DrawerItems.home;
+                          },
                           icon: Icon(Icons.menu_rounded),
                           color: pureWhite,
                           iconSize: 30,
