@@ -396,10 +396,25 @@ class RecordingStudioPage extends StatelessWidget {
                       SizedBox(
                         height: 40.0,
                       ),
+                      Obx(() => controller.submitError.value
+                          ? Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(vertical: 20.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                controller.submitErrorMsg.value,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.red[700], fontSize: 14),
+                              ),
+                            )
+                          : Container()),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              controller.submitFile();
+                            },
                             style: ElevatedButton.styleFrom(
                               alignment: Alignment.center,
                               minimumSize: Size(100, 45),

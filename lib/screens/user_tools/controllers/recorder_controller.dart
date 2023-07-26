@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:path/path.dart';
 
+import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 
 class StudioController extends GetxController {
   static StudioController get instance => Get.find();
+
+  final addPageController = Get.find<ToolsController>();
 
   late final RecorderController recorderController;
   late final PlayerController playerController;
@@ -20,6 +24,8 @@ class StudioController extends GetxController {
   RxBool isPlaying = false.obs;
   RxBool recorderPlaying = false.obs;
   RxBool isLoading = true.obs;
+  RxBool submitError = false.obs;
+  RxString submitErrorMsg = "".obs;
   late Directory appDirectory;
 
   void _getDir() async {
@@ -58,6 +64,7 @@ class StudioController extends GetxController {
     } finally {
       recordPlayerController.preparePlayer(path: recordPath!);
       isRecording.value = !isRecording.value;
+      submitError.value = false;
     }
   }
 
@@ -104,6 +111,7 @@ class StudioController extends GetxController {
         fileError.value = false;
         selectedText.value = pickedFile!.name.toString();
         playerController.preparePlayer(path: selectedFile!);
+        submitError.value = false;
       } else {
         pickedFile = result.files.first;
         selectedFile = null;
@@ -129,11 +137,55 @@ class StudioController extends GetxController {
     isPlaying.value = false;
   }
 
+  void submitFile() {
+    if (!isRecordingCompleted.value &&
+        !(!selectEmpty.value && fileAccepted.value)) {
+      submitError.value = true;
+      submitErrorMsg.value =
+          "No audio detected. Please select an audio file or use the recorder.";
+      return;
+    } else if (isRecordingCompleted.value &&
+        (!selectEmpty.value && fileAccepted.value)) {
+      submitError.value = true;
+      submitErrorMsg.value =
+          "Two audios detected. Please remove audio from one of the options.";
+      return;
+    } else {
+      if (isRecordingCompleted.value) {
+        addPageController.hasFile.value = true;
+        addPageController.playerController.preparePlayer(path: recordPath!);
+        addPageController.audioPath = recordPath!;
+        Get.back();
+      }
+      if (!selectEmpty.value && fileAccepted.value) {
+        addPageController.hasFile.value = true;
+        addPageController.playerController.preparePlayer(path: selectedFile!);
+        addPageController.audioPath = selectedFile!;
+        Get.back();
+      }
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
     _getDir();
     _initializeControllers();
+    if (addPageController.audioPath != "") {
+      if (addPageController.audioPath == recordPath!) {
+        recordPlayerController.preparePlayer(path: recordPath!);
+        isRecording.value = !isRecording.value;
+        submitError.value = false;
+      } else {
+        selectedFile = addPageController.audioPath;
+        fileAccepted.value = true;
+        selectEmpty.value = false;
+        fileError.value = false;
+        selectedText.value = basename(addPageController.audioPath);
+        playerController.preparePlayer(path: selectedFile!);
+        submitError.value = false;
+      }
+    }
   }
 
   @override

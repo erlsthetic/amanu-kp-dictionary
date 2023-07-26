@@ -1,3 +1,4 @@
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,13 +6,26 @@ class ToolsController extends GetxController {
   static ToolsController get instance => Get.find();
 
   final GlobalKey<FormState> addWordFormKey = GlobalKey<FormState>();
+
+  late final PlayerController playerController;
+  String audioPath = "";
+  RxBool isPlaying = false.obs;
+  RxBool hasFile = false.obs;
+
+  void playAndStop(PlayerController controller) async {
+    if (controller.playerState == PlayerState.playing) {
+      await controller.pausePlayer();
+    } else {
+      await controller.startPlayer(finishMode: FinishMode.loop);
+    }
+
+    playerController.playerState == PlayerState.playing
+        ? isPlaying.value = true
+        : isPlaying.value = false;
+  }
+
   final GlobalKey<AnimatedListState> typeListKey = GlobalKey();
-
-  //[[[def],[def]]]
-  //[listKey, listKey]
   final List<GlobalKey<AnimatedListState>> definitionListKey = [];
-
-  //RxString? typeSelected;
 
   List<DropdownMenuItem<String>> get typeDropItems {
     List<DropdownMenuItem<String>> wordTypes = [
@@ -62,5 +76,12 @@ class ToolsController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     addTypeField(0);
+    playerController = PlayerController();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
   }
 }
