@@ -1,4 +1,5 @@
 import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
+import 'package:amanu/screens/user_tools/kulitan_editor.dart';
 import 'package:amanu/screens/user_tools/recording_studio.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -225,23 +226,26 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 15.0,
                             ),
-                            Container(
-                              height: 50.0,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  tEnterKulitanEditor.toUpperCase(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    color: pureWhite,
+                            GestureDetector(
+                              onTap: () => Get.to(() => KulitanEditorPage()),
+                              child: Container(
+                                height: 50.0,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    tEnterKulitanEditor.toUpperCase(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      color: pureWhite,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                color: primaryOrangeDark,
-                                borderRadius: BorderRadius.circular(25),
+                                decoration: BoxDecoration(
+                                  color: primaryOrangeDark,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
                               ),
                             ),
                             SizedBox(

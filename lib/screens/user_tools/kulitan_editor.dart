@@ -1,4 +1,5 @@
 import 'package:amanu/screens/user_tools/controllers/kulitan_controller.dart';
+import 'package:amanu/screens/user_tools/widgets/kulitan_key.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:coast/coast.dart';
@@ -77,21 +78,7 @@ class KulitanEditorPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               vertical: 20, horizontal: 20),
                           child: Column(
-                            children: [
-                              Container(
-                                height: 80,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                          offset: Offset(1, 5),
-                                          color: primaryOrangeDark
-                                              .withOpacity(0.25),
-                                          blurRadius: 15),
-                                    ],
-                                    color: pureWhite,
-                                    borderRadius: BorderRadius.circular(20)),
-                              ),
-                            ],
+                            children: [KulitanKey()],
                           ),
                         ),
                       ),
