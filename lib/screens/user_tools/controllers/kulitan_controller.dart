@@ -3,23 +3,21 @@ import 'package:get/get.dart';
 class KulitanController extends GetxController {
   static KulitanController get instance => Get.find();
 
-  RxBool buttonHoldController = false.obs;
-  RxBool buttonClick = false.obs;
+  RxInt currentLine = 0.obs;
+  RxInt currentSpace = 0.obs;
 
-  void buttonHoldToggle() {
-    buttonHoldController.value = !buttonHoldController.value;
-    buttonClick.value = false;
+  RxList<List<String>> kulitanStringList = <List<String>>[].obs;
+
+  void addLine() {
+    kulitanStringList.value.add([]);
   }
 
-  void buttonClickToggle() {
-    buttonHoldController.value ? null : buttonClick.value = !buttonClick.value;
-  }
-
-  void upperButtonRelease() {
-    print("clicked Ki");
-  }
-
-  void lowerButtonRelease() {
-    print("clicked Ku");
+  void addCharacter(line) {
+    if (kulitanStringList[line].length <= 3) {
+      //add
+    } else {
+      addLine();
+      //insertCharacter
+    }
   }
 }

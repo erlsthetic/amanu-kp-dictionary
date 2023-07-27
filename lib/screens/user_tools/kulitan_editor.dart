@@ -78,7 +78,18 @@ class KulitanEditorPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               vertical: 20, horizontal: 20),
                           child: Column(
-                            children: [KulitanKey()],
+                            children: [
+                              KulitanKey(
+                                  buttonString: "k",
+                                  buttonLabel: "ka",
+                                  upperString: "ki",
+                                  upperLabel: "ki",
+                                  lowerString: "ku",
+                                  lowerLabel: "ku",
+                                  onTap: () {},
+                                  onUpperSelect: () {},
+                                  onLowerSelect: () {})
+                            ],
                           ),
                         ),
                       ),

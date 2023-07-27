@@ -4,25 +4,38 @@ import 'package:flutter/material.dart';
 class KulitanKey extends StatefulWidget {
   KulitanKey({
     super.key,
+    required this.buttonString,
+    required this.buttonLabel,
+    required this.upperString,
+    required this.upperLabel,
+    required this.lowerString,
+    required this.lowerLabel,
+    required this.onTap,
+    required this.onUpperSelect,
+    required this.onLowerSelect,
+    this.dragSensitivity,
   });
+  final String buttonString;
+  final String buttonLabel;
+  final String upperString;
+  final String upperLabel;
+  final String lowerString;
+  final String lowerLabel;
+  final double? dragSensitivity;
+  final VoidCallback onTap;
+  final VoidCallback onUpperSelect;
+  final VoidCallback onLowerSelect;
 
   @override
   State<KulitanKey> createState() => _KulitanKeyState();
 }
 
 class _KulitanKeyState extends State<KulitanKey> {
-  String buttonString = "k";
-  String buttonLabel = "ka";
-  String upperString = "ki";
-  String upperLabel = "ki";
-  String lowerString = "ku";
-  String lowerLabel = "ku";
   bool buttonOnHold = false;
   bool buttonTapped = false;
   bool upperButtonSelected = false;
   bool lowerButtonSelected = false;
   double dragStartLocation = 0.0;
-  double dragSensitivity = 10.0;
 
   void buttonHoldToggle() {
     buttonTapped = false;
@@ -31,9 +44,17 @@ class _KulitanKeyState extends State<KulitanKey> {
 
   @override
   Widget build(BuildContext context) {
+    String buttonString = widget.buttonString;
+    String buttonLabel = widget.buttonLabel;
+    String upperString = widget.upperString;
+    String upperLabel = widget.upperLabel;
+    String lowerString = widget.lowerString;
+    String lowerLabel = widget.lowerLabel;
+    double dragSensitivity = widget.dragSensitivity ?? 10.0;
+
     return GestureDetector(
       onTapDown: (details) => setState(() {
-        print("ka");
+        widget.onTap;
         buttonTapped = true;
       }),
       onTapUp: (details) => setState(() {
@@ -65,10 +86,10 @@ class _KulitanKeyState extends State<KulitanKey> {
       onVerticalDragEnd: (event) {
         setState(() {
           if (upperButtonSelected) {
-            print("ki");
+            widget.onUpperSelect;
           }
           if (lowerButtonSelected) {
-            print("ku");
+            widget.onLowerSelect;
           }
           buttonOnHold = false;
           upperButtonSelected = false;
