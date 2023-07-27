@@ -7,6 +7,7 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class AddWordPage extends StatelessWidget {
   AddWordPage({
@@ -109,128 +110,7 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 8.0,
                             ),
-                            Container(
-                              height: 50,
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: orangeCard,
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: Stack(children: [
-                                        Obx(
-                                          () => controller.hasFile.value
-                                              ? Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 15),
-                                                  child: AudioFileWaveforms(
-                                                    size: Size(
-                                                      MediaQuery.of(context)
-                                                          .size
-                                                          .width,
-                                                      50.0,
-                                                    ),
-                                                    playerController: controller
-                                                        .playerController,
-                                                    enableSeekGesture: true,
-                                                    waveformType:
-                                                        WaveformType.long,
-                                                    waveformData: [],
-                                                    playerWaveStyle:
-                                                        const PlayerWaveStyle(
-                                                      liveWaveColor:
-                                                          primaryOrangeLight,
-                                                      spacing: 6.0,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.0),
-                                                      color: orangeCard,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container(
-                                                  alignment: Alignment.center,
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      25, 5, 5, 5),
-                                                  height: double.infinity,
-                                                  width: double.infinity,
-                                                  child: Text(
-                                                    "No data",
-                                                    style: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 14,
-                                                      color: disabledGrey,
-                                                    ),
-                                                  ),
-                                                ),
-                                        ),
-                                        Obx(
-                                          () => GestureDetector(
-                                            onTap: () => controller.playAndStop(
-                                                controller.playerController),
-                                            child: Container(
-                                              height: double.infinity,
-                                              width: 40,
-                                              margin: EdgeInsets.all(5.0),
-                                              child: Icon(
-                                                controller.isPlaying.value
-                                                    ? Icons.pause
-                                                    : Icons.play_arrow,
-                                                color: pureWhite,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  color:
-                                                      controller.hasFile.value
-                                                          ? primaryOrangeDark
-                                                          : disabledGrey),
-                                            ),
-                                          ),
-                                        ),
-                                      ]),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Expanded(
-                                    flex: 5,
-                                    child: GestureDetector(
-                                      onTap: () =>
-                                          Get.to(() => RecordingStudioPage()),
-                                      child: Container(
-                                        height: double.infinity,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            tEnterStudio.toUpperCase(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.poppins(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              color: pureWhite,
-                                            ),
-                                          ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: primaryOrangeDark,
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            StudioSection(controller: controller),
                             SizedBox(
                               height: 20.0,
                             ),
@@ -254,17 +134,11 @@ class AddWordPage extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: TextFormField(
-                                      minLines: 1,
-                                      maxLines: 4,
-                                      decoration: InputDecoration(
-                                          labelText: tEngTrans,
-                                          hintText: tEngTrans,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0))),
-                                    ),
-                                  ),
+                                      child: TagsField(
+                                    controller: controller.engTransController,
+                                    width: size.width - (60.0 + 55),
+                                    label: tEngTrans,
+                                  )),
                                   SizedBox(
                                     width: 5.0,
                                   ),
@@ -303,15 +177,10 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 8.0,
                             ),
-                            TextFormField(
-                              minLines: 1,
-                              maxLines: 4,
-                              decoration: InputDecoration(
-                                  labelText: tFilTrans,
-                                  hintText: tFilTrans,
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0))),
+                            TagsField(
+                              controller: controller.filTransController,
+                              width: size.width - (60.0),
+                              label: tFilTrans,
                             ),
                             SizedBox(
                               height: 30.0,
@@ -332,139 +201,6 @@ class AddWordPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             WordInfoSection(controller: controller),
-                            /*
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 120.0,
-                                    child: DropdownButtonFormField(
-                                      alignment: Alignment.center,
-                                      items: controller.typeDropItems,
-                                      onChanged: (String? newValue) {
-                                        controller.typeSelected?.value =
-                                            newValue!;
-                                      },
-                                      value: controller.typeSelected?.value,
-                                      decoration: InputDecoration(
-                                          labelText: tWordType + " *",
-                                          hintText: tWordType + " *",
-                                          hintMaxLines: 5,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0))),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.add,
-                                          color: pureWhite,
-                                        )),
-                                    decoration: BoxDecoration(
-                                      color: primaryOrangeDark,
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.only(left: 30),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      minLines: 1,
-                                      maxLines: 4,
-                                      decoration: InputDecoration(
-                                          labelText: tDefinition + " *",
-                                          hintText: tDefinition + " *",
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0))),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.add,
-                                          color: pureWhite,
-                                        )),
-                                    decoration: BoxDecoration(
-                                      color: primaryOrangeDark,
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 60),
-                              child: TextFormField(
-                                minLines: 1,
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                    labelText: tDialect,
-                                    hintText: tDialect,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0))),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 60),
-                              child: TextFormField(
-                                minLines: 1,
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                    labelText: tExample,
-                                    hintText: tExample,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0))),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 60),
-                              child: TextFormField(
-                                minLines: 1,
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                    labelText: tExTrans,
-                                    hintText: tExTrans,
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0))),
-                              ),
-                            ),
-                            */
                             SizedBox(
                               height: 30.0,
                             ),
@@ -546,15 +282,10 @@ class AddWordPage extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: TextFormField(
-                                      minLines: 1,
-                                      maxLines: 4,
-                                      decoration: InputDecoration(
-                                          labelText: tSynonyms,
-                                          hintText: tSynonyms,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0))),
+                                    child: TagsField(
+                                      controller: controller.synonymController,
+                                      width: size.width - (60.0),
+                                      label: tSynonyms,
                                     ),
                                   ),
                                   SizedBox(
@@ -600,15 +331,10 @@ class AddWordPage extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: TextFormField(
-                                      minLines: 1,
-                                      maxLines: 4,
-                                      decoration: InputDecoration(
-                                          labelText: tAntonyms,
-                                          hintText: tAntonyms,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0))),
+                                    child: TagsField(
+                                      controller: controller.antonymController,
+                                      width: size.width - (60.0),
+                                      label: tAntonyms,
                                     ),
                                   ),
                                   SizedBox(
@@ -654,15 +380,10 @@ class AddWordPage extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: TextFormField(
-                                      minLines: 1,
-                                      maxLines: 4,
-                                      decoration: InputDecoration(
-                                          labelText: tRelated,
-                                          hintText: tRelated,
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0))),
+                                    child: TagsField(
+                                      controller: controller.relatedController,
+                                      width: size.width - (60.0),
+                                      label: tRelated,
                                     ),
                                   ),
                                   SizedBox(
@@ -704,6 +425,7 @@ class AddWordPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             TextFormField(
+                              controller: controller.referencesController,
                               minLines: 1,
                               maxLines: 4,
                               decoration: InputDecoration(
@@ -783,6 +505,237 @@ class AddWordPage extends StatelessWidget {
   }
 }
 
+class TagsField extends StatelessWidget {
+  const TagsField({
+    super.key,
+    required this.controller,
+    required this.label,
+    required this.width,
+  });
+
+  final double width;
+  final TextfieldTagsController controller;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFieldTags(
+      textfieldTagsController: controller,
+      textSeparators: [','],
+      letterCase: LetterCase.small,
+      validator: (String tag) {
+        if (controller.getTags!.contains(tag)) {
+          return 'Duplicate tag found';
+        }
+        return null;
+      },
+      inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {
+        return ((context, sc, tags, onTagDelete) {
+          return TextField(
+            controller: tec,
+            focusNode: fn,
+            onChanged: onChanged,
+            onSubmitted: onSubmitted,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              hintText: label,
+              errorText: error,
+              prefixIconConstraints: BoxConstraints(
+                maxWidth: width * 0.6,
+              ),
+              prefixIcon: tags.isNotEmpty
+                  ? Container(
+                      clipBehavior: Clip.antiAlias,
+                      margin: EdgeInsets.only(right: 10, left: 1),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(20),
+                            left: Radius.circular(5)),
+                      ),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        controller: sc,
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                            children: tags.map((String tag) {
+                          return Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
+                              color: primaryOrangeDark,
+                            ),
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  child: Text(
+                                    '$tag',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                  onTap: () {
+                                    //print("$tag selected");
+                                  },
+                                ),
+                                const SizedBox(width: 4.0),
+                                InkWell(
+                                  child: const Icon(
+                                    Icons.cancel,
+                                    size: 18.0,
+                                    color: Color.fromARGB(255, 233, 233, 233),
+                                  ),
+                                  onTap: () {
+                                    onTagDelete(tag);
+                                  },
+                                )
+                              ],
+                            ),
+                          );
+                        }).toList()),
+                      ),
+                    )
+                  : null,
+            ),
+          );
+        });
+      },
+    );
+  }
+}
+
+class StudioSection extends StatelessWidget {
+  const StudioSection({
+    super.key,
+    required this.controller,
+  });
+
+  final ToolsController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: double.infinity,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 6,
+            child: Container(
+              decoration: BoxDecoration(
+                color: orangeCard,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Stack(children: [
+                Obx(
+                  () => controller.hasFile.value
+                      ? new Container(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Obx(
+                            () => new AudioFileWaveforms(
+                              size: Size(
+                                MediaQuery.of(context).size.width,
+                                50.0,
+                              ),
+                              playerController: controller.playerController,
+                              enableSeekGesture:
+                                  controller.rebuildAudio.value ? true : true,
+                              waveformType: WaveformType.long,
+                              // ignore: invalid_use_of_protected_member
+                              waveformData: [],
+                              playerWaveStyle: PlayerWaveStyle(
+                                liveWaveColor: primaryOrangeLight,
+                                spacing: 6.0,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30.0),
+                                color: orangeCard,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.fromLTRB(25, 5, 5, 5),
+                          height: double.infinity,
+                          width: double.infinity,
+                          child: Text(
+                            "No data",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: disabledGrey,
+                            ),
+                          ),
+                        ),
+                ),
+                Obx(
+                  () => GestureDetector(
+                    onTap: () =>
+                        controller.playAndStop(controller.playerController),
+                    child: Container(
+                      height: double.infinity,
+                      width: 40,
+                      margin: EdgeInsets.all(5.0),
+                      child: Icon(
+                        controller.isPlaying.value
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                        color: pureWhite,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: controller.hasFile.value
+                              ? primaryOrangeDark
+                              : disabledGrey),
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          Expanded(
+            flex: 5,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => RecordingStudioPage());
+                controller.playerController.stopPlayer();
+              },
+              child: Container(
+                height: double.infinity,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    tEnterStudio.toUpperCase(),
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: pureWhite,
+                    ),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: primaryOrangeDark,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class WordInfoSection extends StatelessWidget {
   const WordInfoSection({
     super.key,
@@ -819,6 +772,10 @@ class WordInfoSection extends StatelessWidget {
                             items: controller.typeDropItems,
                             onChanged: (String? newValue) {
                               // ignore: invalid_use_of_protected_member
+                              if (newValue != "custom") {
+                                controller.customTypeController[i].clear();
+                              }
+                              // ignore: invalid_use_of_protected_member
                               controller.typeFields.value[i] = newValue!;
                               controller.typeFields.refresh();
                             },
@@ -835,6 +792,25 @@ class WordInfoSection extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20.0))),
                           ),
                         ),
+                        // ignore: invalid_use_of_protected_member
+                        Obx(() => controller.typeFields.value[i] == "custom"
+                            ? Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 5.0),
+                                  child: TextFormField(
+                                    controller:
+                                        controller.customTypeController[i],
+                                    maxLines: 1,
+                                    decoration: InputDecoration(
+                                        labelText: tCustomWordType + " *",
+                                        hintText: tCustomWordType + " *",
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0))),
+                                  ),
+                                ),
+                              )
+                            : Container()),
                         SizedBox(
                           width: 5.0,
                         ),

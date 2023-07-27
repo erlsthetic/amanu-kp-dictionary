@@ -438,6 +438,30 @@ class RecordingStudioPage extends StatelessWidget {
                 ),
               )),
         ),
+        Obx(
+          () => controller.isLoading.value
+              ? Positioned(
+                  top: topPadding + 50,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: size.height - 110,
+                    width: size.width,
+                    decoration:
+                        BoxDecoration(color: disabledGrey.withOpacity(0.25)),
+                    child: Center(
+                      child: SizedBox(
+                        height: 50.0,
+                        width: 50.0,
+                        child: CircularProgressIndicator(
+                          color: primaryOrangeDark,
+                          strokeWidth: 6.0,
+                        ),
+                      ),
+                    ),
+                  ))
+              : Container(),
+        ),
         Positioned(
           top: 0,
           left: 0,

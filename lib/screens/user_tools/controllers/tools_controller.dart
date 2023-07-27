@@ -1,13 +1,25 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class ToolsController extends GetxController {
   static ToolsController get instance => Get.find();
 
+  late TextEditingController wordController,
+      phoneticController,
+      referencesController;
+
+  late TextfieldTagsController engTransController,
+      filTransController,
+      relatedController,
+      synonymController,
+      antonymController;
+
   final GlobalKey<FormState> addWordFormKey = GlobalKey<FormState>();
 
   late final PlayerController playerController;
+  RxBool rebuildAudio = true.obs;
   String audioPath = "";
   RxBool isPlaying = false.obs;
   RxBool hasFile = false.obs;
@@ -34,17 +46,21 @@ class ToolsController extends GetxController {
       DropdownMenuItem(child: Text("adjective"), value: "adjective"),
       DropdownMenuItem(child: Text("adverb"), value: "adverb"),
       DropdownMenuItem(child: Text("particle"), value: "particle"),
+      DropdownMenuItem(child: Text("custom"), value: "custom"),
     ];
     return wordTypes;
   }
 
   final RxList<String> typeFields = <String>[].obs;
 
+  final List<TextEditingController> customTypeController = [];
+
   final RxList<List<List<TextEditingController>>> definitionsFields =
       <List<List<TextEditingController>>>[].obs;
 
   void addTypeField(int i) {
     typeListKey.currentState?.insertItem(i);
+    customTypeController.insert(i, TextEditingController());
     definitionListKey.insert(i, GlobalKey());
     typeFields.insert(i, '');
     definitionsFields.insert(i, []);
@@ -53,6 +69,7 @@ class ToolsController extends GetxController {
 
   void removeTypeField(int i) {
     typeFields.removeAt(i);
+    customTypeController.removeAt(i);
     typeListKey.currentState!.removeItem(i, (_, __) => Container());
   }
 
@@ -75,8 +92,16 @@ class ToolsController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    addTypeField(0);
+    wordController = TextEditingController();
+    phoneticController = TextEditingController();
+    engTransController = TextfieldTagsController();
+    filTransController = TextfieldTagsController();
     playerController = PlayerController();
+    addTypeField(0);
+    relatedController = TextfieldTagsController();
+    synonymController = TextfieldTagsController();
+    antonymController = TextfieldTagsController();
+    referencesController = TextEditingController();
   }
 
   @override

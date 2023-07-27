@@ -87,6 +87,7 @@ const String tEngTrans = "English Translations";
 const String tFilTrans = "Filipino Translations";
 const String tInfoSec = "Information";
 const String tWordType = "Type";
+const String tCustomWordType = "Custom type";
 const String tDialect = "Dialect";
 const String tDefinition = "Definition";
 const String tExample = "Example";

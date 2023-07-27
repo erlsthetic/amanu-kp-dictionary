@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:amanu/screens/user_tools/add_word_page.dart';
 import 'package:path/path.dart';
 
 import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
@@ -137,7 +138,7 @@ class StudioController extends GetxController {
     isPlaying.value = false;
   }
 
-  void submitFile() {
+  void submitFile() async {
     if (!isRecordingCompleted.value &&
         !(!selectEmpty.value && fileAccepted.value)) {
       submitError.value = true;
@@ -152,16 +153,51 @@ class StudioController extends GetxController {
       return;
     } else {
       if (isRecordingCompleted.value) {
+        isLoading.value = true;
         addPageController.hasFile.value = true;
+        addPageController.playerController.stopPlayer();
         addPageController.playerController.preparePlayer(path: recordPath!);
         addPageController.audioPath = recordPath!;
         Get.back();
+        addPageController.rebuildAudio.value =
+            !addPageController.rebuildAudio.value;
+        addPageController.playerController.seekTo(0);
       }
       if (!selectEmpty.value && fileAccepted.value) {
+        isLoading.value = true;
         addPageController.hasFile.value = true;
+        addPageController.playerController.stopPlayer();
         addPageController.playerController.preparePlayer(path: selectedFile!);
         addPageController.audioPath = selectedFile!;
         Get.back();
+        addPageController.rebuildAudio.value =
+            !addPageController.rebuildAudio.value;
+        addPageController.playerController.seekTo(0);
+      }
+    }
+  }
+
+  void checkForFile() async {
+    if (recordPath == null) {
+      appDirectory = await getApplicationDocumentsDirectory();
+      recordPath = await "${appDirectory.path}/recording.m4a";
+      isLoading.value = false;
+    }
+    if (addPageController.audioPath != "") {
+      if (addPageController.audioPath == recordPath!) {
+        recordPlayerController.startPlayer();
+        recordPlayerController.preparePlayer(path: recordPath!);
+        isRecordingCompleted.value = true;
+        submitError.value = false;
+      } else {
+        selectedFile = addPageController.audioPath;
+        fileAccepted.value = true;
+        selectEmpty.value = false;
+        fileError.value = false;
+        selectedText.value = basename(addPageController.audioPath);
+        playerController.stopPlayer();
+        playerController.preparePlayer(path: selectedFile!);
+        submitError.value = false;
       }
     }
   }
@@ -171,26 +207,14 @@ class StudioController extends GetxController {
     super.onInit();
     _getDir();
     _initializeControllers();
-    if (addPageController.audioPath != "") {
-      if (addPageController.audioPath == recordPath!) {
-        recordPlayerController.preparePlayer(path: recordPath!);
-        isRecording.value = !isRecording.value;
-        submitError.value = false;
-      } else {
-        selectedFile = addPageController.audioPath;
-        fileAccepted.value = true;
-        selectEmpty.value = false;
-        fileError.value = false;
-        selectedText.value = basename(addPageController.audioPath);
-        playerController.preparePlayer(path: selectedFile!);
-        submitError.value = false;
-      }
-    }
+    checkForFile();
   }
 
   @override
   void onClose() {
     super.onClose();
     recorderController.dispose();
+    playerController.dispose();
+    recordPlayerController.dispose();
   }
 }
