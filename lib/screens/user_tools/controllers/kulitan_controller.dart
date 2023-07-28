@@ -1,3 +1,4 @@
+import 'package:amanu/utils/constants/kulitan_characters.dart';
 import 'package:get/get.dart';
 
 class KulitanController extends GetxController {
@@ -8,16 +9,99 @@ class KulitanController extends GetxController {
 
   RxList<List<String>> kulitanStringList = <List<String>>[].obs;
 
-  void addLine() {
-    kulitanStringList.value.add([]);
+  bool classifyKulitan(List<List<String>> conditionList, String input) {
+    for (final condition in conditionList) {
+      for (final x in condition) {
+        if (x == input) return true;
+      }
+    }
+    return false;
   }
 
-  void addCharacter(line) {
-    if (kulitanStringList[line].length <= 3) {
-      //add
+  void addLine() {
+    // ignore: invalid_use_of_protected_member
+    kulitanStringList.value.add([]);
+    kulitanStringList.refresh();
+    currentLine.value += 1;
+    currentSpace.value = 0;
+  }
+
+  void insertCharacter(String kulitanChar) {
+    kulitanStringList[currentLine.value]
+        .insert(currentSpace.value, kulitanChar);
+    kulitanStringList.refresh();
+    if (currentSpace.value < 3) {
+      currentSpace.value += 1;
+    }
+  }
+
+  String chopCharacter(String kulitanChar) {
+    String newString = kulitanChar.replaceAll("a", "");
+    return newString;
+  }
+
+  void addCharacter(String kulitanChar) {
+    if (kulitanStringList[currentLine.value].length <= 3) {
+      if (currentLine.value == 0) {
+        insertCharacter(kulitanChar);
+      } else if (currentLine.value == 1) {
+        if (classifyKulitan([
+          garlitUpperVowels,
+          garlitUpperConsonants,
+          garlitLowerVowels,
+          garlitLowerConsonants
+        ], kulitanChar)) {
+          addLine();
+          insertCharacter(kulitanChar);
+        } else if (classifyKulitan([baseConsonants], kulitanChar)) {
+          insertCharacter(chopCharacter(kulitanChar));
+        } else if (classifyKulitan([baseVowels], kulitanChar)) {
+          insertCharacter(kulitanChar);
+        }
+      } else if (currentLine.value == 2) {
+        if (classifyKulitan([
+          garlitUpperVowels,
+          garlitUpperConsonants,
+          garlitLowerVowels,
+          garlitLowerConsonants
+        ], kulitanChar)) {
+          addLine();
+          insertCharacter(kulitanChar);
+        } else if (classifyKulitan(
+            [baseVowels], kulitanStringList[currentLine.value][1])) {
+          if (classifyKulitan(
+              [baseVowels], kulitanStringList[currentLine.value][0])) {
+            if (kulitanStringList[currentLine.value][0] ==
+                    kulitanStringList[currentLine.value][1] &&
+                (classifyKulitan([baseVowels], kulitanChar))) {
+              addLine();
+              insertCharacter(kulitanChar);
+            } else if (kulitanStringList[currentLine.value][0] ==
+                    kulitanStringList[currentLine.value][1] &&
+                (classifyKulitan([baseConsonants], kulitanChar))) {
+              insertCharacter(chopCharacter(kulitanChar));
+            }
+          } else if (classifyKulitan([
+            baseConsonants,
+            garlitUpperConsonants,
+            garlitLowerConsonants,
+            garlitUpperVowels,
+            garlitLowerVowels
+          ], kulitanStringList[currentLine.value][0])) {
+            if (classifyKulitan([baseConsonants], kulitanChar)) {
+              insertCharacter(chopCharacter(kulitanChar));
+            } else if (classifyKulitan([baseVowels], kulitanChar)) {
+              insertCharacter(chopCharacter(kulitanChar));
+            }
+          }
+        } else if (classifyKulitan([baseConsonants, baseConsonantsChopped],
+            kulitanStringList[currentLine.value][1])) {
+          addLine();
+          insertCharacter(kulitanChar);
+        }
+      } else {}
     } else {
       addLine();
-      //insertCharacter
     }
   }
 }

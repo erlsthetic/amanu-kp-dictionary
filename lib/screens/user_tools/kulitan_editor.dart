@@ -86,9 +86,21 @@ class KulitanEditorPage extends StatelessWidget {
                                   upperLabel: "ki",
                                   lowerString: "ku",
                                   lowerLabel: "ku",
-                                  onTap: () {},
-                                  onUpperSelect: () {},
-                                  onLowerSelect: () {})
+                                  onTap: (size, offset) {
+                                    print(
+                                        'Size: ${size.width}, ${size.height}');
+                                    print('Offset: ${offset.dx}, ${offset.dy}');
+                                  },
+                                  onUpperSelect: (size, offset) {
+                                    print(
+                                        'Size: ${size.width}, ${size.height}');
+                                    print('Offset: ${offset.dx}, ${offset.dy}');
+                                  },
+                                  onLowerSelect: (size, offset) {
+                                    print(
+                                        'Size: ${size.width}, ${size.height}');
+                                    print('Offset: ${offset.dx}, ${offset.dy}');
+                                  })
                             ],
                           ),
                         ),

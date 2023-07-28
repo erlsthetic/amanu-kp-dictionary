@@ -22,9 +22,9 @@ class KulitanKey extends StatefulWidget {
   final String lowerString;
   final String lowerLabel;
   final double? dragSensitivity;
-  final VoidCallback onTap;
-  final VoidCallback onUpperSelect;
-  final VoidCallback onLowerSelect;
+  final void Function(Size, Offset) onTap;
+  final void Function(Size, Offset) onUpperSelect;
+  final void Function(Size, Offset) onLowerSelect;
 
   @override
   State<KulitanKey> createState() => _KulitanKeyState();
@@ -33,13 +33,56 @@ class KulitanKey extends StatefulWidget {
 class _KulitanKeyState extends State<KulitanKey> {
   bool buttonOnHold = false;
   bool buttonTapped = false;
+  bool buttonDown = false;
   bool upperButtonSelected = false;
   bool lowerButtonSelected = false;
   double dragStartLocation = 0.0;
+  String hintText = '';
+  late RenderBox renderBox;
+  late Size size;
+  late Offset offset;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => getWidgetInfo(context));
+  }
+
+  void getWidgetInfo(context) {
+    renderBox = context.findRenderObject() as RenderBox;
+    size = renderBox.size;
+    offset = renderBox.localToGlobal(Offset.zero);
+  }
 
   void buttonHoldToggle() {
     buttonTapped = false;
     buttonOnHold = !buttonOnHold;
+  }
+
+  Widget hintWidget() {
+    if (buttonDown) {
+      return AnimatedContainer(
+        alignment: Alignment.center,
+        duration: Duration(milliseconds: 100),
+        height: 50,
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+              offset: Offset(1, 5),
+              color: primaryOrangeDark.withOpacity(0.25),
+              blurRadius: 15),
+        ], color: Color(0xFFffb87f), borderRadius: BorderRadius.circular(20)),
+        child: Text(
+          hintText,
+          style: TextStyle(
+              fontFamily: 'KulitanKeith', fontSize: 35, color: pureWhite),
+        ),
+      );
+    } else {
+      return Container(
+        height: 50,
+      );
+    }
   }
 
   @override
@@ -54,17 +97,25 @@ class _KulitanKeyState extends State<KulitanKey> {
 
     return GestureDetector(
       onTapDown: (details) => setState(() {
-        widget.onTap;
+        hintText = buttonString;
         buttonTapped = true;
+        buttonDown = true;
+        widget.onTap(size, offset);
       }),
       onTapUp: (details) => setState(() {
+        hintText = '';
         buttonTapped = false;
+        buttonDown = false;
       }),
       onTapCancel: () => setState(() {
+        hintText = '';
         buttonTapped = false;
+        buttonDown = false;
       }),
       onVerticalDragStart: (event) {
         setState(() {
+          buttonDown = true;
+          hintText = buttonString;
           dragStartLocation = event.globalPosition.dy;
           buttonHoldToggle();
         });
@@ -72,12 +123,14 @@ class _KulitanKeyState extends State<KulitanKey> {
       onVerticalDragUpdate: (event) {
         if (event.globalPosition.dy > dragStartLocation + dragSensitivity) {
           setState(() {
+            hintText = lowerString;
             upperButtonSelected = false;
             lowerButtonSelected = true;
           });
         } else if (event.globalPosition.dy <
             dragStartLocation - dragSensitivity) {
           setState(() {
+            hintText = upperString;
             upperButtonSelected = true;
             lowerButtonSelected = false;
           });
@@ -86,11 +139,13 @@ class _KulitanKeyState extends State<KulitanKey> {
       onVerticalDragEnd: (event) {
         setState(() {
           if (upperButtonSelected) {
-            widget.onUpperSelect;
+            widget.onUpperSelect(size, offset);
           }
           if (lowerButtonSelected) {
-            widget.onLowerSelect;
+            widget.onLowerSelect(size, offset);
           }
+          hintText = '';
+          buttonDown = false;
           buttonOnHold = false;
           upperButtonSelected = false;
           lowerButtonSelected = false;
@@ -104,14 +159,50 @@ class _KulitanKeyState extends State<KulitanKey> {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                  offset: Offset(1, 5),
+                  offset: buttonTapped ? Offset(1, 1) : Offset(1, 5),
                   color: primaryOrangeDark.withOpacity(0.25),
-                  blurRadius: 15),
+                  blurRadius: buttonDown ? 6 : 15),
             ],
             color: buttonTapped ? Color(0xFFffb87f) : pureWhite,
             borderRadius: BorderRadius.circular(20)),
         child: Stack(
           children: [
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 50,
+                    width: 30,
+                    alignment: Alignment.center,
+                    child: Stack(
+                      children: [
+                        Text(
+                          upperString,
+                          style: TextStyle(
+                              fontFamily: 'KulitanKeith',
+                              fontSize: 35,
+                              color: lightGrey.withOpacity(0.5)),
+                        ),
+                        Text(
+                          lowerString,
+                          style: TextStyle(
+                              fontFamily: 'KulitanKeith',
+                              fontSize: 35,
+                              color: lightGrey.withOpacity(0.5)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 20,
+                  ),
+                ],
+              ),
+            ),
             AnimatedSwitcher(
               duration: Duration(milliseconds: 300),
               child: buttonOnHold
