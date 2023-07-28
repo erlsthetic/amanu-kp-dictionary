@@ -5,26 +5,26 @@ class KulitanKey extends StatefulWidget {
   KulitanKey({
     super.key,
     required this.buttonString,
-    required this.buttonLabel,
-    required this.upperString,
-    required this.upperLabel,
-    required this.lowerString,
-    required this.lowerLabel,
+    this.buttonLabel,
+    this.upperString,
+    this.upperLabel,
+    this.lowerString,
+    this.lowerLabel,
     required this.onTap,
-    required this.onUpperSelect,
-    required this.onLowerSelect,
-    this.dragSensitivity,
+    this.onUpperSelect,
+    this.onLowerSelect,
+    this.dragSensitivity = 10.0,
   });
   final String buttonString;
-  final String buttonLabel;
-  final String upperString;
-  final String upperLabel;
-  final String lowerString;
-  final String lowerLabel;
+  final String? buttonLabel;
+  final String? upperString;
+  final String? upperLabel;
+  final String? lowerString;
+  final String? lowerLabel;
   final double? dragSensitivity;
   final VoidCallback onTap;
-  final VoidCallback onUpperSelect;
-  final VoidCallback onLowerSelect;
+  final VoidCallback? onUpperSelect;
+  final VoidCallback? onLowerSelect;
 
   @override
   State<KulitanKey> createState() => _KulitanKeyState();
@@ -64,14 +64,59 @@ class _KulitanKeyState extends State<KulitanKey>
   @override
   Widget build(BuildContext context) {
     String buttonString = widget.buttonString;
-    String upperString = widget.upperString;
-    String lowerString = widget.lowerString;
+    String buttonLabel = widget.buttonLabel ?? "";
+    String upperString = widget.upperString ?? "";
+    String upperLabel = widget.upperLabel ?? "";
+    String lowerString = widget.lowerString ?? "";
+    String lowerLabel = widget.lowerLabel ?? "";
     double dragSensitivity = widget.dragSensitivity ?? 10.0;
+
+    Widget plainButton(Widget _child) {
+      return GestureDetector(
+        onTapDown: (details) => setState(() {
+          hintText = widget.buttonString;
+          hintTextLabel = buttonLabel;
+          buttonTapped = true;
+          buttonDown = true;
+        }),
+        onTapUp: (details) => setState(() {
+          hintText = '';
+          hintTextLabel = '';
+          widget.onTap();
+          buttonTapped = false;
+          buttonDown = false;
+        }),
+        onTapCancel: () => setState(() {
+          buttonTapped = false;
+          buttonDown = false;
+        }),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          constraints: BoxConstraints(minWidth: 60),
+          clipBehavior: Clip.antiAlias,
+          height: 60,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    offset: buttonDown ? Offset(1, 1) : Offset(1, 5),
+                    color: primaryOrangeDark.withOpacity(0.25),
+                    blurRadius: buttonDown ? 6 : 15),
+              ],
+              color: buttonTapped ? Color(0xFFffb87f) : pureWhite,
+              borderRadius: BorderRadius.circular(20)),
+          child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: _child),
+        ),
+      );
+    }
 
     Widget keyButton = GestureDetector(
       onTapDown: (details) => setState(() {
         hintText = widget.buttonString;
-        hintTextLabel = widget.buttonLabel;
+        hintTextLabel = buttonLabel;
         buttonTapped = true;
         buttonDown = true;
       }),
@@ -90,7 +135,7 @@ class _KulitanKeyState extends State<KulitanKey>
         setState(() {
           buttonDown = true;
           hintText = widget.buttonString;
-          hintTextLabel = widget.buttonLabel;
+          hintTextLabel = buttonLabel;
           dragStartLocation = event.globalPosition.dy;
           buttonHoldToggle();
         });
@@ -98,16 +143,16 @@ class _KulitanKeyState extends State<KulitanKey>
       onVerticalDragUpdate: (event) {
         if (event.globalPosition.dy > dragStartLocation + dragSensitivity) {
           setState(() {
-            hintText = widget.lowerString;
-            hintTextLabel = widget.lowerLabel;
+            hintText = lowerString;
+            hintTextLabel = lowerLabel;
             upperButtonSelected = false;
             lowerButtonSelected = true;
           });
         } else if (event.globalPosition.dy <
             dragStartLocation - dragSensitivity) {
           setState(() {
-            hintText = widget.upperString;
-            hintTextLabel = widget.upperLabel;
+            hintText = upperString;
+            hintTextLabel = upperLabel;
             upperButtonSelected = true;
             lowerButtonSelected = false;
           });
@@ -116,10 +161,10 @@ class _KulitanKeyState extends State<KulitanKey>
       onVerticalDragEnd: (event) {
         setState(() {
           if (upperButtonSelected) {
-            widget.onUpperSelect();
+            widget.onUpperSelect!();
           }
           if (lowerButtonSelected) {
-            widget.onLowerSelect();
+            widget.onLowerSelect!();
           }
           hintText = '';
           hintTextLabel = '';
@@ -260,12 +305,53 @@ class _KulitanKeyState extends State<KulitanKey>
       ),
     );
 
-    return _KeyHint(
-      hint: hintText,
-      hintLabel: hintTextLabel,
-      visible: buttonDown,
-      child: keyButton,
-    );
+    if (buttonString == "a") {
+      return _KeyHint(
+          hint: hintText,
+          hintLabel: hintTextLabel,
+          visible: buttonDown,
+          child: plainButton(Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: Container(
+              height: 50,
+              width: 30,
+              alignment: Alignment.center,
+              child: Text(
+                buttonString,
+                style: TextStyle(
+                    fontFamily: 'KulitanKeith',
+                    fontSize: 35,
+                    color: primaryOrangeDark),
+              ),
+            ),
+          )));
+    } else if (buttonString == "delete") {
+      return plainButton(Icon(
+        Icons.backspace_rounded,
+        size: 25,
+        color: primaryOrangeDark,
+      ));
+    } else if (buttonString == "enter") {
+      return plainButton(Icon(
+        Icons.keyboard_return_rounded,
+        size: 28,
+        color: primaryOrangeDark,
+      ));
+    } else if (buttonString == "clear") {
+      return plainButton(Icon(
+        Icons.delete_forever_rounded,
+        size: 30,
+        color: primaryOrangeDark,
+      ));
+    } else {
+      return _KeyHint(
+        hint: hintText,
+        hintLabel: hintTextLabel,
+        visible: buttonDown,
+        child: keyButton,
+      );
+    }
   }
 }
 

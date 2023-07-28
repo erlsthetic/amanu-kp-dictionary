@@ -159,7 +159,15 @@ class KulitanEditorPage extends StatelessWidget {
                               print(keyRow[4]);
                             }),
                       ),
-                    Container(),
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: KulitanKey(
+                        buttonString: "clear",
+                        onTap: () {
+                          print("clear");
+                        },
+                      ),
+                    ),
                   ]),
                   TableRow(children: <Widget>[
                     for (List<String> keyRow in controller.keyboardData[1])
@@ -205,7 +213,15 @@ class KulitanEditorPage extends StatelessWidget {
                               print(keyRow[4]);
                             }),
                       ),
-                    Container(),
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: KulitanKey(
+                        buttonString: "delete",
+                        onTap: () {
+                          print("delete");
+                        },
+                      ),
+                    ),
                   ]),
                   TableRow(children: <Widget>[
                     Container(),
@@ -230,7 +246,15 @@ class KulitanEditorPage extends StatelessWidget {
                             }),
                       ),
                     Container(),
-                    Container(),
+                    Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: KulitanKey(
+                        buttonString: "enter",
+                        onTap: () {
+                          print("enter");
+                        },
+                      ),
+                    ),
                   ]),
                 ],
               ),
