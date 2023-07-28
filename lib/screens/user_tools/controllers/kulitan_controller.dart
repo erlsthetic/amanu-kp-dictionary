@@ -4,6 +4,31 @@ import 'package:get/get.dart';
 class KulitanController extends GetxController {
   static KulitanController get instance => Get.find();
 
+  List<List<List<String>>> keyboardData = [
+    [
+      ["ga", "ga", "gi", "gi", "gu", "gu"],
+      ["ka", "ka", "ki", "ki", "ku", "ku"],
+      ["nga", "nga", "ngi", "ngi", "ngu", "ngu"],
+      ["a", "a", "a", "a", "a", "a"]
+    ],
+    [
+      ["ba", "ba", "bi", "bi", "bu", "bu"],
+      ["ta", "ta", "ti", "ti", "tu", "tu"],
+      ["da", "da", "di", "di", "du", "du"],
+      ["i", "i", "yi", "yi", "yu", "yu"]
+    ],
+    [
+      ["na", "na", "ni", "ni", "nu", "nu"],
+      ["la", "la", "li", "li", "lu", "lu"],
+      ["sa", "sa", "si", "si", "su", "su"],
+      ["u", "u", "wi", "wi", "wu", "wu"]
+    ],
+    [
+      ["ma", "ma", "mi", "mi", "mu", "mu"],
+      ["pa", "pa", "pi", "pi", "pu", "pu"],
+    ]
+  ];
+
   RxInt currentLine = 0.obs;
   RxInt currentSpace = 0.obs;
 

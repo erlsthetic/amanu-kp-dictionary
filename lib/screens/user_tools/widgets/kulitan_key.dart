@@ -22,15 +22,16 @@ class KulitanKey extends StatefulWidget {
   final String lowerString;
   final String lowerLabel;
   final double? dragSensitivity;
-  final void Function(Size, Offset) onTap;
-  final void Function(Size, Offset) onUpperSelect;
-  final void Function(Size, Offset) onLowerSelect;
+  final VoidCallback onTap;
+  final VoidCallback onUpperSelect;
+  final VoidCallback onLowerSelect;
 
   @override
   State<KulitanKey> createState() => _KulitanKeyState();
 }
 
-class _KulitanKeyState extends State<KulitanKey> {
+class _KulitanKeyState extends State<KulitanKey>
+    with SingleTickerProviderStateMixin {
   bool buttonOnHold = false;
   bool buttonTapped = false;
   bool buttonDown = false;
@@ -38,13 +39,13 @@ class _KulitanKeyState extends State<KulitanKey> {
   bool lowerButtonSelected = false;
   double dragStartLocation = 0.0;
   String hintText = '';
+  String hintTextLabel = '';
   late RenderBox renderBox;
   late Size size;
   late Offset offset;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => getWidgetInfo(context));
   }
@@ -60,62 +61,36 @@ class _KulitanKeyState extends State<KulitanKey> {
     buttonOnHold = !buttonOnHold;
   }
 
-  Widget hintWidget() {
-    if (buttonDown) {
-      return AnimatedContainer(
-        alignment: Alignment.center,
-        duration: Duration(milliseconds: 100),
-        height: 50,
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-              offset: Offset(1, 5),
-              color: primaryOrangeDark.withOpacity(0.25),
-              blurRadius: 15),
-        ], color: Color(0xFFffb87f), borderRadius: BorderRadius.circular(20)),
-        child: Text(
-          hintText,
-          style: TextStyle(
-              fontFamily: 'KulitanKeith', fontSize: 35, color: pureWhite),
-        ),
-      );
-    } else {
-      return Container(
-        height: 50,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     String buttonString = widget.buttonString;
-    String buttonLabel = widget.buttonLabel;
     String upperString = widget.upperString;
-    String upperLabel = widget.upperLabel;
     String lowerString = widget.lowerString;
-    String lowerLabel = widget.lowerLabel;
     double dragSensitivity = widget.dragSensitivity ?? 10.0;
 
-    return GestureDetector(
+    Widget keyButton = GestureDetector(
       onTapDown: (details) => setState(() {
-        hintText = buttonString;
+        hintText = widget.buttonString;
+        hintTextLabel = widget.buttonLabel;
         buttonTapped = true;
         buttonDown = true;
-        widget.onTap(size, offset);
       }),
       onTapUp: (details) => setState(() {
         hintText = '';
+        hintTextLabel = '';
+        widget.onTap();
         buttonTapped = false;
         buttonDown = false;
       }),
       onTapCancel: () => setState(() {
-        hintText = '';
         buttonTapped = false;
         buttonDown = false;
       }),
       onVerticalDragStart: (event) {
         setState(() {
           buttonDown = true;
-          hintText = buttonString;
+          hintText = widget.buttonString;
+          hintTextLabel = widget.buttonLabel;
           dragStartLocation = event.globalPosition.dy;
           buttonHoldToggle();
         });
@@ -123,14 +98,16 @@ class _KulitanKeyState extends State<KulitanKey> {
       onVerticalDragUpdate: (event) {
         if (event.globalPosition.dy > dragStartLocation + dragSensitivity) {
           setState(() {
-            hintText = lowerString;
+            hintText = widget.lowerString;
+            hintTextLabel = widget.lowerLabel;
             upperButtonSelected = false;
             lowerButtonSelected = true;
           });
         } else if (event.globalPosition.dy <
             dragStartLocation - dragSensitivity) {
           setState(() {
-            hintText = upperString;
+            hintText = widget.upperString;
+            hintTextLabel = widget.upperLabel;
             upperButtonSelected = true;
             lowerButtonSelected = false;
           });
@@ -139,12 +116,13 @@ class _KulitanKeyState extends State<KulitanKey> {
       onVerticalDragEnd: (event) {
         setState(() {
           if (upperButtonSelected) {
-            widget.onUpperSelect(size, offset);
+            widget.onUpperSelect();
           }
           if (lowerButtonSelected) {
-            widget.onLowerSelect(size, offset);
+            widget.onLowerSelect();
           }
           hintText = '';
+          hintTextLabel = '';
           buttonDown = false;
           buttonOnHold = false;
           upperButtonSelected = false;
@@ -159,7 +137,7 @@ class _KulitanKeyState extends State<KulitanKey> {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                  offset: buttonTapped ? Offset(1, 1) : Offset(1, 5),
+                  offset: buttonDown ? Offset(1, 1) : Offset(1, 5),
                   color: primaryOrangeDark.withOpacity(0.25),
                   blurRadius: buttonDown ? 6 : 15),
             ],
@@ -170,37 +148,28 @@ class _KulitanKeyState extends State<KulitanKey> {
             Container(
               height: double.infinity,
               width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 30,
-                    alignment: Alignment.center,
-                    child: Stack(
-                      children: [
-                        Text(
-                          upperString,
-                          style: TextStyle(
-                              fontFamily: 'KulitanKeith',
-                              fontSize: 35,
-                              color: lightGrey.withOpacity(0.5)),
-                        ),
-                        Text(
-                          lowerString,
-                          style: TextStyle(
-                              fontFamily: 'KulitanKeith',
-                              fontSize: 35,
-                              color: lightGrey.withOpacity(0.5)),
-                        ),
-                      ],
+              child: Container(
+                height: 50,
+                width: 30,
+                alignment: Alignment.center,
+                child: Stack(
+                  children: [
+                    Text(
+                      upperString,
+                      style: TextStyle(
+                          fontFamily: 'KulitanKeith',
+                          fontSize: 35,
+                          color: lightGrey.withOpacity(0.5)),
                     ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 20,
-                  ),
-                ],
+                    Text(
+                      lowerString,
+                      style: TextStyle(
+                          fontFamily: 'KulitanKeith',
+                          fontSize: 35,
+                          color: lightGrey.withOpacity(0.5)),
+                    ),
+                  ],
+                ),
               ),
             ),
             AnimatedSwitcher(
@@ -217,27 +186,6 @@ class _KulitanKeyState extends State<KulitanKey> {
                               color: upperButtonSelected
                                   ? primaryOrangeDark.withOpacity(0.5)
                                   : muteBlack.withOpacity(0.12),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                  ),
-                                  Container(
-                                    width: 20,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      upperLabel,
-                                      style: TextStyle(
-                                          fontSize:
-                                              upperButtonSelected ? 12 : 10,
-                                          color: upperButtonSelected
-                                              ? primaryOrangeDark
-                                              : disabledGrey),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
                           ),
                           Expanded(
@@ -246,27 +194,6 @@ class _KulitanKeyState extends State<KulitanKey> {
                               color: lowerButtonSelected
                                   ? primaryOrangeDark.withOpacity(0.5)
                                   : muteBlack.withOpacity(0.12),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                  ),
-                                  Container(
-                                    width: 20,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      lowerLabel,
-                                      style: TextStyle(
-                                          fontSize:
-                                              lowerButtonSelected ? 12 : 10,
-                                          color: lowerButtonSelected
-                                              ? primaryOrangeDark
-                                              : disabledGrey),
-                                    ),
-                                  ),
-                                ],
-                              ),
                             ),
                           ),
                         ],
@@ -280,52 +207,34 @@ class _KulitanKeyState extends State<KulitanKey> {
                   ? Container(
                       height: double.infinity,
                       width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 30,
-                            alignment: Alignment.center,
-                            child: Text(
-                              upperString,
-                              style: TextStyle(
-                                  fontFamily: 'KulitanKeith',
-                                  fontSize: 35,
-                                  color: primaryOrangeDark),
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            width: 20,
-                          ),
-                        ],
+                      child: Container(
+                        height: 50,
+                        width: 30,
+                        alignment: Alignment.center,
+                        child: Text(
+                          upperString,
+                          style: TextStyle(
+                              fontFamily: 'KulitanKeith',
+                              fontSize: 35,
+                              color: primaryOrangeDark),
+                        ),
                       ),
                     )
                   : lowerButtonSelected
                       ? Container(
                           height: double.infinity,
                           width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 30,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  lowerString,
-                                  style: TextStyle(
-                                      fontFamily: 'KulitanKeith',
-                                      fontSize: 35,
-                                      color: primaryOrangeDark),
-                                ),
-                              ),
-                              Container(
-                                height: 50,
-                                width: 20,
-                              ),
-                            ],
+                          child: Container(
+                            height: 50,
+                            width: 30,
+                            alignment: Alignment.center,
+                            child: Text(
+                              lowerString,
+                              style: TextStyle(
+                                  fontFamily: 'KulitanKeith',
+                                  fontSize: 35,
+                                  color: primaryOrangeDark),
+                            ),
                           ),
                         )
                       : Container(),
@@ -333,40 +242,186 @@ class _KulitanKeyState extends State<KulitanKey> {
             Container(
               height: double.infinity,
               width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 30,
-                    alignment: Alignment.center,
-                    child: Text(
-                      buttonString,
-                      style: TextStyle(
-                          fontFamily: 'KulitanKeith',
-                          fontSize: 35,
-                          color: primaryOrangeDark),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 20,
-                    alignment: Alignment.center,
-                    child: Text(
-                      buttonLabel,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: (upperButtonSelected || lowerButtonSelected)
-                              ? disabledGrey
-                              : primaryOrangeDark),
-                    ),
-                  ),
-                ],
+              child: Container(
+                height: 50,
+                width: 30,
+                alignment: Alignment.center,
+                child: Text(
+                  buttonString,
+                  style: TextStyle(
+                      fontFamily: 'KulitanKeith',
+                      fontSize: 35,
+                      color: primaryOrangeDark),
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+
+    return _KeyHint(
+      hint: hintText,
+      hintLabel: hintTextLabel,
+      visible: buttonDown,
+      child: keyButton,
+    );
+  }
+}
+
+class _KeyHint extends StatefulWidget {
+  const _KeyHint({
+    required this.hint,
+    required this.visible,
+    required this.child,
+    required this.hintLabel,
+  });
+
+  final String hint;
+  final String hintLabel;
+  final bool visible;
+  final Widget child;
+
+  @override
+  _KeyHintState createState() => _KeyHintState();
+}
+
+class _KeyHintState extends State<_KeyHint>
+    with SingleTickerProviderStateMixin {
+  OverlayEntry? _overlay;
+  bool _shouldRemove = false;
+
+  AnimationController? animationController;
+  Animation<double>? animation;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this)
+      ..addStatusListener(_handleStatusChanged);
+    animation = CurveTween(curve: Curves.fastLinearToSlowEaseIn)
+        .animate(animationController!);
+  }
+
+  void _handleStatusChanged(AnimationStatus status) {
+    if (status == AnimationStatus.dismissed) _removeEntry();
+  }
+
+  @override
+  void deactivate() {
+    animationController!.reverse();
+    super.deactivate();
+  }
+
+  void _removeEntry() {
+    if (_overlay != null) {
+      _overlay!.remove();
+      _overlay = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController!.dispose();
+  }
+
+  void _refresh() {
+    if (_overlay != null) _overlay!.remove();
+    _overlay = this._createKeyHint();
+    Overlay.of(context).insert(_overlay!);
+  }
+
+  void _removeOverlay() async {
+    _shouldRemove = true;
+    animationController!.reverse();
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (_shouldRemove) _removeEntry();
+  }
+
+  @override
+  void didUpdateWidget(_KeyHint oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.visible && oldWidget.visible)
+      _removeOverlay();
+    else if (widget.visible && !oldWidget.visible) {
+      _shouldRemove = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_overlay == null) {
+          _overlay = this._createKeyHint();
+          Overlay.of(context).insert(_overlay!);
+        }
+        animationController!.forward();
+      });
+    }
+    if (widget.hint != oldWidget.hint && widget.visible && oldWidget.visible)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+  }
+
+  OverlayEntry _createKeyHint() {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Size size = renderBox.size;
+    Offset offset = renderBox.localToGlobal(Offset.zero);
+    final String _hintText = widget.hint;
+    final String _hintLabel = widget.hintLabel;
+
+    return OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          left: offset.dx,
+          top: offset.dy - 65,
+          child: FadeTransition(
+            opacity:
+                Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+              parent: animation!,
+              curve: Curves.fastLinearToSlowEaseIn,
+            )),
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                height: size.height,
+                width: size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Color(0xFFffb87f),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        _hintText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'KulitanKeith',
+                            fontSize: 35,
+                            color: pureWhite),
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Text(
+                        _hintLabel,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 12, color: pureWhite),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
