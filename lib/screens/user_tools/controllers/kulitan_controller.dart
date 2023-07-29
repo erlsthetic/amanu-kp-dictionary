@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:amanu/utils/constants/kulitan_characters.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class KulitanController extends GetxController {
@@ -67,7 +70,8 @@ class KulitanController extends GetxController {
     return newString;
   }
 
-  void addCharacter(String kulitanChar) {
+  void addCharacter(String kulitanChar) async {
+    blinkerTyping.value = true;
     print("Cursor: Line " +
         currentLine.value.toString() +
         ", Space " +
@@ -135,17 +139,21 @@ class KulitanController extends GetxController {
       } else {}
     } else {
       addLine();
+      await Future.delayed(Duration(milliseconds: 200));
       insertCharacter(kulitanChar);
     }
+    // ignore: invalid_use_of_protected_member
     print(kulitanStringList.value);
     print("Current: Line " +
         currentLine.value.toString() +
         ", Space " +
         currentSpace.value.toString());
     kulitanStringList.refresh();
+    blinkerTyping.value = false;
   }
 
   void deleteCharacter() {
+    blinkerTyping.value = true;
     if (kulitanStringList.length >= 1) {
       if (kulitanStringList.length > 1) {
         if (currentSpace.value == 0) {
@@ -189,11 +197,13 @@ class KulitanController extends GetxController {
       }
     }
     kulitanStringList.refresh();
+    blinkerTyping.value = false;
   }
 
   void enterNewLine() {
     addLine();
     print("Add line on L" + currentLine.value.toString());
+    // ignore: invalid_use_of_protected_member
     print(kulitanStringList.value);
     print("Current: Line " +
         currentLine.value.toString() +
@@ -208,5 +218,43 @@ class KulitanController extends GetxController {
     currentSpace.value = 0;
     currentLine.value = 0;
     kulitanStringList.refresh();
+  }
+
+  RxBool blinkerShow = true.obs;
+  RxBool blinkerTyping = false.obs;
+  int blinkDuration = 1200;
+  int showDuration = 600;
+
+  Timer? _showTimer;
+  Timer? _hideTimer;
+
+  void initializeTimers() async {
+    _showTimer = Timer.periodic(Duration(milliseconds: blinkDuration), (_) {
+      if (!blinkerTyping.value) blinkerShow.value = true;
+    });
+    await Future.delayed(Duration(milliseconds: showDuration));
+    if (blinkerShow.value)
+      _hideTimer = Timer.periodic(Duration(milliseconds: blinkDuration), (_) {
+        if (!blinkerTyping.value) {
+          if (blinkerShow.value) {
+            blinkerShow.value = false;
+          }
+        }
+      });
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    initializeTimers();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      blinkerShow.value = true;
+    });
+  }
+
+  @override
+  void onClose() {
+    _showTimer!.cancel();
+    _hideTimer!.cancel();
   }
 }
