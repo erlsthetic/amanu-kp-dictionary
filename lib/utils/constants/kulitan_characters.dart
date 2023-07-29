@@ -26,7 +26,7 @@ List<String> baseConsonantsChopped = [
   'b',
 ];
 List<String> garlitUpperVowels = ["yi", "wi"];
-List<String> garlitLowerVowels = ["yi", "wi"];
+List<String> garlitLowerVowels = ["yu", "wu"];
 List<String> garlitUpperConsonants = [
   'gi',
   'ki',
@@ -41,15 +41,15 @@ List<String> garlitUpperConsonants = [
   'bi',
 ];
 List<String> garlitLowerConsonants = [
-  'gi',
-  'ki',
-  'ngi',
-  'ti',
-  'di',
-  'ni',
-  'li',
-  'si',
-  'mi',
-  'pi',
-  'bi',
+  'gu',
+  'ku',
+  'ngu',
+  'tu',
+  'du',
+  'nu',
+  'lu',
+  'su',
+  'mu',
+  'pu',
+  'bu',
 ];

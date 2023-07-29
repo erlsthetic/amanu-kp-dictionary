@@ -32,7 +32,7 @@ class KulitanController extends GetxController {
   RxInt currentLine = 0.obs;
   RxInt currentSpace = 0.obs;
 
-  RxList<List<String>> kulitanStringList = <List<String>>[].obs;
+  RxList<List<String>> kulitanStringList = <List<String>>[[]].obs;
 
   bool classifyKulitan(List<List<String>> conditionList, String input) {
     for (final condition in conditionList) {
@@ -55,8 +55,10 @@ class KulitanController extends GetxController {
     kulitanStringList[currentLine.value]
         .insert(currentSpace.value, kulitanChar);
     kulitanStringList.refresh();
-    if (currentSpace.value < 3) {
+    if (currentSpace.value < 2) {
       currentSpace.value += 1;
+    } else {
+      addLine();
     }
   }
 
@@ -66,10 +68,15 @@ class KulitanController extends GetxController {
   }
 
   void addCharacter(String kulitanChar) {
+    print("Cursor: Line " +
+        currentLine.value.toString() +
+        ", Space " +
+        currentSpace.value.toString());
+    print("Adding: " + kulitanChar);
     if (kulitanStringList[currentLine.value].length <= 3) {
-      if (currentLine.value == 0) {
+      if (currentSpace.value == 0) {
         insertCharacter(kulitanChar);
-      } else if (currentLine.value == 1) {
+      } else if (currentSpace.value == 1) {
         if (classifyKulitan([
           garlitUpperVowels,
           garlitUpperConsonants,
@@ -83,7 +90,7 @@ class KulitanController extends GetxController {
         } else if (classifyKulitan([baseVowels], kulitanChar)) {
           insertCharacter(kulitanChar);
         }
-      } else if (currentLine.value == 2) {
+      } else if (currentSpace.value == 2) {
         if (classifyKulitan([
           garlitUpperVowels,
           garlitUpperConsonants,
@@ -96,6 +103,7 @@ class KulitanController extends GetxController {
             [baseVowels], kulitanStringList[currentLine.value][1])) {
           if (classifyKulitan(
               [baseVowels], kulitanStringList[currentLine.value][0])) {
+            print("here");
             if (kulitanStringList[currentLine.value][0] ==
                     kulitanStringList[currentLine.value][1] &&
                 (classifyKulitan([baseVowels], kulitanChar))) {
@@ -116,7 +124,7 @@ class KulitanController extends GetxController {
             if (classifyKulitan([baseConsonants], kulitanChar)) {
               insertCharacter(chopCharacter(kulitanChar));
             } else if (classifyKulitan([baseVowels], kulitanChar)) {
-              insertCharacter(chopCharacter(kulitanChar));
+              insertCharacter(kulitanChar);
             }
           }
         } else if (classifyKulitan([baseConsonants, baseConsonantsChopped],
@@ -127,6 +135,78 @@ class KulitanController extends GetxController {
       } else {}
     } else {
       addLine();
+      insertCharacter(kulitanChar);
     }
+    print(kulitanStringList.value);
+    print("Current: Line " +
+        currentLine.value.toString() +
+        ", Space " +
+        currentSpace.value.toString());
+    kulitanStringList.refresh();
+  }
+
+  void deleteCharacter() {
+    if (kulitanStringList.length >= 1) {
+      if (kulitanStringList.length > 1) {
+        if (currentSpace.value == 0) {
+          kulitanStringList.removeAt(currentLine.value);
+          print("Removed line " + currentLine.value.toString());
+          currentLine.value -= 1;
+          if (kulitanStringList[currentLine.value].length != 0) {
+            currentSpace.value =
+                kulitanStringList[currentLine.value].length - 1;
+            print("Removed L" +
+                currentLine.value.toString() +
+                "S" +
+                currentSpace.value.toString() +
+                " : " +
+                kulitanStringList[currentLine.value][currentSpace.value]);
+            kulitanStringList[currentLine.value].removeAt(currentSpace.value);
+          } else {
+            currentSpace.value = 0;
+          }
+        } else {
+          print("Removed L" +
+              currentLine.value.toString() +
+              "S" +
+              currentSpace.value.toString() +
+              " : " +
+              kulitanStringList[currentLine.value][currentSpace.value - 1]);
+          kulitanStringList[currentLine.value].removeAt(currentSpace.value - 1);
+          currentSpace.value -= 1;
+        }
+      } else {
+        if (currentSpace.value != 0) {
+          print("Removed L" +
+              currentLine.value.toString() +
+              "S" +
+              currentSpace.value.toString() +
+              " : " +
+              kulitanStringList[currentLine.value][currentSpace.value - 1]);
+          kulitanStringList[currentLine.value].removeAt(currentSpace.value - 1);
+          currentSpace.value -= 1;
+        }
+      }
+    }
+    kulitanStringList.refresh();
+  }
+
+  void enterNewLine() {
+    addLine();
+    print("Add line on L" + currentLine.value.toString());
+    print(kulitanStringList.value);
+    print("Current: Line " +
+        currentLine.value.toString() +
+        ", Space " +
+        currentSpace.value.toString());
+    kulitanStringList.refresh();
+  }
+
+  void clearList() {
+    kulitanStringList.clear();
+    kulitanStringList.insert(0, []);
+    currentSpace.value = 0;
+    currentLine.value = 0;
+    kulitanStringList.refresh();
   }
 }

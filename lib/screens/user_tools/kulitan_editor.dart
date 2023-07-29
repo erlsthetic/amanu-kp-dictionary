@@ -58,8 +58,71 @@ class KulitanEditorPage extends StatelessWidget {
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-                      child: Column(
-                        children: [],
+                      child: Obx(
+                        () => Column(
+                          children: <Widget>[
+                            for (List<String> line
+                                in controller.kulitanStringList)
+                              Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 8,
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                            minHeight: 60,
+                                            maxHeight: 80,
+                                            minWidth: 180,
+                                            maxWidth: 240),
+                                        child: line.length == 0
+                                            ? Container()
+                                            : FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text(
+                                                  line.join(),
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'KulitanKeith',
+                                                      fontSize: 35,
+                                                      color: primaryOrangeDark),
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        constraints: BoxConstraints(
+                                            minHeight: 60,
+                                            maxHeight: 80,
+                                            minWidth: 30,
+                                            maxWidth: 60),
+                                        child: line.length == 0
+                                            ? Container()
+                                            : Container(
+                                                child: Text(
+                                                  line
+                                                      .join()
+                                                      .replaceAll("aa", "á")
+                                                      .replaceAll("ai", "e")
+                                                      .replaceAll("au", "o")
+                                                      .replaceAll("ii", "í")
+                                                      .replaceAll("uu", "ú"),
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: primaryOrangeDark),
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -150,12 +213,15 @@ class KulitanEditorPage extends StatelessWidget {
                             lowerString: keyRow[4],
                             lowerLabel: keyRow[5],
                             onTap: () {
+                              controller.addCharacter(keyRow[0]);
                               print(keyRow[0]);
                             },
                             onUpperSelect: () {
+                              controller.addCharacter(keyRow[2]);
                               print(keyRow[2]);
                             },
                             onLowerSelect: () {
+                              controller.addCharacter(keyRow[4]);
                               print(keyRow[4]);
                             }),
                       ),
@@ -164,7 +230,7 @@ class KulitanEditorPage extends StatelessWidget {
                       child: KulitanKey(
                         buttonString: "clear",
                         onTap: () {
-                          print("clear");
+                          controller.clearList();
                         },
                       ),
                     ),
@@ -181,12 +247,15 @@ class KulitanEditorPage extends StatelessWidget {
                             lowerString: keyRow[4],
                             lowerLabel: keyRow[5],
                             onTap: () {
+                              controller.addCharacter(keyRow[0]);
                               print(keyRow[0]);
                             },
                             onUpperSelect: () {
+                              controller.addCharacter(keyRow[2]);
                               print(keyRow[2]);
                             },
                             onLowerSelect: () {
+                              controller.addCharacter(keyRow[4]);
                               print(keyRow[4]);
                             }),
                       ),
@@ -204,12 +273,15 @@ class KulitanEditorPage extends StatelessWidget {
                             lowerString: keyRow[4],
                             lowerLabel: keyRow[5],
                             onTap: () {
+                              controller.addCharacter(keyRow[0]);
                               print(keyRow[0]);
                             },
                             onUpperSelect: () {
+                              controller.addCharacter(keyRow[2]);
                               print(keyRow[2]);
                             },
                             onLowerSelect: () {
+                              controller.addCharacter(keyRow[4]);
                               print(keyRow[4]);
                             }),
                       ),
@@ -218,7 +290,7 @@ class KulitanEditorPage extends StatelessWidget {
                       child: KulitanKey(
                         buttonString: "delete",
                         onTap: () {
-                          print("delete");
+                          controller.deleteCharacter();
                         },
                       ),
                     ),
@@ -236,12 +308,15 @@ class KulitanEditorPage extends StatelessWidget {
                             lowerString: keyRow[4],
                             lowerLabel: keyRow[5],
                             onTap: () {
+                              controller.addCharacter(keyRow[0]);
                               print(keyRow[0]);
                             },
                             onUpperSelect: () {
+                              controller.addCharacter(keyRow[2]);
                               print(keyRow[2]);
                             },
                             onLowerSelect: () {
+                              controller.addCharacter(keyRow[4]);
                               print(keyRow[4]);
                             }),
                       ),
@@ -251,7 +326,7 @@ class KulitanEditorPage extends StatelessWidget {
                       child: KulitanKey(
                         buttonString: "enter",
                         onTap: () {
-                          print("enter");
+                          controller.enterNewLine();
                         },
                       ),
                     ),
