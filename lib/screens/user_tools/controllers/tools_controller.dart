@@ -6,20 +6,23 @@ import 'package:textfield_tags/textfield_tags.dart';
 class ToolsController extends GetxController {
   static ToolsController get instance => Get.find();
 
-  RxList<List<String>> kulitanStringListGetter = <List<String>>[[]].obs;
-  int currentLine = 0;
-  int currentSpace = 0;
-  RxBool kulitanListEmpty = true.obs;
-
   late TextEditingController wordController,
       phoneticController,
       referencesController;
 
-  late TextfieldTagsController engTransController,
-      filTransController,
-      relatedController,
-      synonymController,
-      antonymController;
+  String? validateWord(String value) {
+    if (value.isEmpty) {
+      return "Please enter word";
+    }
+    return null;
+  }
+
+  String? validatePhonetic(String value) {
+    if (value.isEmpty) {
+      return "Please enter word phonetics";
+    }
+    return null;
+  }
 
   final GlobalKey<FormState> addWordFormKey = GlobalKey<FormState>();
 
@@ -28,6 +31,7 @@ class ToolsController extends GetxController {
   String audioPath = "";
   RxBool isPlaying = false.obs;
   RxBool hasFile = false.obs;
+  RxBool audioSubmitError = false.obs;
 
   void playAndStop(PlayerController controller) async {
     if (controller.playerState == PlayerState.playing) {
@@ -39,6 +43,72 @@ class ToolsController extends GetxController {
     playerController.playerState == PlayerState.playing
         ? isPlaying.value = true
         : isPlaying.value = false;
+  }
+
+  void validateAudio() {
+    if (hasFile.value) {
+      audioSubmitError.value = false;
+    } else {
+      audioSubmitError.value = true;
+    }
+  }
+
+  late TextfieldTagsController engTransController,
+      filTransController,
+      relatedController,
+      synonymController,
+      antonymController;
+
+  List<String> engTransList = [];
+
+  void getEnglishTranslations() {
+    engTransList.clear();
+    for (String word in engTransController.getTags!) {
+      engTransList.add(word);
+    }
+  }
+
+  RxBool engTransError = false.obs;
+
+  void validateEngTrans() {
+    if (engTransList.length == 0) {
+      engTransError.value = true;
+    } else {
+      engTransError.value = false;
+    }
+  }
+
+  List<String> filTransList = [];
+
+  void getFilipinoTranslations() {
+    filTransList.clear();
+    for (String word in filTransController.getTags!) {
+      filTransList.add(word);
+    }
+  }
+
+  RxBool filTransError = false.obs;
+
+  void validateFilTrans() {
+    if (filTransList.length == 0) {
+      filTransError.value = true;
+    } else {
+      filTransError.value = false;
+    }
+  }
+
+  RxList<List<String>> kulitanStringListGetter = <List<String>>[[]].obs;
+  int currentLine = 0;
+  int currentSpace = 0;
+  RxBool kulitanListEmpty = true.obs;
+  RxBool kulitanError = false.obs;
+
+  void validateKulitan() {
+    if (kulitanListEmpty.value) {
+      filTransError.value = true;
+    } else {
+      filTransError.value = false;
+    }
   }
 
   final GlobalKey<AnimatedListState> typeListKey = GlobalKey();
@@ -57,9 +127,7 @@ class ToolsController extends GetxController {
   }
 
   final RxList<String> typeFields = <String>[].obs;
-
   final List<TextEditingController> customTypeController = [];
-
   final RxList<List<List<TextEditingController>>> definitionsFields =
       <List<List<TextEditingController>>>[].obs;
 
@@ -93,9 +161,56 @@ class ToolsController extends GetxController {
     definitionListKey[i].currentState!.removeItem(j, (_, __) => Container());
   }
 
+  String? validateType(String value) {
+    if (value.isEmpty) {
+      return "Please select a type";
+    }
+    return null;
+  }
+
+  String? validateCustomType(String value) {
+    if (value.isEmpty) {
+      return "Please enter custom type";
+    }
+    return null;
+  }
+
+  String? validateDefinition(String value) {
+    if (value.isEmpty) {
+      return "Please enter a definition";
+    }
+    return null;
+  }
+
+  List<String> synonymsList = [];
+
+  void getSynonyms() {
+    synonymsList.clear();
+    for (String word in synonymController.getTags!) {
+      synonymsList.add(word);
+    }
+  }
+
+  List<String> antonymsList = [];
+
+  void getAntonyms() {
+    antonymsList.clear();
+    for (String word in antonymController.getTags!) {
+      antonymsList.add(word);
+    }
+  }
+
+  List<String> relatedList = [];
+
+  void getRelated() {
+    relatedList.clear();
+    for (String word in relatedController.getTags!) {
+      relatedList.add(word);
+    }
+  }
+
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     wordController = TextEditingController();
     phoneticController = TextEditingController();
@@ -111,7 +226,40 @@ class ToolsController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
+    wordController.dispose();
+    phoneticController.dispose();
+    engTransController.dispose();
+    filTransController.dispose();
+    playerController.dispose();
+    relatedController.dispose();
+    synonymController.dispose();
+    antonymController.dispose();
+    referencesController.dispose();
+  }
+
+  void submitWord() {
+    validateAudio();
+    getEnglishTranslations();
+    validateEngTrans();
+    getFilipinoTranslations();
+    validateFilTrans();
+    validateKulitan();
+    getAntonyms();
+    getRelated();
+    getSynonyms();
+
+    final informationValid = addWordFormKey.currentState!.validate();
+
+    if (!informationValid ||
+        wordController.text.isEmpty ||
+        phoneticController.text.isEmpty ||
+        audioSubmitError.value ||
+        engTransError.value ||
+        filTransError.value ||
+        kulitanError.value) {
+      return;
+    }
+    print("PASSED");
   }
 }

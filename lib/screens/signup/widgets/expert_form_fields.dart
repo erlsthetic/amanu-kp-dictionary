@@ -199,7 +199,7 @@ class ExpertFormFields extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
                     width: double.infinity,
                     child: Text(
-                      'Please upload your resume.',
+                      'Please upload your resume',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.red[700], fontSize: 11.5),
@@ -211,7 +211,7 @@ class ExpertFormFields extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
                     width: double.infinity,
                     child: Text(
-                      'File must not exceed 10MB.',
+                      'File must not exceed 10MB',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.red[700], fontSize: 11.5),

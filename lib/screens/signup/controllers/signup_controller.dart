@@ -62,7 +62,6 @@ class SignUpController extends GetxController {
     passwordController.dispose();
     userNameController.dispose();
     phoneNoController.dispose();
-
     exFullNameController.dispose();
     exBioController.dispose();
   }

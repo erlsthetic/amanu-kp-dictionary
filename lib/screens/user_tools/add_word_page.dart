@@ -25,7 +25,9 @@ class AddWordPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           splashColor: primaryOrangeLight,
           focusColor: primaryOrangeLight.withOpacity(0.5),
-          onPressed: () {},
+          onPressed: () {
+            controller.submitWord();
+          },
           label: Text(
             tAddWord.toUpperCase(),
             textAlign: TextAlign.center,
@@ -75,6 +77,14 @@ class AddWordPage extends StatelessWidget {
                               height: 20.0,
                             ),
                             TextFormField(
+                              controller: controller.wordController,
+                              validator: (value) {
+                                if (value != null) {
+                                  return controller.validateWord(value);
+                                } else {
+                                  return "Please enter word";
+                                }
+                              },
                               decoration: InputDecoration(
                                   labelText: tWord + " *",
                                   hintText: tWord + " *",
@@ -86,6 +96,14 @@ class AddWordPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             TextFormField(
+                              controller: controller.phoneticController,
+                              validator: (value) {
+                                if (value != null) {
+                                  return controller.validatePhonetic(value);
+                                } else {
+                                  return "Please enter word phonetics";
+                                }
+                              },
                               decoration: InputDecoration(
                                   labelText: tPhonetic + " *",
                                   hintText: tPhonetic + " *",
@@ -112,6 +130,19 @@ class AddWordPage extends StatelessWidget {
                               height: 8.0,
                             ),
                             StudioSection(controller: controller),
+                            Obx(() => controller.audioSubmitError.value
+                                ? Container(
+                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                    width: double.infinity,
+                                    child: Text(
+                                      'Please provide audio pronunciation',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.red[700],
+                                          fontSize: 11.5),
+                                    ))
+                                : Container()),
                             SizedBox(
                               height: 20.0,
                             ),
@@ -328,6 +359,19 @@ class AddWordPage extends StatelessWidget {
                                       ]),
                               ),
                             ),
+                            Obx(() => controller.kulitanError.value
+                                ? Container(
+                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                    width: double.infinity,
+                                    child: Text(
+                                      'Please provide Kulitan information for the word',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.red[700],
+                                          fontSize: 11.5),
+                                    ))
+                                : Container()),
                             SizedBox(
                               height: 15.0,
                             ),
@@ -633,8 +677,10 @@ class TagsField extends StatelessWidget {
       textSeparators: [','],
       letterCase: LetterCase.small,
       validator: (String tag) {
-        if (controller.getTags!.contains(tag)) {
-          return 'Duplicate tag found';
+        if (controller.getTags == null) {
+          return 'Please enter a translation.';
+        } else if (controller.getTags!.contains(tag)) {
+          return 'Duplicate tag found.';
         }
         return null;
       },
@@ -878,6 +924,13 @@ class WordInfoSection extends StatelessWidget {
                         SizedBox(
                           width: 120.0,
                           child: DropdownButtonFormField(
+                            validator: (value) {
+                              if (value != null) {
+                                return controller.validateType(value);
+                              } else {
+                                return "Please select a type";
+                              }
+                            },
                             items: controller.typeDropItems,
                             onChanged: (String? newValue) {
                               // ignore: invalid_use_of_protected_member
@@ -907,6 +960,14 @@ class WordInfoSection extends StatelessWidget {
                                 child: Container(
                                   padding: EdgeInsets.only(left: 5.0),
                                   child: TextFormField(
+                                    validator: (value) {
+                                      if (value != null) {
+                                        return controller
+                                            .validateCustomType(value);
+                                      } else {
+                                        return "Please enter custom type";
+                                      }
+                                    },
                                     controller:
                                         controller.customTypeController[i],
                                     maxLines: 1,
@@ -972,6 +1033,14 @@ class WordInfoSection extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: TextFormField(
+                                        validator: (value) {
+                                          if (value != null) {
+                                            return controller
+                                                .validateDefinition(value);
+                                          } else {
+                                            return "Please enter word";
+                                          }
+                                        },
                                         controller: controller
                                             .definitionsFields[i][j][0],
                                         minLines: 1,
