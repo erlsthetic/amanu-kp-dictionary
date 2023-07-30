@@ -248,7 +248,11 @@ class KulitanEditorPage extends StatelessWidget {
                     Crab(
                       tag: 'BackButton',
                       child: IconButton(
-                        onPressed: () => Get.back(),
+                        onPressed: () {
+                          controller.checkIfEmpty();
+                          controller.saveKulitan();
+                          Get.back();
+                        },
                         icon: Icon(
                           Icons.arrow_back_ios_new_rounded,
                           weight: 10,

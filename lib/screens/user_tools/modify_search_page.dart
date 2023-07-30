@@ -52,7 +52,7 @@ class ModifySearchPage extends StatelessWidget {
             tag: "AppBar",
             child: Container(
               width: size.width,
-              height: topPadding + 70,
+              height: topPadding + 70 + 64,
               decoration: BoxDecoration(
                   gradient: orangeGradient,
                   borderRadius:
@@ -61,45 +61,80 @@ class ModifySearchPage extends StatelessWidget {
           ),
         ),
         Positioned(
-            top: topPadding,
-            left: 0,
-            child: Container(
-              height: 70,
-              width: size.width,
-              padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Crab(
-                      tag: 'BackButton',
-                      child: IconButton(
-                        onPressed: () => Get.back(),
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          weight: 10,
-                        ),
-                        color: pureWhite,
-                        iconSize: 30,
+          top: topPadding,
+          left: 0,
+          child: Container(
+            height: 70,
+            width: size.width,
+            padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Crab(
+                    tag: 'BackButton',
+                    child: IconButton(
+                      onPressed: () => Get.back(),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        weight: 10,
                       ),
+                      color: pureWhite,
+                      iconSize: 30,
                     ),
-                    Text(
-                      editMode ? tEditWord : tDeleteWord,
-                      style: GoogleFonts.robotoSlab(
-                          fontSize: 24,
-                          color: pureWhite,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Crab(
-                      tag: 'HelpButton',
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.help),
+                  ),
+                  Text(
+                    editMode ? tEditWord : tDeleteWord,
+                    style: GoogleFonts.robotoSlab(
+                        fontSize: 24,
                         color: pureWhite,
-                        iconSize: 30,
-                      ),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Crab(
+                    tag: 'HelpButton',
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.help),
+                      color: pureWhite,
+                      iconSize: 30,
                     ),
-                  ]),
-            )),
+                  ),
+                ]),
+          ),
+        ),
+        Positioned(
+          top: topPadding + 65,
+          left: 0,
+          child: Container(
+            height: 55.0,
+            width: size.width - 40,
+            margin: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                color: pureWhite),
+            child:
+                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Icon(
+                Icons.search,
+                size: 30.0,
+                color: primaryOrangeDark,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: TextField(
+                        style: TextStyle(fontSize: 18, color: muteBlack),
+                        decoration:
+                            InputDecoration.collapsed(hintText: "Search"),
+                      )))
+            ]),
+          ),
+        ),
       ],
     ));
   }

@@ -6,6 +6,11 @@ import 'package:textfield_tags/textfield_tags.dart';
 class ToolsController extends GetxController {
   static ToolsController get instance => Get.find();
 
+  RxList<List<String>> kulitanStringListGetter = <List<String>>[[]].obs;
+  int currentLine = 0;
+  int currentSpace = 0;
+  RxBool kulitanListEmpty = true.obs;
+
   late TextEditingController wordController,
       phoneticController,
       referencesController;

@@ -1,3 +1,4 @@
+import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/widgets/components/floating_button.dart';
 import 'package:get/get.dart';
@@ -51,6 +52,9 @@ class HomeScreen extends StatelessWidget {
           CustomFloatingPanel(
             onPressed: (index) {
               print("Clicked $index");
+              if (index == 1) {
+                Get.to(ModifySearchPage(editMode: true));
+              }
             },
             positionBottom: _size.height * 0.1,
             positionLeft: _size.width - 85,

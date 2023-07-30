@@ -220,8 +220,113 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 15.0,
                             ),
-                            Placeholder(
-                              fallbackHeight: 300,
+                            Obx(
+                              () => Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(30),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30.0)),
+                                    color: orangeCard),
+                                child: controller.kulitanListEmpty.value
+                                    ? Container(
+                                        child: Text(
+                                          "No data",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: disabledGrey),
+                                        ),
+                                      )
+                                    : Column(children: <Widget>[
+                                        for (List<String> line in controller
+                                            .kulitanStringListGetter)
+                                          !(line.join() == '')
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 5.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 8,
+                                                        child: Container(
+                                                          constraints:
+                                                              BoxConstraints(
+                                                                  minHeight: 60,
+                                                                  maxHeight: 80,
+                                                                  minWidth: 180,
+                                                                  maxWidth:
+                                                                      240),
+                                                          child:
+                                                              line.length == 0
+                                                                  ? Container()
+                                                                  : FittedBox(
+                                                                      fit: BoxFit
+                                                                          .contain,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            line.join(),
+                                                                            style: TextStyle(
+                                                                                fontFamily: 'KulitanKeith',
+                                                                                fontSize: 35,
+                                                                                color: primaryOrangeDark),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          constraints:
+                                                              BoxConstraints(
+                                                                  minHeight: 60,
+                                                                  maxHeight: 80,
+                                                                  minWidth: 30,
+                                                                  maxWidth: 60),
+                                                          child: line.length ==
+                                                                  0
+                                                              ? Container()
+                                                              : Container(
+                                                                  child: Text(
+                                                                    line
+                                                                        .join()
+                                                                        .replaceAll(
+                                                                            "aa",
+                                                                            "á")
+                                                                        .replaceAll(
+                                                                            "ai",
+                                                                            "e")
+                                                                        .replaceAll(
+                                                                            "au",
+                                                                            "o")
+                                                                        .replaceAll(
+                                                                            "ii",
+                                                                            "í")
+                                                                        .replaceAll(
+                                                                            "uu",
+                                                                            "ú"),
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            15,
+                                                                        color:
+                                                                            primaryOrangeDark),
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : Container(),
+                                      ]),
+                              ),
                             ),
                             SizedBox(
                               height: 15.0,

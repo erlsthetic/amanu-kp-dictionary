@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
 import 'package:amanu/utils/constants/kulitan_characters.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class KulitanController extends GetxController {
   static KulitanController get instance => Get.find();
+
+  final addPageController = Get.find<ToolsController>();
 
   List<List<List<String>>> keyboardData = [
     [
@@ -243,9 +246,44 @@ class KulitanController extends GetxController {
       });
   }
 
+  void checkIfEmpty() {
+    String kulitanString = '';
+    for (List<String> line in kulitanStringList) {
+      for (String i in line) {
+        kulitanString += i;
+      }
+    }
+    if (kulitanString == '') {
+      addPageController.kulitanListEmpty.value = true;
+    } else {
+      addPageController.kulitanListEmpty.value = false;
+    }
+  }
+
+  void saveKulitan() {
+    addPageController.kulitanStringListGetter.clear();
+    for (List<String> i in kulitanStringList) {
+      addPageController.kulitanStringListGetter.add(i);
+    }
+    addPageController.kulitanStringListGetter.refresh();
+    addPageController.currentLine = currentLine.value;
+    addPageController.currentSpace = currentSpace.value;
+  }
+
+  void getFromAddPage() {
+    kulitanStringList.clear();
+    for (List<String> i in addPageController.kulitanStringListGetter) {
+      kulitanStringList.add(i);
+    }
+    kulitanStringList.refresh();
+    currentLine.value = addPageController.currentLine;
+    currentSpace.value = addPageController.currentSpace;
+  }
+
   @override
   void onInit() {
     super.onInit();
+    getFromAddPage();
     initializeTimers();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       blinkerShow.value = true;
