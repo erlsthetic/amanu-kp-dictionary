@@ -68,13 +68,13 @@ class ToolsController extends GetxController {
     }
   }
 
-  RxBool engTransError = false.obs;
+  RxBool engTransEmpty = false.obs;
 
   void validateEngTrans() {
     if (engTransList.length == 0) {
-      engTransError.value = true;
+      engTransEmpty.value = true;
     } else {
-      engTransError.value = false;
+      engTransEmpty.value = false;
     }
   }
 
@@ -87,13 +87,13 @@ class ToolsController extends GetxController {
     }
   }
 
-  RxBool filTransError = false.obs;
+  RxBool filTransEmpty = false.obs;
 
   void validateFilTrans() {
     if (filTransList.length == 0) {
-      filTransError.value = true;
+      filTransEmpty.value = true;
     } else {
-      filTransError.value = false;
+      filTransEmpty.value = false;
     }
   }
 
@@ -105,9 +105,9 @@ class ToolsController extends GetxController {
 
   void validateKulitan() {
     if (kulitanListEmpty.value) {
-      filTransError.value = true;
+      kulitanError.value = true;
     } else {
-      filTransError.value = false;
+      kulitanError.value = false;
     }
   }
 
@@ -255,8 +255,6 @@ class ToolsController extends GetxController {
         wordController.text.isEmpty ||
         phoneticController.text.isEmpty ||
         audioSubmitError.value ||
-        engTransError.value ||
-        filTransError.value ||
         kulitanError.value) {
       return;
     }

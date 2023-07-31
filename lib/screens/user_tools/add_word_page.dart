@@ -55,6 +55,7 @@ class AddWordPage extends StatelessWidget {
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       key: controller.addWordFormKey,
                       child: Container(
                         padding:
@@ -129,27 +130,25 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 8.0,
                             ),
-                            StudioSection(controller: controller),
-                            Obx(() => controller.audioSubmitError.value
-                                ? Container(
-                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                    width: double.infinity,
-                                    child: Text(
-                                      'Please provide audio pronunciation',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.red[700],
-                                          fontSize: 11.5),
-                                    ))
-                                : Container()),
+                            StudioFormField(
+                                controller: controller,
+                                onSaved: (value) {
+                                  value = controller.audioPath;
+                                },
+                                validator: (value) {
+                                  if (controller.audioPath == '') {
+                                    return "Please provide audio pronunciation";
+                                  } else {
+                                    return null;
+                                  }
+                                }),
                             SizedBox(
                               height: 20.0,
                             ),
                             Container(
                               width: double.infinity,
                               child: Text(
-                                tEngTrans + " *",
+                                tEngTrans,
                                 textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
                                   fontSize: 15.0,
@@ -191,13 +190,26 @@ class AddWordPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            Obx(() => controller.engTransEmpty.value
+                                ? Container(
+                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                    width: double.infinity,
+                                    child: Text(
+                                      'You may want to provide a translation',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.yellow[700],
+                                          fontSize: 12),
+                                    ))
+                                : Container()),
                             SizedBox(
                               height: 15.0,
                             ),
                             Container(
                               width: double.infinity,
                               child: Text(
-                                tFilTrans + " *",
+                                tFilTrans,
                                 textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
                                   fontSize: 15.0,
@@ -214,6 +226,19 @@ class AddWordPage extends StatelessWidget {
                               width: size.width - (60.0),
                               label: tFilTrans,
                             ),
+                            Obx(() => controller.filTransEmpty.value
+                                ? Container(
+                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                    width: double.infinity,
+                                    child: Text(
+                                      'You may want to provide a translation',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.yellow[700],
+                                          fontSize: 12),
+                                    ))
+                                : Container()),
                             SizedBox(
                               height: 30.0,
                             ),
@@ -251,152 +276,16 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 15.0,
                             ),
-                            Obx(
-                              () => Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(30),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
-                                    color: orangeCard),
-                                child: controller.kulitanListEmpty.value
-                                    ? Container(
-                                        child: Text(
-                                          "No data",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: disabledGrey),
-                                        ),
-                                      )
-                                    : Column(children: <Widget>[
-                                        for (List<String> line in controller
-                                            .kulitanStringListGetter)
-                                          !(line.join() == '')
-                                              ? Container(
-                                                  alignment: Alignment.center,
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 5.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 8,
-                                                        child: Container(
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  minHeight: 60,
-                                                                  maxHeight: 80,
-                                                                  minWidth: 180,
-                                                                  maxWidth:
-                                                                      240),
-                                                          child:
-                                                              line.length == 0
-                                                                  ? Container()
-                                                                  : FittedBox(
-                                                                      fit: BoxFit
-                                                                          .contain,
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Text(
-                                                                            line.join(),
-                                                                            style: TextStyle(
-                                                                                fontFamily: 'KulitanKeith',
-                                                                                fontSize: 35,
-                                                                                color: primaryOrangeDark),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  minHeight: 60,
-                                                                  maxHeight: 80,
-                                                                  minWidth: 30,
-                                                                  maxWidth: 60),
-                                                          child: line.length ==
-                                                                  0
-                                                              ? Container()
-                                                              : Container(
-                                                                  child: Text(
-                                                                    line
-                                                                        .join()
-                                                                        .replaceAll(
-                                                                            "aa",
-                                                                            "á")
-                                                                        .replaceAll(
-                                                                            "ai",
-                                                                            "e")
-                                                                        .replaceAll(
-                                                                            "au",
-                                                                            "o")
-                                                                        .replaceAll(
-                                                                            "ii",
-                                                                            "í")
-                                                                        .replaceAll(
-                                                                            "uu",
-                                                                            "ú"),
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            15,
-                                                                        color:
-                                                                            primaryOrangeDark),
-                                                                  ),
-                                                                ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              : Container(),
-                                      ]),
-                              ),
-                            ),
-                            Obx(() => controller.kulitanError.value
-                                ? Container(
-                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                    width: double.infinity,
-                                    child: Text(
-                                      'Please provide Kulitan information for the word',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.red[700],
-                                          fontSize: 11.5),
-                                    ))
-                                : Container()),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            GestureDetector(
-                              onTap: () => Get.to(() => KulitanEditorPage()),
-                              child: Container(
-                                height: 50.0,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    tEnterKulitanEditor.toUpperCase(),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: pureWhite,
-                                    ),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  color: primaryOrangeDark,
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                            ),
+                            KulitanFormField(
+                                controller: controller,
+                                onSaved: (value) {},
+                                validator: (value) {
+                                  if (controller.kulitanListEmpty.value) {
+                                    return "Please provide Kulitan information for the word.";
+                                  } else {
+                                    return null;
+                                  }
+                                }),
                             SizedBox(
                               height: 30.0,
                             ),
@@ -677,9 +566,7 @@ class TagsField extends StatelessWidget {
       textSeparators: [','],
       letterCase: LetterCase.small,
       validator: (String tag) {
-        if (controller.getTags == null) {
-          return 'Please enter a translation.';
-        } else if (controller.getTags!.contains(tag)) {
+        if (controller.getTags!.contains(tag)) {
           return 'Duplicate tag found.';
         }
         return null;
@@ -781,77 +668,82 @@ class StudioSection extends StatelessWidget {
         children: [
           Expanded(
             flex: 6,
-            child: Container(
-              decoration: BoxDecoration(
-                color: orangeCard,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Stack(children: [
-                Obx(
-                  () => controller.hasFile.value
-                      ? new Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Obx(
-                            () => new AudioFileWaveforms(
-                              size: Size(
-                                MediaQuery.of(context).size.width,
-                                50.0,
-                              ),
-                              playerController: controller.playerController,
-                              enableSeekGesture:
-                                  controller.rebuildAudio.value ? true : true,
-                              waveformType: WaveformType.long,
-                              // ignore: invalid_use_of_protected_member
-                              waveformData: [],
-                              playerWaveStyle: PlayerWaveStyle(
-                                liveWaveColor: primaryOrangeLight,
-                                spacing: 6.0,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.0),
-                                color: orangeCard,
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.fromLTRB(25, 5, 5, 5),
-                          height: double.infinity,
-                          width: double.infinity,
-                          child: Text(
-                            "No data",
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: disabledGrey,
-                            ),
-                          ),
-                        ),
+            child: Obx(
+              () => Container(
+                decoration: BoxDecoration(
+                  color: orangeCard,
+                  borderRadius: BorderRadius.circular(25),
+                  border: controller.audioSubmitError.value
+                      ? Border.all(color: Colors.red.shade700)
+                      : null,
                 ),
-                Obx(
-                  () => GestureDetector(
-                    onTap: () =>
-                        controller.playAndStop(controller.playerController),
-                    child: Container(
-                      height: double.infinity,
-                      width: 40,
-                      margin: EdgeInsets.all(5.0),
-                      child: Icon(
-                        controller.isPlaying.value
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                        color: pureWhite,
+                child: Stack(children: [
+                  Obx(
+                    () => controller.hasFile.value
+                        ? new Container(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Obx(
+                              () => new AudioFileWaveforms(
+                                size: Size(
+                                  MediaQuery.of(context).size.width,
+                                  50.0,
+                                ),
+                                playerController: controller.playerController,
+                                enableSeekGesture:
+                                    controller.rebuildAudio.value ? true : true,
+                                waveformType: WaveformType.long,
+                                // ignore: invalid_use_of_protected_member
+                                waveformData: [],
+                                playerWaveStyle: PlayerWaveStyle(
+                                  liveWaveColor: primaryOrangeLight,
+                                  spacing: 6.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  color: orangeCard,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.fromLTRB(25, 5, 5, 5),
+                            height: double.infinity,
+                            width: double.infinity,
+                            child: Text(
+                              "No data",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: disabledGrey,
+                              ),
+                            ),
+                          ),
+                  ),
+                  Obx(
+                    () => GestureDetector(
+                      onTap: () =>
+                          controller.playAndStop(controller.playerController),
+                      child: Container(
+                        height: double.infinity,
+                        width: 40,
+                        margin: EdgeInsets.all(5.0),
+                        child: Icon(
+                          controller.isPlaying.value
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          color: pureWhite,
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: controller.hasFile.value
+                                ? primaryOrangeDark
+                                : disabledGrey),
                       ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: controller.hasFile.value
-                              ? primaryOrangeDark
-                              : disabledGrey),
                     ),
                   ),
-                ),
-              ]),
+                ]),
+              ),
             ),
           ),
           SizedBox(
@@ -889,6 +781,316 @@ class StudioSection extends StatelessWidget {
       ),
     );
   }
+}
+
+class StudioFormField extends FormField {
+  StudioFormField(
+      {required ToolsController controller,
+      required FormFieldSetter onSaved,
+      required FormFieldValidator validator,
+      AutovalidateMode mode = AutovalidateMode.onUserInteraction})
+      : super(
+            onSaved: onSaved,
+            validator: validator,
+            initialValue: controller.audioPath,
+            autovalidateMode: mode,
+            builder: (FormFieldState state) {
+              return Column(
+                children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: orangeCard,
+                              borderRadius: BorderRadius.circular(25),
+                              border: state.hasError
+                                  ? Border.all(color: Colors.red.shade700)
+                                  : null,
+                            ),
+                            child: Stack(children: [
+                              Obx(
+                                () => controller.hasFile.value
+                                    ? new Container(
+                                        padding: EdgeInsets.only(left: 15),
+                                        child: Obx(
+                                          () => new AudioFileWaveforms(
+                                            size: Size(
+                                              double.infinity,
+                                              50.0,
+                                            ),
+                                            playerController:
+                                                controller.playerController,
+                                            enableSeekGesture:
+                                                controller.rebuildAudio.value
+                                                    ? true
+                                                    : true,
+                                            waveformType: WaveformType.long,
+                                            // ignore: invalid_use_of_protected_member
+                                            waveformData: [],
+                                            playerWaveStyle: PlayerWaveStyle(
+                                              liveWaveColor: primaryOrangeLight,
+                                              spacing: 6.0,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0),
+                                              color: orangeCard,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        alignment: Alignment.center,
+                                        padding:
+                                            EdgeInsets.fromLTRB(25, 5, 5, 5),
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        child: Text(
+                                          "No data",
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            color: disabledGrey,
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                              Obx(
+                                () => GestureDetector(
+                                  onTap: () => controller
+                                      .playAndStop(controller.playerController),
+                                  child: Container(
+                                    height: double.infinity,
+                                    width: 40,
+                                    margin: EdgeInsets.all(5.0),
+                                    child: Icon(
+                                      controller.isPlaying.value
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                      color: pureWhite,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: controller.hasFile.value
+                                            ? primaryOrangeDark
+                                            : disabledGrey),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.to(() => RecordingStudioPage());
+                              controller.playerController.stopPlayer();
+                              state.reset();
+                            },
+                            child: Container(
+                              height: double.infinity,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  tEnterStudio.toUpperCase(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: pureWhite,
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: primaryOrangeDark,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  state.hasError
+                      ? Container(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                          width: double.infinity,
+                          child: Text(
+                            state.errorText!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                TextStyle(color: Colors.red[700], fontSize: 12),
+                          ))
+                      : Container()
+                ],
+              );
+            });
+}
+
+class KulitanFormField extends FormField {
+  KulitanFormField(
+      {required ToolsController controller,
+      required FormFieldSetter onSaved,
+      required FormFieldValidator validator,
+      AutovalidateMode mode = AutovalidateMode.onUserInteraction})
+      : super(
+            onSaved: onSaved,
+            validator: validator,
+            initialValue: controller.audioPath,
+            autovalidateMode: mode,
+            builder: (FormFieldState state) {
+              return Column(
+                children: [
+                  Obx(
+                    () => Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(30),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          border: state.hasError
+                              ? Border.all(color: Colors.red.shade700)
+                              : null,
+                          color: orangeCard),
+                      child: controller.kulitanListEmpty.value
+                          ? Container(
+                              child: Text(
+                                "No data",
+                                style: TextStyle(
+                                    fontSize: 15, color: disabledGrey),
+                              ),
+                            )
+                          : Column(children: <Widget>[
+                              for (List<String> line
+                                  in controller.kulitanStringListGetter)
+                                !(line.join() == '')
+                                    ? Container(
+                                        alignment: Alignment.center,
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 8,
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                    minHeight: 60,
+                                                    maxHeight: 80,
+                                                    minWidth: 180,
+                                                    maxWidth: 240),
+                                                child: line.length == 0
+                                                    ? Container()
+                                                    : FittedBox(
+                                                        fit: BoxFit.contain,
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              line.join(),
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'KulitanKeith',
+                                                                  fontSize: 35,
+                                                                  color:
+                                                                      primaryOrangeDark),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                constraints: BoxConstraints(
+                                                    minHeight: 60,
+                                                    maxHeight: 80,
+                                                    minWidth: 30,
+                                                    maxWidth: 60),
+                                                child: line.length == 0
+                                                    ? Container()
+                                                    : Container(
+                                                        child: Text(
+                                                          line
+                                                              .join()
+                                                              .replaceAll(
+                                                                  "aa", "á")
+                                                              .replaceAll(
+                                                                  "ai", "e")
+                                                              .replaceAll(
+                                                                  "au", "o")
+                                                              .replaceAll(
+                                                                  "ii", "í")
+                                                              .replaceAll(
+                                                                  "uu", "ú"),
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              color:
+                                                                  primaryOrangeDark),
+                                                        ),
+                                                      ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Container(),
+                            ]),
+                    ),
+                  ),
+                  state.hasError
+                      ? Container(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                          width: double.infinity,
+                          child: Text(
+                            state.errorText!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                TextStyle(color: Colors.red[700], fontSize: 12),
+                          ))
+                      : Container(),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => KulitanEditorPage());
+                      state.reset();
+                    },
+                    child: Container(
+                      height: 50.0,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          tEnterKulitanEditor.toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: pureWhite,
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: primaryOrangeDark,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            });
 }
 
 class WordInfoSection extends StatelessWidget {
