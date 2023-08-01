@@ -44,15 +44,12 @@ class ModifySearchPage extends StatelessWidget {
                 ],
               )),
         ),
-        for (Widget widget in threePartHeader(
-            size,
-            screenPadding,
-            editMode ? tEditWord : "Delete",
-            Icons.arrow_back_ios_new_rounded,
-            Icons.help, () {
-          Get.back();
-        }, () {}, 64.0))
-          widget,
+        ThreePartHeader(
+          size: size,
+          screenPadding: screenPadding,
+          title: editMode ? tEditWord : "Delete",
+          additionalHeight: 64.0,
+        ),
         Positioned(
           top: screenPadding.top + 65,
           left: 0,

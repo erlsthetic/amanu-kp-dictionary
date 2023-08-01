@@ -1,6 +1,7 @@
-import 'package:amanu/screens/support/controllers/feedback_controller.dart';
+import 'package:amanu/screens/details_screen/controllers/detail_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
+import 'package:amanu/widgets/components/kulitan_preview.dart';
 import 'package:amanu/widgets/components/three_part_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,97 +12,7 @@ class DetailScreen extends StatelessWidget {
     super.key,
   });
 
-  final controller = Get.put(FeedbackController());
-  final List<String> engTrans = [
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-  ];
-  final List<String> filTrans = [
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-  ];
-
-  final List<String> synonym = [
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-  ];
-
-  final List<String> antonym = [
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-  ];
-
-  final List<String> related = [
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-    "sample",
-    "another",
-  ];
-  final List<String> types = [
-    "noun",
-    "adjective",
-    "adverb",
-  ];
-  final List<List<List<String>>> definitions = [
-    [
-      [
-        "This is definition 1. Lorem ipsum dolor sit amet, consectetur",
-        "Def 1 dialect",
-        "Def 1 Lorem ipsum dolor",
-        "Def 1 trans Lorem ipsum dolor"
-      ],
-      [
-        "This is definition 2. Lorem ipsum dolor sit amet, consectetur",
-        "Def 2 dialect",
-        "Def 2 Lorem ipsum dolor",
-        "Def 2 trans Lorem ipsum dolor"
-      ]
-    ],
-    [
-      [
-        "This is definition 1. Lorem ipsum dolor sit amet, consectetur",
-        "Def 1 Lorem ipsum dolor",
-        "Def 1 trans Lorem ipsum dolor"
-      ],
-    ]
-  ];
-
-  final List<List<String>> kulitanChars = [
-    ["ku", "i", "ng"],
-    ["a"],
-    ["ma"],
-    ["nu"]
-  ];
-
-  // [[[tx],[],[]],[]]
+  final controller = Get.put(DetailController());
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +123,7 @@ class DetailScreen extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   child: Wrap(children: [
-                                    for (String trans in engTrans)
+                                    for (String trans in controller.engTrans)
                                       TagCreator(label: trans),
                                   ]),
                                 ),
@@ -237,7 +148,7 @@ class DetailScreen extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   child: Wrap(children: [
-                                    for (String trans in engTrans)
+                                    for (String trans in controller.filTrans)
                                       TagCreator(label: trans)
                                   ]),
                                 ),
@@ -270,7 +181,7 @@ class DetailScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(30, 10, 30, 20),
                           width: double.infinity,
-                          child: kulitanChars.isEmpty
+                          child: controller.kulitanChars.isEmpty
                               ? Container(
                                   child: Text(
                                     "No data",
@@ -278,83 +189,8 @@ class DetailScreen extends StatelessWidget {
                                         fontSize: 15, color: disabledGrey),
                                   ),
                                 )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(children: <Widget>[
-                                      for (List<String> line in kulitanChars)
-                                        !(line.join() == '')
-                                            ? Container(
-                                                height: 50,
-                                                constraints: BoxConstraints(
-                                                    minWidth: 120,
-                                                    maxWidth: 150),
-                                                child: line.length == 0
-                                                    ? Container()
-                                                    : FittedBox(
-                                                        fit: BoxFit.contain,
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                              line.join(),
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'KulitanKeith',
-                                                                  fontSize: 35,
-                                                                  color:
-                                                                      primaryOrangeDark),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                              )
-                                            : Container(
-                                                child: Text(
-                                                  "No data",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: disabledGrey),
-                                                ),
-                                              ),
-                                    ]),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Column(children: <Widget>[
-                                      for (List<String> line in kulitanChars)
-                                        !(line.join() == '')
-                                            ? Container(
-                                                alignment: Alignment.center,
-                                                height: 50,
-                                                constraints: BoxConstraints(
-                                                    minWidth: 30, maxWidth: 60),
-                                                child: line.length == 0
-                                                    ? Container()
-                                                    : Container(
-                                                        child: Text(
-                                                          line
-                                                              .join()
-                                                              .replaceAll(
-                                                                  "aa", "á")
-                                                              .replaceAll(
-                                                                  "ai", "e")
-                                                              .replaceAll(
-                                                                  "au", "o")
-                                                              .replaceAll(
-                                                                  "ii", "í")
-                                                              .replaceAll(
-                                                                  "uu", "ú"),
-                                                          style: TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  disabledGrey),
-                                                        ),
-                                                      ),
-                                              )
-                                            : Container(),
-                                    ]),
-                                  ],
-                                ),
+                              : KulitanPreview(
+                                  kulitanCharList: controller.kulitanChars),
                         ),
                         SizedBox(
                           height: 5.0,
@@ -397,7 +233,7 @@ class DetailScreen extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   child: Wrap(children: [
-                                    for (String syn in synonym)
+                                    for (String syn in controller.synonym)
                                       TagCreator(label: syn)
                                   ]),
                                 ),
@@ -422,7 +258,7 @@ class DetailScreen extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   child: Wrap(children: [
-                                    for (String ant in antonym)
+                                    for (String ant in controller.antonym)
                                       TagCreator(label: ant)
                                   ]),
                                 ),
@@ -447,7 +283,7 @@ class DetailScreen extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   child: Wrap(children: [
-                                    for (String rel in related)
+                                    for (String rel in controller.related)
                                       TagCreator(label: rel)
                                   ]),
                                 ),
@@ -485,11 +321,11 @@ class DetailScreen extends StatelessWidget {
                 ),
               )),
         ),
-        for (Widget widget in threePartHeader(size, screenPadding, "abcdefg",
-            Icons.arrow_back_ios_new_rounded, Icons.help, () {
-          Get.back();
-        }, () {}, 0))
-          widget
+        ThreePartHeader(
+          size: size,
+          screenPadding: screenPadding,
+          title: "abcdefg",
+        ),
       ],
     ));
   }

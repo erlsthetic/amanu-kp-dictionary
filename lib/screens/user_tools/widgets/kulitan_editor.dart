@@ -218,11 +218,11 @@ class KulitanEditorPage extends StatelessWidget {
               ),
             ),
           ),
-          for (Widget widget in threePartHeader(size, screenPadding,
-              tKulitanEditor, Icons.arrow_back_ios_new_rounded, Icons.help, () {
-            Get.back();
-          }, () {}, 0))
-            widget,
+          ThreePartHeader(
+            size: size,
+            screenPadding: screenPadding,
+            title: tKulitanEditor,
+          ),
           Positioned(
             bottom: 0,
             left: 0,

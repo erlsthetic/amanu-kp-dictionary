@@ -150,13 +150,15 @@ class FeedbackPage extends StatelessWidget {
                     ),
                   )),
             ),
-            isProcessingWithHeader(
-                controller.isProcessing.value, size, screenPadding),
-            for (Widget widget in threePartHeader(size, screenPadding,
-                tFeedback, Icons.arrow_back_ios_new_rounded, Icons.help, () {
-              Get.back();
-            }, () {}, 0))
-              widget
+            IsProcessingWithHeader(
+                condition: controller.isProcessing,
+                size: size,
+                screenPadding: screenPadding),
+            ThreePartHeader(
+              size: size,
+              screenPadding: screenPadding,
+              title: tFeedback,
+            ),
           ],
         ));
   }
