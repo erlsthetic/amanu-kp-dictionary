@@ -1,4 +1,4 @@
-import 'package:amanu/screens/user_tools/add_word_page.dart';
+import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,7 @@ class BrowseCard extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
       child: InkWell(
-        onTap: () => Get.to(() => AddWordPage()),
+        onTap: () => Get.to(() => DetailScreen()),
         splashColor: primaryOrangeLight,
         highlightColor: primaryOrangeLight.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20),

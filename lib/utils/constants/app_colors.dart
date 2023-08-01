@@ -7,6 +7,7 @@ const Color muteBlack = Color(0xff272727);
 const Color darkGrey = Color.fromARGB(255, 75, 75, 75);
 const Color lightGrey = Color.fromARGB(255, 200, 200, 200);
 const Color orangeCard = Color(0xffFBE5D6);
+const Color darkerOrange = Color(0xFFc4570d);
 const Color disabledGrey = Color(0xFF9B9B9B);
 const LinearGradient orangeGradient = LinearGradient(
     begin: Alignment(-0.9, -1),
