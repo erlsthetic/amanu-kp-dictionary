@@ -13,12 +13,14 @@ class ThreePartHeader extends StatelessWidget {
       this.secondIcon = Icons.help,
       this.firstOnPressed,
       this.secondOnPressed,
-      this.additionalHeight = 0});
+      this.additionalHeight = 0,
+      this.iconWeight = 10});
 
   final Size size;
   final EdgeInsets screenPadding;
   final String title;
   final IconData? firstIcon;
+  final double? iconWeight;
   final IconData? secondIcon;
   final VoidCallback? firstOnPressed;
   final VoidCallback? secondOnPressed;
@@ -50,23 +52,29 @@ class ThreePartHeader extends StatelessWidget {
             child: Container(
               height: 70,
               width: size.width,
-              padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+              padding: EdgeInsets.fromLTRB(15, 0, 20, 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Hero(
                       tag: 'firstButton',
-                      child: IconButton(
-                        onPressed: firstOnPressed ??
-                            () {
-                              Get.back();
-                            },
-                        icon: Icon(
-                          firstIcon ?? Icons.arrow_back_ios_new_rounded,
-                          weight: 10,
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        child: GestureDetector(
+                          onTap: Feedback.wrapForTap(
+                              firstOnPressed ??
+                                  () {
+                                    Get.back();
+                                  },
+                              context),
+                          child: Icon(
+                            firstIcon ?? Icons.arrow_back_ios_new_rounded,
+                            weight: iconWeight ?? 10,
+                            color: pureWhite,
+                            size: 30,
+                          ),
                         ),
-                        color: pureWhite,
-                        iconSize: 30,
                       ),
                     ),
                     Hero(
@@ -81,11 +89,18 @@ class ThreePartHeader extends StatelessWidget {
                     ),
                     Hero(
                       tag: 'secondButton',
-                      child: IconButton(
-                        onPressed: secondOnPressed ?? () {},
-                        icon: Icon(secondIcon ?? Icons.help),
-                        color: pureWhite,
-                        iconSize: 30,
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        child: GestureDetector(
+                          onTap: Feedback.wrapForTap(
+                              secondOnPressed ?? () {}, context),
+                          child: Icon(
+                            secondIcon ?? Icons.help,
+                            size: 30,
+                            color: pureWhite,
+                          ),
+                        ),
                       ),
                     ),
                   ]),
