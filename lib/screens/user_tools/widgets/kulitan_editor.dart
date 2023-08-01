@@ -222,6 +222,11 @@ class KulitanEditorPage extends StatelessWidget {
             size: size,
             screenPadding: screenPadding,
             title: tKulitanEditor,
+            firstOnPressed: () {
+              controller.checkIfEmpty();
+              controller.saveKulitan();
+              Get.back();
+            },
           ),
           Positioned(
             bottom: 0,

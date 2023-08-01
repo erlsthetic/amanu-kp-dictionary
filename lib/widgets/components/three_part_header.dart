@@ -78,7 +78,7 @@ class ThreePartHeader extends StatelessWidget {
                       ),
                     ),
                     Hero(
-                      tag: "title",
+                      tag: title,
                       child: Text(
                         title,
                         style: GoogleFonts.robotoSlab(
