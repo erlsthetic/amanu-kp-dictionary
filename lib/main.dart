@@ -1,7 +1,7 @@
 import 'package:amanu/firebase_options.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
-import 'package:amanu/utils/theme_data.dart';
+import 'package:amanu/utils/constants/theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
