@@ -2,7 +2,7 @@
 const String tAppName = "Amanu";
 const String tAppTagLine = "Kapampangan Dictionary and Kulitan Script reader";
 
-// -- Global Texts
+// -- Login Signup Texts
 const String tLogin = "Login";
 const String tSignup = "Signup";
 const String tEmail = "E-mail";
@@ -101,6 +101,11 @@ const String tRelated = "Related Words";
 const String tReferences = "References";
 const String tSources = "Sources";
 
+const String tAddWordPrompt1 = "Add ";
+const String tAddWordPrompt2 = " to the dictionary?";
+const String tAddWordRequestPrompt1 = "Request addition of ";
+const String tAddWordRequestPrompt2 = " to the dictionary?";
+
 // -- Recording Studio
 
 const String tRecordStudio = "Recording Studio";
@@ -118,7 +123,7 @@ const String tSubmit = "Submit";
 const String tEditWord = "Edit word";
 const String tConfirmation = "Confirmation";
 const String tDeleteWord = "Delete word";
-const String tEditPreview = "This is a preview.";
+const String tThisIsAPreview = "This is a preview.";
 
 const String tEditPrompt1 = "Confirm changes to ";
 const String tEditPrompt2 = " and update dictionary?";
@@ -162,3 +167,14 @@ const String tFeedbackInstructions =
 const String tFeedbackRate = "Rate your experience.";
 const String tFeedbackNotes = "Additional notes";
 const String tFeedbackNotesTip = "Any comments or suggestions.";
+
+// -- Bookmarks Page
+const String tBookmarks = "Bookmarks";
+const String tRemoveBookmarkConfirmation = "Remove from bookmarks?";
+const String tRemove = "Remove";
+const String tAddBookmarkPrompt1 = "Add ";
+const String tAddBookmarkPrompt2 = "to bookmarks?";
+
+// -- Requests page
+const String tRequests = "Requests";
+const String tApprove = "Approve";
