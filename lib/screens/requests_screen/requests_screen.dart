@@ -46,7 +46,7 @@ class RequestsScreen extends StatelessWidget {
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
-          title: tSupport,
+          title: tRequests,
         ),
       ],
     ));

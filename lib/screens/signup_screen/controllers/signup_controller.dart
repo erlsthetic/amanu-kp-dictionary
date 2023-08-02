@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
+import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:amanu/utils/auth/user_repository.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,9 @@ class SignUpController extends GetxController {
 
   RxBool isObscure = true.obs;
   RxBool isContributor = true.obs;
+
+  RxBool isLoading = false.obs;
+  RxBool isGoogleLoading = false.obs;
 
   String uid = '';
   var email = '';
@@ -287,7 +292,7 @@ class SignUpController extends GetxController {
         message: error.toString(),
       ));
     } else {
-      uid = authRepo.firebaseUser.value!.uid;
+      uid = authRepo.firebaseUser!.uid;
 
       await uploadCV(uid);
 
@@ -303,6 +308,19 @@ class SignUpController extends GetxController {
           profileUrl: null);
 
       await userRepo.createUserOnDB(userData, uid);
+    }
+  }
+
+  Future<void> googleSignIn() async {
+    try {
+      isGoogleLoading.value = true;
+      await AuthenticationRepository.instance.signInWithGoogle();
+      isGoogleLoading.value = true;
+      /*AuthenticationRepository.instance
+          .setInitialScreen(AuthenticationRepository.instance.firebaseUser);*/
+    } catch (e) {
+      isGoogleLoading.value = false;
+      Helper.errorSnackBar(title: tOhSnap, message: e.toString());
     }
   }
 }

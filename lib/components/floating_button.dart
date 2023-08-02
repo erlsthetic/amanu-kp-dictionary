@@ -356,7 +356,7 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
                     _buttons.length,
                     (index) {
                       return GestureDetector(
-                        onTap: () {
+                        onTap: Feedback.wrapForTap(() {
                           widget.onPressed(index);
                           setState(() {
                             _movementSpeed = widget.panelAnimDuration ?? 200;
@@ -380,7 +380,7 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
                               _calcPanelTop();
                             }
                           });
-                        },
+                        }, context),
                         child: _FloatButton(
                           size: widget.size ?? 70.0,
                           icon: _buttons[index],

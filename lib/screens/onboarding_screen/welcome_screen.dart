@@ -1,3 +1,6 @@
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/login_screen/login_screen.dart';
 import 'package:amanu/screens/signup_screen/signup_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -8,7 +11,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  WelcomeScreen({super.key});
+
+  final drawerController = Get.find<DrawerXController>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,37 +64,57 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Expanded(
               flex: 2,
-              child: Row(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Get.to(() => LoginScreen()),
-                      child: Text(tLogin.toUpperCase()),
-                      style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          foregroundColor: pureWhite,
-                          side: BorderSide(color: pureWhite, width: 2.0),
-                          padding: EdgeInsets.all(10.0),
-                          minimumSize: Size(100, 50)),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => Get.to(() => LoginScreen()),
+                          child: Text(tLogin.toUpperCase()),
+                          style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              foregroundColor: pureWhite,
+                              side: BorderSide(color: pureWhite, width: 2.0),
+                              padding: EdgeInsets.all(10.0),
+                              minimumSize: Size(100, 50)),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Get.to(() => SignupScreen()),
+                          child: Text(tSignup.toUpperCase()),
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              foregroundColor: primaryOrangeDark,
+                              backgroundColor: pureWhite,
+                              padding: EdgeInsets.all(10.0),
+                              minimumSize: Size(100, 50)),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    width: 10,
+                    height: 30,
                   ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => Get.to(() => SignupScreen()),
-                      child: Text(tSignup.toUpperCase()),
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          foregroundColor: primaryOrangeDark,
-                          backgroundColor: pureWhite,
-                          padding: EdgeInsets.all(10.0),
-                          minimumSize: Size(100, 50)),
+                  Container(
+                    child: GestureDetector(
+                      onTap: Feedback.wrapForTap(() {
+                        drawerController.currentItem = DrawerItems.home.obs;
+                        Get.off(() => DrawerLauncher());
+                      }, context),
+                      child: Text(
+                        tCancel.toUpperCase(),
+                        style: TextStyle(color: pureWhite, fontSize: 15),
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             )

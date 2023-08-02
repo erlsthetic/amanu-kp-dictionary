@@ -46,7 +46,7 @@ class ModifySearchPage extends StatelessWidget {
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
-          title: editMode ? tEditWord : "Delete",
+          title: editMode ? tEditWord : tDeleteWord,
           additionalHeight: 64.0,
         ),
         Positioned(
@@ -85,73 +85,5 @@ class ModifySearchPage extends StatelessWidget {
         ),
       ],
     ));
-  }
-}
-
-class SelectionOption extends StatelessWidget {
-  SelectionOption({
-    super.key,
-    required this.title,
-    required this.image,
-    required this.onPressed,
-  });
-  final String title;
-  final String image;
-  final Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
-      child: InkWell(
-        splashColor: primaryOrangeLight,
-        highlightColor: primaryOrangeLight.withOpacity(0.5),
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(20),
-        child: Ink(
-          height: 100,
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(20, 10, 10, 10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: pureWhite,
-              boxShadow: [
-                BoxShadow(
-                  color: primaryOrangeDark.withOpacity(0.5),
-                  blurRadius: 15,
-                  spreadRadius: -8,
-                ),
-              ]),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Text(
-                    title,
-                    overflow: TextOverflow.fade,
-                    style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        color: darkGrey.withOpacity(0.8),
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.horizontal(right: Radius.circular(20))),
-                  height: double.infinity,
-                  child: Image.asset(image),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

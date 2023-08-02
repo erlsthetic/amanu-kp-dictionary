@@ -1,5 +1,8 @@
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/auth/exceptions/login_email_failure_catch.dart';
 import 'package:amanu/utils/auth/exceptions/signup_email_failure_catch.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
@@ -7,26 +10,36 @@ class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
 
   //Variables
+  late final Rx<User?> _firebaseUser;
   final _auth = FirebaseAuth.instance;
-  late final Rx<User?> firebaseUser;
+  final _phoneVerificationId = ''.obs;
+
+  //Getters
+  User? get firebaseUser => _firebaseUser.value;
+  String get getUserID => firebaseUser?.uid ?? "";
+  String get getUserEmail => firebaseUser?.email ?? "";
 
   @override
   void onReady() {
-    firebaseUser = Rx<User?>(_auth.currentUser);
-    firebaseUser.bindStream(_auth.userChanges());
-    //ever(firebaseUser, _setInitialScreen);
+    _firebaseUser = Rx<User?>(_auth.currentUser);
+    _firebaseUser.bindStream(_auth.userChanges());
   }
 
-  //_setInitialScreen(User? user) {}
+  setInitialScreen(User? user) {
+    user == null
+        ? Get.offAll(() => WelcomeScreen())
+        : user.emailVerified
+            ? Get.offAll(() => DrawerLauncher(
+                  pageIndex: 0,
+                ))
+            : Get.offAll(() => WelcomeScreen()); //EmailVerification
+  }
 
   Future<String?> createUserWithEmailAndPassword(
       String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      /*firebaseUser.value != null
-          ? Get.offAll(() => HomeScreen())
-          : Get.to(() => WelcomeScreen());*/
     } on FirebaseAuthException catch (e) {
       final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
       return ex.message;
@@ -51,5 +64,42 @@ class AuthenticationRepository extends GetxController {
     return null;
   }
 
-  Future<void> logout() async => await _auth.signOut();
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      final ex = LogInWithEmailAndPasswordFailure.code(e.code);
+      throw ex.message;
+    } catch (_) {
+      final ex = LogInWithEmailAndPasswordFailure();
+      throw ex.message;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
+      Get.offAll(() => DrawerLauncher(
+            pageIndex: 0,
+          ));
+    } on FirebaseAuthException catch (e) {
+      throw e.message!;
+    } on FormatException catch (e) {
+      throw e.message;
+    } catch (e) {
+      throw "Unable to log out. Try again.";
+    }
+  }
 }

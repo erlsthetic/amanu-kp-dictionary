@@ -61,6 +61,7 @@ class ThreePartHeader extends StatelessWidget {
                       child: Container(
                         height: 30,
                         width: 30,
+                        alignment: Alignment.center,
                         child: GestureDetector(
                           onTap: Feedback.wrapForTap(
                               firstOnPressed ??
@@ -92,6 +93,7 @@ class ThreePartHeader extends StatelessWidget {
                       child: Container(
                         height: 30,
                         width: 30,
+                        alignment: Alignment.center,
                         child: GestureDetector(
                           onTap: Feedback.wrapForTap(
                               secondOnPressed ?? () {}, context),

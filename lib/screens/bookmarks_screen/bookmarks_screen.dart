@@ -1,4 +1,5 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,12 @@ class BookmarksScreen extends StatelessWidget {
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
-          title: tSupport,
+          title: tBookmarks,
+          firstIcon: Icons.menu_rounded,
+          firstOnPressed: () {
+            drawerController.drawerToggle(context);
+            drawerController.currentItem.value = DrawerItems.bookmarks;
+          },
         ),
       ],
     ));
