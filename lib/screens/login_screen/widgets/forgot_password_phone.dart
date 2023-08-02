@@ -1,4 +1,4 @@
-import 'package:amanu/screens/login/widgets/forgot_password_otp.dart';
+import 'package:amanu/screens/login_screen/widgets/forgot_password_otp.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';

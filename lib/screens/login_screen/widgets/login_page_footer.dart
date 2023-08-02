@@ -2,7 +2,7 @@ import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../screens/signup/signup_screen.dart';
+import '../../signup_screen/signup_screen.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/text_strings.dart';

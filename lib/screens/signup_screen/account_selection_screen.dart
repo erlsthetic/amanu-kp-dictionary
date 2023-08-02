@@ -1,5 +1,5 @@
-import 'package:amanu/screens/signup/account_registration_screen.dart';
-import 'package:amanu/screens/signup/controllers/signup_controller.dart';
+import 'package:amanu/screens/signup_screen/account_registration_screen.dart';
+import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';

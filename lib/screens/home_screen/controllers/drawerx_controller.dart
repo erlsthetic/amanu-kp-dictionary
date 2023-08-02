@@ -1,7 +1,7 @@
 import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/home_screen/widgets/drawer_item.dart';
-import 'package:amanu/screens/support/support_screen.dart';
+import 'package:amanu/screens/support_screen/support_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';

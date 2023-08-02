@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:amanu/models/user_model.dart';
-import 'package:amanu/screens/signup/account_selection_screen.dart';
+import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/auth/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

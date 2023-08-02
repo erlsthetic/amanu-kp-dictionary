@@ -1,6 +1,6 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
-import 'package:amanu/screens/support/pages/feedback_page.dart';
-import 'package:amanu/screens/support/pages/report_page.dart';
+import 'package:amanu/screens/support_screen/pages/feedback_page.dart';
+import 'package:amanu/screens/support_screen/pages/report_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';

@@ -1,6 +1,6 @@
-import 'package:amanu/screens/signup/controllers/signup_controller.dart';
+import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
-import 'package:amanu/screens/signup/widgets/account_registration_form.dart';
+import 'package:amanu/screens/signup_screen/widgets/account_registration_form.dart';
 import 'package:amanu/components/header_subheader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

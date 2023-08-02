@@ -1,4 +1,4 @@
-import 'package:amanu/screens/signup/controllers/signup_controller.dart';
+import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

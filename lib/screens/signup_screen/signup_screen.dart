@@ -1,4 +1,4 @@
-import 'package:amanu/screens/onboarding/welcome_screen.dart';
+import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/header_subheader_image.dart';

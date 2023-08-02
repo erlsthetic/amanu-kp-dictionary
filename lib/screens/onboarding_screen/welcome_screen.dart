@@ -1,5 +1,5 @@
-import 'package:amanu/screens/login/login_screen.dart';
-import 'package:amanu/screens/signup/signup_screen.dart';
+import 'package:amanu/screens/login_screen/login_screen.dart';
+import 'package:amanu/screens/signup_screen/signup_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';

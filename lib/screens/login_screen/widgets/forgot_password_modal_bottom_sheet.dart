@@ -1,5 +1,5 @@
-import 'package:amanu/screens/login/widgets/forgot_password_email.dart';
-import 'package:amanu/screens/login/widgets/forgot_password_phone.dart';
+import 'package:amanu/screens/login_screen/widgets/forgot_password_email.dart';
+import 'package:amanu/screens/login_screen/widgets/forgot_password_phone.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

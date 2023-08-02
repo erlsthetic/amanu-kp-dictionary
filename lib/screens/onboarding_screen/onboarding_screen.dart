@@ -1,5 +1,5 @@
-import 'package:amanu/screens/onboarding/controllers/onboarding_controller.dart';
-import 'package:amanu/screens/onboarding/welcome_screen.dart';
+import 'package:amanu/screens/onboarding_screen/controllers/onboarding_controller.dart';
+import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

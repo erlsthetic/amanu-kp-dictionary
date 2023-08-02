@@ -1,6 +1,6 @@
-import 'package:amanu/screens/signup/controllers/signup_controller.dart';
-import 'package:amanu/screens/signup/widgets/contributor_form_fields.dart';
-import 'package:amanu/screens/signup/widgets/expert_form_fields.dart';
+import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
+import 'package:amanu/screens/signup_screen/widgets/contributor_form_fields.dart';
+import 'package:amanu/screens/signup_screen/widgets/expert_form_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

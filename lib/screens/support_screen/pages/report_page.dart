@@ -1,4 +1,4 @@
-import 'package:amanu/screens/support/controllers/report_controller.dart';
+import 'package:amanu/screens/support_screen/controllers/report_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
