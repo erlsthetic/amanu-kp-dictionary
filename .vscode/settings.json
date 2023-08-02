@@ -12,5 +12,35 @@
         "Kulitan",
         "LTRB",
         "roboto"
-    ]
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true,
+        "linux": true,
+        "macos": true,
+        "web": true,
+        ".flutter-plugins": true,
+        ".flutter-plugins-dependencies": true,
+        ".idea": true,
+        ".dart_tool": true,
+        "windows": true,
+        "test": true,
+        ".gitignore": true,
+        "README.md": true,
+        ".metadata": true,
+        "analysis_options.yaml": true,
+        "pubspec.lock": true,
+        "amanu.iml": true,
+        "build": true,
+        "ios": true
+    },
+    "explorerExclude.backup": {}
 }
