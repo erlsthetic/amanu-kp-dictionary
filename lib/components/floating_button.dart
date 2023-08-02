@@ -220,8 +220,6 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
       }
     }
 
-    // TODO implement close panel from screen without touch panel
-
     // Animated positioned widget can be moved to any part of the screen with
     // animation;
     return AnimatedPositioned(
