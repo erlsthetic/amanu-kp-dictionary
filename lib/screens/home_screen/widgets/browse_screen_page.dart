@@ -1,8 +1,8 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/widgets/components/browse_card.dart';
-import 'package:amanu/widgets/components/search_button.dart';
+import 'package:amanu/components/browse_card.dart';
+import 'package:amanu/components/search_button.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

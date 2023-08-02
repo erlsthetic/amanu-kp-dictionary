@@ -1,6 +1,6 @@
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
-import 'package:amanu/widgets/components/three_part_header.dart';
+import 'package:amanu/components/three_part_header.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

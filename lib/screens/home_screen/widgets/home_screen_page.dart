@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
-import 'package:amanu/widgets/components/search_button.dart';
+import 'package:amanu/components/search_button.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../widgets/components/three_part_header.dart';
+import 'package:amanu/components/three_part_header.dart';
 
 class FeedbackPage extends StatelessWidget {
   FeedbackPage({

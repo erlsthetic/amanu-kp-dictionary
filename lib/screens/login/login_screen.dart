@@ -1,7 +1,7 @@
 import 'package:amanu/screens/onboarding/welcome_screen.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
-import 'package:amanu/widgets/components/header_subheader_image.dart';
+import 'package:amanu/components/header_subheader_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

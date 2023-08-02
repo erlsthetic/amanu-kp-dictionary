@@ -5,11 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:themed/themed.dart';
-
-import '../../utils/constants/app_colors.dart';
-import '../../utils/constants/image_strings.dart';
-import '../../utils/constants/text_strings.dart';
-import '../../widgets/components/header_subheader.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
+import 'package:amanu/components/header_subheader.dart';
 
 class AccountSelectionScreen extends StatelessWidget {
   AccountSelectionScreen({super.key});

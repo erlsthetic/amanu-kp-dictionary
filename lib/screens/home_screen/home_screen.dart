@@ -1,10 +1,10 @@
 import 'package:amanu/screens/user_tools/add_word_page.dart';
 import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/widgets/components/floating_button.dart';
+import 'package:amanu/components/floating_button.dart';
 import 'package:get/get.dart';
 import 'widgets/browse_screen_page.dart';
-import 'package:amanu/widgets/components/bottom_nav_bar.dart';
+import 'package:amanu/components/bottom_nav_bar.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,9 +54,11 @@ class HomeScreen extends StatelessWidget {
             onPressed: (index) {
               print("Clicked $index");
               if (index == 0) {
-                Get.to(AddWordPage());
+                Get.to(() => AddWordPage());
               } else if (index == 1) {
-                Get.to(ModifySearchPage(editMode: true));
+                Get.to(() => ModifySearchPage(editMode: true));
+              } else if (index == 2) {
+                Get.to(() => ModifySearchPage(editMode: false));
               }
             },
             positionBottom: _size.height * 0.1,
