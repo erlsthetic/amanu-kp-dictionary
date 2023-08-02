@@ -12,7 +12,7 @@ class AuthenticationRepository extends GetxController {
   //Variables
   late final Rx<User?> _firebaseUser;
   final _auth = FirebaseAuth.instance;
-  final _phoneVerificationId = ''.obs;
+  //final _phoneVerificationId = ''.obs;
 
   //Getters
   User? get firebaseUser => _firebaseUser.value;

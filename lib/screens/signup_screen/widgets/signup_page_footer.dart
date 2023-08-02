@@ -43,7 +43,7 @@ class SignupFooterWidget extends StatelessWidget {
                   ? () {}
                   : controller.isGoogleLoading.value
                       ? () {}
-                      : () => controller.googleSignIn(),
+                      : () => controller.googleSignUp(),
               label: controller.isGoogleLoading.value
                   ? ButtonLoadingWidget()
                   : Text(

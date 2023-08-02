@@ -311,16 +311,47 @@ class SignUpController extends GetxController {
     }
   }
 
-  Future<void> googleSignIn() async {
+  Future<void> googleSignUp() async {
     try {
       isGoogleLoading.value = true;
       await AuthenticationRepository.instance.signInWithGoogle();
       isGoogleLoading.value = true;
-      /*AuthenticationRepository.instance
-          .setInitialScreen(AuthenticationRepository.instance.firebaseUser);*/
+      Get.to(() => AccountSelectionScreen());
     } catch (e) {
       isGoogleLoading.value = false;
       Helper.errorSnackBar(title: tOhSnap, message: e.toString());
     }
+  }
+
+  Future<void> registerUserFromGoogle() async {
+    if (selectEmpty.value == true) {
+      cvError.value = true;
+    }
+    final registrationValid = registrationFormKey.currentState!.validate();
+    if (!registrationValid ||
+        cvError.value == true ||
+        fileAccepted == false ||
+        selectEmpty == true) {
+      return;
+    }
+    registrationFormKey.currentState!.save();
+
+    uid = authRepo.firebaseUser!.uid;
+    email = authRepo.firebaseUser!.email!;
+
+    await uploadCV(uid);
+
+    final userData = UserModel(
+        uid: uid,
+        email: email.trim(),
+        phoneNo: int.parse(phoneNo.trim()),
+        isExpert: userType == 1 ? true : false,
+        userName: userName.trim(),
+        exFullName: exFullName == '' ? null : exFullName.trim(),
+        exBio: exBio == '' ? null : exBio.trim(),
+        cvUrl: cvUrl == '' ? null : cvUrl,
+        profileUrl: authRepo.firebaseUser!.photoURL ?? null);
+
+    await userRepo.createUserOnDB(userData, uid);
   }
 }
