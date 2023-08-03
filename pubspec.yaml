@@ -38,11 +38,12 @@ dependencies:
 
   intl: ^0.18.1
 
-  # Firestore
+  # Firebase
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
   cloud_firestore: ^4.8.1
   firebase_storage: ^11.2.3
+  firebase_database: ^10.2.4
   google_sign_in: ^6.1.4
 
   flutter_svg: ^2.0.2

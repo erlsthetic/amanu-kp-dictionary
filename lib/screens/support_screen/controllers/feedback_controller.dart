@@ -44,7 +44,7 @@ class FeedbackController extends GetxController {
   Future<void> sendFeedback() async {
     selectedRate.value == 0 ? noSelection.value = true : null;
     final String timestamp =
-        DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
+        DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
     final feedbackFormValid = feedbackFormKey.currentState!.validate();
     if (!feedbackFormValid || selectedRate.value == 0 || noSelection == true) {
       return;

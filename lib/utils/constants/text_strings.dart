@@ -97,7 +97,7 @@ const String tEnterKulitanEditor = "Enter Kulitan Editor";
 const String tConnectionSec = "Connections";
 const String tSynonyms = "Synonyms";
 const String tAntonyms = "Antonyms";
-const String tRelated = "Related Words";
+const String tRelated = "Other related words";
 const String tReferences = "References";
 const String tSources = "Sources";
 
@@ -178,3 +178,19 @@ const String tAddBookmarkPrompt2 = "to bookmarks?";
 // -- Requests page
 const String tRequests = "Requests";
 const String tApprove = "Approve";
+
+// -- Snackbar messages
+const String tOhSnap = "Oh Snap!";
+const String tSuccess = "Success!";
+const String tAccountCreated =
+    "Account has been created. Check email and verify your account.";
+const String tSomethingWentWrong = "Something went wrong. Please try again.";
+const String tReportSent = "Report has been sent.";
+const String tReportSentBody =
+    "We'll try our best to resolve this immediately.";
+
+const String tFeedbackSent = "Feedback has been sent.";
+const String tFeedbackSentBody = "Thank you for sharing us your thoughts.";
+const String tAddSuccess = " was added to the dictionary.";
+const String tEditSuccess = " was updated in the dictionary.";
+const String tDeleteSuccess = " was removed from the dictionary.";

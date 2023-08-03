@@ -1,4 +1,10 @@
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:path/path.dart' as p;
+
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
@@ -132,7 +138,8 @@ class ToolsController extends GetxController {
   final List<TextEditingController> customTypeController = [];
   final RxList<List<List<TextEditingController>>> definitionsFields =
       <List<List<TextEditingController>>>[].obs;
-
+  // TD is              D                  TD
+  //[[[TE, TE, TE, TE], [TE, TE, TE, TE]], [[TE, TE, TE, TE]]]
   void addTypeField(int i) {
     typeListKey.currentState?.insertItem(i);
     customTypeController.insert(i, TextEditingController());
@@ -184,31 +191,92 @@ class ToolsController extends GetxController {
     return null;
   }
 
-  List<String> synonymsList = [];
-
+  Map<String, String> importedSynonyms = {};
+  Map<String, dynamic> synonymsMap = {};
   void getSynonyms() {
-    synonymsList.clear();
+    synonymsMap.clear();
     for (String word in synonymController.getTags!) {
-      synonymsList.add(word);
+      if (importedSynonyms.containsKey(word)) {
+        synonymsMap[word] = importedSynonyms[word]!;
+      } else {
+        synonymsMap[word] = null;
+      }
     }
   }
 
-  List<String> antonymsList = [];
-
+  Map<String, String> importedAntonyms = {};
+  Map<String, dynamic> antonymsMap = {};
   void getAntonyms() {
-    antonymsList.clear();
+    antonymsMap.clear();
     for (String word in antonymController.getTags!) {
-      antonymsList.add(word);
+      if (importedAntonyms.containsKey(word)) {
+        antonymsMap[word] = importedAntonyms[word]!;
+      } else {
+        antonymsMap[word] = null;
+      }
     }
   }
 
-  List<String> relatedList = [];
-
+  Map<String, String> importedRelated = {};
+  Map<String, dynamic> relatedMap = {};
   void getRelated() {
-    relatedList.clear();
+    relatedMap.clear();
     for (String word in relatedController.getTags!) {
-      relatedList.add(word);
+      if (importedRelated.containsKey(word)) {
+        relatedMap[word] = importedRelated[word]!;
+      } else {
+        relatedMap[word] = null;
+      }
     }
+  }
+
+  String normalizeWord(String word) {
+    String normalWord = word
+        .trim()
+        .toLowerCase()
+        .replaceAll(RegExp(r'[àáâäæãåā]'), 'a')
+        .replaceAll(RegExp(r'[îïíīįì]'), 'i')
+        .replaceAll(RegExp(r'[ûüùúū]'), 'u')
+        .replaceAll(RegExp(r'[èéêëēėę]'), 'e')
+        .replaceAll(RegExp(r'[ôöòóœøōõ]'), 'o')
+        .replaceAll(RegExp(r'[!-,\.-@\[-`{-¿]'), '');
+    return normalWord;
+  }
+
+  Future<String> availableKey(String key) async {
+    final _realtimeDB = FirebaseDatabase.instance.ref();
+    int modifier = 0;
+    String currentString = key;
+    bool notAvailable;
+    var snapshot = await _realtimeDB.child("dictionary").child(key).get();
+    if (snapshot.exists) {
+      notAvailable = true;
+      while (notAvailable) {
+        currentString = key + modifier.toString();
+        snapshot =
+            await _realtimeDB.child("dictionary").child(currentString).get();
+        if (snapshot.exists) {
+          modifier += 1;
+        } else {
+          return currentString;
+        }
+      }
+    } else {
+      return currentString;
+    }
+  }
+
+  Future<String> uploadAudio(String wordID, String audioPath) async {
+    final file = File(audioPath);
+    final ext = p.extension(audioPath);
+    final path = 'dictionary/${wordID}/audio${ext}';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    await ref.putFile(file);
+    String audioUrl = '';
+    await ref.getDownloadURL().then((downloadUrl) {
+      audioUrl = downloadUrl;
+    });
+    return audioUrl;
   }
 
   @override
@@ -240,7 +308,7 @@ class ToolsController extends GetxController {
     referencesController.dispose();
   }
 
-  void submitWord() {
+  void submitWord() async {
     validateAudio();
     getEnglishTranslations();
     validateEngTrans();
@@ -260,6 +328,72 @@ class ToolsController extends GetxController {
         kulitanError.value) {
       return;
     }
-    print("PASSED");
+    addWordFormKey.currentState!.save();
+
+    String normalizedWord = normalizeWord(wordController.text.trim());
+    String wordKey = await availableKey(normalizedWord);
+
+    String pronunciationURL = await uploadAudio(wordKey, audioPath);
+
+    List<Map<String, dynamic>> meanings = [];
+
+    for (MapEntry type in typeFields.asMap().entries) {
+      Map<String, dynamic> tempMeaning = {};
+
+      tempMeaning["partOfSpeech"] = type.value == "custom"
+          ? customTypeController[type.key].text
+          : type.value;
+
+      List<Map<String, dynamic>> tempDefinitions = [];
+
+      for (var definition in definitionsFields[type.key]) {
+        Map<String, dynamic> tempDef = {};
+        tempDef["definition"] = definition[0].text;
+        tempDef["dialect"] =
+            definition[1].text.isEmpty || definition[1].text.trim() == ""
+                ? null
+                : definition[1].text;
+        tempDef["example"] =
+            definition[2].text.isEmpty || definition[2].text.trim() == ""
+                ? null
+                : definition[2].text;
+        tempDef["exampleTranslation"] =
+            definition[3].text.isEmpty || definition[3].text.trim() == ""
+                ? null
+                : definition[3].text;
+        tempDefinitions.add(tempDef);
+        tempDef.clear();
+      }
+      tempMeaning["definitions"] = tempDefinitions;
+      meanings.add(tempMeaning);
+      tempDefinitions.clear();
+      tempMeaning.clear();
+    }
+
+    final String timestamp =
+        DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+
+    Map<String, dynamic> details = {
+      "word": wordController.text.trim(),
+      "normalizedWord": normalizedWord,
+      "pronunciation": phoneticController.text.trim(),
+      "pronunciationAudio": pronunciationURL,
+      "englishTranslations": engTransEmpty.value ? null : engTransList,
+      "filipinoTranslations": filTransEmpty.value ? null : filTransList,
+      "meanings": meanings,
+      "kulitan-form": kulitanStringListGetter,
+      "synonyms": synonymsMap.length == 0 ? null : synonymsMap,
+      "antonyms": antonymsMap.length == 0 ? null : antonymsMap,
+      "otherRelated": relatedMap.length == 0 ? null : relatedMap,
+      "sources": referencesController.text.isEmpty ||
+              referencesController.text.trim() == ''
+          ? null
+          : referencesController.text.trim(),
+      "contributors": null,
+      "expert": null,
+      "lastModifiedTime": timestamp
+    };
+
+    print(details);
   }
 }

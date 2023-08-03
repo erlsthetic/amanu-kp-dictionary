@@ -3,15 +3,20 @@
     "vue.features.codeActions.enable": false,
     "cSpell.words": [
         "a'manu",
+        "àáâäæãåā",
         "amanu",
         "drawerx",
+        "èéêëēėę",
         "Firestore",
         "garlit",
         "Getx",
+        "îïíīįì",
         "Kapampangan",
         "Kulitan",
         "LTRB",
-        "roboto"
+        "ôöòóœøōõ",
+        "roboto",
+        "ûüùúū"
     ],
     "files.exclude": {
         "**/.git": true,

@@ -1,7 +1,8 @@
 import 'package:amanu/models/feedback_model.dart';
 import 'package:amanu/models/report_model.dart';
-import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,6 +11,8 @@ class DatabaseRepository extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
+  final _realtimeDB = FirebaseDatabase.instance.ref();
+
   createReportOnDB(ReportModel report, String timestamp) async {
     await _db
         .collection("reports")
@@ -17,16 +20,9 @@ class DatabaseRepository extends GetxController {
         .set(report.toJson())
         .whenComplete(() {
       Get.back();
-      Get.snackbar("Report has been sent.",
-          "We'll try our best to resolve this immediately.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: primaryOrangeDark.withOpacity(0.5),
-          colorText: pureWhite);
+      Helper.successSnackBar(title: tReportSent, message: tReportSentBody);
     }).catchError((error, stackTrace) {
-      Get.snackbar("Error", "Something went wrong. Please try again.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent.withOpacity(0.5),
-          colorText: muteBlack);
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
       print(error.toString());
     });
   }
@@ -38,17 +34,42 @@ class DatabaseRepository extends GetxController {
         .set(feedback.toJson())
         .whenComplete(() {
       Get.back();
-      Get.snackbar(
-          "Feedback has been sent.", "Thank you for sharing us your thoughts.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: primaryOrangeDark.withOpacity(0.5),
-          colorText: pureWhite);
+      Helper.successSnackBar(title: tFeedbackSent, message: tFeedbackSentBody);
     }).catchError((error, stackTrace) {
-      Get.snackbar("Error", "Something went wrong. Please try again.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent.withOpacity(0.5),
-          colorText: muteBlack);
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
       print(error.toString());
+    });
+  }
+
+  addWordOnDB(String word, Map details) async {
+    await _realtimeDB
+        .child("dictionary")
+        .child(word)
+        .set(details)
+        .whenComplete(() {
+      Helper.successSnackBar(title: tSuccess, message: tAddSuccess);
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+  }
+
+  updateWordOnDB(String word, Map details) async {
+    await _realtimeDB
+        .child("dictionary")
+        .child(word)
+        .set(details)
+        .whenComplete(() {
+      Helper.successSnackBar(title: tSuccess, message: tEditSuccess);
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+  }
+
+  removeWordOnDB(String word, Map details) async {
+    await _realtimeDB.child("dictionary").child(word).remove().whenComplete(() {
+      Helper.successSnackBar(title: tSuccess, message: tDeleteSuccess);
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 }

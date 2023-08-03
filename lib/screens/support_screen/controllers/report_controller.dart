@@ -119,7 +119,7 @@ class ReportController extends GetxController {
 
   Future<void> sendReport() async {
     final String timestamp =
-        DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
+        DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
     final reportFormValid = reportFormKey.currentState!.validate();
     if (!reportFormValid || (selectEmpty == false && fileAccepted == false)) {
       return;
