@@ -34,7 +34,6 @@ class DrawerLauncher extends StatelessWidget {
                   onSelectedItem: (item) {
                     controller.currentItem.value = item;
                     ZoomDrawer.of(context)!.toggle();
-                    //Get.delete<HomePageController>();
                   }),
             ),
             mainScreen: controller.getScreen()),

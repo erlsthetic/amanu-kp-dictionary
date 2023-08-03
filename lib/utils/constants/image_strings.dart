@@ -1,4 +1,25 @@
-const String amanuOrangeA = "assets/svg/.svg";
+const String iAmanuOrangeA = "assets/svg/.svg";
+const String iAmanuGradientLogoWithLabel =
+    "assets/svg/GRADIENT_SVGS/A_AMANU_GRADIENT.svg";
+const String iAmanuGradientLogoA =
+    "assets/svg/GRADIENT_SVGS/A_GRADIENT_SCRIPT.svg";
+const String iAmanuOrangeLogoWithLabel =
+    "assets/svg/ORANGE_SVGS/A_AMANU_ORANGE.svg";
+const String iAmanuOrangeLogoA = "assets/svg/ORANGE_SVGS/A_ORANGE_SCRIPT.svg";
+const String iAmanuOrangeScriptVertical =
+    "assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_VERTICAL.svg";
+const String iAmanuOrangeScriptVerticalWithSeparator =
+    "assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg";
+const String iAmanuOrangeSeparator =
+    "assets/svg/ORANGE_SVGS/SEPARATOR_ORANGE.svg";
+const String iAmanuWhiteLogoWithLabel =
+    "assets/svg/WHITE_SVGS/A_AMANU_WHITE.svg";
+const String iAmanuWhiteLogoA = "assets/svg/WHITE_SVGS/A_WHITE_SCRIPT.svg";
+const String iAmanuWhiteScriptVertical =
+    "assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL.svg";
+const String iAmanuWhiteScriptVerticalWithSeparator =
+    "assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg";
+const String iAmanuWhiteSeparator = "assets/svg/WHITE_SVGS/SEPARATOR_WHITE.svg";
 
 //anim
 const String amanuLogoAnim = "assets/anim/AMANU_LOGO_ANIMATION.gif";
@@ -15,6 +36,7 @@ const String iResetPhone = "assets/anim/reset_Phone.png";
 const String iResetEmail = "assets/anim/reset_Email.png";
 const String iResetOTP = "assets/anim/reset_OTP.png";
 
+// -- FEEDBACK ICONS
 const String iRateVeryBad = "assets/icons/very-bad.svg";
 const String iRateBad = "assets/icons/bad.svg";
 const String iRateFair = "assets/icons/fair.svg";
