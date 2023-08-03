@@ -575,9 +575,6 @@ class TagsField extends StatelessWidget {
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                   ),
-                                  onTap: () {
-                                    //print("$tag selected");
-                                  },
                                 ),
                                 const SizedBox(width: 4.0),
                                 InkWell(

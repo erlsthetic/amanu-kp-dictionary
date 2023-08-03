@@ -346,7 +346,7 @@ class ToolsController extends GetxController {
 
       List<Map<String, dynamic>> tempDefinitions = [];
 
-      for (var definition in definitionsFields[type.key]) {
+      for (var definition in definitionsFields.value[type.key]) {
         Map<String, dynamic> tempDef = {};
         tempDef["definition"] = definition[0].text;
         tempDef["dialect"] =
@@ -362,12 +362,9 @@ class ToolsController extends GetxController {
                 ? null
                 : definition[3].text;
         tempDefinitions.add(tempDef);
-        tempDef.clear();
       }
       tempMeaning["definitions"] = tempDefinitions;
       meanings.add(tempMeaning);
-      tempDefinitions.clear();
-      tempMeaning.clear();
     }
 
     final String timestamp =
