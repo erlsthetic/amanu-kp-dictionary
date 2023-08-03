@@ -1,4 +1,6 @@
+import 'package:amanu/components/button_loading_widget.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
+import 'package:amanu/screens/login_screen/controllers/login_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,9 +11,11 @@ import '../../../utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 
 class LoginFooterWidget extends StatelessWidget {
-  const LoginFooterWidget({
+  LoginFooterWidget({
     super.key,
   });
+
+  final controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,29 +32,36 @@ class LoginFooterWidget extends StatelessWidget {
         ),
         SizedBox(
           width: double.infinity,
-          child: OutlinedButton.icon(
-            icon: SvgPicture.asset(
-              iGoogleIcon,
-              width: 20.0,
-            ),
-            onPressed: () {
-              Get.off(() => HomeScreen());
-            },
-            label: Text(
-              tSignInWithGoogle,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-                color: muteBlack,
-                letterSpacing: 1.0,
-              ),
-            ),
-            style: OutlinedButton.styleFrom(
-              alignment: Alignment.center,
-              minimumSize: Size(100, 45),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+          child: Obx(
+            () => OutlinedButton.icon(
+              icon: controller.isGoogleLoading.value
+                  ? SizedBox()
+                  : SvgPicture.asset(
+                      iGoogleIcon,
+                      width: 20.0,
+                    ),
+              onPressed: controller.isLoading.value
+                  ? () {}
+                  : controller.isGoogleLoading.value
+                      ? () {}
+                      : () => controller.googleSignIn(),
+              label: controller.isGoogleLoading.value
+                  ? ButtonLoadingWidget()
+                  : Text(
+                      tSignUpWithGoogle,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: muteBlack,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+              style: OutlinedButton.styleFrom(
+                minimumSize: Size(100, 45),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ),
