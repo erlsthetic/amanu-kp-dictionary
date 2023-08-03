@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: WillPopScope(
         onWillPop: () {
           Get.off(() => WelcomeScreen());
@@ -36,8 +37,8 @@ class LoginScreen extends StatelessWidget {
                       header: tLoginHead,
                       subHeader: tLoginSubHead,
                       imgString: iLoginPageAnim),
-                  const LoginForm(),
-                  const LoginFooterWidget()
+                  LoginForm(),
+                  LoginFooterWidget()
                 ],
               ),
             ),

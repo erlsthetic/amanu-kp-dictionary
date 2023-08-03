@@ -76,7 +76,6 @@ class SignUpController extends GetxController {
     if (!GetUtils.isEmail(value)) {
       return "Enter a valid email";
     } else if (emailAlreadyInUse) {
-      print("${emailController} found on system.");
       return "Email already in use";
     }
     return null;
