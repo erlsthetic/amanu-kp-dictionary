@@ -1,6 +1,8 @@
 import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class BrowseCard extends StatelessWidget {
@@ -90,17 +92,22 @@ class BrowseCard extends StatelessWidget {
                     highlightColor: primaryOrangeLight.withOpacity(0.5),
                     onTap: () {},
                     child: Ink(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: primaryOrangeDark.withAlpha(50),
-                      ),
-                      child: Icon(
-                        Icons.play_arrow,
-                        color: pureWhite,
-                      ),
-                    ),
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: primaryOrangeDark.withAlpha(75),
+                        ),
+                        child: Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 18,
+                            width: 18,
+                            child: SvgPicture.asset(iListenIcon),
+                          ),
+                        )),
                   ),
                 ),
               )

@@ -58,8 +58,7 @@ class BottomNavBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Obx(
-                    () => IconButton(
+                  Obx(() => /*IconButton(
                       highlightColor: primaryOrangeLight.withOpacity(0.5),
                       icon: Icon(
                         Icons.home,
@@ -76,13 +75,32 @@ class BottomNavBar extends StatelessWidget {
                             curve: Curves.ease);
                       },
                       splashColor: Colors.white,
-                    ),
-                  ),
+                    ),*/
+                      GestureDetector(
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          child: SvgPicture.asset(
+                            iHomeIcon,
+                            colorFilter: ColorFilter.mode(
+                                _pController.currentIdx.value == 0
+                                    ? primaryOrangeDark
+                                    : disabledGrey,
+                                BlendMode.srcIn),
+                          ),
+                        ),
+                        onTap: Feedback.wrapForTap(() {
+                          _pController.currentIdx.value = 0;
+                          _pController.coastController.animateTo(
+                              beach: 0,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
+                        }, context),
+                      )),
                   Container(
                     width: size.width * 0.20,
                   ),
-                  Obx(
-                    () => IconButton(
+                  Obx(() => /*IconButton(
                         highlightColor: primaryOrangeLight.withOpacity(0.5),
                         icon: Icon(
                           Icons.book_rounded,
@@ -97,8 +115,28 @@ class BottomNavBar extends StatelessWidget {
                               beach: 1,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.ease);
-                        }),
-                  ),
+                        }),*/
+                      GestureDetector(
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          child: SvgPicture.asset(
+                            iDictionaryIcon,
+                            colorFilter: ColorFilter.mode(
+                                _pController.currentIdx.value == 1
+                                    ? primaryOrangeDark
+                                    : disabledGrey,
+                                BlendMode.srcIn),
+                          ),
+                        ),
+                        onTap: Feedback.wrapForTap(() {
+                          _pController.currentIdx.value = 1;
+                          _pController.coastController.animateTo(
+                              beach: 1,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
+                        }, context),
+                      )),
                 ],
               ),
             )

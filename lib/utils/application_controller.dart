@@ -32,6 +32,9 @@ class ApplicationController extends GetxController {
       print("hasConnection: ${hasConnection}");
       print("isOnWiFi: ${isOnWifi}");
     });
+    checkBookmarks();
+    getUserInfo();
+    checkDictionary();
   }
 
   void showConnectionSnackbar(BuildContext context) {
@@ -90,8 +93,11 @@ class ApplicationController extends GetxController {
     userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
   }
 
+  // -- DICTIONARY MANAGEMENT
+
   String? dictionaryVersion, dictionaryContentAsString;
   Map<String, dynamic> dictionaryContent = {};
+  RxBool noData = false.obs;
 
   Future checkDictionary() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -127,7 +133,8 @@ class ApplicationController extends GetxController {
             prefs.getString("dictionaryContentAsString");
         dictionaryContent = json.decode(dictionaryContentAsString!);
       } else {
-        //no data
+        noData.value = true;
+        dictionaryVersion = null;
       }
     }
   }
@@ -140,5 +147,15 @@ class ApplicationController extends GetxController {
   Future<String> getDictionaryVersion() async {
     final dictionaryVersion = await _realtimeDB.child('version').get();
     return dictionaryVersion.value as String;
+  }
+
+  List<String> bookmarks = [];
+  Future checkBookmarks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("bookmarks")) {
+      bookmarks = prefs.getStringList("bookmarks")!;
+    } else {
+      prefs.setStringList("bookmarks", bookmarks);
+    }
   }
 }

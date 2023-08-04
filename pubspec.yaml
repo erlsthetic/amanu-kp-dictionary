@@ -58,6 +58,7 @@ dependencies:
   smooth_page_indicator: ^1.0.1
   themed: ^4.0.0
   coast: ^2.0.2
+  shimmer: ^3.0.0
 
   # Field packages
   textfield_tags: ^2.0.2
@@ -109,6 +110,10 @@ flutter:
     - assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg
     - assets/svg/WHITE_SVGS/SEPARATOR_WHITE.svg
     - assets/svg/WHITE_SVGS/AMANU_WHITE_BUTTON_SCANNER.svg
+
+    - assets/svg/ICONS/LISTEN.svg
+    - assets/svg/ICONS/HOME.svg
+    - assets/svg/ICONS/DICTIONARY.svg
 
     - assets/anim/AMANU_LOGO_ANIMATION.gif
 

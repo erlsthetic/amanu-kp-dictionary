@@ -1,3 +1,4 @@
+import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -37,7 +38,7 @@ class BrowseScreenPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 30, bottom: 100),
                 itemCount: 20,
                 itemBuilder: (context, index) {
-                  return BrowseCard();
+                  return ShimmerBrowseCard();
                 },
               )),
         ),

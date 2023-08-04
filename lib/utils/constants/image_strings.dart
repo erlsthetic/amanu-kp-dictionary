@@ -23,6 +23,10 @@ const String iAmanuWhiteSeparator = "assets/svg/WHITE_SVGS/SEPARATOR_WHITE.svg";
 const String iAmanuWhiteButtonIcon =
     "assets/svg/WHITE_SVGS/AMANU_WHITE_BUTTON_SCANNER.svg";
 
+const String iListenIcon = "assets/svg/ICONS/LISTEN.svg";
+const String iHomeIcon = "assets/svg/ICONS/HOME.svg";
+const String iDictionaryIcon = "assets/svg/ICONS/DICTIONARY.svg";
+
 //anim
 const String amanuLogoAnim = "assets/anim/AMANU_LOGO_ANIMATION.gif";
 const String iOnBoardingAnim1 = "assets/anim/onBoarding-page1.png";
