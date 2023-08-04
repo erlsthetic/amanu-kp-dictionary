@@ -29,6 +29,8 @@ class DrawerXController extends GetxController {
         return HomeScreen(pageIndex: 1);
       case DrawerItems.join:
         return OnBoardingScreen();
+      case DrawerItems.profile:
+        return SupportScreen();
       case DrawerItems.support:
         return SupportScreen();
       default:

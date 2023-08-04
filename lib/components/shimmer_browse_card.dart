@@ -1,9 +1,5 @@
-import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerBrowseCard extends StatelessWidget {

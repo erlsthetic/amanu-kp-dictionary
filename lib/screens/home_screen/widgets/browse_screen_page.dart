@@ -38,7 +38,7 @@ class BrowseScreenPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 30, bottom: 100),
                 itemCount: 20,
                 itemBuilder: (context, index) {
-                  return ShimmerBrowseCard();
+                  return BrowseCard();
                 },
               )),
         ),

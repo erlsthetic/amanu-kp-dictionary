@@ -26,6 +26,11 @@ const String iAmanuWhiteButtonIcon =
 const String iListenIcon = "assets/svg/ICONS/LISTEN.svg";
 const String iHomeIcon = "assets/svg/ICONS/HOME.svg";
 const String iDictionaryIcon = "assets/svg/ICONS/DICTIONARY.svg";
+const String iAmanuScannerIcon = "assets/svg/ICONS/AMANU_SCANNER.svg";
+const String iBookmarksIcon = "assets/svg/ICONS/BOOKMARKS.svg";
+const String iJoinAmanuIcon = "assets/svg/ICONS/JOIN_AMANU.svg";
+const String iProfileIcon = "assets/svg/ICONS/PROFILE.svg";
+const String iSupportIcon = "assets/svg/ICONS/SUPPORT.svg";
 
 //anim
 const String amanuLogoAnim = "assets/anim/AMANU_LOGO_ANIMATION.gif";

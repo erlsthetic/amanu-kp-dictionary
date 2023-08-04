@@ -1,5 +1,6 @@
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/drawer_item.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
@@ -8,20 +9,29 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DrawerItems {
-  static const home = DrawerItem('Home', Icons.home);
-  static const browse = DrawerItem('Browse', Icons.book);
-  static const bookmarks = DrawerItem('Bookmarks', Icons.bookmark);
-  static const kulitan = DrawerItem('Kulitan Reader', Icons.scanner);
-  static const join = DrawerItem('Join Amanu', Icons.people);
-  static const support = DrawerItem('Support', Icons.contact_support);
-  //static const profile = DrawerItem('Profile', Icons.person);
+  static const home = DrawerItem('Home', iHomeIcon);
+  static const browse = DrawerItem('Browse', iDictionaryIcon);
+  static const bookmarks = DrawerItem('Bookmarks', iBookmarksIcon);
+  static const kulitan = DrawerItem('Kulitan Reader', iAmanuScannerIcon);
+  static const join = DrawerItem('Join Amanu', iJoinAmanuIcon);
+  static const support = DrawerItem('Support', iSupportIcon);
+  static const profile = DrawerItem('Profile', iProfileIcon);
 
-  static const all = <DrawerItem>[
+  static const regular = <DrawerItem>[
     home,
     browse,
     bookmarks,
     kulitan,
     join,
+    support
+  ];
+
+  static const withUser = <DrawerItem>[
+    home,
+    browse,
+    bookmarks,
+    kulitan,
+    profile,
     support
   ];
 }
@@ -31,8 +41,8 @@ class AppDrawer extends StatelessWidget {
       {super.key, required this.currentItem, required this.onSelectedItem});
   final DrawerItem currentItem;
   final ValueChanged<DrawerItem> onSelectedItem;
-  final bool isLoggedIn = true;
-  final bool isContributor = false;
+
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -41,7 +51,7 @@ class AppDrawer extends StatelessWidget {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            !isLoggedIn
+            !appController.isLoggedIn
                 ? Expanded(
                     flex: 1,
                     child: Container(
@@ -95,8 +105,38 @@ class AppDrawer extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          isLoggedIn && isContributor
+                          appController.isLoggedIn &&
+                                  (appController.userIsExpert ?? false)
                               ? Container(
+                                  width: 70,
+                                  padding: EdgeInsets.all(4.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.yellow.shade600),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.verified_rounded,
+                                          size: 14,
+                                          color: muteBlack.withOpacity(0.5)),
+                                      SizedBox(
+                                        width: 3.0,
+                                      ),
+                                      Text(
+                                        'Expert',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.poppins(
+                                            color: muteBlack.withOpacity(0.5),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
                                   width: 100,
                                   padding: EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
@@ -126,41 +166,14 @@ class AppDrawer extends StatelessWidget {
                                     ],
                                   ),
                                 )
-                              : Container(
-                                  width: 70,
-                                  padding: EdgeInsets.all(4.0),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.yellow.shade600),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.verified_rounded,
-                                          size: 14,
-                                          color: muteBlack.withOpacity(0.5)),
-                                      SizedBox(
-                                        width: 3.0,
-                                      ),
-                                      Text(
-                                        'Expert',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                            color: muteBlack.withOpacity(0.5),
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                )
                         ],
                       ),
                     ),
                   ),
-            ...DrawerItems.all.map(buildDrawerItem).toList(),
-            isLoggedIn
+            ...appController.isLoggedIn
+                ? DrawerItems.withUser.map(buildDrawerItem).toList()
+                : DrawerItems.regular.map(buildDrawerItem).toList(),
+            appController.isLoggedIn
                 ? Expanded(
                     flex: 1,
                     child: Container(
@@ -201,9 +214,15 @@ class AppDrawer extends StatelessWidget {
         selected: currentItem == item,
         minLeadingWidth: 30,
         iconColor: pureWhite,
-        leading: Icon(
-          item.icon,
-          size: 30,
+        leading: Container(
+          width: 28,
+          height: 28,
+          child: SvgPicture.asset(
+            item.icon,
+            colorFilter: ColorFilter.mode(
+                currentItem == item ? primaryOrangeDark : pureWhite,
+                BlendMode.srcIn),
+          ),
         ),
         title: Text(
           item.title,
