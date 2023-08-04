@@ -1,4 +1,7 @@
+import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 enum PanelShape { rectangle, rounded }
 
@@ -13,8 +16,8 @@ class CustomFloatingPanel extends StatefulWidget {
   final double? borderWidth;
   final double? size;
   final double? iconSize;
-  final IconData? panelIcon;
-  final IconData? panelIconClose;
+  final String? panelIcon;
+  final String? panelIconClose;
   final BorderRadius? borderRadius;
   final Color? backgroundColor;
   final Color? contentColor;
@@ -28,7 +31,7 @@ class CustomFloatingPanel extends StatefulWidget {
   final double? dockOffset;
   final int? dockAnimDuration;
   final Curve? dockAnimCurve;
-  final List<IconData>? buttons;
+  final List<String>? buttons;
   final List<Color>? iconBGColors;
   final double? iconBGRadius;
   final double? iconBGSize;
@@ -104,7 +107,7 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
     double _pageHeight = MediaQuery.of(context).size.height;
 
     // All Buttons;
-    List<IconData> _buttons = widget.buttons!;
+    List<String> _buttons = widget.buttons!;
 
     List<Color> _buttonColors = widget.iconBGColors!;
 
@@ -338,9 +341,7 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
                 icon: (_panelState == PanelState.closed
                         ? widget.panelIcon
                         : widget.panelIconClose) ??
-                    (_panelState == PanelState.closed
-                        ? Icons.settings
-                        : Icons.close),
+                    (_panelState == PanelState.closed ? iToolBox : iClose),
                 color: widget.mainIconColor ?? Colors.white,
                 iconSize: 36.0,
               ),
@@ -407,7 +408,7 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
 class _FloatButton extends StatelessWidget {
   final double? size;
   final Color? color;
-  final IconData? icon;
+  final String? icon;
   final double? iconSize;
   final Color? iconBGColor;
   final double? iconBGRadius;
@@ -436,13 +437,21 @@ class _FloatButton extends StatelessWidget {
               borderRadius:
                   BorderRadius.all(Radius.circular(iconBGRadius ?? 70))),
           child: Center(
-            child: Icon(
+              child: /*Icon(
               icon ?? Icons.settings,
               color: color ?? Colors.white,
               size:
                   icon == Icons.delete_forever_rounded ? 34 : iconSize ?? 24.0,
+            ),*/
+                  Container(
+            height: icon == iClose ? 20 : 30,
+            width: icon == iClose ? 20 : 30,
+            child: SvgPicture.asset(
+              icon ?? iToolBox,
+              colorFilter:
+                  ColorFilter.mode(color ?? pureWhite, BlendMode.srcIn),
             ),
-          ),
+          )),
         ),
       ),
     );

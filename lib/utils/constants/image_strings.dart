@@ -31,7 +31,11 @@ const String iBookmarksIcon = "assets/svg/ICONS/BOOKMARKS.svg";
 const String iJoinAmanuIcon = "assets/svg/ICONS/JOIN_AMANU.svg";
 const String iProfileIcon = "assets/svg/ICONS/PROFILE.svg";
 const String iSupportIcon = "assets/svg/ICONS/SUPPORT.svg";
-
+const String iToolsAdd = "assets/svg/ICONS/TOOLS_ADD.svg";
+const String iToolsDelete = "assets/svg/ICONS/TOOLS_DELETE.svg";
+const String iToolsEdit = "assets/svg/ICONS/TOOLS_EDIT.svg";
+const String iToolBox = "assets/svg/ICONS/TOOLS_USER.svg";
+const String iClose = "assets/svg/ICONS/CLOSE.svg";
 //anim
 const String amanuLogoAnim = "assets/anim/AMANU_LOGO_ANIMATION.gif";
 const String iOnBoardingAnim1 = "assets/anim/onBoarding-page1.png";

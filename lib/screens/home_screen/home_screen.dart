@@ -2,6 +2,7 @@ import 'package:amanu/screens/user_tools/add_word_page.dart';
 import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/components/floating_button.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:get/get.dart';
 import 'widgets/browse_screen_page.dart';
 import 'package:amanu/components/bottom_nav_bar.dart';
@@ -64,7 +65,7 @@ class HomeScreen extends StatelessWidget {
             positionLeft: _size.width - 85,
             size: 70,
             iconSize: 30,
-            panelIcon: Icons.edit_note,
+            panelIcon: iToolBox,
             dockType: DockType.inside,
             dockOffset: 15,
             backgroundColor: pureWhite,
@@ -73,9 +74,9 @@ class HomeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(40),
             borderColor: primaryOrangeDark,
             buttons: [
-              Icons.library_add,
-              Icons.edit_document,
-              Icons.delete_forever_rounded,
+              iToolsAdd,
+              iToolsEdit,
+              iToolsDelete,
             ],
             iconBGColors: [
               primaryOrangeDark,

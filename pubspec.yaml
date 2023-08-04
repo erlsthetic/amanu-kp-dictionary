@@ -121,6 +121,11 @@ flutter:
     - assets/svg/ICONS/JOIN_AMANU.svg
     - assets/svg/ICONS/PROFILE.svg
     - assets/svg/ICONS/SUPPORT.svg
+    - assets/svg/ICONS/TOOLS_ADD.svg
+    - assets/svg/ICONS/TOOLS_DELETE.svg
+    - assets/svg/ICONS/TOOLS_EDIT.svg
+    - assets/svg/ICONS/TOOLS_USER.svg
+    - assets/svg/ICONS/CLOSE.svg
 
     - assets/anim/AMANU_LOGO_ANIMATION.gif
 
