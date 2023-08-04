@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
             positionLeft: _size.width - 85,
             size: 70,
             iconSize: 30,
-            panelIcon: Icons.person,
+            panelIcon: Icons.edit_note,
             dockType: DockType.inside,
             dockOffset: 15,
             backgroundColor: pureWhite,
@@ -73,11 +73,15 @@ class HomeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(40),
             borderColor: primaryOrangeDark,
             buttons: [
-              Icons.add,
-              Icons.edit,
-              Icons.delete,
+              Icons.library_add,
+              Icons.edit_document,
+              Icons.delete_forever_rounded,
             ],
-            iconBGColors: [primaryOrangeDark, primaryOrangeLight, orangeCard],
+            iconBGColors: [
+              primaryOrangeDark,
+              primaryOrangeLight,
+              darkerOrange.withOpacity(0.8)
+            ],
             iconBGSize: 60,
             mainIconColor: primaryOrangeDark,
             shadowColor: primaryOrangeDark,

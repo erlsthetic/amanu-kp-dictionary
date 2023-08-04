@@ -3,8 +3,10 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/components/browse_card.dart';
 import 'package:amanu/components/search_button.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class BrowseScreenPage extends StatelessWidget {
@@ -52,6 +54,38 @@ class BrowseScreenPage extends StatelessWidget {
                   gradient: orangeGradient,
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(30.0))),
+            ),
+          ),
+        ),
+        Positioned(
+          top: topPadding,
+          child: Crab(
+            tag: "AmanuLogo",
+            child: Container(
+              height: 0,
+              width: size.width,
+              child: FittedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 130,
+                      width: 130,
+                      child: SvgPicture.asset(iAmanuWhiteLogoWithLabel),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      height: 150,
+                      width: 75,
+                      child: SvgPicture.asset(
+                          iAmanuWhiteScriptVerticalWithSeparator),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

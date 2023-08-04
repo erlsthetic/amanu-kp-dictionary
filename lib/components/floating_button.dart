@@ -342,7 +342,7 @@ class _FloatBoxState extends State<CustomFloatingPanel> {
                         ? Icons.settings
                         : Icons.close),
                 color: widget.mainIconColor ?? Colors.white,
-                iconSize: widget.iconSize ?? 36.0,
+                iconSize: 36.0,
               ),
             ),
             AnimatedOpacity(
@@ -439,7 +439,8 @@ class _FloatButton extends StatelessWidget {
             child: Icon(
               icon ?? Icons.settings,
               color: color ?? Colors.white,
-              size: iconSize ?? 24.0,
+              size:
+                  icon == Icons.delete_forever_rounded ? 34 : iconSize ?? 24.0,
             ),
           ),
         ),

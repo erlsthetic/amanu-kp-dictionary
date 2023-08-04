@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/search_button.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -116,6 +118,41 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                     " " +
                     shrinkFactor.toStringAsFixed(3),
               )),*/
+          Positioned(
+            top: max(
+                (topPadding + 60) * (1 - shrinkFactor) +
+                    (shrinkFactor * (topPadding + 10)),
+                topPadding + 10),
+            child: Crab(
+              tag: "AmanuLogo",
+              child: Container(
+                height: (screenSize.height * 0.20) * (1 - shrinkFactor),
+                width: (screenSize.width),
+                child: FittedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 130,
+                        width: 130,
+                        child: SvgPicture.asset(iAmanuWhiteLogoWithLabel),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        height: 150,
+                        width: 75,
+                        child: SvgPicture.asset(
+                            iAmanuWhiteScriptVerticalWithSeparator),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
           Positioned(
             top: max(
                 ((screenSize.height * 0.35) - 30) * (1 - shrinkFactor) +

@@ -20,6 +20,8 @@ const String iAmanuWhiteScriptVertical =
 const String iAmanuWhiteScriptVerticalWithSeparator =
     "assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg";
 const String iAmanuWhiteSeparator = "assets/svg/WHITE_SVGS/SEPARATOR_WHITE.svg";
+const String iAmanuWhiteButtonIcon =
+    "assets/svg/WHITE_SVGS/AMANU_WHITE_BUTTON_SCANNER.svg";
 
 //anim
 const String amanuLogoAnim = "assets/anim/AMANU_LOGO_ANIMATION.gif";

@@ -1,6 +1,8 @@
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -38,7 +40,13 @@ class BottomNavBar extends StatelessWidget {
                       splashColor: primaryOrangeLight,
                       focusColor: primaryOrangeLight.withOpacity(0.5),
                       backgroundColor: primaryOrangeDark,
-                      child: Icon(Icons.camera),
+                      child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            child: SvgPicture.asset(iAmanuWhiteButtonIcon),
+                          )),
                       elevation: 0.1,
                       onPressed: () {}),
                 ),
