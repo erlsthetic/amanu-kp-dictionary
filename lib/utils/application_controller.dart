@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -24,15 +25,13 @@ class ApplicationController extends GetxController {
         hasConnection = await InternetConnectionChecker().hasConnection;
       }
       isOnWifi = hasConnection
-          ? result == ConnectivityResult.mobile
+          ? result == ConnectivityResult.wifi
               ? false
               : true
           : false;
       print("hasConnection: ${hasConnection}");
       print("isOnWiFi: ${isOnWifi}");
     });
-    downloadDictionary();
-    getDictionaryVersion();
   }
 
   void showConnectionSnackbar(BuildContext context) {
@@ -91,24 +90,55 @@ class ApplicationController extends GetxController {
     userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
   }
 
-  String? dictionaryVersion, dictionaryContent;
+  String? dictionaryVersion, dictionaryContentAsString;
+  Map<String, dynamic> dictionaryContent = {};
 
   Future checkDictionary() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("dictionaryVersion")) {
-      final storedVersion = prefs.getString("dictionaryVersion");
-      //final currentVersion = await getDictionaryVersion().toString();
-      //if (currentVersion != storedVersion) {}
-    } else {}
+
+    if (hasConnection) {
+      if (prefs.containsKey("dictionaryVersion")) {
+        final storedVersion = prefs.getString("dictionaryVersion");
+        final currentVersion = await getDictionaryVersion();
+        if (currentVersion != storedVersion) {
+          dictionaryContent = await downloadDictionary();
+          dictionaryContentAsString = json.encode(dictionaryContent);
+          prefs.setString("dictionaryVersion", currentVersion);
+          prefs.setString(
+              "dictionaryContentAsString", dictionaryContentAsString!);
+        } else if (currentVersion == storedVersion) {
+          dictionaryVersion = prefs.getString("dictionaryVersion");
+          dictionaryContentAsString =
+              prefs.getString("dictionaryContentAsString");
+          dictionaryContent = json.decode(dictionaryContentAsString!);
+        }
+      } else {
+        dictionaryVersion = await getDictionaryVersion();
+        dictionaryContent = await downloadDictionary();
+        dictionaryContentAsString = json.encode(dictionaryContent);
+        prefs.setString("dictionaryVersion", dictionaryVersion!);
+        prefs.setString(
+            "dictionaryContentAsString", dictionaryContentAsString!);
+      }
+    } else {
+      if (prefs.containsKey("dictionaryVersion")) {
+        dictionaryVersion = prefs.getString("dictionaryVersion");
+        dictionaryContentAsString =
+            prefs.getString("dictionaryContentAsString");
+        dictionaryContent = json.decode(dictionaryContentAsString!);
+      } else {
+        //no data
+      }
+    }
   }
 
-  Future downloadDictionary() async {
+  Future<Map<String, dynamic>> downloadDictionary() async {
     final dictionarySnapshot = await _realtimeDB.child('dictionary').get();
-    print(dictionarySnapshot.value);
+    return Map<String, dynamic>.from(dictionarySnapshot.value as dynamic);
   }
 
-  Future getDictionaryVersion() async {
+  Future<String> getDictionaryVersion() async {
     final dictionaryVersion = await _realtimeDB.child('version').get();
-    print(dictionaryVersion.value);
+    return dictionaryVersion.value as String;
   }
 }
