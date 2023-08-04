@@ -71,6 +71,7 @@ dependencies:
   connectivity_plus: ^4.0.2
   internet_connection_checker: ^1.0.0+1
   audioplayers: ^5.0.0
+  sortedmap: ^0.5.3
 
 dev_dependencies:
   flutter_test:

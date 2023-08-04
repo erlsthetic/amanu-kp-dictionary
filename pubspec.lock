@@ -709,6 +709,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  sortedmap:
+    dependency: "direct main"
+    description:
+      name: sortedmap
+      sha256: "8c9e19b93c7e1b4d795776a02719df229606cb57f46f857a7f6eb80c97fc0600"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.3"
   source_span:
     dependency: transitive
     description:

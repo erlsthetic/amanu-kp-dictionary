@@ -51,14 +51,33 @@ class DetailScreen extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                  child: Text(
-                                controller.word,
-                                style: GoogleFonts.robotoSlab(
-                                    fontSize: 30,
-                                    color: primaryOrangeDark,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                              child: Row(
+                                children: [
+                                  Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth: size.width * 0.6),
+                                      child: Text(
+                                        controller.word,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.robotoSlab(
+                                            fontSize: 30,
+                                            color: primaryOrangeDark,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        "(" + controller.types.join(', ') + ")",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 15,
+                                            color: primaryOrangeDark,
+                                            fontWeight: FontWeight.w300),
+                                      )),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               width: 10,
@@ -113,19 +132,15 @@ class DetailScreen extends StatelessWidget {
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: 5.0),
+                          margin: EdgeInsets.only(bottom: 10.0),
                           width: double.infinity,
                           child: Text(
-                            controller.prn,
+                            "/" + controller.prn + "/",
                             style: TextStyle(fontSize: 14, color: disabledGrey),
                           ),
                         ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
                         controller.engTrans.length != 0
                             ? Container(
-                                margin: EdgeInsets.only(bottom: 5.0),
                                 padding: EdgeInsets.only(left: 10.0),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +169,6 @@ class DetailScreen extends StatelessWidget {
                             : Container(),
                         controller.filTrans.length != 0
                             ? Container(
-                                margin: EdgeInsets.only(bottom: 5.0),
                                 padding: EdgeInsets.only(left: 10.0),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,6 +203,12 @@ class DetailScreen extends StatelessWidget {
                         SizedBox(
                           height: 5.0,
                         ),
+                        Divider(
+                          color: disabledGrey,
+                        ),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Container(
                           width: double.infinity,
                           child: Text(
@@ -203,7 +223,7 @@ class DetailScreen extends StatelessWidget {
                         ),
                         Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.fromLTRB(30, 10, 30, 20),
+                          padding: EdgeInsets.fromLTRB(30, 0, 30, 10),
                           width: double.infinity,
                           child: controller.kulitanString == ''
                               ? Container(
@@ -238,11 +258,10 @@ class DetailScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 15.0,
+                          height: 10.0,
                         ),
                         controller.synonyms.length != 0
                             ? Container(
-                                margin: EdgeInsets.only(bottom: 5.0),
                                 padding: EdgeInsets.only(left: 10.0),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +290,6 @@ class DetailScreen extends StatelessWidget {
                             : Container(),
                         controller.antonyms.length != 0
                             ? Container(
-                                margin: EdgeInsets.only(bottom: 5.0),
                                 padding: EdgeInsets.only(left: 10.0),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +318,6 @@ class DetailScreen extends StatelessWidget {
                             : Container(),
                         controller.otherRelated.length != 0
                             ? Container(
-                                margin: EdgeInsets.only(bottom: 5.0),
                                 padding: EdgeInsets.only(left: 10.0),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,

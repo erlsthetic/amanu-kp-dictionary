@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sortedmap/sortedmap.dart';
 
 class ApplicationController extends GetxController {
   static ApplicationController get instance => Get.find();
@@ -34,6 +35,7 @@ class ApplicationController extends GetxController {
     });
     checkBookmarks();
     getUserInfo();
+    sortDictionary(dictionaryContent);
   }
 
   void showConnectionSnackbar(BuildContext context) {
@@ -155,6 +157,12 @@ class ApplicationController extends GetxController {
     } else {
       prefs.setStringList("bookmarks", bookmarks);
     }
+  }
+
+  Map sortDictionary(Map<String, dynamic> map) {
+    var sortedMap = new SortedMap(Ordering.byKey());
+    sortedMap.addAll(map);
+    return sortedMap;
   }
 
   Map<String, dynamic> dictionaryContent = {

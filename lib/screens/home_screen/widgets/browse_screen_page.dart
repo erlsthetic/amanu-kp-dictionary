@@ -1,3 +1,4 @@
+import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -38,43 +39,51 @@ class BrowseScreenPage extends StatelessWidget {
           child: Container(
               height: size.height - 110,
               width: size.width,
-              child: ListView.builder(
-                padding: EdgeInsets.only(top: 30, bottom: 100),
-                itemCount: appController.dictionaryContent.length,
-                itemBuilder: (context, index) {
-                  String wordID =
-                      appController.dictionaryContent.keys.elementAt(index);
-                  List<String> type = [];
-                  for (var meaning in appController.dictionaryContent[wordID]
-                      ['meanings']) {
-                    type.add(meaning["partOfSpeech"]);
-                  }
-                  return BrowseCard(
-                    wordId: wordID,
-                    word: appController.dictionaryContent[wordID]["word"],
-                    type: type,
-                    prnLink: appController.dictionaryContent[wordID]
-                        ["pronunciationAudio"],
-                    engTrans: appController
-                                .dictionaryContent[wordID]
-                                    ["englishTranslations"]
-                                .length ==
-                            0
-                        ? []
-                        : appController.dictionaryContent[wordID]
-                            ["englishTranslations"],
-                    filTrans: appController
-                                .dictionaryContent[wordID]
-                                    ["filipinoTranslations"]
-                                .length ==
-                            0
-                        ? []
-                        : appController.dictionaryContent[wordID]
-                            ["filipinoTranslations"],
-                    player: player,
-                  );
-                },
-              )),
+              child: appController.dictionaryContent.length != 0
+                  ? ListView.builder(
+                      padding: EdgeInsets.only(top: 30, bottom: 100),
+                      itemCount: appController.dictionaryContent.length,
+                      itemBuilder: (context, index) {
+                        String wordID = appController.dictionaryContent.keys
+                            .elementAt(index);
+                        List<String> type = [];
+                        for (var meaning in appController
+                            .dictionaryContent[wordID]['meanings']) {
+                          type.add(meaning["partOfSpeech"]);
+                        }
+                        return BrowseCard(
+                          wordId: wordID,
+                          word: appController.dictionaryContent[wordID]["word"],
+                          type: type,
+                          prnLink: appController.dictionaryContent[wordID]
+                              ["pronunciationAudio"],
+                          engTrans: appController
+                                      .dictionaryContent[wordID]
+                                          ["englishTranslations"]
+                                      .length ==
+                                  0
+                              ? []
+                              : appController.dictionaryContent[wordID]
+                                  ["englishTranslations"],
+                          filTrans: appController
+                                      .dictionaryContent[wordID]
+                                          ["filipinoTranslations"]
+                                      .length ==
+                                  0
+                              ? []
+                              : appController.dictionaryContent[wordID]
+                                  ["filipinoTranslations"],
+                          player: player,
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      padding: EdgeInsets.only(top: 30, bottom: 100),
+                      itemCount: 30,
+                      itemBuilder: (context, index) {
+                        return ShimmerBrowseCard();
+                      },
+                    )),
         ),
         Positioned(
           top: 0,
