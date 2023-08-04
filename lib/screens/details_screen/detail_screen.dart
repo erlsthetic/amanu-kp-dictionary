@@ -1,22 +1,26 @@
 import 'package:amanu/components/tag_creator.dart';
 import 'package:amanu/screens/details_screen/controllers/detail_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/kulitan_preview.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailScreen extends StatelessWidget {
   DetailScreen({
     super.key,
+    required this.wordID,
   });
 
-  final controller = Get.put(DetailController());
+  final wordID;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DetailController(wordID: wordID));
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Scaffold(
@@ -49,7 +53,7 @@ class DetailScreen extends StatelessWidget {
                             Expanded(
                               child: Container(
                                   child: Text(
-                                "abcdefg",
+                                controller.word,
                                 style: GoogleFonts.robotoSlab(
                                     fontSize: 30,
                                     color: primaryOrangeDark,
@@ -78,19 +82,31 @@ class DetailScreen extends StatelessWidget {
                                   splashColor: primaryOrangeLight,
                                   highlightColor:
                                       primaryOrangeLight.withOpacity(0.5),
-                                  onTap: () {},
+                                  onTap: () {
+                                    controller.playFromURL();
+                                  },
                                   child: Ink(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: pureWhite,
-                                    ),
-                                    child: Icon(
-                                      Icons.play_arrow,
-                                      color: primaryOrangeDark,
-                                    ),
-                                  ),
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: pureWhite,
+                                      ),
+                                      child: Container(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          height: 18,
+                                          width: 18,
+                                          child: SvgPicture.asset(
+                                            iListenIcon,
+                                            colorFilter: ColorFilter.mode(
+                                                primaryOrangeDark,
+                                                BlendMode.srcIn),
+                                          ),
+                                        ),
+                                      )),
                                 ),
                               ),
                             )
@@ -100,63 +116,70 @@ class DetailScreen extends StatelessWidget {
                           margin: EdgeInsets.only(bottom: 5.0),
                           width: double.infinity,
                           child: Text(
-                            "/a'manu/",
+                            controller.prn,
                             style: TextStyle(fontSize: 14, color: disabledGrey),
                           ),
                         ),
                         SizedBox(
                           height: 10.0,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5.0),
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 30.0,
-                                child: Text(
-                                  "Eng:",
-                                  style: TextStyle(
-                                      color: primaryOrangeDark, fontSize: 14),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  child: Wrap(children: [
-                                    for (String trans in controller.engTrans)
-                                      TagCreator(label: trans),
-                                  ]),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5.0),
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 30.0,
-                                child: Text(
-                                  "Fil:",
-                                  style: TextStyle(
-                                      color: darkerOrange, fontSize: 14),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  child: Wrap(children: [
-                                    for (String trans in controller.filTrans)
-                                      TagCreator(label: trans)
-                                  ]),
+                        controller.engTrans.length != 0
+                            ? Container(
+                                margin: EdgeInsets.only(bottom: 5.0),
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 30.0,
+                                      child: Text(
+                                        "Eng:",
+                                        style: TextStyle(
+                                            color: primaryOrangeDark,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        child: Wrap(children: [
+                                          for (String trans
+                                              in controller.engTrans)
+                                            TagCreator(label: trans),
+                                        ]),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
-                            ],
-                          ),
-                        ),
+                            : Container(),
+                        controller.filTrans.length != 0
+                            ? Container(
+                                margin: EdgeInsets.only(bottom: 5.0),
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 30.0,
+                                      child: Text(
+                                        "Fil:",
+                                        style: TextStyle(
+                                            color: darkerOrange, fontSize: 14),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        child: Wrap(children: [
+                                          for (String trans
+                                              in controller.filTrans)
+                                            TagCreator(label: trans)
+                                        ]),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
                         SizedBox(
                           height: 5.0,
                         ),
@@ -182,7 +205,7 @@ class DetailScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(30, 10, 30, 20),
                           width: double.infinity,
-                          child: controller.kulitanChars.isEmpty
+                          child: controller.kulitanString == ''
                               ? Container(
                                   child: Text(
                                     "No data",
@@ -217,81 +240,93 @@ class DetailScreen extends StatelessWidget {
                         SizedBox(
                           height: 15.0,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5.0),
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 65.0,
-                                child: Text(
-                                  "Synonym:",
-                                  style: TextStyle(
-                                      color: primaryOrangeDark, fontSize: 14),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  child: Wrap(children: [
-                                    for (String syn in controller.synonym)
-                                      TagCreator(label: syn)
-                                  ]),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5.0),
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 65.0,
-                                child: Text(
-                                  "Antonym:",
-                                  style: TextStyle(
-                                      color: primaryOrangeDark, fontSize: 14),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  child: Wrap(children: [
-                                    for (String ant in controller.antonym)
-                                      TagCreator(label: ant)
-                                  ]),
+                        controller.synonyms.length != 0
+                            ? Container(
+                                margin: EdgeInsets.only(bottom: 5.0),
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 65.0,
+                                      child: Text(
+                                        "Synonym:",
+                                        style: TextStyle(
+                                            color: primaryOrangeDark,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        child: Wrap(children: [
+                                          for (var syn
+                                              in controller.synonyms.entries)
+                                            TagCreator(label: syn.key)
+                                        ]),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5.0),
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 65.0,
-                                child: Text(
-                                  "Related:",
-                                  style: TextStyle(
-                                      color: primaryOrangeDark, fontSize: 14),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  child: Wrap(children: [
-                                    for (String rel in controller.related)
-                                      TagCreator(label: rel)
-                                  ]),
+                            : Container(),
+                        controller.antonyms.length != 0
+                            ? Container(
+                                margin: EdgeInsets.only(bottom: 5.0),
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 65.0,
+                                      child: Text(
+                                        "Antonym:",
+                                        style: TextStyle(
+                                            color: primaryOrangeDark,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        child: Wrap(children: [
+                                          for (var ant
+                                              in controller.antonyms.entries)
+                                            TagCreator(label: ant.key)
+                                        ]),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
-                            ],
-                          ),
-                        ),
+                            : Container(),
+                        controller.otherRelated.length != 0
+                            ? Container(
+                                margin: EdgeInsets.only(bottom: 5.0),
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 65.0,
+                                      child: Text(
+                                        "Related:",
+                                        style: TextStyle(
+                                            color: primaryOrangeDark,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        child: Wrap(children: [
+                                          for (var rel in controller
+                                              .otherRelated.entries)
+                                            TagCreator(label: rel.key)
+                                        ]),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(),
                         SizedBox(
                           height: 5.0,
                         ),
@@ -322,11 +357,18 @@ class DetailScreen extends StatelessWidget {
                 ),
               )),
         ),
-        ThreePartHeader(
-          size: size,
-          screenPadding: screenPadding,
-          title: "abcdefg",
-          secondIcon: Icons.bookmark_outline_rounded,
+        Obx(
+          () => ThreePartHeader(
+            size: size,
+            screenPadding: screenPadding,
+            title: controller.word,
+            secondIcon: controller.onBookmarks.value
+                ? Icons.bookmark_rounded
+                : Icons.bookmark_outline_rounded,
+            secondOnPressed: () {
+              controller.bookmarkToggle();
+            },
+          ),
         ),
       ],
     ));

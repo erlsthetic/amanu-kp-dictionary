@@ -1,8 +1,9 @@
 import 'package:amanu/screens/bookmarks_screen/bookmarks_screen.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
-import 'package:amanu/screens/home_screen/widgets/drawer_item.dart';
+import 'package:amanu/models/drawer_item_model.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:amanu/screens/requests_screen/requests_screen.dart';
 import 'package:amanu/screens/support_screen/support_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -31,6 +32,8 @@ class DrawerXController extends GetxController {
         return OnBoardingScreen();
       case DrawerItems.profile:
         return SupportScreen();
+      case DrawerItems.requests:
+        return RequestsScreen();
       case DrawerItems.support:
         return SupportScreen();
       default:

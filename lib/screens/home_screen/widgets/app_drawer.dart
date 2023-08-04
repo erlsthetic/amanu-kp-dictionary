@@ -1,5 +1,5 @@
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
-import 'package:amanu/screens/home_screen/widgets/drawer_item.dart';
+import 'package:amanu/models/drawer_item_model.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
@@ -16,6 +16,7 @@ class DrawerItems {
   static const join = DrawerItem('Join Amanu', iJoinAmanuIcon);
   static const support = DrawerItem('Support', iSupportIcon);
   static const profile = DrawerItem('Profile', iProfileIcon);
+  static const requests = DrawerItem('Requests', iProfileIcon);
 
   static const regular = <DrawerItem>[
     home,
@@ -32,6 +33,16 @@ class DrawerItems {
     bookmarks,
     kulitan,
     profile,
+    support
+  ];
+
+  static const withExpert = <DrawerItem>[
+    home,
+    browse,
+    bookmarks,
+    kulitan,
+    profile,
+    requests,
     support
   ];
 }
@@ -171,7 +182,9 @@ class AppDrawer extends StatelessWidget {
                     ),
                   ),
             ...appController.isLoggedIn
-                ? DrawerItems.withUser.map(buildDrawerItem).toList()
+                ? (appController.userIsExpert ?? false)
+                    ? DrawerItems.withExpert.map(buildDrawerItem).toList()
+                    : DrawerItems.withUser.map(buildDrawerItem).toList()
                 : DrawerItems.regular.map(buildDrawerItem).toList(),
             appController.isLoggedIn
                 ? Expanded(

@@ -26,8 +26,8 @@ class ApplicationController extends GetxController {
       }
       isOnWifi = hasConnection
           ? result == ConnectivityResult.wifi
-              ? false
-              : true
+              ? true
+              : false
           : false;
       print("hasConnection: ${hasConnection}");
       print("isOnWiFi: ${isOnWifi}");
@@ -249,7 +249,7 @@ class ApplicationController extends GetxController {
       "kulitan-form": [
         ["ka"],
         ["mu", "s"],
-        ["ta"]
+        []
       ],
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
@@ -300,7 +300,7 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
-      "synonyms": {"musta": null, "sup": null},
+      "synonyms": {},
       "antonyms": {"ayoko": null, "bye": null},
       "otherRelated": {"pangangamusta": null},
       "sources": "Only Me. (n.d). Only Me. Sample.com"
@@ -361,7 +361,7 @@ class ApplicationController extends GetxController {
       "pronunciationAudio":
           "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
       "englishTranslations": ["hello", "hi"],
-      "filipinoTranslations": ["kamusta", "musta"],
+      "filipinoTranslations": [],
       "meanings": [
         {
           "partOfSpeech": "noun",
@@ -409,7 +409,7 @@ class ApplicationController extends GetxController {
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
           "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
-      "englishTranslations": ["hello", "hi"],
+      "englishTranslations": [],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
         {
