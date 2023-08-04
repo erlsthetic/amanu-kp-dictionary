@@ -34,7 +34,6 @@ class ApplicationController extends GetxController {
     });
     checkBookmarks();
     getUserInfo();
-    checkDictionary();
   }
 
   void showConnectionSnackbar(BuildContext context) {
@@ -96,7 +95,6 @@ class ApplicationController extends GetxController {
   // -- DICTIONARY MANAGEMENT
 
   String? dictionaryVersion, dictionaryContentAsString;
-  Map<String, dynamic> dictionaryContent = {};
   RxBool noData = false.obs;
 
   Future checkDictionary() async {
@@ -158,4 +156,497 @@ class ApplicationController extends GetxController {
       prefs.setStringList("bookmarks", bookmarks);
     }
   }
+
+  Map<String, dynamic> dictionaryContent = {
+    "hello": {
+      "word": "hello",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello0": {
+      "word": "hello0",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello1": {
+      "word": "hello1",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello2": {
+      "word": "hello2",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello3": {
+      "word": "hello3",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello4": {
+      "word": "hello4",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello5": {
+      "word": "hello5",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello6": {
+      "word": "hello6",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello7": {
+      "word": "hello7",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    },
+    "hello8": {
+      "word": "hello8",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "dialect": "guagua",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao."
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "dialect": null,
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!"
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "dialect": "somewhere",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito."
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "otherRelated": {"pangangamusta": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com"
+    }
+  };
 }

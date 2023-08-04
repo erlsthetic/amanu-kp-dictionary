@@ -1,5 +1,4 @@
 import 'package:amanu/components/button_loading_widget.dart';
-import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/login_screen/controllers/login_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
