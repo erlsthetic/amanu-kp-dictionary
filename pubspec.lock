@@ -97,6 +97,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  connectivity_plus:
+    dependency: "direct main"
+    description:
+      name: connectivity_plus
+      sha256: "77a180d6938f78ca7d2382d2240eb626c0f6a735d0bfdce227d8ffb80f95c48b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.2"
+  connectivity_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_plus_platform_interface
+      sha256: cf1d1c28f4416f8c654d7dc3cd638ec586076255d407cef3ddbdaf178272a71a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   crypto:
     dependency: transitive
     description:
@@ -113,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      sha256: "6f07cba3f7b3448d42d015bfd3d53fe12e5b36da2423f23838efc1d5fb31a263"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.8"
   email_validator:
     dependency: "direct main"
     description:
@@ -137,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  file:
+    dependency: transitive
+    description:
+      name: file
+      sha256: "1b92bec4fc2a72f59a8e15af5f52cd441e4a7860b49499d69dfa817af20e925d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.4"
   file_picker:
     dependency: "direct main"
     description:
@@ -360,6 +392,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  internet_connection_checker:
+    dependency: "direct main"
+    description:
+      name: internet_connection_checker
+      sha256: "1c683e63e89c9ac66a40748b1b20889fd9804980da732bf2b58d6d5456c8e876"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   intl:
     dependency: "direct main"
     description:
@@ -416,6 +456,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  nm:
+    dependency: transitive
+    description:
+      name: nm
+      sha256: "2c9aae4127bdc8993206464fcc063611e0e36e72018696cd9631023a31b24254"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   otp_text_field:
     dependency: "direct main"
     description:
@@ -528,6 +576,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      sha256: "0344316c947ffeb3a529eac929e1978fcd37c26be4e8468628bac399365a3ca1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  shared_preferences_android:
+    dependency: transitive
+    description:
+      name: shared_preferences_android
+      sha256: fe8401ec5b6dcd739a0fe9588802069e608c3fdbfd3c3c93e546cf2f90438076
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  shared_preferences_foundation:
+    dependency: transitive
+    description:
+      name: shared_preferences_foundation
+      sha256: f39696b83e844923b642ce9dd4bd31736c17e697f6731a5adf445b1274cf3cd4
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      sha256: "71d6806d1449b0a9d4e85e0c7a917771e672a3d5dc61149cc9fac871115018e1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      sha256: "23b052f17a25b90ff2b61aad4cc962154da76fb62848a9ce088efe30d7c50ab1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      sha256: "7347b194fb0bbeb4058e6a4e87ee70350b6b2b90f8ac5f8bd5b3a01548f6d33a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      sha256: f95e6a43162bce43c9c3405f3eb6f39e5b5d11f65fab19196cf8225e2777624d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   sky_engine:
     dependency: transitive
     description: flutter

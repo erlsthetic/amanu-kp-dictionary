@@ -107,7 +107,9 @@ class WelcomeScreen extends StatelessWidget {
                     child: GestureDetector(
                       onTap: Feedback.wrapForTap(() {
                         drawerController.currentItem = DrawerItems.home.obs;
-                        Get.off(() => DrawerLauncher());
+                        Get.offAll(() => DrawerLauncher(
+                              pageIndex: 0,
+                            ));
                       }, context),
                       child: Text(
                         tCancel.toUpperCase(),

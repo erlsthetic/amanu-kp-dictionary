@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:amanu/models/user_model.dart';
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
@@ -268,6 +270,32 @@ class SignUpController extends GetxController {
     });
   }
 
+  Future<void> savePreferences(
+      String uid,
+      String userName,
+      String userEmail,
+      int userPhone,
+      bool isExpert,
+      bool expertRequest,
+      String? fullName,
+      String? userBio,
+      String? userPic) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("userID", uid);
+    prefs.setString("userEmail", userEmail);
+    prefs.setString("userName", userName);
+    prefs.setInt("userPhone", userPhone);
+    prefs.setBool("userIsExpert", isExpert);
+    prefs.setBool("userExpertRequest", expertRequest);
+    if (isExpert && fullName!.isNotEmpty && userBio!.isNotEmpty) {
+      prefs.setString("userFullName", fullName);
+      prefs.setString("userBio", userBio);
+    }
+    if (userPic!.isNotEmpty && userPic != '') {
+      prefs.setString("userPic", userPic);
+    }
+  }
+
   Future<void> registerUser() async {
     if (selectEmpty.value == true) {
       cvError.value = true;
@@ -299,7 +327,8 @@ class SignUpController extends GetxController {
           uid: uid,
           email: email.trim(),
           phoneNo: int.parse(phoneNo.trim()),
-          isExpert: userType == 1 ? true : false,
+          isExpert: false,
+          expertRequest: userType == 1 ? true : false,
           userName: userName.trim(),
           exFullName: exFullName == '' ? null : exFullName.trim(),
           exBio: exBio == '' ? null : exBio.trim(),
@@ -307,6 +336,19 @@ class SignUpController extends GetxController {
           profileUrl: null);
 
       await userRepo.createUserOnDB(userData, uid);
+      await savePreferences(
+              userData.uid,
+              userData.userName,
+              userData.email,
+              userData.phoneNo,
+              userData.isExpert,
+              userData.expertRequest,
+              userData.exFullName,
+              userData.exBio,
+              userData.profileUrl)
+          .whenComplete(() => Get.offAll(DrawerLauncher(
+                pageIndex: 0,
+              )));
     }
   }
 
@@ -344,7 +386,8 @@ class SignUpController extends GetxController {
         uid: uid,
         email: email.trim(),
         phoneNo: int.parse(phoneNo.trim()),
-        isExpert: userType == 1 ? true : false,
+        isExpert: false,
+        expertRequest: userType == 1 ? true : false,
         userName: userName.trim(),
         exFullName: exFullName == '' ? null : exFullName.trim(),
         exBio: exBio == '' ? null : exBio.trim(),
@@ -352,5 +395,18 @@ class SignUpController extends GetxController {
         profileUrl: authRepo.firebaseUser!.photoURL ?? null);
 
     await userRepo.createUserOnDB(userData, uid);
+    await savePreferences(
+            userData.uid,
+            userData.userName,
+            userData.email,
+            userData.phoneNo,
+            userData.isExpert,
+            userData.expertRequest,
+            userData.exFullName,
+            userData.exBio,
+            userData.profileUrl)
+        .whenComplete(() => Get.offAll(DrawerLauncher(
+              pageIndex: 0,
+            )));
   }
 }
