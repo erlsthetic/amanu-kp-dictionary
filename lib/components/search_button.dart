@@ -1,6 +1,8 @@
+import 'package:amanu/screens/search_screen/search_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchButton extends StatelessWidget {
@@ -28,12 +30,14 @@ class SearchButton extends StatelessWidget {
               ]),
           child: Material(
             color: Colors.transparent,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(30),
             child: InkWell(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(30),
               splashColor: primaryOrangeLight,
               highlightColor: primaryOrangeLight.withOpacity(0.5),
-              onTap: () {},
+              onTap: () {
+                Get.to(() => SearchScreen());
+              },
               child: Ink(
                 width: double.infinity,
                 padding: EdgeInsets.fromLTRB(20.0, 15 - (5 * shrinkFactor),
@@ -54,10 +58,13 @@ class SearchButton extends StatelessWidget {
                         letterSpacing: 1.0,
                       ),
                     ),
-                    Icon(
-                      Icons.search,
-                      color: primaryOrangeDark,
-                      size: 30.0,
+                    Hero(
+                      tag: "SearchIcon",
+                      child: Icon(
+                        Icons.search,
+                        color: primaryOrangeDark,
+                        size: 30.0,
+                      ),
                     ),
                   ],
                 ),

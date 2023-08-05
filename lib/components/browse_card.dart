@@ -19,7 +19,7 @@ class BrowseCard extends StatelessWidget {
       required this.filTrans,
       required this.prnLink,
       this.showEngTrans = true,
-      this.clickable = true});
+      required this.onTap});
 
   final AudioPlayer player;
 
@@ -39,7 +39,7 @@ class BrowseCard extends StatelessWidget {
   final List<String> filTrans;
   final String prnLink;
   final bool showEngTrans;
-  final bool clickable;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +47,7 @@ class BrowseCard extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
       child: InkWell(
-        onTap: clickable
-            ? () => Get.to(() => DetailScreen(
-                  wordID: wordId,
-                ))
-            : () {},
+        onTap: onTap,
         splashColor: primaryOrangeLight,
         highlightColor: primaryOrangeLight.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20),

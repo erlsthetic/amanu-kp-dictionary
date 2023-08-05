@@ -1,4 +1,5 @@
 import 'package:amanu/components/shimmer_browse_card.dart';
+import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -52,6 +53,9 @@ class BrowseScreenPage extends StatelessWidget {
                           type.add(meaning["partOfSpeech"]);
                         }
                         return BrowseCard(
+                          onTap: () => Get.to(() => DetailScreen(
+                                wordID: wordID,
+                              )),
                           wordId: wordID,
                           word: appController.dictionaryContent[wordID]["word"],
                           type: type,
