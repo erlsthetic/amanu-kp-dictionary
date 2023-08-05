@@ -1,6 +1,7 @@
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -95,7 +96,7 @@ class DetailController extends GetxController {
   Future bookmarkToggle() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("bookmarks")) {
-      appController.bookmarks = prefs.getStringList("bookmarks")!;
+      appController.bookmarks.value = prefs.getStringList("bookmarks")!;
       if (appController.bookmarks.contains(wordID)) {
         appController.bookmarks.remove(wordID);
         prefs.setStringList("bookmarks", appController.bookmarks);

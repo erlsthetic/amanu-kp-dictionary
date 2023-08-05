@@ -1389,11 +1389,22 @@ class WordInfoSection extends StatelessWidget {
                             ]),
                           ),
                         ),
-                        background: Container(
+                        secondaryBackground: Container(
+                          padding: EdgeInsets.all(30),
+                          alignment: Alignment.topRight,
                           child: Icon(
                             Icons.delete,
-                            color: Colors.red,
-                            size: 60,
+                            color: disabledGrey,
+                            size: 50,
+                          ),
+                        ),
+                        background: Container(
+                          padding: EdgeInsets.all(30),
+                          alignment: Alignment.topLeft,
+                          child: Icon(
+                            Icons.delete,
+                            color: disabledGrey,
+                            size: 50,
                           ),
                         ),
                         onDismissed: (direction) {
@@ -1415,9 +1426,20 @@ class WordInfoSection extends StatelessWidget {
             ),
           ),
           background: Container(
+            padding: EdgeInsets.all(30),
+            alignment: Alignment.topLeft,
             child: Icon(
               Icons.delete,
-              color: Colors.red,
+              color: disabledGrey,
+              size: 60,
+            ),
+          ),
+          secondaryBackground: Container(
+            padding: EdgeInsets.all(30),
+            alignment: Alignment.topRight,
+            child: Icon(
+              Icons.delete,
+              color: disabledGrey,
               size: 60,
             ),
           ),

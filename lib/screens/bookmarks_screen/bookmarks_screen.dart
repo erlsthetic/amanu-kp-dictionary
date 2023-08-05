@@ -1,7 +1,13 @@
+import 'package:amanu/components/browse_card.dart';
+import 'package:amanu/components/three_part_header.dart';
+import 'package:amanu/screens/bookmarks_screen/controllers/bookmarks_controller.dart';
+import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/utils/application_controller.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
-import 'package:amanu/components/three_part_header.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +16,10 @@ class BookmarksScreen extends StatelessWidget {
     super.key,
   });
 
+  final controller = Get.put(BookmarksController());
   final drawerController = Get.find<DrawerXController>();
+  final appController = Get.find<ApplicationController>();
+  final AudioPlayer player = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +38,110 @@ class BookmarksScreen extends StatelessWidget {
               ),
               height: size.height - screenPadding.top - 50,
               width: size.width,
-              child: Column(
-                children: [
-                  SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                      child: Column(
-                        children: [],
+              child: appController.bookmarks.length != 0
+                  ? ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.only(top: 30, bottom: 100),
+                      itemCount: appController.bookmarks.length,
+                      itemBuilder: (context, index) {
+                        String wordID = appController.bookmarks[index];
+                        List<String> type = [];
+                        for (var meaning in appController
+                            .dictionaryContent[wordID]['meanings']) {
+                          type.add(meaning["partOfSpeech"]);
+                        }
+                        return Dismissible(
+                          key: Key(wordID),
+                          background: Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(30),
+                            child: Icon(
+                              Icons.bookmark_remove_rounded,
+                              color: disabledGrey.withOpacity(0.75),
+                              size: 40,
+                            ),
+                          ),
+                          secondaryBackground: Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.all(30),
+                            child: Icon(
+                              Icons.bookmark_remove_rounded,
+                              color: disabledGrey.withOpacity(0.75),
+                              size: 40,
+                            ),
+                          ),
+                          onDismissed: (_) {
+                            controller.removeBookmark(wordID);
+                          },
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 3),
+                              child: BrowseCard(
+                                onTap: () => Get.to(() => DetailScreen(
+                                      wordID: wordID,
+                                    )),
+                                wordId: wordID,
+                                word: appController.dictionaryContent[wordID]
+                                    ["word"],
+                                type: type,
+                                prnLink: appController.dictionaryContent[wordID]
+                                    ["pronunciationAudio"],
+                                engTrans: appController
+                                                .dictionaryContent[wordID]
+                                            ["englishTranslations"] ==
+                                        null
+                                    ? []
+                                    : appController.dictionaryContent[wordID]
+                                        ["englishTranslations"],
+                                filTrans: appController
+                                                .dictionaryContent[wordID]
+                                            ["filipinoTranslations"] ==
+                                        null
+                                    ? []
+                                    : appController.dictionaryContent[wordID]
+                                        ["filipinoTranslations"],
+                                otherRelated:
+                                    appController.dictionaryContent[wordID]
+                                                ["otherRelated"] ==
+                                            null
+                                        ? []
+                                        : appController
+                                            .dictionaryContent[wordID]
+                                                ["otherRelated"]
+                                            .keys
+                                            .toList(),
+                                synonyms: appController
+                                                .dictionaryContent[wordID]
+                                            ["synonyms"] ==
+                                        null
+                                    ? []
+                                    : appController
+                                        .dictionaryContent[wordID]["synonyms"]
+                                        .keys
+                                        .toList(),
+                                antonyms: appController
+                                                .dictionaryContent[wordID]
+                                            ["antonyms"] ==
+                                        null
+                                    ? []
+                                    : appController
+                                        .dictionaryContent[wordID]["antonyms"]
+                                        .keys
+                                        .toList(),
+                                player: player,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        "No bookmarks yet.",
+                        style: TextStyle(fontSize: 16, color: disabledGrey),
                       ),
-                    ),
-                  ),
-                ],
-              )),
+                    )),
         ),
         ThreePartHeader(
           size: size,

@@ -6,7 +6,7 @@ class HomePageController extends GetxController {
 
   final RxInt currentIdx = 0.obs;
 
-  late var coastController = CoastController(initialPage: currentIdx.value);
+  CoastController coastController = CoastController(initialPage: 0);
 
   onPageChangedCallback(int activePageIndex) {
     currentIdx.value = activePageIndex;

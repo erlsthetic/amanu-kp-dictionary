@@ -149,11 +149,11 @@ class ApplicationController extends GetxController {
     return dictionaryVersion.value as String;
   }
 
-  List<String> bookmarks = [];
+  RxList<String> bookmarks = <String>[].obs;
   Future checkBookmarks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("bookmarks")) {
-      bookmarks = prefs.getStringList("bookmarks")!;
+      bookmarks.value = prefs.getStringList("bookmarks")!;
     } else {
       prefs.setStringList("bookmarks", bookmarks);
     }

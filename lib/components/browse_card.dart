@@ -1,11 +1,9 @@
-import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BrowseCard extends StatelessWidget {

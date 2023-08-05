@@ -1,4 +1,5 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/support_screen/pages/feedback_page.dart';
 import 'package:amanu/screens/support_screen/pages/report_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -68,6 +69,11 @@ class SupportScreen extends StatelessWidget {
           size: size,
           screenPadding: screenPadding,
           title: tSupport,
+          firstIcon: Icons.menu_rounded,
+          firstOnPressed: () {
+            drawerController.drawerToggle(context);
+            drawerController.currentItem.value = DrawerItems.support;
+          },
         ),
       ],
     ));

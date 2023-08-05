@@ -18,10 +18,11 @@ class DetailScreen extends StatelessWidget {
 
   final wordID;
 
+  late final controller =
+      Get.put(DetailController(wordID: wordID), tag: "_" + wordID);
+
   @override
   Widget build(BuildContext context) {
-    final controller =
-        Get.put(DetailController(wordID: wordID), tag: "_" + wordID);
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Scaffold(
@@ -493,11 +494,19 @@ class DetailScreen extends StatelessWidget {
                                                         .otherRelated.entries)
                                                       GestureDetector(
                                                         child: TagCreator(
-                                                            label: rel.key),
+                                                          label: rel.key,
+                                                          isBadge:
+                                                              rel.value != null
+                                                                  ? true
+                                                                  : false,
+                                                          isLink:
+                                                              rel.value != null
+                                                                  ? true
+                                                                  : false,
+                                                        ),
                                                         onTap: rel.value != null
                                                             ? Feedback
                                                                 .wrapForTap(() {
-                                                                //TODO
                                                                 Get.to(
                                                                     () => new DetailScreen(
                                                                         wordID: rel
@@ -540,14 +549,25 @@ class DetailScreen extends StatelessWidget {
                                                         .synonyms.entries)
                                                       GestureDetector(
                                                         child: TagCreator(
-                                                            label: syn.key),
+                                                          label: syn.key,
+                                                          isBadge:
+                                                              syn.value != null
+                                                                  ? true
+                                                                  : false,
+                                                          isLink:
+                                                              syn.value != null
+                                                                  ? true
+                                                                  : false,
+                                                        ),
                                                         onTap: syn.value != null
                                                             ? Feedback
                                                                 .wrapForTap(() {
                                                                 () => Get.to(
-                                                                    DetailScreen(
-                                                                        wordID:
-                                                                            syn.value));
+                                                                    () => new DetailScreen(
+                                                                        wordID: syn
+                                                                            .value),
+                                                                    preventDuplicates:
+                                                                        false);
                                                               }, context)
                                                             : () {},
                                                       )
@@ -584,14 +604,25 @@ class DetailScreen extends StatelessWidget {
                                                         .antonyms.entries)
                                                       GestureDetector(
                                                         child: TagCreator(
-                                                            label: ant.key),
+                                                          label: ant.key,
+                                                          isBadge:
+                                                              ant.value != null
+                                                                  ? true
+                                                                  : false,
+                                                          isLink:
+                                                              ant.value != null
+                                                                  ? true
+                                                                  : false,
+                                                        ),
                                                         onTap: ant.value != null
                                                             ? Feedback
                                                                 .wrapForTap(() {
                                                                 () => Get.to(
-                                                                    DetailScreen(
-                                                                        wordID:
-                                                                            ant.value));
+                                                                    () => new DetailScreen(
+                                                                        wordID: ant
+                                                                            .value),
+                                                                    preventDuplicates:
+                                                                        false);
                                                               }, context)
                                                             : () {},
                                                       )

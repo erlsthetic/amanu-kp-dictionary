@@ -13,6 +13,7 @@ class TagCreator extends StatelessWidget {
     this.isBadge = false,
     this.isExpert = false,
     this.iconSize = 13,
+    this.isLink = false,
   });
 
   final String label;
@@ -23,6 +24,7 @@ class TagCreator extends StatelessWidget {
   final double? fontSize;
   final bool? isBadge;
   final bool? isExpert;
+  final bool? isLink;
   final double? iconSize;
 
   @override
@@ -42,7 +44,9 @@ class TagCreator extends StatelessWidget {
                   child: Icon(
                     isExpert ?? false
                         ? Icons.verified_rounded
-                        : Icons.person_add_rounded,
+                        : isLink ?? false
+                            ? Icons.search_rounded
+                            : Icons.person_add_rounded,
                     size: iconSize,
                     color: textColor,
                   ),
