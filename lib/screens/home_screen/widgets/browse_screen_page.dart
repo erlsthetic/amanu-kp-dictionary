@@ -42,6 +42,7 @@ class BrowseScreenPage extends StatelessWidget {
               width: size.width,
               child: appController.dictionaryContent.length != 0
                   ? ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       padding: EdgeInsets.only(top: 30, bottom: 100),
                       itemCount: appController.dictionaryContent.length,
                       itemBuilder: (context, index) {
@@ -73,6 +74,28 @@ class BrowseScreenPage extends StatelessWidget {
                               ? []
                               : appController.dictionaryContent[wordID]
                                   ["filipinoTranslations"],
+                          otherRelated: appController.dictionaryContent[wordID]
+                                      ["otherRelated"] ==
+                                  null
+                              ? []
+                              : appController
+                                  .dictionaryContent[wordID]["otherRelated"]
+                                  .keys
+                                  .toList(),
+                          synonyms: appController.dictionaryContent[wordID]
+                                      ["synonyms"] ==
+                                  null
+                              ? []
+                              : appController
+                                  .dictionaryContent[wordID]["synonyms"].keys
+                                  .toList(),
+                          antonyms: appController.dictionaryContent[wordID]
+                                      ["antonyms"] ==
+                                  null
+                              ? []
+                              : appController
+                                  .dictionaryContent[wordID]["antonyms"].keys
+                                  .toList(),
                           player: player,
                         );
                       },

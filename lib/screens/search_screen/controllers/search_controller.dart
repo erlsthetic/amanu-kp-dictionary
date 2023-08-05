@@ -1,8 +1,8 @@
 import 'package:amanu/utils/application_controller.dart';
 import 'package:get/get.dart';
 
-class SearchController extends GetxController {
-  static SearchController get instance => Get.find();
+class SearchWordController extends GetxController {
+  static SearchWordController get instance => Get.find();
 
   final appController = Get.find<ApplicationController>();
 
@@ -12,19 +12,24 @@ class SearchController extends GetxController {
   RxBool searchInDefinition = false.obs;
   RxBool searchInRelated = false.obs;
   RxBool searchInSynonyms = false.obs;
-  RxBool searchInAntonyms = true.obs;
+  RxBool searchInAntonyms = false.obs;
+  RxBool loading = false.obs;
 
   RxMap<dynamic, dynamic> suggestionMap = <dynamic, dynamic>{}.obs;
+  Map<String, String> foundOn = {};
 
   void searchWord(String input) {
+    loading.value = true;
+    Map<dynamic, dynamic> tempMap = {};
+    Map<dynamic, dynamic> tempFoundOn = {};
     String query = input.toLowerCase();
-    suggestionMap.clear();
     for (var entry in appController.dictionaryContent.entries) {
       if (searchInWord.value) {
         if (entry.value["word"] != null) {
           String word = entry.value["word"].toLowerCase();
           if (word.contains(query)) {
-            suggestionMap[entry.key] = entry.value;
+            tempMap[entry.key] = entry.value;
+            tempFoundOn[entry.key] = "engTrans";
             continue;
           }
         }
@@ -35,7 +40,8 @@ class SearchController extends GetxController {
           List<String> engTransList = entry.value["englishTranslations"];
           for (var trans in engTransList) {
             if (trans.toLowerCase().contains(query)) {
-              suggestionMap[entry.key] = entry.value;
+              tempMap[entry.key] = entry.value;
+              tempFoundOn[entry.key] = "engTrans";
               _found = true;
               break;
             }
@@ -51,7 +57,8 @@ class SearchController extends GetxController {
           List<String> filTransList = entry.value["filipinoTranslations"];
           for (var trans in filTransList) {
             if (trans.toLowerCase().contains(query)) {
-              suggestionMap[entry.key] = entry.value;
+              tempMap[entry.key] = entry.value;
+              tempFoundOn[entry.key] = "filTrans";
               _found = true;
               break;
             }
@@ -64,14 +71,14 @@ class SearchController extends GetxController {
       if (searchInDefinition.value) {
         if (entry.value["meanings"] != null) {
           bool _found = false;
-          List<Map<dynamic, dynamic>> meanings =
-              entry.value["filipinoTranslations"];
+          List<Map<dynamic, dynamic>> meanings = entry.value["meanings"];
           for (var meaning in meanings) {
             bool _foundInDef = false;
             List<Map<dynamic, dynamic>> definitions = meaning["definitions"];
             for (var definition in definitions) {
               if (definition["definition"].toLowerCase().contains(query)) {
-                suggestionMap[entry.key] = entry.value;
+                tempMap[entry.key] = entry.value;
+                tempFoundOn[entry.key] = "engTrans";
                 _foundInDef = true;
                 break;
               }
@@ -92,7 +99,8 @@ class SearchController extends GetxController {
           Map<dynamic, dynamic> related = entry.value["otherRelated"];
           for (var rel in related.entries) {
             if (rel.key.toLowerCase().contains(query)) {
-              suggestionMap[entry.key] = entry.value;
+              tempMap[entry.key] = entry.value;
+              tempFoundOn[entry.key] = "otherRelated";
               _found = true;
               break;
             }
@@ -108,7 +116,8 @@ class SearchController extends GetxController {
           Map<dynamic, dynamic> synonyms = entry.value["synonyms"];
           for (var syn in synonyms.entries) {
             if (syn.key.toLowerCase().contains(query)) {
-              suggestionMap[entry.key] = entry.value;
+              tempMap[entry.key] = entry.value;
+              tempFoundOn[entry.key] = "synonyms";
               _found = true;
               break;
             }
@@ -124,7 +133,8 @@ class SearchController extends GetxController {
           Map<dynamic, dynamic> antonyms = entry.value["antonyms"];
           for (var ant in antonyms.entries) {
             if (ant.key.toLowerCase().contains(query)) {
-              suggestionMap[entry.key] = entry.value;
+              tempMap[entry.key] = entry.value;
+              tempFoundOn[entry.key] = "antonyms";
               _found = true;
               break;
             }
@@ -134,6 +144,12 @@ class SearchController extends GetxController {
           }
         }
       }
+    }
+    suggestionMap.value = tempMap;
+    if (suggestionMap.length == 0) {
+      Future.delayed(Duration(seconds: 3), () {
+        loading.value = false;
+      });
     }
   }
 

@@ -18,8 +18,11 @@ class BrowseCard extends StatelessWidget {
       required this.engTrans,
       required this.filTrans,
       required this.prnLink,
-      this.showEngTrans = true,
-      required this.onTap});
+      required this.onTap,
+      this.foundOn = "engTrans",
+      required this.otherRelated,
+      required this.synonyms,
+      required this.antonyms});
 
   final AudioPlayer player;
 
@@ -37,8 +40,11 @@ class BrowseCard extends StatelessWidget {
   final List<String> type;
   final List<String> engTrans;
   final List<String> filTrans;
+  final List<String> otherRelated;
+  final List<String> synonyms;
+  final List<String> antonyms;
   final String prnLink;
-  final bool showEngTrans;
+  final String foundOn;
   final VoidCallback onTap;
 
   @override
@@ -109,13 +115,27 @@ class BrowseCard extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       height: 22.5,
                       child: Text(
-                        showEngTrans
+                        foundOn == "engTrans"
                             ? engTrans.length != 0
                                 ? engTrans.join(", ")
                                 : "No translation."
-                            : filTrans.length != 0
-                                ? filTrans.join(", ")
-                                : "No translation.",
+                            : foundOn == "filTrans"
+                                ? filTrans.length != 0
+                                    ? filTrans.join(", ")
+                                    : "No translation."
+                                : foundOn == "otherRelated"
+                                    ? otherRelated.length != 0
+                                        ? otherRelated.join(", ")
+                                        : "No other related words."
+                                    : foundOn == "synonyms"
+                                        ? synonyms.length != 0
+                                            ? synonyms.join(", ")
+                                            : "No synonyms."
+                                        : foundOn == "antonyms"
+                                            ? antonyms.length != 0
+                                                ? antonyms.join(", ")
+                                                : "No antonyms."
+                                            : "",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
