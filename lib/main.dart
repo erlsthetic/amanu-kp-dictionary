@@ -1,4 +1,5 @@
 import 'package:amanu/firebase_options.dart';
+import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
@@ -12,7 +13,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then((value) => Get.put(AuthenticationRepository()))
-      .then((value) => Get.put(ApplicationController()));
+      .then((value) => Get.put(ApplicationController(), permanent: true))
+      .then((value) => Get.put(HomePageController(), permanent: true));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

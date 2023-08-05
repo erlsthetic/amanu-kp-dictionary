@@ -308,6 +308,55 @@ class AddWordPage extends StatelessWidget {
                             Container(
                               width: double.infinity,
                               child: Text(
+                                tRelated,
+                                textAlign: TextAlign.left,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: disabledGrey,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8.0,
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TagsField(
+                                      controller: controller.relatedController,
+                                      width: size.width - (60.0),
+                                      label: tRelated,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          Icons.keyboard_arrow_up,
+                                          color: pureWhite,
+                                        )),
+                                    decoration: BoxDecoration(
+                                      color: primaryOrangeDark,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              child: Text(
                                 tSynonyms,
                                 textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
@@ -526,55 +575,6 @@ class AddWordPage extends StatelessWidget {
                                       controller: controller.antonymController,
                                       width: size.width - (60.0),
                                       label: tAntonyms,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.keyboard_arrow_up,
-                                          color: pureWhite,
-                                        )),
-                                    decoration: BoxDecoration(
-                                      color: primaryOrangeDark,
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Text(
-                                tRelated,
-                                textAlign: TextAlign.left,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: disabledGrey,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: TagsField(
-                                      controller: controller.relatedController,
-                                      width: size.width - (60.0),
-                                      label: tRelated,
                                     ),
                                   ),
                                   SizedBox(
@@ -1322,8 +1322,8 @@ class WordInfoSection extends StatelessWidget {
                                   minLines: 1,
                                   maxLines: 4,
                                   decoration: InputDecoration(
-                                      labelText: tDialect,
-                                      hintText: tDialect,
+                                      labelText: tExample,
+                                      hintText: tExample,
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0))),
@@ -1340,8 +1340,8 @@ class WordInfoSection extends StatelessWidget {
                                   minLines: 1,
                                   maxLines: 4,
                                   decoration: InputDecoration(
-                                      labelText: tExample,
-                                      hintText: tExample,
+                                      labelText: tExTrans,
+                                      hintText: tExTrans,
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0))),
@@ -1356,10 +1356,28 @@ class WordInfoSection extends StatelessWidget {
                                   controller: controller.definitionsFields[i][j]
                                       [3],
                                   minLines: 1,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                      labelText: tDialect,
+                                      hintText: tDialect,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0))),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 60),
+                                child: TextFormField(
+                                  controller: controller.definitionsFields[i][j]
+                                      [4],
+                                  minLines: 1,
                                   maxLines: 4,
                                   decoration: InputDecoration(
-                                      labelText: tExTrans,
-                                      hintText: tExTrans,
+                                      labelText: tOrigin,
+                                      hintText: tOrigin,
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0))),

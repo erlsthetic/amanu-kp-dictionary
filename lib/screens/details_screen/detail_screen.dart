@@ -20,7 +20,8 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DetailController(wordID: wordID));
+    final controller =
+        Get.put(DetailController(wordID: wordID), tag: "_" + wordID);
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Scaffold(
@@ -136,7 +137,7 @@ class DetailScreen extends StatelessWidget {
                           width: double.infinity,
                           child: Text(
                             "/" + controller.prn + "/",
-                            style: TextStyle(fontSize: 14, color: disabledGrey),
+                            style: TextStyle(fontSize: 14, color: cardText),
                           ),
                         ),
                         controller.engTrans.length != 0
@@ -146,6 +147,7 @@ class DetailScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
+                                      padding: EdgeInsets.only(top: 2),
                                       width: 30.0,
                                       child: Text(
                                         "Eng:",
@@ -174,6 +176,7 @@ class DetailScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
+                                      padding: EdgeInsets.only(top: 2),
                                       width: 30.0,
                                       child: Text(
                                         "Fil:",
@@ -201,28 +204,205 @@ class DetailScreen extends StatelessWidget {
                           color: disabledGrey,
                         ),
                         SizedBox(
-                          height: 5.0,
+                          height: 10.0,
                         ),
                         Container(
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                for (var type in controller.types)
+                                for (MapEntry type
+                                    in controller.types.asMap().entries)
                                   Container(
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         TagCreator(
-                                          label: type,
+                                          label: type.value,
                                           color: primaryOrangeDark,
                                           textColor: pureWhite,
+                                          fontSize: 13,
+                                          height: 24,
+                                          padding:
+                                              EdgeInsets.fromLTRB(6, 4, 6, 4),
                                         ),
+                                        for (MapEntry definition in controller
+                                            .definitions[type.key]
+                                            .asMap()
+                                            .entries)
+                                          Container(
+                                            padding: EdgeInsets.only(left: 20),
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5),
+                                                    width: double.infinity,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          (definition.key + 1)
+                                                                  .toString() +
+                                                              ".   ",
+                                                          style: TextStyle(
+                                                              fontSize: 15,
+                                                              color: cardText),
+                                                        ),
+                                                        Expanded(
+                                                          child: Container(
+                                                            width:
+                                                                double.infinity,
+                                                            child: Text.rich(
+                                                              TextSpan(
+                                                                text: definition
+                                                                            .value[
+                                                                        "definition"] +
+                                                                    (definition.value["definition"][definition.value["definition"].length -
+                                                                                1] ==
+                                                                            "."
+                                                                        ? ""
+                                                                        : "."),
+                                                                children: [
+                                                                  definition.value["dialect"] !=
+                                                                              null ||
+                                                                          definition.value["origin"] !=
+                                                                              null
+                                                                      ? TextSpan(
+                                                                          text:
+                                                                              " (from ")
+                                                                      : TextSpan(
+                                                                          text:
+                                                                              ""),
+                                                                  definition.value[
+                                                                              "dialect"] !=
+                                                                          null
+                                                                      ? TextSpan(
+                                                                          text: definition.value[
+                                                                              "dialect"],
+                                                                          style: TextStyle(
+                                                                              fontStyle: FontStyle
+                                                                                  .italic))
+                                                                      : TextSpan(
+                                                                          text:
+                                                                              ""),
+                                                                  definition.value["dialect"] !=
+                                                                              null &&
+                                                                          definition.value["origin"] !=
+                                                                              null
+                                                                      ? TextSpan(
+                                                                          text:
+                                                                              " ")
+                                                                      : TextSpan(
+                                                                          text:
+                                                                              ""),
+                                                                  definition.value[
+                                                                              "origin"] !=
+                                                                          null
+                                                                      ? TextSpan(
+                                                                          text: '"' +
+                                                                              definition.value[
+                                                                                  "origin"] +
+                                                                              '"')
+                                                                      : TextSpan(
+                                                                          text:
+                                                                              ""),
+                                                                  definition.value["dialect"] !=
+                                                                              null ||
+                                                                          definition.value["origin"] !=
+                                                                              null
+                                                                      ? TextSpan(
+                                                                          text:
+                                                                              ")")
+                                                                      : TextSpan(
+                                                                          text:
+                                                                              ""),
+                                                                ],
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15,
+                                                                    color:
+                                                                        cardText),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  definition.value["example"] !=
+                                                          null
+                                                      ? Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left: 40,
+                                                          ),
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 2.5),
+                                                          child: Text(
+                                                            '"' +
+                                                                definition
+                                                                        .value[
+                                                                    "example"] +
+                                                                '"',
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .italic,
+                                                                color:
+                                                                    primaryOrangeDark),
+                                                          ),
+                                                        )
+                                                      : Container(),
+                                                  definition.value[
+                                                              "exampleTranslation"] !=
+                                                          null
+                                                      ? Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                            left: 40,
+                                                          ),
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 2.5),
+                                                          child: Text(
+                                                            '"' +
+                                                                definition
+                                                                        .value[
+                                                                    "exampleTranslation"] +
+                                                                '"',
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .italic,
+                                                                color:
+                                                                    darkerOrange),
+                                                          ),
+                                                        )
+                                                      : Container(),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  )
+                                                ]),
+                                          ),
+                                        SizedBox(
+                                          height: 10,
+                                        )
                                       ],
                                     ),
                                   )
                               ]),
-                        ),
-                        SizedBox(
-                          height: 5.0,
                         ),
                         Divider(
                           color: disabledGrey,
@@ -251,7 +431,7 @@ class DetailScreen extends StatelessWidget {
                                   child: Text(
                                     "No data",
                                     style: TextStyle(
-                                        fontSize: 15, color: disabledGrey),
+                                        fontSize: 15, color: cardText),
                                   ),
                                 )
                               : KulitanPreview(
@@ -260,156 +440,332 @@ class DetailScreen extends StatelessWidget {
                         SizedBox(
                           height: 5.0,
                         ),
-                        Divider(
-                          color: disabledGrey,
-                        ),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text(
-                            tConnectionSec.toUpperCase(),
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w600,
-                              color: darkerOrange,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        controller.synonyms.length != 0
-                            ? Container(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 65.0,
-                                      child: Text(
-                                        "Synonym:",
-                                        style: TextStyle(
-                                            color: primaryOrangeDark,
-                                            fontSize: 14),
+                        controller.otherRelated.length == 0 &&
+                                controller.synonyms.length == 0 &&
+                                controller.antonyms.length == 0
+                            ? Container()
+                            : Column(
+                                children: [
+                                  Divider(
+                                    color: disabledGrey,
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    child: Text(
+                                      tConnectionSec.toUpperCase(),
+                                      textAlign: TextAlign.left,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: darkerOrange,
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Wrap(children: [
-                                          for (var syn
-                                              in controller.synonyms.entries)
-                                            GestureDetector(
-                                              child: TagCreator(label: syn.key),
-                                              onTap: syn.value != null
-                                                  ? Feedback.wrapForTap(() {
-                                                      () => Get.to(DetailScreen(
-                                                          wordID: syn.value));
-                                                    }, context)
-                                                  : () {},
-                                            )
-                                        ]),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Container(),
-                        controller.antonyms.length != 0
-                            ? Container(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 65.0,
-                                      child: Text(
-                                        "Antonym:",
-                                        style: TextStyle(
-                                            color: primaryOrangeDark,
-                                            fontSize: 14),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  controller.otherRelated.length != 0
+                                      ? Container(
+                                          padding: EdgeInsets.only(
+                                              left: 10.0, bottom: 5.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(top: 2),
+                                                width: 65.0,
+                                                child: Text(
+                                                  "Related:",
+                                                  style: TextStyle(
+                                                      color: primaryOrangeDark,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  child: Wrap(children: [
+                                                    for (var rel in controller
+                                                        .otherRelated.entries)
+                                                      GestureDetector(
+                                                        child: TagCreator(
+                                                            label: rel.key),
+                                                        onTap: rel.value != null
+                                                            ? Feedback
+                                                                .wrapForTap(() {
+                                                                //TODO
+                                                                Get.to(
+                                                                    () => new DetailScreen(
+                                                                        wordID: rel
+                                                                            .value),
+                                                                    preventDuplicates:
+                                                                        false);
+                                                              }, context)
+                                                            : () {},
+                                                      )
+                                                  ]),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  controller.synonyms.length != 0
+                                      ? Container(
+                                          padding: EdgeInsets.only(
+                                              left: 10.0, bottom: 5.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(top: 2),
+                                                width: 65.0,
+                                                child: Text(
+                                                  "Synonym:",
+                                                  style: TextStyle(
+                                                      color: primaryOrangeDark,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  child: Wrap(children: [
+                                                    for (var syn in controller
+                                                        .synonyms.entries)
+                                                      GestureDetector(
+                                                        child: TagCreator(
+                                                            label: syn.key),
+                                                        onTap: syn.value != null
+                                                            ? Feedback
+                                                                .wrapForTap(() {
+                                                                () => Get.to(
+                                                                    DetailScreen(
+                                                                        wordID:
+                                                                            syn.value));
+                                                              }, context)
+                                                            : () {},
+                                                      )
+                                                  ]),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  controller.antonyms.length != 0
+                                      ? Container(
+                                          padding: EdgeInsets.only(
+                                              left: 10.0, bottom: 5.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(top: 2),
+                                                width: 65.0,
+                                                child: Text(
+                                                  "Antonym:",
+                                                  style: TextStyle(
+                                                      color: primaryOrangeDark,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  child: Wrap(children: [
+                                                    for (var ant in controller
+                                                        .antonyms.entries)
+                                                      GestureDetector(
+                                                        child: TagCreator(
+                                                            label: ant.key),
+                                                        onTap: ant.value != null
+                                                            ? Feedback
+                                                                .wrapForTap(() {
+                                                                () => Get.to(
+                                                                    DetailScreen(
+                                                                        wordID:
+                                                                            ant.value));
+                                                              }, context)
+                                                            : () {},
+                                                      )
+                                                  ]),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                ],
+                              ),
+                        controller.sources == '' &&
+                                controller.contributors.length == 0 &&
+                                controller.expert.length == 0
+                            ? Container()
+                            : Column(
+                                children: [
+                                  Divider(
+                                    color: disabledGrey,
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    child: Text(
+                                      tReferences.toUpperCase(),
+                                      textAlign: TextAlign.left,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: darkerOrange,
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Wrap(children: [
-                                          for (var ant
-                                              in controller.antonyms.entries)
-                                            GestureDetector(
-                                              child: TagCreator(label: ant.key),
-                                              onTap: ant.value != null
-                                                  ? Feedback.wrapForTap(() {
-                                                      () => Get.to(DetailScreen(
-                                                          wordID: ant.value));
-                                                    }, context)
-                                                  : () {},
-                                            )
-                                        ]),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Container(),
-                        controller.otherRelated.length != 0
-                            ? Container(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 65.0,
-                                      child: Text(
-                                        "Related:",
-                                        style: TextStyle(
-                                            color: primaryOrangeDark,
-                                            fontSize: 14),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Wrap(children: [
-                                          for (var rel in controller
-                                              .otherRelated.entries)
-                                            GestureDetector(
-                                              child: TagCreator(label: rel.key),
-                                              onTap: rel.value != null
-                                                  ? Feedback.wrapForTap(() {
-                                                      () => Get.to(DetailScreen(
-                                                          wordID: rel.value));
-                                                    }, context)
-                                                  : () {},
-                                            )
-                                        ]),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Container(),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Divider(
-                          color: disabledGrey,
-                        ),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Text(
-                            tReferences.toUpperCase(),
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w600,
-                              color: darkerOrange,
-                            ),
-                          ),
-                        ),
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  controller.sources != ''
+                                      ? Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(0, 5, 0, 10),
+                                          padding: EdgeInsets.only(left: 10.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: 65.0,
+                                                child: Text(
+                                                  "Sources:",
+                                                  style: TextStyle(
+                                                      color: primaryOrangeDark,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                    child: Text(
+                                                  controller.sources,
+                                                  style: TextStyle(
+                                                      color: cardText,
+                                                      fontSize: 13),
+                                                )),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  controller.contributors.length != 0
+                                      ? Container(
+                                          padding: EdgeInsets.only(
+                                              left: 10.0, bottom: 5),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(top: 2),
+                                                width: 90.0,
+                                                child: Text(
+                                                  "Contributors:",
+                                                  style: TextStyle(
+                                                      color: primaryOrangeDark,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  child: Wrap(children: [
+                                                    for (var contributor
+                                                        in controller
+                                                            .contributors
+                                                            .entries)
+                                                      GestureDetector(
+                                                        child: TagCreator(
+                                                            isBadge: true,
+                                                            label: contributor
+                                                                .key),
+                                                        onTap: contributor
+                                                                    .value !=
+                                                                null
+                                                            ? Feedback
+                                                                .wrapForTap(() {
+                                                                () => Get.to(
+                                                                    DetailScreen(
+                                                                        wordID:
+                                                                            contributor.value));
+                                                              }, context)
+                                                            : () {},
+                                                      )
+                                                  ]),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  controller.expert.length != 0
+                                      ? Container(
+                                          padding: EdgeInsets.only(left: 10.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(top: 2),
+                                                width: 90.0,
+                                                child: Text(
+                                                  "Approved by:",
+                                                  style: TextStyle(
+                                                      color: primaryOrangeDark,
+                                                      fontSize: 14),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  child: Wrap(children: [
+                                                    for (var expert
+                                                        in controller
+                                                            .expert.entries)
+                                                      GestureDetector(
+                                                        child: TagCreator(
+                                                          color: expertBadge,
+                                                          label: expert.key,
+                                                          isBadge: true,
+                                                          isExpert: true,
+                                                        ),
+                                                        onTap: expert.value !=
+                                                                null
+                                                            ? Feedback
+                                                                .wrapForTap(() {
+                                                                () => Get.to(
+                                                                    DetailScreen(
+                                                                        wordID:
+                                                                            expert.value));
+                                                              }, context)
+                                                            : () {},
+                                                      )
+                                                  ]),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                ],
+                              ),
                         SizedBox(
                           height: 15.0,
                         ),

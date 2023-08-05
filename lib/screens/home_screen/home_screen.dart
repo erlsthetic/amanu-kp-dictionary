@@ -13,18 +13,14 @@ import 'widgets/home_screen_page.dart';
 import 'controllers/home_page_controller.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key, this.pageIndex});
-
+  HomeScreen({super.key});
   final bool isLoggedIn = true;
   final bool isExpert = true;
-  final int? pageIndex;
 
-  final controller = Get.put(HomePageController());
+  final controller = Get.find<HomePageController>();
 
   @override
   Widget build(BuildContext context) {
-    controller.currentIdx.value = pageIndex ?? 0;
-    controller.coastController = CoastController(initialPage: pageIndex ?? 0);
     final _size = MediaQuery.of(context).size;
     final _topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(

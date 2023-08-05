@@ -161,6 +161,7 @@ class ToolsController extends GetxController {
       TextEditingController(),
       TextEditingController(),
       TextEditingController(),
+      TextEditingController(),
     ]);
     definitionListKey[i].currentState?.insertItem(j);
   }
@@ -349,18 +350,22 @@ class ToolsController extends GetxController {
       for (var definition in definitionsFields.value[type.key]) {
         Map<String, dynamic> tempDef = {};
         tempDef["definition"] = definition[0].text;
-        tempDef["dialect"] =
-            definition[1].text.isEmpty || definition[1].text.trim() == ""
+        tempDef["example"] =
+            definition[1].text.isEmpty || definition[2].text.trim() == ""
                 ? null
                 : definition[1].text;
-        tempDef["example"] =
-            definition[2].text.isEmpty || definition[2].text.trim() == ""
+        tempDef["exampleTranslation"] =
+            definition[2].text.isEmpty || definition[3].text.trim() == ""
                 ? null
                 : definition[2].text;
-        tempDef["exampleTranslation"] =
-            definition[3].text.isEmpty || definition[3].text.trim() == ""
+        tempDef["dialect"] =
+            definition[3].text.isEmpty || definition[1].text.trim() == ""
                 ? null
                 : definition[3].text;
+        tempDef["origin"] =
+            definition[4].text.isEmpty || definition[1].text.trim() == ""
+                ? null
+                : definition[4].text;
         tempDefinitions.add(tempDef);
       }
       tempMeaning["definitions"] = tempDefinitions;
@@ -379,9 +384,9 @@ class ToolsController extends GetxController {
       "filipinoTranslations": filTransEmpty.value ? null : filTransList,
       "meanings": meanings,
       "kulitan-form": kulitanStringListGetter,
+      "otherRelated": relatedMap.length == 0 ? null : relatedMap,
       "synonyms": synonymsMap.length == 0 ? null : synonymsMap,
       "antonyms": antonymsMap.length == 0 ? null : antonymsMap,
-      "otherRelated": relatedMap.length == 0 ? null : relatedMap,
       "sources": referencesController.text.isEmpty ||
               referencesController.text.trim() == ''
           ? null

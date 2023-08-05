@@ -123,7 +123,7 @@ class AppDrawer extends StatelessWidget {
                                   padding: EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Colors.yellow.shade600),
+                                      color: expertBadge),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -152,14 +152,13 @@ class AppDrawer extends StatelessWidget {
                                   padding: EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: const Color.fromARGB(
-                                          255, 147, 74, 50)),
+                                      color: contributorBadge),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.star,
+                                      Icon(Icons.person_add_rounded,
                                           size: 14,
                                           color: pureWhite.withOpacity(0.5)),
                                       SizedBox(

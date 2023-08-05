@@ -35,7 +35,7 @@ class ApplicationController extends GetxController {
     });
     checkBookmarks();
     getUserInfo();
-    sortDictionary(dictionaryContent);
+    dictionaryContent = sortDictionary(dictionaryContentUnsorted);
   }
 
   void showConnectionSnackbar(BuildContext context) {
@@ -107,8 +107,8 @@ class ApplicationController extends GetxController {
         final storedVersion = prefs.getString("dictionaryVersion");
         final currentVersion = await getDictionaryVersion();
         if (currentVersion != storedVersion) {
-          dictionaryContent = await downloadDictionary();
-          dictionaryContentAsString = json.encode(dictionaryContent);
+          dictionaryContentUnsorted = await downloadDictionary();
+          dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
           prefs.setString("dictionaryVersion", currentVersion);
           prefs.setString(
               "dictionaryContentAsString", dictionaryContentAsString!);
@@ -116,12 +116,12 @@ class ApplicationController extends GetxController {
           dictionaryVersion = prefs.getString("dictionaryVersion");
           dictionaryContentAsString =
               prefs.getString("dictionaryContentAsString");
-          dictionaryContent = json.decode(dictionaryContentAsString!);
+          dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
         }
       } else {
         dictionaryVersion = await getDictionaryVersion();
-        dictionaryContent = await downloadDictionary();
-        dictionaryContentAsString = json.encode(dictionaryContent);
+        dictionaryContentUnsorted = await downloadDictionary();
+        dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
         prefs.setString("dictionaryVersion", dictionaryVersion!);
         prefs.setString(
             "dictionaryContentAsString", dictionaryContentAsString!);
@@ -131,7 +131,7 @@ class ApplicationController extends GetxController {
         dictionaryVersion = prefs.getString("dictionaryVersion");
         dictionaryContentAsString =
             prefs.getString("dictionaryContentAsString");
-        dictionaryContent = json.decode(dictionaryContentAsString!);
+        dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
       } else {
         noData.value = true;
         dictionaryVersion = null;
@@ -159,13 +159,16 @@ class ApplicationController extends GetxController {
     }
   }
 
-  Map sortDictionary(Map<String, dynamic> map) {
+  SortedMap<Comparable<dynamic>, dynamic> sortDictionary(
+      Map<String, dynamic> map) {
     var sortedMap = new SortedMap(Ordering.byKey());
     sortedMap.addAll(map);
     return sortedMap;
   }
 
-  Map<String, dynamic> dictionaryContent = {
+  var dictionaryContent = {};
+
+  Map<String, dynamic> dictionaryContentUnsorted = {
     "hello": {
       "word": "hello",
       "normalizedWord": "hello",
@@ -180,10 +183,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
             }
           ]
         },
@@ -192,15 +196,17 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
             },
           ]
         }
@@ -210,18 +216,24 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
+      "otherRelated": {"pangangamusta": null},
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
-    "hello0": {
-      "word": "hello0",
+    "hello9": {
+      "word": "hello9",
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
           "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
-      "englishTranslations": ["hello", "hi"],
+      "englishTranslations": null,
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
         {
@@ -229,10 +241,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
             }
           ]
         },
@@ -241,64 +254,17 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
-            },
-          ]
-        }
-      ],
-      "kulitan-form": [
-        ["ka"],
-        ["mu", "s"],
-        []
-      ],
-      "synonyms": {"musta": null, "sup": null},
-      "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
-    },
-    "hello1": {
-      "word": "hello1",
-      "normalizedWord": "hello",
-      "pronunciation": "həˈləʊ",
-      "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
-      "englishTranslations": ["hello", "hi"],
-      "filipinoTranslations": ["kamusta", "musta"],
-      "meanings": [
-        {
-          "partOfSpeech": "noun",
-          "definitions": [
-            {
-              "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
-              "example": "she said her hello to the stranger.",
-              "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
-            }
-          ]
-        },
-        {
-          "partOfSpeech": "exclamation",
-          "definitions": [
-            {
-              "definition": "used as a greeting.",
-              "dialect": null,
-              "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
-            },
-            {
-              "definition": "used as opening in phone calls.",
+              "exampleTranslation": "Kamusta, si Katie ito.",
               "dialect": "somewhere",
-              "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "origin": "hello its me",
             },
           ]
         }
@@ -308,59 +274,16 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
-      "synonyms": {},
-      "antonyms": {"ayoko": null, "bye": null},
       "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
-    },
-    "hello2": {
-      "word": "hello2",
-      "normalizedWord": "hello",
-      "pronunciation": "həˈləʊ",
-      "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
-      "englishTranslations": ["hello", "hi"],
-      "filipinoTranslations": ["kamusta", "musta"],
-      "meanings": [
-        {
-          "partOfSpeech": "noun",
-          "definitions": [
-            {
-              "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
-              "example": "she said her hello to the stranger.",
-              "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
-            }
-          ]
-        },
-        {
-          "partOfSpeech": "exclamation",
-          "definitions": [
-            {
-              "definition": "used as a greeting.",
-              "dialect": null,
-              "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
-            },
-            {
-              "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
-              "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
-            },
-          ]
-        }
-      ],
-      "kulitan-form": [
-        ["ka"],
-        ["mu", "s"],
-        ["ta"]
-      ],
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello3": {
       "word": "hello3",
@@ -369,55 +292,6 @@ class ApplicationController extends GetxController {
       "pronunciationAudio":
           "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
       "englishTranslations": ["hello", "hi"],
-      "filipinoTranslations": [],
-      "meanings": [
-        {
-          "partOfSpeech": "noun",
-          "definitions": [
-            {
-              "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
-              "example": "she said her hello to the stranger.",
-              "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
-            }
-          ]
-        },
-        {
-          "partOfSpeech": "exclamation",
-          "definitions": [
-            {
-              "definition": "used as a greeting.",
-              "dialect": null,
-              "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
-            },
-            {
-              "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
-              "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
-            },
-          ]
-        }
-      ],
-      "kulitan-form": [
-        ["ka"],
-        ["mu", "s"],
-        ["ta"]
-      ],
-      "synonyms": {"musta": null, "sup": null},
-      "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
-    },
-    "hello4": {
-      "word": "hello4",
-      "normalizedWord": "hello",
-      "pronunciation": "həˈləʊ",
-      "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
-      "englishTranslations": [],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
         {
@@ -425,10 +299,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": null,
             }
           ]
         },
@@ -437,15 +312,17 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
             },
           ]
         }
@@ -455,10 +332,16 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
+      "otherRelated": {"pangangamusta": null},
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello5": {
       "word": "hello5",
@@ -474,10 +357,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
             }
           ]
         },
@@ -486,31 +370,40 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
             },
           ]
         }
       ],
       "kulitan-form": [
         ["ka"],
+        [],
         ["mu", "s"],
         ["ta"]
       ],
+      "otherRelated": {"pangangamusta": null},
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
-    "hello6": {
-      "word": "hello6",
+    "hello4": {
+      "word": "hello4",
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
@@ -523,10 +416,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": null,
+              "origin": "something something",
             }
           ]
         },
@@ -535,15 +429,17 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
             },
           ]
         }
@@ -553,10 +449,132 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
+      "otherRelated": {"pangangamusta": null},
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
+    },
+    "hello2": {
+      "word": "hello2",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
       "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "sources": null,
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
+    },
+    "hello1": {
+      "word": "hello1",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "otherRelated": null,
+      "synonyms": null,
+      "antonyms": null,
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello7": {
       "word": "hello7",
@@ -572,10 +590,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
             }
           ]
         },
@@ -584,15 +603,17 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
             },
           ]
         }
@@ -602,10 +623,71 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
+      "otherRelated": {"pangangamusta": null},
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
-      "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": null,
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
+    },
+    "hello6": {
+      "word": "hello6",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "example": "she said her hello to the stranger.",
+              "exampleTranslation":
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
+      "otherRelated": {"pangangamusta": "hello"},
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello8": {
       "word": "hello8",
@@ -621,10 +703,11 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "an utterance of 'hello'; a greeting.",
-              "dialect": "guagua",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
-                  "sinabi niya ang kanyang pangangamusta sa tao."
+                  "sinabi niya ang kanyang pangangamusta sa tao.",
+              "dialect": "guagua",
+              "origin": "something something",
             }
           ]
         },
@@ -633,15 +716,17 @@ class ApplicationController extends GetxController {
           "definitions": [
             {
               "definition": "used as a greeting.",
-              "dialect": null,
               "example": "hello there, Katie!",
-              "exampleTranslation": "kamusta, Katie!"
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
             },
             {
               "definition": "used as opening in phone calls.",
-              "dialect": "somewhere",
               "example": "Hello, this is Katie speaking.",
-              "exampleTranslation": "Kamusta, si Katie ito."
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
             },
           ]
         }
@@ -651,10 +736,73 @@ class ApplicationController extends GetxController {
         ["mu", "s"],
         ["ta"]
       ],
+      "otherRelated": {"pangangamusta": null},
       "synonyms": {"musta": null, "sup": null},
       "antonyms": {"ayoko": null, "bye": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": null,
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
+    },
+    "hello0": {
+      "word": "hello0",
+      "normalizedWord": "hello",
+      "pronunciation": "həˈləʊ",
+      "pronunciationAudio":
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+      "englishTranslations": ["hello", "hi"],
+      "filipinoTranslations": ["kamusta", "musta"],
+      "meanings": [
+        {
+          "partOfSpeech": "noun",
+          "definitions": [
+            {
+              "definition": "an utterance of 'hello'; a greeting.",
+              "example": null,
+              "exampleTranslation": null,
+              "dialect": "guagua",
+              "origin": "something something",
+            }
+          ]
+        },
+        {
+          "partOfSpeech": "exclamation",
+          "definitions": [
+            {
+              "definition": "used as a greeting.",
+              "example": "hello there, Katie!",
+              "exampleTranslation": "kamusta, Katie!",
+              "dialect": null,
+              "origin": null,
+            },
+            {
+              "definition": "used as opening in phone calls.",
+              "example": "Hello, this is Katie speaking.",
+              "exampleTranslation": "Kamusta, si Katie ito.",
+              "dialect": "somewhere",
+              "origin": "hello its me",
+            },
+          ]
+        }
+      ],
+      "kulitan-form": [
+        ["ka"],
+        ["mu", "s"],
+        ["ta"]
+      ],
       "otherRelated": {"pangangamusta": null},
-      "sources": "Only Me. (n.d). Only Me. Sample.com"
-    }
+      "synonyms": {"musta": null, "sup": null},
+      "antonyms": {"ayoko": null, "bye": null},
+      "sources": "Only Me. (n.d). Only Me. Sample.com",
+      "contributors": {
+        "AmanuTeam": "sad8U389JSJsduash872",
+        "AnotherPerson": "dfsd342csdx23423csf"
+      },
+      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "lastModifiedTime": "2023-08-05 (12:40:33)"
+    },
   };
 }

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-const Color primaryOrangeLightShine = Color.fromARGB(255, 237, 183, 147);
+const Color primaryOrangeLightShine = Color(0xFFEDB793);
 const Color primaryOrangeLight = Color(0xfff2a068); //f2a068 fb8c32
 const Color primaryOrangeDark = Color(0xffff7200); //ff7200 fd6f02
-const Color primaryOrangeDarkShine = Color.fromARGB(255, 252, 141, 50);
+const Color primaryOrangeDarkShine = Color(0xFFFC8D32);
 const Color pureWhite = Color(0xffFFFFFF);
 const Color muteBlack = Color(0xff272727);
-const Color darkGrey = Color.fromARGB(255, 75, 75, 75);
-const Color lightGrey = Color.fromARGB(255, 200, 200, 200);
+const Color cardText = Color(0xFF646464);
+const Color darkGrey = Color(0xFF4B4B4B);
+const Color lightGrey = Color(0xFFC8C8C8);
 const Color orangeCard = Color(0xffFBE5D6);
-const Color orangeCardShine = Color.fromARGB(255, 247, 235, 228);
+const Color orangeCardShine = Color(0xFFF7EBE4);
 const Color darkerOrange = Color(0xFFc4570d);
 const Color disabledGrey = Color(0xFF9B9B9B);
+
+const Color contributorBadge = Color(0xFF934A32);
+const Color expertBadge = Color(0xFFFDD835);
 const LinearGradient orangeGradient = LinearGradient(
     begin: Alignment(-0.9, -1),
     end: Alignment(0.9, 1),

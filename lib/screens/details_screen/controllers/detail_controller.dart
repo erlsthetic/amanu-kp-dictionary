@@ -22,20 +22,26 @@ class DetailController extends GetxController {
   List<List<Map<String, dynamic>>> definitions = [];
   var kulitanChars = [];
   String kulitanString = '';
+  Map<dynamic, dynamic> otherRelated = {};
   Map<dynamic, dynamic> synonyms = {};
   Map<dynamic, dynamic> antonyms = {};
-  Map<dynamic, dynamic> otherRelated = {};
-  String references = '';
-  List<Map<String, dynamic>> contributors = [];
-  Map<String, dynamic> expert = {};
-  String lastModified = '';
+  String sources = '';
+  Map<dynamic, dynamic> contributors = {};
+  Map<dynamic, dynamic> expert = {};
+  String lastModifiedTime = '';
 
   void getInformation() {
     word = appController.dictionaryContent[wordID]["word"];
     prn = appController.dictionaryContent[wordID]["pronunciation"];
     prnUrl = appController.dictionaryContent[wordID]["pronunciationAudio"];
-    engTrans = appController.dictionaryContent[wordID]["englishTranslations"];
-    filTrans = appController.dictionaryContent[wordID]["filipinoTranslations"];
+    engTrans =
+        appController.dictionaryContent[wordID]["englishTranslations"] == null
+            ? []
+            : appController.dictionaryContent[wordID]["englishTranslations"];
+    filTrans =
+        appController.dictionaryContent[wordID]["filipinoTranslations"] == null
+            ? []
+            : appController.dictionaryContent[wordID]["filipinoTranslations"];
     meanings = appController.dictionaryContent[wordID]["meanings"];
     for (Map<String, dynamic> meaning in meanings) {
       types.add(meaning["partOfSpeech"]);
@@ -51,10 +57,28 @@ class DetailController extends GetxController {
         kulitanString = kulitanString + syl;
       }
     }
-    synonyms = appController.dictionaryContent[wordID]["synonyms"];
-    antonyms = appController.dictionaryContent[wordID]["antonyms"];
-    otherRelated = appController.dictionaryContent[wordID]["otherRelated"];
-    references = appController.dictionaryContent[wordID]["sources"];
+    otherRelated =
+        appController.dictionaryContent[wordID]["otherRelated"] == null
+            ? {}
+            : appController.dictionaryContent[wordID]["otherRelated"];
+    synonyms = appController.dictionaryContent[wordID]["synonyms"] == null
+        ? {}
+        : appController.dictionaryContent[wordID]["synonyms"];
+    antonyms = appController.dictionaryContent[wordID]["antonyms"] == null
+        ? {}
+        : appController.dictionaryContent[wordID]["antonyms"];
+    sources = appController.dictionaryContent[wordID]["sources"] == null
+        ? ''
+        : appController.dictionaryContent[wordID]["sources"];
+    contributors =
+        appController.dictionaryContent[wordID]["contributors"] == null
+            ? {}
+            : appController.dictionaryContent[wordID]["contributors"];
+    expert = appController.dictionaryContent[wordID]["expert"] == null
+        ? {}
+        : appController.dictionaryContent[wordID]["expert"];
+    lastModifiedTime =
+        appController.dictionaryContent[wordID]["lastModifiedTime"];
   }
 
   RxBool onBookmarks = false.obs;

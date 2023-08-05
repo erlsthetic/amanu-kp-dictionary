@@ -1,4 +1,5 @@
 import 'package:amanu/screens/bookmarks_screen/bookmarks_screen.dart';
+import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/models/drawer_item_model.dart';
@@ -11,6 +12,7 @@ import 'package:get/get.dart';
 
 class DrawerXController extends GetxController {
   static DrawerXController get instance => Get.find();
+  final homeController = Get.find<HomePageController>();
 
   Rx<DrawerItem> currentItem = DrawerItems.home.obs;
 
@@ -21,13 +23,15 @@ class DrawerXController extends GetxController {
   Widget getScreen() {
     switch (currentItem.value) {
       case DrawerItems.home:
-        return HomeScreen(pageIndex: 0);
+        homeController.currentIdx.value = 0;
+        return HomeScreen(); //0
       case DrawerItems.browse:
-        return HomeScreen(pageIndex: 1);
+        homeController.currentIdx.value = 1;
+        return HomeScreen(); //1
       case DrawerItems.bookmarks:
         return BookmarksScreen();
       case DrawerItems.kulitan:
-        return HomeScreen(pageIndex: 1);
+        return HomeScreen(); //1
       case DrawerItems.join:
         return OnBoardingScreen();
       case DrawerItems.profile:
@@ -37,7 +41,7 @@ class DrawerXController extends GetxController {
       case DrawerItems.support:
         return SupportScreen();
       default:
-        return HomeScreen(pageIndex: 0);
+        return HomeScreen();
     }
   }
 }

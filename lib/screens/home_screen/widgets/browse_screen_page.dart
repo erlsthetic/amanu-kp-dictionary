@@ -57,19 +57,15 @@ class BrowseScreenPage extends StatelessWidget {
                           type: type,
                           prnLink: appController.dictionaryContent[wordID]
                               ["pronunciationAudio"],
-                          engTrans: appController
-                                      .dictionaryContent[wordID]
-                                          ["englishTranslations"]
-                                      .length ==
-                                  0
+                          engTrans: appController.dictionaryContent[wordID]
+                                      ["englishTranslations"] ==
+                                  null
                               ? []
                               : appController.dictionaryContent[wordID]
                                   ["englishTranslations"],
-                          filTrans: appController
-                                      .dictionaryContent[wordID]
-                                          ["filipinoTranslations"]
-                                      .length ==
-                                  0
+                          filTrans: appController.dictionaryContent[wordID]
+                                      ["filipinoTranslations"] ==
+                                  null
                               ? []
                               : appController.dictionaryContent[wordID]
                                   ["filipinoTranslations"],
