@@ -25,6 +25,9 @@ class KulitanPreview extends StatelessWidget {
         : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                width: 60,
+              ),
               Column(children: <Widget>[
                 for (var line in kulitanCharList)
                   !(line.join() == '')
@@ -56,34 +59,38 @@ class KulitanPreview extends StatelessWidget {
               SizedBox(
                 width: 5,
               ),
-              Column(children: <Widget>[
-                for (var line in kulitanCharList)
-                  !(line.join() == '')
-                      ? Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          constraints:
-                              BoxConstraints(minWidth: 30, maxWidth: 60),
-                          child: line.length == 0
-                              ? Container()
-                              : Container(
-                                  child: Text(
-                                    line
-                                        .join()
-                                        .replaceAll("aa", "á")
-                                        .replaceAll("ai", "e")
-                                        .replaceAll("au", "o")
-                                        .replaceAll("ii", "í")
-                                        .replaceAll("uu", "ú"),
-                                    style: TextStyle(
-                                        fontSize: 12, color: disabledGrey),
+              Container(
+                alignment: Alignment.centerLeft,
+                width: 60,
+                child: Column(children: <Widget>[
+                  for (var line in kulitanCharList)
+                    !(line.join() == '')
+                        ? Container(
+                            alignment: Alignment.center,
+                            height: 60,
+                            constraints:
+                                BoxConstraints(minWidth: 30, maxWidth: 60),
+                            child: line.length == 0
+                                ? Container()
+                                : Container(
+                                    child: Text(
+                                      line
+                                          .join()
+                                          .replaceAll("aa", "á")
+                                          .replaceAll("ai", "e")
+                                          .replaceAll("au", "o")
+                                          .replaceAll("ii", "í")
+                                          .replaceAll("uu", "ú"),
+                                      style: TextStyle(
+                                          fontSize: 12, color: disabledGrey),
+                                    ),
                                   ),
-                                ),
-                        )
-                      : Container(
-                          height: 50,
-                        ),
-              ]),
+                          )
+                        : Container(
+                            height: 50,
+                          ),
+                ]),
+              ),
             ],
           );
   }

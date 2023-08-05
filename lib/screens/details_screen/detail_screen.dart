@@ -203,6 +203,27 @@ class DetailScreen extends StatelessWidget {
                         SizedBox(
                           height: 5.0,
                         ),
+                        Container(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                for (var type in controller.types)
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        TagCreator(
+                                          label: type,
+                                          color: primaryOrangeDark,
+                                          textColor: pureWhite,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                              ]),
+                        ),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Divider(
                           color: disabledGrey,
                         ),
@@ -280,7 +301,15 @@ class DetailScreen extends StatelessWidget {
                                         child: Wrap(children: [
                                           for (var syn
                                               in controller.synonyms.entries)
-                                            TagCreator(label: syn.key)
+                                            GestureDetector(
+                                              child: TagCreator(label: syn.key),
+                                              onTap: syn.value != null
+                                                  ? Feedback.wrapForTap(() {
+                                                      () => Get.to(DetailScreen(
+                                                          wordID: syn.value));
+                                                    }, context)
+                                                  : () {},
+                                            )
                                         ]),
                                       ),
                                     )
@@ -308,7 +337,15 @@ class DetailScreen extends StatelessWidget {
                                         child: Wrap(children: [
                                           for (var ant
                                               in controller.antonyms.entries)
-                                            TagCreator(label: ant.key)
+                                            GestureDetector(
+                                              child: TagCreator(label: ant.key),
+                                              onTap: ant.value != null
+                                                  ? Feedback.wrapForTap(() {
+                                                      () => Get.to(DetailScreen(
+                                                          wordID: ant.value));
+                                                    }, context)
+                                                  : () {},
+                                            )
                                         ]),
                                       ),
                                     )
@@ -336,7 +373,15 @@ class DetailScreen extends StatelessWidget {
                                         child: Wrap(children: [
                                           for (var rel in controller
                                               .otherRelated.entries)
-                                            TagCreator(label: rel.key)
+                                            GestureDetector(
+                                              child: TagCreator(label: rel.key),
+                                              onTap: rel.value != null
+                                                  ? Feedback.wrapForTap(() {
+                                                      () => Get.to(DetailScreen(
+                                                          wordID: rel.value));
+                                                    }, context)
+                                                  : () {},
+                                            )
                                         ]),
                                       ),
                                     )
