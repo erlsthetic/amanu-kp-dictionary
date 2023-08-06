@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:amanu/components/dictionary_card.dart';
+import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
@@ -25,6 +27,8 @@ class HomeScreenPage extends StatelessWidget {
 
   final drawerController = Get.find<DrawerXController>();
 
+  final controller = Get.find<HomePageController>();
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -44,23 +48,41 @@ class HomeScreenPage extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: Text(
                       tWordOfTheDay.toUpperCase(),
                       style: GoogleFonts.roboto(
                         color: disabledGrey,
-                        fontSize: 14,
+                        fontSize: 15,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
                     width: double.infinity,
-                    height: 3000,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: orangeCard,
                     ),
+                    child: DictionaryCard(
+                        word: controller.word,
+                        prn: controller.prn,
+                        prnUrl: controller.prnUrl,
+                        engTrans: controller.engTrans,
+                        filTrans: controller.filTrans,
+                        meanings: controller.meanings,
+                        types: controller.types,
+                        definitions: controller.definitions,
+                        kulitanChars: controller.kulitanChars,
+                        kulitanString: controller.kulitanString,
+                        otherRelated: controller.otherRelated,
+                        synonyms: controller.synonyms,
+                        antonyms: controller.antonyms,
+                        sources: controller.sources,
+                        contributors: controller.contributors,
+                        expert: controller.expert,
+                        lastModifiedTime: controller.lastModifiedTime,
+                        width: double.infinity),
                   ),
                 ],
               )),

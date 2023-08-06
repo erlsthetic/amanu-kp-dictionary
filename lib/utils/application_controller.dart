@@ -94,6 +94,31 @@ class ApplicationController extends GetxController {
     userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
   }
 
+  // -- WORD OF THE DAY
+  String wordOfTheDay = "hello";
+
+  Future checkWordOfTheDay() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (hasConnection) {
+      if (prefs.containsKey("wordOfTheDay")) {
+        //wordOfTheDay = queryForWOTD
+        final storedVersion = prefs.getString("wordOfTheDay");
+        if (wordOfTheDay != storedVersion) {
+          prefs.setString("wordOfTheDay", wordOfTheDay);
+        }
+      } else {
+        //wordOfTheDay = queryForWOTD
+        prefs.setString("wordOfTheDay", wordOfTheDay);
+      }
+    } else {
+      if (prefs.containsKey("wordOfTheDay")) {
+        wordOfTheDay = prefs.getString("wordOfTheDay")!;
+      } else {
+        wordOfTheDay = "amanu";
+      }
+    }
+  }
+
   // -- DICTIONARY MANAGEMENT
 
   String? dictionaryVersion, dictionaryContentAsString;
