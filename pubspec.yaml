@@ -59,6 +59,7 @@ dependencies:
   themed: ^4.0.0
   coast: ^2.0.2
   shimmer: ^3.0.0
+  flutter_switch: ^0.3.2 
 
   # Field packages
   textfield_tags: ^2.0.2

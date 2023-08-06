@@ -13,10 +13,11 @@ class SearchWordController extends GetxController {
   RxBool searchInRelated = false.obs;
   RxBool searchInSynonyms = false.obs;
   RxBool searchInAntonyms = false.obs;
+  RxBool isAscending = true.obs;
   RxBool loading = false.obs;
 
   RxMap<dynamic, dynamic> suggestionMap = <dynamic, dynamic>{}.obs;
-  Map<String, String> foundOn = {};
+  Map<dynamic, dynamic> foundOn = {};
 
   void searchWord(String input) {
     loading.value = true;
@@ -146,6 +147,7 @@ class SearchWordController extends GetxController {
       }
     }
     suggestionMap.value = tempMap;
+    foundOn = tempFoundOn;
     if (suggestionMap.length == 0) {
       Future.delayed(Duration(seconds: 3), () {
         loading.value = false;
