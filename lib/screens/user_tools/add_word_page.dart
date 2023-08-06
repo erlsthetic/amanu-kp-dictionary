@@ -1,3 +1,7 @@
+import 'package:amanu/components/browse_card.dart';
+import 'package:amanu/components/search_filter.dart';
+import 'package:amanu/components/shimmer_browse_card.dart';
+import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
 import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
 import 'package:amanu/screens/user_tools/widgets/kulitan_editor.dart';
 import 'package:amanu/screens/user_tools/widgets/recording_studio.dart';
@@ -6,6 +10,7 @@ import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/kulitan_preview.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -334,18 +339,29 @@ class AddWordPage extends StatelessWidget {
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.keyboard_arrow_up,
-                                          color: pureWhite,
-                                        )),
-                                    decoration: BoxDecoration(
-                                      color: primaryOrangeDark,
-                                      borderRadius: BorderRadius.circular(30),
+                                  GestureDetector(
+                                    onTap: Feedback.wrapForTap(() {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return ConnectionSelector(
+                                                title: "Select related word",
+                                                size: size);
+                                          });
+                                    }, context),
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            Icons.eject,
+                                            color: pureWhite,
+                                          )),
+                                      decoration: BoxDecoration(
+                                        color: primaryOrangeDark,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -388,146 +404,9 @@ class AddWordPage extends StatelessWidget {
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return Dialog(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30.0)),
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                        color: pureWhite,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    30.0)),
-                                                    margin: EdgeInsets.only(
-                                                        right: 12, top: 12),
-                                                    height: size.height - 150,
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical: 10,
-                                                                  horizontal:
-                                                                      15),
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  primaryOrangeDark,
-                                                              borderRadius:
-                                                                  BorderRadius.vertical(
-                                                                      top: Radius
-                                                                          .circular(
-                                                                              30.0))),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                "Select synonym",
-                                                                style: GoogleFonts.robotoSlab(
-                                                                    fontSize:
-                                                                        24,
-                                                                    color:
-                                                                        pureWhite,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              SizedBox(
-                                                                  height: 10.0),
-                                                              Container(
-                                                                height: 55.0,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            15,
-                                                                        vertical:
-                                                                            12.5),
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(Radius.circular(
-                                                                            30)),
-                                                                    color:
-                                                                        pureWhite),
-                                                                child: Row(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .search,
-                                                                        size:
-                                                                            30.0,
-                                                                        color:
-                                                                            primaryOrangeDark,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            10,
-                                                                      ),
-                                                                      Expanded(
-                                                                          child: Container(
-                                                                              height: double.infinity,
-                                                                              width: double.infinity,
-                                                                              alignment: Alignment.center,
-                                                                              child: TextField(
-                                                                                style: TextStyle(fontSize: 18, color: muteBlack),
-                                                                                decoration: InputDecoration.collapsed(hintText: "Search"),
-                                                                              )))
-                                                                    ]),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child:
-                                                              SingleChildScrollView(
-                                                                  physics:
-                                                                      BouncingScrollPhysics(),
-                                                                  child:
-                                                                      Container(
-                                                                    padding:
-                                                                        EdgeInsets.all(
-                                                                            10.0),
-                                                                    child: Column(
-                                                                        children: []),
-                                                                  )),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    right: 0.0,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        child: CircleAvatar(
-                                                          radius: 18.0,
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          child: Icon(
-                                                              Icons.close,
-                                                              color:
-                                                                  primaryOrangeDark),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
+                                            return ConnectionSelector(
+                                                title: "Select synonym",
+                                                size: size);
                                           });
                                     }, context),
                                     child: Container(
@@ -536,7 +415,7 @@ class AddWordPage extends StatelessWidget {
                                       child: Align(
                                           alignment: Alignment.center,
                                           child: Icon(
-                                            Icons.keyboard_arrow_up,
+                                            Icons.eject,
                                             color: pureWhite,
                                           )),
                                       decoration: BoxDecoration(
@@ -580,18 +459,29 @@ class AddWordPage extends StatelessWidget {
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.keyboard_arrow_up,
-                                          color: pureWhite,
-                                        )),
-                                    decoration: BoxDecoration(
-                                      color: primaryOrangeDark,
-                                      borderRadius: BorderRadius.circular(30),
+                                  GestureDetector(
+                                    onTap: Feedback.wrapForTap(() {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return ConnectionSelector(
+                                                title: "Select antonym",
+                                                size: size);
+                                          });
+                                    }, context),
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            Icons.eject,
+                                            color: pureWhite,
+                                          )),
+                                      decoration: BoxDecoration(
+                                        color: primaryOrangeDark,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -646,6 +536,226 @@ class AddWordPage extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class ConnectionSelector extends StatelessWidget {
+  ConnectionSelector({
+    super.key,
+    required this.size,
+    required this.title,
+    this.onPressed,
+  });
+
+  final Size size;
+  final String title;
+  final VoidCallback? onPressed;
+  final searchController = Get.put(SearchWordController());
+  final AudioPlayer player = AudioPlayer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: pureWhite, borderRadius: BorderRadius.circular(30.0)),
+            margin: EdgeInsets.only(right: 12, top: 12),
+            height: size.height - 150,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  decoration: BoxDecoration(
+                      color: primaryOrangeDark,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(30.0))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        style: GoogleFonts.robotoSlab(
+                            fontSize: 24,
+                            color: pureWhite,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 50.0,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 12.5),
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                  color: pureWhite),
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      size: 30.0,
+                                      color: primaryOrangeDark,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                        child: Container(
+                                            height: double.infinity,
+                                            width: double.infinity,
+                                            alignment: Alignment.center,
+                                            child: TextField(
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: muteBlack),
+                                              decoration:
+                                                  InputDecoration.collapsed(
+                                                      hintText: "Search"),
+                                            ))),
+                                  ]),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          SearchFilter(controller: searchController)
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Obx(
+                    () => Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(bottom: 2),
+                        child: Material(
+                          borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(30.0)),
+                          child: searchController.suggestionMap.length != 0
+                              ? ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  padding: EdgeInsets.only(top: 10, bottom: 20),
+                                  itemCount:
+                                      searchController.suggestionMap.length,
+                                  itemBuilder: (context, index) {
+                                    String wordID = searchController
+                                        .suggestionMap.keys
+                                        .elementAt(index);
+                                    List<String> type = [];
+                                    for (var meaning in searchController
+                                        .suggestionMap[wordID]['meanings']) {
+                                      type.add(meaning["partOfSpeech"]);
+                                    }
+                                    return BrowseCard(
+                                      onTap: onPressed ?? () {},
+                                      wordId: wordID,
+                                      word: searchController
+                                          .suggestionMap[wordID]["word"],
+                                      type: type,
+                                      prnLink:
+                                          searchController.suggestionMap[wordID]
+                                              ["pronunciationAudio"],
+                                      engTrans:
+                                          searchController.suggestionMap[wordID]
+                                                      ["englishTranslations"] ==
+                                                  null
+                                              ? []
+                                              : searchController
+                                                      .suggestionMap[wordID]
+                                                  ["englishTranslations"],
+                                      filTrans: searchController
+                                                      .suggestionMap[wordID]
+                                                  ["filipinoTranslations"] ==
+                                              null
+                                          ? []
+                                          : searchController
+                                                  .suggestionMap[wordID]
+                                              ["filipinoTranslations"],
+                                      otherRelated:
+                                          searchController.suggestionMap[wordID]
+                                                      ["otherRelated"] ==
+                                                  null
+                                              ? []
+                                              : searchController
+                                                  .suggestionMap[wordID]
+                                                      ["otherRelated"]
+                                                  .keys
+                                                  .toList(),
+                                      synonyms: searchController
+                                                      .suggestionMap[wordID]
+                                                  ["synonyms"] ==
+                                              null
+                                          ? []
+                                          : searchController
+                                              .suggestionMap[wordID]["synonyms"]
+                                              .keys
+                                              .toList(),
+                                      antonyms: searchController
+                                                      .suggestionMap[wordID]
+                                                  ["antonyms"] ==
+                                              null
+                                          ? []
+                                          : searchController
+                                              .suggestionMap[wordID]["antonyms"]
+                                              .keys
+                                              .toList(),
+                                      player: player,
+                                      foundOn:
+                                          searchController.foundOn[wordID] ??
+                                              "engTrans",
+                                    );
+                                  },
+                                )
+                              : searchController.loading.value
+                                  ? ListView.builder(
+                                      padding:
+                                          EdgeInsets.only(top: 30, bottom: 100),
+                                      itemCount: 30,
+                                      itemBuilder: (context, index) {
+                                        return ShimmerBrowseCard();
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        "No results found.",
+                                        style: TextStyle(
+                                            fontSize: 16, color: disabledGrey),
+                                      ),
+                                    ),
+                        )),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 0.0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 18.0,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.close, color: primaryOrangeDark),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
