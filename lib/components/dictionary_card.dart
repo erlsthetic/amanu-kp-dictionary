@@ -33,6 +33,7 @@ class DictionaryCard extends StatelessWidget {
     required this.lastModifiedTime,
     this.isPreview = false,
     required this.width,
+    this.audioIsOnline = true,
   });
 
   final double width;
@@ -54,6 +55,7 @@ class DictionaryCard extends StatelessWidget {
   final Map<dynamic, dynamic> contributors;
   final Map<dynamic, dynamic> expert;
   final String lastModifiedTime;
+  final bool audioIsOnline;
 
   final AudioPlayer player = AudioPlayer();
 
@@ -118,12 +120,22 @@ class DictionaryCard extends StatelessWidget {
                     splashColor: primaryOrangeLight,
                     highlightColor: primaryOrangeLight.withOpacity(0.5),
                     onTap: () async {
-                      try {
-                        await player.stop();
-                        await player.play(UrlSource(prnUrl));
-                      } catch (e) {
-                        Helper.errorSnackBar(
-                            title: "Error", message: "Cannot play audio.");
+                      if (audioIsOnline) {
+                        try {
+                          await player.stop();
+                          await player.play(UrlSource(prnUrl));
+                        } catch (e) {
+                          Helper.errorSnackBar(
+                              title: "Error", message: "Cannot play audio.");
+                        }
+                      } else {
+                        try {
+                          await player.stop();
+                          await player.play(DeviceFileSource(prnUrl));
+                        } catch (e) {
+                          Helper.errorSnackBar(
+                              title: "Error", message: "Cannot play audio.");
+                        }
                       }
                     },
                     child: Ink(
@@ -465,12 +477,17 @@ class DictionaryCard extends StatelessWidget {
                                                 : false,
                                           ),
                                           onTap: rel.value != null
-                                              ? Feedback.wrapForTap(() {
-                                                  Get.to(
-                                                      () => new DetailScreen(
-                                                          wordID: rel.value),
-                                                      preventDuplicates: false);
-                                                }, context)
+                                              ? isPreview
+                                                  ? () {}
+                                                  : Feedback.wrapForTap(() {
+                                                      Get.to(
+                                                          () =>
+                                                              new DetailScreen(
+                                                                  wordID: rel
+                                                                      .value),
+                                                          preventDuplicates:
+                                                              false);
+                                                    }, context)
                                               : () {},
                                         )
                                     ]),
@@ -510,12 +527,17 @@ class DictionaryCard extends StatelessWidget {
                                                 : false,
                                           ),
                                           onTap: syn.value != null
-                                              ? Feedback.wrapForTap(() {
-                                                  () => Get.to(
-                                                      () => new DetailScreen(
-                                                          wordID: syn.value),
-                                                      preventDuplicates: false);
-                                                }, context)
+                                              ? isPreview
+                                                  ? () {}
+                                                  : Feedback.wrapForTap(() {
+                                                      () => Get.to(
+                                                          () =>
+                                                              new DetailScreen(
+                                                                  wordID: syn
+                                                                      .value),
+                                                          preventDuplicates:
+                                                              false);
+                                                    }, context)
                                               : () {},
                                         )
                                     ]),
@@ -555,12 +577,17 @@ class DictionaryCard extends StatelessWidget {
                                                 : false,
                                           ),
                                           onTap: ant.value != null
-                                              ? Feedback.wrapForTap(() {
-                                                  () => Get.to(
-                                                      () => new DetailScreen(
-                                                          wordID: ant.value),
-                                                      preventDuplicates: false);
-                                                }, context)
+                                              ? isPreview
+                                                  ? () {}
+                                                  : Feedback.wrapForTap(() {
+                                                      () => Get.to(
+                                                          () =>
+                                                              new DetailScreen(
+                                                                  wordID: ant
+                                                                      .value),
+                                                          preventDuplicates:
+                                                              false);
+                                                    }, context)
                                               : () {},
                                         )
                                     ]),
@@ -652,11 +679,13 @@ class DictionaryCard extends StatelessWidget {
                                               isBadge: true,
                                               label: contributor.key),
                                           onTap: contributor.value != null
-                                              ? Feedback.wrapForTap(() {
-                                                  () => Get.to(DetailScreen(
-                                                      wordID:
-                                                          contributor.value));
-                                                }, context)
+                                              ? isPreview
+                                                  ? () {}
+                                                  : Feedback.wrapForTap(() {
+                                                      () => Get.to(DetailScreen(
+                                                          wordID: contributor
+                                                              .value));
+                                                    }, context)
                                               : () {},
                                         )
                                     ]),
@@ -693,10 +722,13 @@ class DictionaryCard extends StatelessWidget {
                                             isExpert: true,
                                           ),
                                           onTap: expert.value != null
-                                              ? Feedback.wrapForTap(() {
-                                                  () => Get.to(DetailScreen(
-                                                      wordID: expert.value));
-                                                }, context)
+                                              ? isPreview
+                                                  ? () {}
+                                                  : Feedback.wrapForTap(() {
+                                                      () => Get.to(DetailScreen(
+                                                          wordID:
+                                                              expert.value));
+                                                    }, context)
                                               : () {},
                                         )
                                     ]),

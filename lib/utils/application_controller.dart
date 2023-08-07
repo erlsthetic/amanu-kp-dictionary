@@ -151,7 +151,6 @@ class ApplicationController extends GetxController {
 
   Future checkDictionary() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     if (hasConnection) {
       if (prefs.containsKey("dictionaryVersion")) {
         final storedVersion = prefs.getString("dictionaryVersion");
