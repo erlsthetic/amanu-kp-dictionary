@@ -13,15 +13,26 @@ import 'package:sortedmap/sortedmap.dart';
 class ApplicationController extends GetxController {
   static ApplicationController get instance => Get.find();
 
+  // -- INSTANTIATIONS
   final _realtimeDB = FirebaseDatabase.instance.ref();
+
+  // -- ON START RUN
+  @override
+  void onInit() {
+    super.onInit();
+    subscription = listenToConnectionState();
+    checkBookmarks();
+    getUserInfo();
+    dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+  }
+
+  // -- CONNECTION MANAGEMENT
   late StreamSubscription subscription;
   bool hasConnection = false;
   bool isOnWifi = false;
 
-  @override
-  void onInit() {
-    super.onInit();
-    subscription = Connectivity().onConnectivityChanged.listen((result) async {
+  StreamSubscription<dynamic> listenToConnectionState() {
+    return Connectivity().onConnectivityChanged.listen((result) async {
       if (result != ConnectivityResult.none) {
         hasConnection = await InternetConnectionChecker().hasConnection;
       }
@@ -33,9 +44,6 @@ class ApplicationController extends GetxController {
       print("hasConnection: ${hasConnection}");
       print("isOnWiFi: ${isOnWifi}");
     });
-    checkBookmarks();
-    getUserInfo();
-    dictionaryContent = sortDictionary(dictionaryContentUnsorted);
   }
 
   void showConnectionSnackbar(BuildContext context) {
@@ -61,6 +69,8 @@ class ApplicationController extends GetxController {
         shouldIconPulse: true);
   }
 
+  // -- USER MANAGEMENT
+
   bool isLoggedIn = false;
   String? userID, userName, userEmail;
   int? userPhone;
@@ -74,24 +84,28 @@ class ApplicationController extends GetxController {
     } else {
       prefs.setBool("isLoggedIn", isLoggedIn);
     }
-    userID = prefs.containsKey("userID") ? prefs.getString("userID") : null;
-    userName =
-        prefs.containsKey("userName") ? prefs.getString("userName") : null;
-    userEmail =
-        prefs.containsKey("userEmail") ? prefs.getString("userEmail") : null;
-    userPhone =
-        prefs.containsKey("userPhone") ? prefs.getInt("userPhone") : null;
-    userIsExpert = prefs.containsKey("userIsExpert")
-        ? prefs.getBool("userIsExpert")
-        : null;
-    userExpertRequest = prefs.containsKey("userExpertRequest")
-        ? prefs.getBool("userExpertRequest")
-        : null;
-    userFullName = prefs.containsKey("userFullName")
-        ? prefs.getString("userFullName")
-        : null;
-    userBio = prefs.containsKey("userBio") ? prefs.getString("userBio") : null;
-    userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
+    if (isLoggedIn) {
+      userID = prefs.containsKey("userID") ? prefs.getString("userID") : null;
+      userName =
+          prefs.containsKey("userName") ? prefs.getString("userName") : null;
+      userEmail =
+          prefs.containsKey("userEmail") ? prefs.getString("userEmail") : null;
+      userPhone =
+          prefs.containsKey("userPhone") ? prefs.getInt("userPhone") : null;
+      userIsExpert = prefs.containsKey("userIsExpert")
+          ? prefs.getBool("userIsExpert")
+          : null;
+      userExpertRequest = prefs.containsKey("userExpertRequest")
+          ? prefs.getBool("userExpertRequest")
+          : null;
+      userFullName = prefs.containsKey("userFullName")
+          ? prefs.getString("userFullName")
+          : null;
+      userBio =
+          prefs.containsKey("userBio") ? prefs.getString("userBio") : null;
+      userPic =
+          prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
+    }
   }
 
   // -- WORD OF THE DAY
@@ -119,8 +133,19 @@ class ApplicationController extends GetxController {
     }
   }
 
-  // -- DICTIONARY MANAGEMENT
+  // -- BOOKMARKS MANAGEMENT
+  RxList<String> bookmarks = <String>[].obs;
 
+  Future checkBookmarks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("bookmarks")) {
+      bookmarks.value = prefs.getStringList("bookmarks")!;
+    } else {
+      prefs.setStringList("bookmarks", bookmarks);
+    }
+  }
+
+  // -- DICTIONARY MANAGEMENT
   String? dictionaryVersion, dictionaryContentAsString;
   RxBool noData = false.obs;
 
@@ -172,16 +197,6 @@ class ApplicationController extends GetxController {
   Future<String> getDictionaryVersion() async {
     final dictionaryVersion = await _realtimeDB.child('version').get();
     return dictionaryVersion.value as String;
-  }
-
-  RxList<String> bookmarks = <String>[].obs;
-  Future checkBookmarks() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("bookmarks")) {
-      bookmarks.value = prefs.getStringList("bookmarks")!;
-    } else {
-      prefs.setStringList("bookmarks", bookmarks);
-    }
   }
 
   SortedMap<Comparable<dynamic>, dynamic> sortDictionary(
