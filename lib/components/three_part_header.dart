@@ -14,7 +14,8 @@ class ThreePartHeader extends StatelessWidget {
       this.firstOnPressed,
       this.secondOnPressed,
       this.additionalHeight = 0,
-      this.iconWeight = 10});
+      this.iconWeight = 10,
+      this.secondIconDisabled = false});
 
   final Size size;
   final EdgeInsets screenPadding;
@@ -25,6 +26,7 @@ class ThreePartHeader extends StatelessWidget {
   final VoidCallback? firstOnPressed;
   final VoidCallback? secondOnPressed;
   final double? additionalHeight;
+  final bool? secondIconDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -88,23 +90,25 @@ class ThreePartHeader extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Hero(
-                      tag: 'secondButton',
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          onTap: Feedback.wrapForTap(
-                              secondOnPressed ?? () {}, context),
-                          child: Icon(
-                            secondIcon ?? Icons.help,
-                            size: 30,
-                            color: pureWhite,
+                    secondIconDisabled ?? false
+                        ? Container(width: 30, height: 30)
+                        : Hero(
+                            tag: 'secondButton',
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                onTap: Feedback.wrapForTap(
+                                    secondOnPressed ?? () {}, context),
+                                child: Icon(
+                                  secondIcon ?? Icons.help,
+                                  size: 30,
+                                  color: pureWhite,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                   ]),
             )),
       ],

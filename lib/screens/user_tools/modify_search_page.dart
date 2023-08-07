@@ -1,7 +1,12 @@
+import 'package:amanu/components/search_filter.dart';
+import 'package:amanu/components/search_result_list.dart';
+import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ModifySearchPage extends StatelessWidget {
   ModifySearchPage({
@@ -9,6 +14,9 @@ class ModifySearchPage extends StatelessWidget {
     required this.editMode,
   });
   final bool editMode;
+
+  final AudioPlayer player = AudioPlayer();
+  final controller = Get.put(SearchWordController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,35 +26,30 @@ class ModifySearchPage extends StatelessWidget {
         body: Stack(
       children: [
         Positioned(
-          top: screenPadding.top + 50,
+          top: screenPadding.top + 50 + 64,
           left: 0,
           right: 0,
-          child: Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              height: size.height - screenPadding.top - 50,
+          child: SearchResultList(
+              height: size.height - 110,
               width: size.width,
-              child: Column(
-                children: [
-                  SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                      child: Column(
-                        children: [],
-                      ),
-                    ),
-                  ),
-                ],
-              )),
+              size: size,
+              controller: controller,
+              player: player),
         ),
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
           title: editMode ? tEditWord : tDeleteWord,
           additionalHeight: 64.0,
+          secondIconDisabled: true,
+        ),
+        Positioned(
+          top: screenPadding.top + 20,
+          right: 20,
+          child: Hero(
+              tag: 'secondButton',
+              child: Transform.scale(
+                  scale: 1.2, child: SearchFilter(controller: controller))),
         ),
         Positioned(
           top: screenPadding.top + 65,
@@ -78,6 +81,7 @@ class ModifySearchPage extends StatelessWidget {
                         style: TextStyle(fontSize: 18, color: muteBlack),
                         decoration:
                             InputDecoration.collapsed(hintText: "Search"),
+                        onChanged: (value) => controller.searchWord(value),
                       )))
             ]),
           ),

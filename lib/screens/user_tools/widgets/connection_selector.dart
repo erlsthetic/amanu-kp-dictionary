@@ -1,6 +1,5 @@
-import 'package:amanu/components/browse_card.dart';
 import 'package:amanu/components/search_filter.dart';
-import 'package:amanu/components/shimmer_browse_card.dart';
+import 'package:amanu/components/search_result_list.dart';
 import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -87,6 +86,9 @@ class ConnectionSelector extends StatelessWidget {
                                               decoration:
                                                   InputDecoration.collapsed(
                                                       hintText: "Search"),
+                                              onChanged: (value) =>
+                                                  searchController
+                                                      .searchWord(value),
                                             ))),
                                   ]),
                             ),
@@ -101,108 +103,18 @@ class ConnectionSelector extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Obx(
-                    () => Container(
-                        height: double.infinity,
-                        width: double.infinity,
-                        padding: EdgeInsets.only(bottom: 2),
-                        child: Material(
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(30.0)),
-                          child: searchController.suggestionMap.length != 0
-                              ? ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  padding: EdgeInsets.only(top: 10, bottom: 20),
-                                  itemCount:
-                                      searchController.suggestionMap.length,
-                                  itemBuilder: (context, index) {
-                                    String wordID = searchController
-                                        .suggestionMap.keys
-                                        .elementAt(index);
-                                    List<String> type = [];
-                                    for (var meaning in searchController
-                                        .suggestionMap[wordID]['meanings']) {
-                                      type.add(meaning["partOfSpeech"]);
-                                    }
-                                    return BrowseCard(
-                                      onTap: onPressed ?? () {},
-                                      wordId: wordID,
-                                      word: searchController
-                                          .suggestionMap[wordID]["word"],
-                                      type: type,
-                                      prnLink:
-                                          searchController.suggestionMap[wordID]
-                                              ["pronunciationAudio"],
-                                      engTrans:
-                                          searchController.suggestionMap[wordID]
-                                                      ["englishTranslations"] ==
-                                                  null
-                                              ? []
-                                              : searchController
-                                                      .suggestionMap[wordID]
-                                                  ["englishTranslations"],
-                                      filTrans: searchController
-                                                      .suggestionMap[wordID]
-                                                  ["filipinoTranslations"] ==
-                                              null
-                                          ? []
-                                          : searchController
-                                                  .suggestionMap[wordID]
-                                              ["filipinoTranslations"],
-                                      otherRelated:
-                                          searchController.suggestionMap[wordID]
-                                                      ["otherRelated"] ==
-                                                  null
-                                              ? []
-                                              : searchController
-                                                  .suggestionMap[wordID]
-                                                      ["otherRelated"]
-                                                  .keys
-                                                  .toList(),
-                                      synonyms: searchController
-                                                      .suggestionMap[wordID]
-                                                  ["synonyms"] ==
-                                              null
-                                          ? []
-                                          : searchController
-                                              .suggestionMap[wordID]["synonyms"]
-                                              .keys
-                                              .toList(),
-                                      antonyms: searchController
-                                                      .suggestionMap[wordID]
-                                                  ["antonyms"] ==
-                                              null
-                                          ? []
-                                          : searchController
-                                              .suggestionMap[wordID]["antonyms"]
-                                              .keys
-                                              .toList(),
-                                      player: player,
-                                      foundOn:
-                                          searchController.foundOn[wordID] ??
-                                              "engTrans",
-                                    );
-                                  },
-                                )
-                              : searchController.loading.value
-                                  ? ListView.builder(
-                                      padding:
-                                          EdgeInsets.only(top: 30, bottom: 100),
-                                      itemCount: 30,
-                                      itemBuilder: (context, index) {
-                                        return ShimmerBrowseCard();
-                                      },
-                                    )
-                                  : Center(
-                                      child: Text(
-                                        "No results found.",
-                                        style: TextStyle(
-                                            fontSize: 16, color: disabledGrey),
-                                      ),
-                                    ),
-                        )),
+                  child: SearchResultList(
+                    size: size,
+                    controller: searchController,
+                    player: player,
+                    height: double.infinity,
+                    width: double.infinity,
+                    padding: EdgeInsets.only(bottom: 2),
+                    contentPadding: EdgeInsets.only(top: 10, bottom: 20),
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(30.0)),
                   ),
-                ),
+                )
               ],
             ),
           ),
