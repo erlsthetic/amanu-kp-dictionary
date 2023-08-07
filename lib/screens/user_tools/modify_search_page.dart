@@ -1,3 +1,4 @@
+import 'package:amanu/components/search_field.dart';
 import 'package:amanu/components/search_filter.dart';
 import 'package:amanu/components/search_result_list.dart';
 import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
@@ -72,17 +73,7 @@ class ModifySearchPage extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Expanded(
-                  child: Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      child: TextField(
-                        style: TextStyle(fontSize: 18, color: muteBlack),
-                        decoration:
-                            InputDecoration.collapsed(hintText: "Search"),
-                        onChanged: (value) => controller.searchWord(value),
-                      )))
+              Expanded(child: SearchField(controller: controller))
             ]),
           ),
         ),

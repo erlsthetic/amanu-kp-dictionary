@@ -1,4 +1,5 @@
 import 'package:amanu/components/browse_card.dart';
+import 'package:amanu/components/search_field.dart';
 import 'package:amanu/components/search_filter.dart';
 import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
@@ -188,17 +189,7 @@ class SearchScreen extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Expanded(
-                  child: Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      child: TextField(
-                        style: TextStyle(fontSize: 18, color: muteBlack),
-                        decoration:
-                            InputDecoration.collapsed(hintText: "Search"),
-                        onChanged: (value) => controller.searchWord(value),
-                      )))
+              Expanded(child: SearchField(controller: controller))
             ]),
           ),
         ),
