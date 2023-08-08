@@ -37,12 +37,6 @@ class PreviewController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-  }
-
   final String wordID;
   final String word;
   final String normalizedWord;

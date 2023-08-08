@@ -1,4 +1,4 @@
-import 'package:amanu/screens/user_tools/add_word_page.dart';
+import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/components/floating_button.dart';
