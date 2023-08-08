@@ -406,7 +406,7 @@ class DictionaryCard extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(30, 0, 30, 10),
+            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
             width: double.infinity,
             child: kulitanString == ''
                 ? Container(

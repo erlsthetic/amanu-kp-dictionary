@@ -162,6 +162,7 @@ class PreviewPage extends StatelessWidget {
               screenPadding: screenPadding,
               title: controller.word,
               secondIcon: Icons.bookmark_outline_rounded,
+              secondIconDisabled: true,
             ),
           ],
         ));

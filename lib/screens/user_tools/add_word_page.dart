@@ -97,6 +97,21 @@ class AddWordPage extends StatelessWidget {
                             SizedBox(
                               height: 15.0,
                             ),
+                            Container(
+                              width: double.infinity,
+                              child: Text(
+                                tPronunciation + " *",
+                                textAlign: TextAlign.left,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: disabledGrey,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8.0,
+                            ),
                             TextFormField(
                               controller: controller.phoneticController,
                               validator: (value) {
@@ -115,21 +130,6 @@ class AddWordPage extends StatelessWidget {
                             ),
                             SizedBox(
                               height: 15.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Text(
-                                tPronunciation + " *",
-                                textAlign: TextAlign.left,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: disabledGrey,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8.0,
                             ),
                             StudioFormField(
                                 controller: controller,
