@@ -30,7 +30,7 @@ class AddWordPage extends StatelessWidget {
             controller.submitWord();
           },
           label: Text(
-            tAddWord.toUpperCase(),
+            tProceed.toUpperCase(),
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 16.0,
@@ -39,7 +39,7 @@ class AddWordPage extends StatelessWidget {
               letterSpacing: 1.0,
             ),
           ),
-          icon: Icon(Icons.add),
+          icon: Icon(Icons.keyboard_double_arrow_right),
         ),
         body: Stack(
           children: [
@@ -345,8 +345,9 @@ class AddWordPage extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return ConnectionSelector(
-                                                title: "Select related word",
-                                                size: size);
+                                              title: "Select related word",
+                                              size: size,
+                                            );
                                           });
                                     }, context),
                                     child: Container(

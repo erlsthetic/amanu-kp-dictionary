@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:amanu/utils/application_controller.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart' as p;
 
 class PreviewController extends GetxController {
   PreviewController({
     required this.wordID,
     required this.word,
+    required this.normalizedWord,
     required this.prn,
     required this.prnPath,
     required this.engTrans,
@@ -19,14 +24,28 @@ class PreviewController extends GetxController {
     required this.contributors,
     required this.expert,
     required this.lastModifiedTime,
+    required this.definitions,
+    required this.kulitanString,
   });
 
   static PreviewController get instance => Get.find();
 
   final appController = Get.find<ApplicationController>();
 
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+  }
+
   final String wordID;
   final String word;
+  final String normalizedWord;
   final String prn;
   final String prnPath;
   final List<dynamic> engTrans;
@@ -41,28 +60,19 @@ class PreviewController extends GetxController {
   final Map<dynamic, dynamic> contributors;
   final Map<dynamic, dynamic> expert;
   final String lastModifiedTime;
+  final List<List<Map<String, dynamic>>> definitions;
+  final String kulitanString;
 
-  List<List<Map<String, dynamic>>> definitions = [];
-  String kulitanString = '';
-
-  void processForPreview() {
-    for (Map<String, dynamic> meaning in meanings) {
-      types.add(meaning["partOfSpeech"]);
-      List<Map<String, dynamic>> tempDef = [];
-      for (Map<String, dynamic> definition in meaning["definitions"]) {
-        tempDef.add(definition);
-      }
-      definitions.add(tempDef);
-    }
-    for (var line in kulitanChars) {
-      for (var syl in line) {
-        kulitanString = kulitanString + syl;
-      }
-    }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
+  Future<String> uploadAudio(String wordID, String audioPath) async {
+    final file = File(audioPath);
+    final ext = p.extension(audioPath);
+    final path = 'dictionary/${wordID}/audio${ext}';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    await ref.putFile(file);
+    String audioUrl = '';
+    await ref.getDownloadURL().then((downloadUrl) {
+      audioUrl = downloadUrl;
+    });
+    return audioUrl;
   }
 }

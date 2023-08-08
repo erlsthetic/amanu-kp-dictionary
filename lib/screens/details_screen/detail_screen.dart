@@ -1,6 +1,7 @@
 import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/screens/details_screen/controllers/detail_controller.dart';
 import 'package:amanu/components/three_part_header.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,25 +37,32 @@ class DetailScreen extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-                    child: DictionaryCard(
-                        word: controller.word,
-                        prn: controller.prn,
-                        prnUrl: controller.prnUrl,
-                        engTrans: controller.engTrans,
-                        filTrans: controller.filTrans,
-                        meanings: controller.meanings,
-                        types: controller.types,
-                        definitions: controller.definitions,
-                        kulitanChars: controller.kulitanChars,
-                        kulitanString: controller.kulitanString,
-                        otherRelated: controller.otherRelated,
-                        synonyms: controller.synonyms,
-                        antonyms: controller.antonyms,
-                        sources: controller.sources,
-                        contributors: controller.contributors,
-                        expert: controller.expert,
-                        lastModifiedTime: controller.lastModifiedTime,
-                        width: double.infinity)),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: orangeCard,
+                      ),
+                      child: DictionaryCard(
+                          word: controller.word,
+                          prn: controller.prn,
+                          prnUrl: controller.prnUrl,
+                          engTrans: controller.engTrans,
+                          filTrans: controller.filTrans,
+                          meanings: controller.meanings,
+                          types: controller.types,
+                          definitions: controller.definitions,
+                          kulitanChars: controller.kulitanChars,
+                          kulitanString: controller.kulitanString,
+                          otherRelated: controller.otherRelated,
+                          synonyms: controller.synonyms,
+                          antonyms: controller.antonyms,
+                          sources: controller.sources,
+                          contributors: controller.contributors,
+                          expert: controller.expert,
+                          lastModifiedTime: controller.lastModifiedTime,
+                          width: double.infinity),
+                    )),
               )),
         ),
         Obx(

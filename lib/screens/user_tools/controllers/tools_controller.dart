@@ -1,10 +1,8 @@
-import 'dart:io';
+import 'package:amanu/screens/user_tools/widgets/preview_page.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as p;
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
@@ -194,39 +192,28 @@ class ToolsController extends GetxController {
 
   Map<String, String> importedSynonyms = {};
   Map<String, dynamic> synonymsMap = {};
-  void getSynonyms() {
-    synonymsMap.clear();
-    for (String word in synonymController.getTags!) {
-      if (importedSynonyms.containsKey(word)) {
-        synonymsMap[word] = importedSynonyms[word]!;
-      } else {
-        synonymsMap[word] = null;
-      }
-    }
-  }
-
   Map<String, String> importedAntonyms = {};
   Map<String, dynamic> antonymsMap = {};
-  void getAntonyms() {
-    antonymsMap.clear();
-    for (String word in antonymController.getTags!) {
-      if (importedAntonyms.containsKey(word)) {
-        antonymsMap[word] = importedAntonyms[word]!;
-      } else {
-        antonymsMap[word] = null;
-      }
-    }
-  }
-
   Map<String, String> importedRelated = {};
   Map<String, dynamic> relatedMap = {};
-  void getRelated() {
-    relatedMap.clear();
-    for (String word in relatedController.getTags!) {
-      if (importedRelated.containsKey(word)) {
-        relatedMap[word] = importedRelated[word]!;
+
+  void addAsImported(Map<String, String> importedMap,
+      TextfieldTagsController controller, String word, String wordID) {
+    controller.onChanged(word);
+    importedMap[word] = wordID;
+    print(importedMap);
+    List<String> currentTags = controller.getTags!;
+    print(currentTags);
+  }
+
+  void getTextFieldTagsData(TextfieldTagsController controller,
+      Map<String, String> importedMap, Map<String, dynamic> saveMap) {
+    saveMap.clear();
+    for (String word in controller.getTags!) {
+      if (importedMap.containsKey(word)) {
+        saveMap[word] = importedMap[word]!;
       } else {
-        relatedMap[word] = null;
+        saveMap[word] = null;
       }
     }
   }
@@ -267,19 +254,6 @@ class ToolsController extends GetxController {
     }
   }
 
-  Future<String> uploadAudio(String wordID, String audioPath) async {
-    final file = File(audioPath);
-    final ext = p.extension(audioPath);
-    final path = 'dictionary/${wordID}/audio${ext}';
-    final ref = FirebaseStorage.instance.ref().child(path);
-    await ref.putFile(file);
-    String audioUrl = '';
-    await ref.getDownloadURL().then((downloadUrl) {
-      audioUrl = downloadUrl;
-    });
-    return audioUrl;
-  }
-
   @override
   void onInit() {
     super.onInit();
@@ -316,12 +290,11 @@ class ToolsController extends GetxController {
     getFilipinoTranslations();
     validateFilTrans();
     validateKulitan();
-    getAntonyms();
-    getRelated();
-    getSynonyms();
+    getTextFieldTagsData(relatedController, importedRelated, relatedMap);
+    getTextFieldTagsData(synonymController, importedSynonyms, synonymsMap);
+    getTextFieldTagsData(antonymController, importedAntonyms, antonymsMap);
 
     final informationValid = addWordFormKey.currentState!.validate();
-
     if (!informationValid ||
         wordController.text.isEmpty ||
         phoneticController.text.isEmpty ||
@@ -332,9 +305,8 @@ class ToolsController extends GetxController {
     addWordFormKey.currentState!.save();
 
     String normalizedWord = normalizeWord(wordController.text.trim());
-    String wordKey = await availableKey(normalizedWord);
-
-    String pronunciationURL = await uploadAudio(wordKey, audioPath);
+    //String wordKey = await availableKey(normalizedWord);
+    String wordKey = normalizedWord;
 
     List<Map<String, dynamic>> meanings = [];
 
@@ -375,11 +347,12 @@ class ToolsController extends GetxController {
     final String timestamp =
         DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
 
+    /*
     Map<String, dynamic> details = {
       "word": wordController.text.trim(),
       "normalizedWord": normalizedWord,
       "pronunciation": phoneticController.text.trim(),
-      "pronunciationAudio": pronunciationURL,
+      "pronunciationAudio": audioPath,
       "englishTranslations": engTransEmpty.value ? null : engTransList,
       "filipinoTranslations": filTransEmpty.value ? null : filTransList,
       "meanings": meanings,
@@ -395,7 +368,49 @@ class ToolsController extends GetxController {
       "expert": null,
       "lastModifiedTime": timestamp
     };
+    */
 
-    print(details);
+    List<String> types = [];
+    List<List<Map<String, dynamic>>> definitions = [];
+
+    for (Map<String, dynamic> meaning in meanings) {
+      types.add(meaning["partOfSpeech"]);
+      List<Map<String, dynamic>> tempDef = [];
+      for (Map<String, dynamic> definition in meaning["definitions"]) {
+        tempDef.add(definition);
+      }
+      definitions.add(tempDef);
+    }
+    String kulitanString = '';
+    for (var line in kulitanStringListGetter) {
+      for (var syl in line) {
+        kulitanString = kulitanString + syl;
+      }
+    }
+
+    Get.to(() => PreviewPage(
+          wordID: wordKey,
+          word: wordController.text.trim(),
+          normalizedWord: normalizedWord,
+          prn: phoneticController.text.trim(),
+          prnPath: audioPath,
+          engTrans: engTransEmpty.value ? null : engTransList,
+          filTrans: filTransEmpty.value ? null : filTransList,
+          meanings: meanings,
+          types: typeFields,
+          kulitanChars: kulitanStringListGetter,
+          otherRelated: relatedMap.length == 0 ? null : relatedMap,
+          synonyms: synonymsMap.length == 0 ? null : synonymsMap,
+          antonyms: antonymsMap.length == 0 ? null : antonymsMap,
+          sources: referencesController.text.isEmpty ||
+                  referencesController.text.trim() == ''
+              ? null
+              : referencesController.text.trim(),
+          contributors: null,
+          expert: null,
+          lastModifiedTime: timestamp,
+          definitions: definitions,
+          kulitanString: kulitanString,
+        ));
   }
 }
