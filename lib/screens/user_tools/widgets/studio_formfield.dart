@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class StudioFormField extends FormField {
   StudioFormField(
-      {required ToolsController controller,
+      {required ModifyController controller,
       required FormFieldSetter onSaved,
       required FormFieldValidator validator,
       AutovalidateMode mode = AutovalidateMode.onUserInteraction})

@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 class StudioController extends GetxController {
   static StudioController get instance => Get.find();
 
-  final addPageController = Get.find<ToolsController>();
+  final addPageController = Get.find<ModifyController>();
 
   late final RecorderController recorderController;
   late final PlayerController playerController;

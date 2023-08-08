@@ -16,7 +16,7 @@ class AddWordPage extends StatelessWidget {
     super.key,
   });
 
-  final controller = Get.put(ToolsController());
+  final controller = Get.put(ModifyController());
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ class WordInfoSection extends StatelessWidget {
     required this.controller,
   });
 
-  final ToolsController controller;
+  final ModifyController controller;
 
   @override
   Widget build(BuildContext context) {

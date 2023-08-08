@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
-class ToolsController extends GetxController {
-  static ToolsController get instance => Get.find();
+class ModifyController extends GetxController {
+  static ModifyController get instance => Get.find();
 
   RxBool isProcessing = false.obs;
 
