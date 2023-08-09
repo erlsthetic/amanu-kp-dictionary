@@ -1,6 +1,8 @@
 import 'package:amanu/components/browse_card.dart';
 import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
+import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
+import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class SearchResultList extends StatelessWidget {
     this.padding,
     this.onTap,
     this.contentPadding,
+    required this.category,
   });
 
   final Size size;
@@ -29,6 +32,7 @@ class SearchResultList extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final BorderRadiusGeometry? borderRadius;
   final VoidCallback? onTap;
+  final String category;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,42 @@ class SearchResultList extends StatelessWidget {
                         type.add(meaning["partOfSpeech"]);
                       }
                       return BrowseCard(
-                        onTap: onTap ?? () {},
+                        onTap: () {
+                          if (category == "edit") {
+                            Get.to(() => ModifyWordPage(
+                                  editMode: true,
+                                  editWordID: wordID,
+                                ));
+                          } else if (category == "delete") {
+                          } else if (category == "related") {
+                            final modifyController =
+                                Get.find<ModifyController>();
+                            modifyController.addAsImported(
+                                modifyController.importedRelated,
+                                modifyController.relatedController,
+                                controller.suggestionMap[wordID]["word"],
+                                wordID);
+                            Navigator.of(context).pop();
+                          } else if (category == "synonyms") {
+                            final modifyController =
+                                Get.find<ModifyController>();
+                            modifyController.addAsImported(
+                                modifyController.importedSynonyms,
+                                modifyController.synonymController,
+                                controller.suggestionMap[wordID]["word"],
+                                wordID);
+                            Navigator.of(context).pop();
+                          } else if (category == "antonyms") {
+                            final modifyController =
+                                Get.find<ModifyController>();
+                            modifyController.addAsImported(
+                                modifyController.importedRelated,
+                                modifyController.relatedController,
+                                controller.suggestionMap[wordID]["word"],
+                                wordID);
+                            Navigator.of(context).pop();
+                          }
+                        },
                         wordId: wordID,
                         word: controller.suggestionMap[wordID]["word"],
                         type: type,

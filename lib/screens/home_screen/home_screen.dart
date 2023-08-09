@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
             onPressed: (index) {
               print("Clicked $index");
               if (index == 0) {
-                Get.to(() => AddWordPage());
+                Get.to(() => ModifyWordPage());
               } else if (index == 1) {
                 Get.to(() => ModifySearchPage(editMode: true));
               } else if (index == 2) {

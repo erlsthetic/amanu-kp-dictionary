@@ -13,12 +13,12 @@ class ConnectionSelector extends StatelessWidget {
     super.key,
     required this.size,
     required this.title,
-    this.onPressed,
+    required this.category,
   });
 
   final Size size;
   final String title;
-  final VoidCallback? onPressed;
+  final String category;
   final searchController = Get.put(SearchWordController());
   final AudioPlayer player = AudioPlayer();
 
@@ -92,16 +92,16 @@ class ConnectionSelector extends StatelessWidget {
                 ),
                 Expanded(
                   child: SearchResultList(
-                    size: size,
-                    controller: searchController,
-                    player: player,
-                    height: double.infinity,
-                    width: double.infinity,
-                    padding: EdgeInsets.only(bottom: 2),
-                    contentPadding: EdgeInsets.only(top: 10, bottom: 20),
-                    borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(30.0)),
-                  ),
+                      size: size,
+                      controller: searchController,
+                      player: player,
+                      height: double.infinity,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(bottom: 2),
+                      contentPadding: EdgeInsets.only(top: 10, bottom: 20),
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(30.0)),
+                      category: category),
                 )
               ],
             ),

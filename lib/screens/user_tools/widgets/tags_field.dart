@@ -1,5 +1,7 @@
+import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class TagsField extends StatelessWidget {
@@ -8,11 +10,13 @@ class TagsField extends StatelessWidget {
     required this.controller,
     required this.label,
     required this.width,
+    required this.category,
   });
 
   final double width;
   final TextfieldTagsController controller;
   final String label;
+  final String category;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +90,22 @@ class TagsField extends StatelessWidget {
                                   ),
                                   onTap: () {
                                     onTagDelete(tag);
+                                    if (category == 'related') {
+                                      final modifyController =
+                                          Get.find<ModifyController>();
+                                      modifyController.importedRelated
+                                          .remove(tag);
+                                    } else if (category == 'synonyms') {
+                                      final modifyController =
+                                          Get.find<ModifyController>();
+                                      modifyController.importedSynonyms
+                                          .remove(tag);
+                                    } else if (category == 'antonyms') {
+                                      final modifyController =
+                                          Get.find<ModifyController>();
+                                      modifyController.importedAntonyms
+                                          .remove(tag);
+                                    }
                                   },
                                 )
                               ],

@@ -31,11 +31,13 @@ class ModifySearchPage extends StatelessWidget {
           left: 0,
           right: 0,
           child: SearchResultList(
-              height: size.height - 110,
-              width: size.width,
-              size: size,
-              controller: controller,
-              player: player),
+            height: size.height - 110,
+            width: size.width,
+            size: size,
+            controller: controller,
+            player: player,
+            category: editMode ? "edit" : "delete",
+          ),
         ),
         ThreePartHeader(
           size: size,

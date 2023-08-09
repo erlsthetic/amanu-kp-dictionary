@@ -8,7 +8,12 @@ import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class ModifyController extends GetxController {
+  ModifyController({this.editMode = false, this.editWordID});
+  final bool editMode;
+  final String? editWordID;
   static ModifyController get instance => Get.find();
+
+  void populateFields() {}
 
   RxBool isProcessing = false.obs;
 
@@ -32,7 +37,7 @@ class ModifyController extends GetxController {
 
   final GlobalKey<FormState> addWordFormKey = GlobalKey<FormState>();
 
-  late final PlayerController playerController;
+  late PlayerController playerController;
   RxBool rebuildAudio = true.obs;
   String audioPath = "";
   RxBool isPlaying = false.obs;
@@ -199,7 +204,7 @@ class ModifyController extends GetxController {
 
   void addAsImported(Map<String, String> importedMap,
       TextfieldTagsController controller, String word, String wordID) {
-    controller.onChanged(word);
+    controller..addTag = word;
     importedMap[word] = wordID;
     print(importedMap);
     List<String> currentTags = controller.getTags!;
@@ -267,6 +272,7 @@ class ModifyController extends GetxController {
     synonymController = TextfieldTagsController();
     antonymController = TextfieldTagsController();
     referencesController = TextEditingController();
+    if (editMode) {}
   }
 
   @override

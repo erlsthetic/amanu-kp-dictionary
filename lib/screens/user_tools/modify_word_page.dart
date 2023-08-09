@@ -11,12 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddWordPage extends StatelessWidget {
-  AddWordPage({
+class ModifyWordPage extends StatelessWidget {
+  ModifyWordPage({
     super.key,
+    this.editMode = false,
+    this.editWordID,
   });
 
-  final controller = Get.put(ModifyController());
+  final bool? editMode;
+  final String? editWordID;
+  late final controller = Get.put(
+      ModifyController(editMode: editMode ?? false, editWordID: editWordID));
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +170,7 @@ class AddWordPage extends StatelessWidget {
                               controller: controller.engTransController,
                               width: size.width - (60.0 + 55),
                               label: tEngTrans,
+                              category: 'engTrans',
                             ),
                             /*Container(
                               alignment: Alignment.centerLeft,
@@ -231,6 +237,7 @@ class AddWordPage extends StatelessWidget {
                               controller: controller.filTransController,
                               width: size.width - (60.0),
                               label: tFilTrans,
+                              category: "filTrans",
                             ),
                             Obx(() => controller.filTransEmpty.value
                                 ? Container(
@@ -334,6 +341,7 @@ class AddWordPage extends StatelessWidget {
                                       controller: controller.relatedController,
                                       width: size.width - (60.0),
                                       label: tRelated,
+                                      category: 'related',
                                     ),
                                   ),
                                   SizedBox(
@@ -347,6 +355,7 @@ class AddWordPage extends StatelessWidget {
                                             return ConnectionSelector(
                                               title: "Select related word",
                                               size: size,
+                                              category: "related",
                                             );
                                           });
                                     }, context),
@@ -395,6 +404,7 @@ class AddWordPage extends StatelessWidget {
                                       controller: controller.synonymController,
                                       width: size.width - (60.0),
                                       label: tSynonyms,
+                                      category: "synonyms",
                                     ),
                                   ),
                                   SizedBox(
@@ -406,8 +416,10 @@ class AddWordPage extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return ConnectionSelector(
-                                                title: "Select synonym",
-                                                size: size);
+                                              title: "Select synonym",
+                                              size: size,
+                                              category: "synonyms",
+                                            );
                                           });
                                     }, context),
                                     child: Container(
@@ -455,6 +467,7 @@ class AddWordPage extends StatelessWidget {
                                       controller: controller.antonymController,
                                       width: size.width - (60.0),
                                       label: tAntonyms,
+                                      category: "antonyms",
                                     ),
                                   ),
                                   SizedBox(
@@ -466,8 +479,10 @@ class AddWordPage extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return ConnectionSelector(
-                                                title: "Select antonym",
-                                                size: size);
+                                              title: "Select antonym",
+                                              size: size,
+                                              category: "antonyms",
+                                            );
                                           });
                                     }, context),
                                     child: Container(
