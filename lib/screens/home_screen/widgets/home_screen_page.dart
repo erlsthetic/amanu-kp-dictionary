@@ -119,13 +119,16 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
         children: [
           Crab(
             tag: "AppBar",
-            child: Container(
-              width: double.infinity,
-              height: screenSize.height * 0.35,
-              decoration: BoxDecoration(
-                  gradient: orangeGradient,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(30.0))),
+            child: Hero(
+              tag: "AppBar",
+              child: Container(
+                width: double.infinity,
+                height: screenSize.height * 0.35,
+                decoration: BoxDecoration(
+                    gradient: orangeGradient,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(30.0))),
+              ),
             ),
           ),
           /*_BackgroundWave(

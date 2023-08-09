@@ -16,9 +16,11 @@ class ModifyWordPage extends StatelessWidget {
     super.key,
     this.editMode = false,
     this.editWordID,
+    this.editWord = '',
   });
 
   final bool? editMode;
+  final String? editWord;
   final String? editWordID;
   late final controller = Get.put(
       ModifyController(editMode: editMode ?? false, editWordID: editWordID));
@@ -548,7 +550,9 @@ class ModifyWordPage extends StatelessWidget {
             ThreePartHeader(
               size: size,
               screenPadding: screenPadding,
-              title: tAddWord,
+              title: editMode ?? false
+                  ? tEdit + ' "' + (editWord ?? '') + '"'
+                  : tAddWord,
             ),
           ],
         ));

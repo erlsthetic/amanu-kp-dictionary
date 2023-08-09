@@ -114,13 +114,16 @@ class BrowseScreenPage extends StatelessWidget {
           right: 0,
           child: Crab(
             tag: "AppBar",
-            child: Container(
-              width: size.width,
-              height: topPadding + 70,
-              decoration: BoxDecoration(
-                  gradient: orangeGradient,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(30.0))),
+            child: Hero(
+              tag: "AppBar",
+              child: Container(
+                width: size.width,
+                height: topPadding + 70,
+                decoration: BoxDecoration(
+                    gradient: orangeGradient,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(30.0))),
+              ),
             ),
           ),
         ),

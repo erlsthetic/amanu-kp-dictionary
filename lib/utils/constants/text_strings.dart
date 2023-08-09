@@ -120,7 +120,7 @@ const String tKulitanEditor = "Kulitan Editor";
 const String tSubmit = "Submit";
 
 // -- Modify Screen
-
+const String tEdit = "Edit";
 const String tEditWord = "Edit word";
 const String tConfirmation = "Confirmation";
 const String tDeleteWord = "Delete word";

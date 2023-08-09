@@ -38,9 +38,9 @@ class KulitanController extends GetxController {
   RxInt currentLine = 0.obs;
   RxInt currentSpace = 0.obs;
 
-  RxList<List<String>> kulitanStringList = <List<String>>[[]].obs;
+  RxList<List<dynamic>> kulitanStringList = <List<dynamic>>[[]].obs;
 
-  bool classifyKulitan(List<List<String>> conditionList, String input) {
+  bool classifyKulitan(List<List<dynamic>> conditionList, String input) {
     for (final condition in conditionList) {
       for (final x in condition) {
         if (x == input) return true;
@@ -248,7 +248,7 @@ class KulitanController extends GetxController {
 
   void checkIfEmpty() {
     String kulitanString = '';
-    for (List<String> line in kulitanStringList) {
+    for (var line in kulitanStringList) {
       for (String i in line) {
         kulitanString += i;
       }
@@ -262,7 +262,7 @@ class KulitanController extends GetxController {
 
   void saveKulitan() {
     addPageController.kulitanStringListGetter.clear();
-    for (List<String> i in kulitanStringList) {
+    for (var i in kulitanStringList) {
       addPageController.kulitanStringListGetter.add(i);
     }
     addPageController.kulitanStringListGetter.refresh();
@@ -272,7 +272,7 @@ class KulitanController extends GetxController {
 
   void getFromAddPage() {
     kulitanStringList.clear();
-    for (List<String> i in addPageController.kulitanStringListGetter) {
+    for (var i in addPageController.kulitanStringListGetter) {
       kulitanStringList.add(i);
     }
     kulitanStringList.refresh();

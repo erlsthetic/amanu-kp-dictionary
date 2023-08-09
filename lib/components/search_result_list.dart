@@ -64,6 +64,8 @@ class SearchResultList extends StatelessWidget {
                             Get.to(() => ModifyWordPage(
                                   editMode: true,
                                   editWordID: wordID,
+                                  editWord: controller.suggestionMap[wordID]
+                                      ["word"],
                                 ));
                           } else if (category == "delete") {
                           } else if (category == "related") {
