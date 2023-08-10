@@ -76,7 +76,8 @@ const String tOTPSubtitle = "Enter the verification code sent at";
 const String tWordOfTheDay = "Word of the Day";
 
 // -- Add Word Texts
-const String tAddWord = "Add Word";
+const String tAddWord = "Add word";
+const String tAddWordRequest = "Add word request";
 const String tAddInstructions =
     "Fill up the details of the word you wish to add (* required field).";
 const String tWord = "Word";
@@ -122,14 +123,16 @@ const String tSubmit = "Submit";
 // -- Modify Screen
 const String tEdit = "Edit";
 const String tEditWord = "Edit word";
+const String tEditWordRequest = " request";
 const String tConfirmation = "Confirmation";
 const String tDeleteWord = "Delete word";
+const String tDeleteWordRequest = "Delete word request";
 const String tThisIsAPreview = "This is a preview.";
 
-const String tEditPrompt1 = "Confirm changes to ";
-const String tEditPrompt2 = " and update dictionary?";
-const String tDeletePrompt1 = "Are you sure you want to remove ";
-const String tDeletePrompt2 = " from the dictionary?";
+const String tEditPrompt1 = 'Confirm changes to "';
+const String tEditPrompt2 = '" and update dictionary?';
+const String tDeletePrompt1 = 'Are you sure you want to remove "';
+const String tDeletePrompt2 = '" from the dictionary?';
 
 const String tProceed = "Proceed";
 
@@ -137,10 +140,10 @@ const String tDeleteYes = "Delete";
 const String tCancel = "Cancel";
 const String tConfirm = "Confirm";
 
-const String tDeleteRequestPrompt1 = "Send a removal request for ";
-const String tDeleteRequestPrompt2 = " from the dictionary?";
-const String tEditRequestPrompt1 = "Send edit request for ";
-const String tEditRequestPrompt2 = "?";
+const String tDeleteRequestPrompt1 = 'Send a removal request for "';
+const String tDeleteRequestPrompt2 = '" from the dictionary?';
+const String tEditRequestPrompt1 = 'Send edit request for "';
+const String tEditRequestPrompt2 = '"?';
 
 // -- Support Screen
 

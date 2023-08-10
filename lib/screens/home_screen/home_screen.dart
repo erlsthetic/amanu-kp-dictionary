@@ -15,7 +15,7 @@ import 'controllers/home_page_controller.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final bool isLoggedIn = true;
-  final bool isExpert = true;
+  final bool isExpert = false;
 
   final controller = Get.find<HomePageController>();
 
@@ -46,43 +46,49 @@ class HomeScreen extends StatelessWidget {
             observers: [CrabController()],
           ),
           BottomNavBar(size: _size, pController: controller),
-          CustomFloatingPanel(
-            onPressed: (index) {
-              print("Clicked $index");
-              if (index == 0) {
-                Get.to(() => ModifyWordPage());
-              } else if (index == 1) {
-                Get.to(() => ModifySearchPage(editMode: true));
-              } else if (index == 2) {
-                Get.to(() => ModifySearchPage(editMode: false));
-              }
-            },
-            positionBottom: _size.height * 0.1,
-            positionLeft: _size.width - 85,
-            size: 70,
-            iconSize: 30,
-            panelIcon: iToolBox,
-            dockType: DockType.inside,
-            dockOffset: 15,
-            backgroundColor: pureWhite,
-            contentColor: pureWhite,
-            panelShape: PanelShape.rounded,
-            borderRadius: BorderRadius.circular(40),
-            borderColor: primaryOrangeDark,
-            buttons: [
-              iToolsAdd,
-              iToolsEdit,
-              iToolsDelete,
-            ],
-            iconBGColors: [
-              primaryOrangeDark,
-              primaryOrangeLight,
-              darkerOrange.withOpacity(0.8)
-            ],
-            iconBGSize: 60,
-            mainIconColor: primaryOrangeDark,
-            shadowColor: primaryOrangeDark,
-          )
+          isLoggedIn
+              ? CustomFloatingPanel(
+                  onPressed: (index) {
+                    print("Clicked $index");
+                    if (index == 0) {
+                      Get.to(() => ModifyWordPage());
+                    } else if (index == 1) {
+                      Get.to(() => ModifySearchPage(
+                            editMode: true,
+                          ));
+                    } else if (index == 2) {
+                      Get.to(() => ModifySearchPage(
+                            editMode: false,
+                          ));
+                    }
+                  },
+                  positionBottom: _size.height * 0.1,
+                  positionLeft: _size.width - 85,
+                  size: 70,
+                  iconSize: 30,
+                  panelIcon: iToolBox,
+                  dockType: DockType.inside,
+                  dockOffset: 15,
+                  backgroundColor: pureWhite,
+                  contentColor: pureWhite,
+                  panelShape: PanelShape.rounded,
+                  borderRadius: BorderRadius.circular(40),
+                  borderColor: primaryOrangeDark,
+                  buttons: [
+                    iToolsAdd,
+                    iToolsEdit,
+                    iToolsDelete,
+                  ],
+                  iconBGColors: [
+                    primaryOrangeDark,
+                    primaryOrangeLight,
+                    darkerOrange.withOpacity(0.8)
+                  ],
+                  iconBGSize: 60,
+                  mainIconColor: primaryOrangeDark,
+                  shadowColor: primaryOrangeDark,
+                )
+              : Container()
         ],
       ),
     );

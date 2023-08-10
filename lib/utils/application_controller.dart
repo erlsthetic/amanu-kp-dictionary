@@ -22,8 +22,9 @@ class ApplicationController extends GetxController {
     super.onInit();
     subscription = listenToConnectionState();
     checkBookmarks();
-    getUserInfo();
+    //getUserInfo(); TODO: UNCOMMENT
     dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+    userIsExpert = true;
   }
 
   // -- CONNECTION MANAGEMENT
@@ -71,7 +72,7 @@ class ApplicationController extends GetxController {
 
   // -- USER MANAGEMENT
 
-  bool isLoggedIn = false;
+  bool isLoggedIn = true; //TODO: SET TO FALSE
   String? userID, userName, userEmail;
   int? userPhone;
   bool? userIsExpert, userExpertRequest;

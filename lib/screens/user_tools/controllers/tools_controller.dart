@@ -19,6 +19,7 @@ class ModifyController extends GetxController {
   final bool editMode;
   final String? editWordID;
   static ModifyController get instance => Get.find();
+  bool importError = false;
 
   final appController = Get.find<ApplicationController>();
   RxBool isProcessing = false.obs;
@@ -39,24 +40,24 @@ class ModifyController extends GetxController {
     final fileExt = extension(File(prnUrlExt).path);
     final tempAudioFile = File('${appStorage.path}/audio$fileExt');
     try {
-      /*await Dio().download(
-        prnUrl,
-        '${appStorage.path}audio$fileExt',
-      );*/
       final response = await Dio().get(
         prnUrl,
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
+          receiveTimeout: Duration(seconds: 15),
         ),
       );
       final raf = tempAudioFile.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
+      importError = false;
       await raf.close();
     } catch (e) {
+      Get.back();
       Helper.errorSnackBar(
           title: tOhSnap,
           message: "Unable to get audio pronunciation from the internet.");
+      return;
     }
     audioPath = tempAudioFile.path;
     playerController.stopPlayer();

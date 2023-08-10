@@ -2,6 +2,7 @@ import 'package:amanu/components/search_field.dart';
 import 'package:amanu/components/search_filter.dart';
 import 'package:amanu/components/search_result_list.dart';
 import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
@@ -18,6 +19,7 @@ class ModifySearchPage extends StatelessWidget {
 
   final AudioPlayer player = AudioPlayer();
   final controller = Get.put(SearchWordController());
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,13 @@ class ModifySearchPage extends StatelessWidget {
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
-          title: editMode ? tEditWord : tDeleteWord,
+          title: editMode
+              ? appController.userIsExpert ?? false
+                  ? tEditWord
+                  : tEditWord + tEditWordRequest
+              : appController.userIsExpert ?? false
+                  ? tDeleteWord
+                  : tDeleteWordRequest,
           additionalHeight: 64.0,
           secondIconDisabled: true,
         ),

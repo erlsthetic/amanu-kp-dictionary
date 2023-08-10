@@ -75,7 +75,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                   )
                 : Expanded(
-                    flex: 1,
+                    flex: appController.userIsExpert ?? false ? 3 : 1,
                     child: Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width / 2,
@@ -187,7 +187,7 @@ class AppDrawer extends StatelessWidget {
                 : DrawerItems.regular.map(buildDrawerItem).toList(),
             appController.isLoggedIn
                 ? Expanded(
-                    flex: 1,
+                    flex: appController.userIsExpert ?? false ? 2 : 1,
                     child: Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width * 0.75,

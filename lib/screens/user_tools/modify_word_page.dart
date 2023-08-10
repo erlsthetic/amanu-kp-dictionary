@@ -4,6 +4,7 @@ import 'package:amanu/screens/user_tools/widgets/kulitan_formfield.dart';
 import 'package:amanu/screens/user_tools/widgets/studio_formfield.dart';
 import 'package:amanu/screens/user_tools/widgets/tags_field.dart';
 import 'package:amanu/screens/user_tools/widgets/word_info_section.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
@@ -24,6 +25,8 @@ class ModifyWordPage extends StatelessWidget {
   final String? editWordID;
   late final controller = Get.put(
       ModifyController(editMode: editMode ?? false, editWordID: editWordID));
+
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -551,8 +554,12 @@ class ModifyWordPage extends StatelessWidget {
               size: size,
               screenPadding: screenPadding,
               title: editMode ?? false
-                  ? tEdit + ' "' + (editWord ?? '') + '"'
-                  : tAddWord,
+                  ? appController.userIsExpert ?? false
+                      ? tEdit + ' "' + (editWord ?? '') + '"'
+                      : tEdit + ' "' + (editWord ?? '') + '"' + tEditWordRequest
+                  : appController.userIsExpert ?? false
+                      ? tAddWord
+                      : tAddWordRequest,
             ),
           ],
         ));
