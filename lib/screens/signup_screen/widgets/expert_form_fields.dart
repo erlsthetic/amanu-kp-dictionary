@@ -19,6 +19,7 @@ class ExpertFormFields extends StatelessWidget {
       children: [
         TextFormField(
           controller: controller.userNameController,
+          maxLength: 30,
           onChanged: (value) {
             controller.checkUserName();
           },
@@ -224,7 +225,6 @@ class ExpertFormFields extends StatelessWidget {
           child: ElevatedButton(
               onPressed: () {
                 controller.registerUser();
-                //Get.off(() => HomeScreen());
               },
               style: ElevatedButton.styleFrom(
                 alignment: Alignment.center,
