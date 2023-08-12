@@ -1,6 +1,5 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
-import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/login_screen/login_screen.dart';
 import 'package:amanu/screens/signup_screen/signup_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
