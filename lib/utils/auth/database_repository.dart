@@ -1,5 +1,6 @@
 import 'package:amanu/models/feedback_model.dart';
 import 'package:amanu/models/report_model.dart';
+import 'package:amanu/models/user_model.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,8 +11,23 @@ class DatabaseRepository extends GetxController {
   static DatabaseRepository get instance => Get.find();
 
   final _db = FirebaseFirestore.instance;
-
   final _realtimeDB = FirebaseDatabase.instance.ref();
+
+  createUserOnDB(UserModel user, String uid) async {
+    await _db.collection("users").doc(uid).set(user.toJson()).whenComplete(() {
+      Helper.successSnackBar(
+        title: tSuccess,
+        message: tAccountCreated,
+      );
+      // ignore: body_might_complete_normally_catch_error
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(
+        title: tOhSnap,
+        message: tSomethingWentWrong,
+      );
+      print(error.toString());
+    });
+  }
 
   createReportOnDB(ReportModel report, String timestamp) async {
     await _db
