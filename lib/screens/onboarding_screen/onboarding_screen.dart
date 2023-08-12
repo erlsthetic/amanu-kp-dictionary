@@ -75,7 +75,7 @@ class OnBoardingScreen extends StatelessWidget {
                     splashColor: primaryOrangeLight,
                     highlightColor: primaryOrangeLight.withOpacity(0.5),
                     onTap: () {
-                      Get.off(() => WelcomeScreen());
+                      obController.getStarted();
                     },
                     child: Ink(
                       padding: EdgeInsets.all(15),

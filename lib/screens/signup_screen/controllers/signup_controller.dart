@@ -279,7 +279,8 @@ class SignUpController extends GetxController {
       bool expertRequest,
       String? fullName,
       String? userBio,
-      String? userPic) async {
+      String? userPic,
+      List<String>? contributions) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("userID", uid);
     prefs.setString("userEmail", userEmail);
@@ -294,6 +295,7 @@ class SignUpController extends GetxController {
     if (userPic!.isNotEmpty && userPic != '') {
       prefs.setString("userPic", userPic);
     }
+    prefs.setStringList("userContributions", contributions ?? []);
   }
 
   Future<void> registerUser() async {
@@ -333,7 +335,8 @@ class SignUpController extends GetxController {
           exFullName: exFullName == '' ? null : exFullName.trim(),
           exBio: exBio == '' ? null : exBio.trim(),
           cvUrl: cvUrl == '' ? null : cvUrl,
-          profileUrl: null);
+          profileUrl: null,
+          contributions: []);
 
       await userRepo.createUserOnDB(userData, uid);
       await savePreferences(
@@ -345,10 +348,9 @@ class SignUpController extends GetxController {
               userData.expertRequest,
               userData.exFullName,
               userData.exBio,
-              userData.profileUrl)
-          .whenComplete(() => Get.offAll(DrawerLauncher(
-                pageIndex: 0,
-              )));
+              userData.profileUrl,
+              userData.contributions)
+          .whenComplete(() => Get.offAll(DrawerLauncher()));
     }
   }
 
@@ -392,7 +394,8 @@ class SignUpController extends GetxController {
         exFullName: exFullName == '' ? null : exFullName.trim(),
         exBio: exBio == '' ? null : exBio.trim(),
         cvUrl: cvUrl == '' ? null : cvUrl,
-        profileUrl: authRepo.firebaseUser!.photoURL ?? null);
+        profileUrl: authRepo.firebaseUser!.photoURL ?? null,
+        contributions: []);
 
     await userRepo.createUserOnDB(userData, uid);
     await savePreferences(
@@ -404,9 +407,8 @@ class SignUpController extends GetxController {
             userData.expertRequest,
             userData.exFullName,
             userData.exBio,
-            userData.profileUrl)
-        .whenComplete(() => Get.offAll(DrawerLauncher(
-              pageIndex: 0,
-            )));
+            userData.profileUrl,
+            userData.contributions)
+        .whenComplete(() => Get.offAll(DrawerLauncher()));
   }
 }

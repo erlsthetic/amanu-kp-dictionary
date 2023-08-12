@@ -1,3 +1,6 @@
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import '../models/onboarding_model.dart';
@@ -9,6 +12,7 @@ import '../widgets/onboarding_page_widget.dart';
 class OnBoardingController extends GetxController {
   final controller = LiquidController();
   RxInt currentPage = 0.obs;
+  final appController = Get.find<ApplicationController>();
 
   final onBoardingPages = [
     OnBoardingPage(
@@ -39,6 +43,15 @@ class OnBoardingController extends GetxController {
 
   onPageChangedCallback(int activePageIndex) {
     currentPage.value = activePageIndex;
+  }
+
+  void getStarted() {
+    if (appController.isFirstTimeUse) {
+      appController.isFirstTimeUse = false;
+      Get.offAll(() => DrawerLauncher());
+    } else {
+      Get.off(() => WelcomeScreen());
+    }
   }
 
   skip() => controller.jumpToPage(page: 2);

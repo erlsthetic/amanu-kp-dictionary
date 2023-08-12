@@ -9,6 +9,7 @@ class UserModel {
   final String? exBio;
   final String? cvUrl;
   final String? profileUrl;
+  final List<String>? contributions;
 
   const UserModel(
       {required this.uid,
@@ -20,7 +21,8 @@ class UserModel {
       this.exFullName,
       this.exBio,
       this.cvUrl,
-      this.profileUrl});
+      this.profileUrl,
+      this.contributions});
 
   toJson() {
     return {

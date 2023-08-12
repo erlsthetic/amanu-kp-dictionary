@@ -29,9 +29,7 @@ class AuthenticationRepository extends GetxController {
     user == null
         ? Get.offAll(() => WelcomeScreen())
         : user.emailVerified
-            ? Get.offAll(() => DrawerLauncher(
-                  pageIndex: 0,
-                ))
+            ? Get.offAll(() => DrawerLauncher())
             : Get.offAll(() => WelcomeScreen()); //EmailVerification
   }
 
@@ -91,9 +89,7 @@ class AuthenticationRepository extends GetxController {
     try {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
-      Get.offAll(() => DrawerLauncher(
-            pageIndex: 0,
-          ));
+      Get.offAll(() => DrawerLauncher());
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     } on FormatException catch (e) {

@@ -8,9 +8,7 @@ import 'controllers/drawerx_controller.dart';
 
 // ignore: must_be_immutable
 class DrawerLauncher extends StatelessWidget {
-  DrawerLauncher({super.key, this.pageIndex});
-
-  final int? pageIndex;
+  DrawerLauncher({super.key});
 
   final controller = Get.put(DrawerXController());
 

@@ -1,20 +1,11 @@
-import 'package:amanu/firebase_options.dart';
-import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
-import 'package:amanu/screens/home_screen/drawer_launcher.dart';
-import 'package:amanu/utils/application_controller.dart';
-import 'package:amanu/utils/auth/authentication_repository.dart';
+import 'package:amanu/screens/splash_screen/splash_screen.dart';
 import 'package:amanu/utils/constants/theme_data.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) => Get.put(AuthenticationRepository()))
-      .then((value) => Get.put(ApplicationController(), permanent: true))
-      .then((value) => Get.put(HomePageController(), permanent: true));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -35,9 +26,7 @@ class Amanu extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
-      home: DrawerLauncher(
-        pageIndex: 0,
-      ),
+      home: SplashScreen(),
     );
   }
 }

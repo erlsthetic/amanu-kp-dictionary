@@ -21,10 +21,123 @@ class ApplicationController extends GetxController {
   void onInit() {
     super.onInit();
     subscription = listenToConnectionState();
+    isFirstTimeUse = true;
     checkBookmarks();
     //getUserInfo(); TODO: UNCOMMENT
     dictionaryContent = sortDictionary(dictionaryContentUnsorted);
     userIsExpert = true;
+  }
+
+  // -- USE MANAGEMENT
+  late bool isFirstTimeUse;
+  Future<bool> checkFirstTimeUse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeUse")) {
+      return prefs.getBool("isFirstTimeUse")!;
+    } else {
+      prefs.setBool("isFirstTimeUse", true);
+      return prefs.getBool("isFirstTimeUse")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeHome() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeHome")) {
+      return prefs.getBool("isFirstTimeHome")!;
+    } else {
+      prefs.setBool("isFirstTimeHome", true);
+      return prefs.getBool("isFirstTimeHome")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeBrowse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeBrowse")) {
+      return prefs.getBool("isFirstTimeBrowse")!;
+    } else {
+      prefs.setBool("isFirstTimeBrowse", true);
+      return prefs.getBool("isFirstTimeBrowse")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeBookmarks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeBookmarks")) {
+      return prefs.getBool("isFirstTimeBookmarks")!;
+    } else {
+      prefs.setBool("isFirstTimeBookmarks", true);
+      return prefs.getBool("isFirstTimeBookmarks")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeModify() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeModify")) {
+      return prefs.getBool("isFirstTimeModify")!;
+    } else {
+      prefs.setBool("isFirstTimeModify", true);
+      return prefs.getBool("isFirstTimeModify")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeDelete() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeModify")) {
+      return prefs.getBool("isFirstTimeModify")!;
+    } else {
+      prefs.setBool("isFirstTimeModify", true);
+      return prefs.getBool("isFirstTimeModify")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeKulitanEditor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeKulitanEditor")) {
+      return prefs.getBool("isFirstTimeKulitanEditor")!;
+    } else {
+      prefs.setBool("isFirstTimeKulitanEditor", true);
+      return prefs.getBool("isFirstTimeKulitanEditor")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeStudio() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeStudio")) {
+      return prefs.getBool("isFirstTimeStudio")!;
+    } else {
+      prefs.setBool("isFirstTimeStudio", true);
+      return prefs.getBool("isFirstTimeStudio")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeDetail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeDetail")) {
+      return prefs.getBool("isFirstTimeDetail")!;
+    } else {
+      prefs.setBool("isFirstTimeDetail", true);
+      return prefs.getBool("isFirstTimeDetail")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeScanner() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeScanner")) {
+      return prefs.getBool("isFirstTimeScanner")!;
+    } else {
+      prefs.setBool("isFirstTimeScanner", true);
+      return prefs.getBool("isFirstTimeScanner")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeRequests() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeRequests")) {
+      return prefs.getBool("isFirstTimeRequests")!;
+    } else {
+      prefs.setBool("isFirstTimeRequests", true);
+      return prefs.getBool("isFirstTimeRequests")!;
+    }
   }
 
   // -- CONNECTION MANAGEMENT
