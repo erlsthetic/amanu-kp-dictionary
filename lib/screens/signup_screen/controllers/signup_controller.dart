@@ -4,8 +4,8 @@ import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
+import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
-import 'package:amanu/utils/auth/user_repository.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
   final authRepo = Get.find<AuthenticationRepository>();
-  final userRepo = Get.put(UserRepository());
+  final dbRepo = Get.put(DatabaseRepository());
 
   final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> registrationFormKey = GlobalKey<FormState>();
@@ -338,7 +338,8 @@ class SignUpController extends GetxController {
           profileUrl: null,
           contributions: []);
 
-      await userRepo.createUserOnDB(userData, uid);
+      await dbRepo.createUserOnDB(userData, uid);
+
       await savePreferences(
               userData.uid,
               userData.userName,
@@ -397,7 +398,8 @@ class SignUpController extends GetxController {
         profileUrl: authRepo.firebaseUser!.photoURL ?? null,
         contributions: []);
 
-    await userRepo.createUserOnDB(userData, uid);
+    await dbRepo.createUserOnDB(userData, uid);
+
     await savePreferences(
             userData.uid,
             userData.userName,
