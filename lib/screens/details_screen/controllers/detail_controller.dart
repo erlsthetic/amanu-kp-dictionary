@@ -1,6 +1,8 @@
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -124,6 +126,50 @@ class DetailController extends GetxController {
     } else {
       onBookmarks.value = false;
     }
+  }
+
+  bool showDialogAvailable = true;
+
+  Future<dynamic> showInfoDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.of(context).pop();
+            showDialogAvailable = true;
+          });
+          return Dialog(
+            backgroundColor: disabledGrey.withOpacity(0.75),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Container(
+                padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        style: TextStyle(color: pureWhite, fontSize: 15),
+                        children: [
+                          WidgetSpan(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: Icon(
+                                onBookmarks.value
+                                    ? Icons.bookmark_rounded
+                                    : Icons.bookmark_outline_rounded,
+                                color: pureWhite,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                          TextSpan(
+                            text: onBookmarks.value
+                                ? word + " was added to your bookmarks."
+                                : word + " was removed from your bookmarks.",
+                          )
+                        ]))),
+          );
+        });
   }
 
   @override

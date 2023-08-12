@@ -301,9 +301,6 @@ class SearchResultList extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
                             ]),
                       )
                     ],

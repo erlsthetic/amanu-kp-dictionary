@@ -24,14 +24,14 @@ class DrawerXController extends GetxController {
     switch (currentItem.value) {
       case DrawerItems.home:
         homeController.currentIdx.value = 0;
-        return HomeScreen(); //0
+        return HomeScreen();
       case DrawerItems.browse:
         homeController.currentIdx.value = 1;
-        return HomeScreen(); //1
+        return HomeScreen();
       case DrawerItems.bookmarks:
         return BookmarksScreen();
       case DrawerItems.kulitan:
-        return HomeScreen(); //1
+        return HomeScreen();
       case DrawerItems.join:
         return OnBoardingScreen();
       case DrawerItems.profile:
