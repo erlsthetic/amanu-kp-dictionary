@@ -78,11 +78,8 @@ class DetailScreen extends StatelessWidget {
                     ? Icons.bookmark_rounded
                     : Icons.bookmark_outline_rounded,
                 secondOnPressed: () {
-                  if (controller.showDialogAvailable) {
-                    controller.showDialogAvailable = false;
-                    controller.bookmarkToggle();
-                    controller.showInfoDialog(_scaffoldKey.currentContext!);
-                  }
+                  controller.bookmarkToggle();
+                  controller.showInfoDialog(_scaffoldKey.currentContext!);
                 },
               ),
             ),

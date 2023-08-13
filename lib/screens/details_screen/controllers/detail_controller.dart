@@ -128,17 +128,14 @@ class DetailController extends GetxController {
     }
   }
 
-  bool showDialogAvailable = true;
-
   Future<dynamic> showInfoDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierColor: Colors.transparent,
-        builder: (BuildContext context) {
-          Future.delayed(Duration(seconds: 1), () {
-            Navigator.of(context).pop();
-            showDialogAvailable = true;
-          });
+        barrierDismissible: false,
+        builder: (BuildContext contextDialog) {
+          Future.delayed(Duration(seconds: 1))
+              .then((value) => Navigator.pop(contextDialog));
           return Dialog(
             backgroundColor: disabledGrey.withOpacity(0.75),
             shape:
