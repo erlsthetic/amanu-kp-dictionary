@@ -123,6 +123,8 @@ const String tSubmit = "Submit";
 // -- Modify Screen
 const String tEdit = "Edit";
 const String tEditWord = "Edit word";
+const String tConfirmEdits = "Confirm edits";
+const String tEditRequest = "Request edits";
 const String tEditWordRequest = " request";
 const String tConfirmation = "Confirmation";
 const String tDeleteWord = "Delete word";
@@ -144,6 +146,10 @@ const String tDeleteRequestPrompt1 = 'Send a removal request for "';
 const String tDeleteRequestPrompt2 = '" from the dictionary?';
 const String tEditRequestPrompt1 = 'Send edit request for "';
 const String tEditRequestPrompt2 = '"?';
+
+const String tEditNotes = 'Notes';
+const String tEditNotesHint =
+    'Describe the edits you made and other notes you want the experts to know.';
 
 // -- Support Screen
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amanu/screens/user_tools/widgets/preview_edits_page.dart';
 import 'package:amanu/screens/user_tools/widgets/preview_page.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
@@ -20,9 +21,40 @@ class ModifyController extends GetxController {
   final String? editWordID;
   static ModifyController get instance => Get.find();
   bool importError = false;
-
   final appController = Get.find<ApplicationController>();
   RxBool isProcessing = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    wordController = TextEditingController();
+    phoneticController = TextEditingController();
+    engTransController = TextfieldTagsController();
+    filTransController = TextfieldTagsController();
+    playerController = PlayerController();
+    if (!editMode) addTypeField(0);
+    relatedController = TextfieldTagsController();
+    synonymController = TextfieldTagsController();
+    antonymController = TextfieldTagsController();
+    referencesController = TextEditingController();
+    if (editMode) {
+      populateFields();
+    }
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    wordController.dispose();
+    phoneticController.dispose();
+    engTransController.dispose();
+    filTransController.dispose();
+    playerController.dispose();
+    relatedController.dispose();
+    synonymController.dispose();
+    antonymController.dispose();
+    referencesController.dispose();
+  }
 
   void populateFields() async {
     isProcessing.value = true;
@@ -431,38 +463,6 @@ class ModifyController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    wordController = TextEditingController();
-    phoneticController = TextEditingController();
-    engTransController = TextfieldTagsController();
-    filTransController = TextfieldTagsController();
-    playerController = PlayerController();
-    if (!editMode) addTypeField(0);
-    relatedController = TextfieldTagsController();
-    synonymController = TextfieldTagsController();
-    antonymController = TextfieldTagsController();
-    referencesController = TextEditingController();
-    if (editMode) {
-      populateFields();
-    }
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    wordController.dispose();
-    phoneticController.dispose();
-    engTransController.dispose();
-    filTransController.dispose();
-    playerController.dispose();
-    relatedController.dispose();
-    synonymController.dispose();
-    antonymController.dispose();
-    referencesController.dispose();
-  }
-
   void submitWord() async {
     validateAudio();
     getEnglishTranslations();
@@ -568,29 +568,57 @@ class ModifyController extends GetxController {
       }
     }
 
-    Get.to(() => PreviewPage(
-          wordID: wordKey,
-          word: wordController.text.trim(),
-          normalizedWord: normalizedWord,
-          prn: phoneticController.text.trim(),
-          prnPath: audioPath,
-          engTrans: engTransEmpty.value ? null : engTransList,
-          filTrans: filTransEmpty.value ? null : filTransList,
-          meanings: meanings,
-          types: typeFields,
-          kulitanChars: kulitanStringListGetter,
-          otherRelated: relatedMap.length == 0 ? null : relatedMap,
-          synonyms: synonymsMap.length == 0 ? null : synonymsMap,
-          antonyms: antonymsMap.length == 0 ? null : antonymsMap,
-          sources: referencesController.text.isEmpty ||
-                  referencesController.text.trim() == ''
-              ? null
-              : referencesController.text.trim(),
-          contributors: contributors.length == 0 ? null : contributors,
-          expert: expert.length == 0 ? null : expert,
-          lastModifiedTime: timestamp,
-          definitions: definitions,
-          kulitanString: kulitanString,
-        ));
+    if (editMode) {
+      Get.to(() => PreviewEditsPage(
+            prevWordID: editWordID!,
+            wordID: wordKey,
+            word: wordController.text.trim(),
+            normalizedWord: normalizedWord,
+            prn: phoneticController.text.trim(),
+            prnPath: audioPath,
+            engTrans: engTransEmpty.value ? null : engTransList,
+            filTrans: filTransEmpty.value ? null : filTransList,
+            meanings: meanings,
+            types: typeFields,
+            kulitanChars: kulitanStringListGetter,
+            otherRelated: relatedMap.length == 0 ? null : relatedMap,
+            synonyms: synonymsMap.length == 0 ? null : synonymsMap,
+            antonyms: antonymsMap.length == 0 ? null : antonymsMap,
+            sources: referencesController.text.isEmpty ||
+                    referencesController.text.trim() == ''
+                ? null
+                : referencesController.text.trim(),
+            contributors: contributors.length == 0 ? null : contributors,
+            expert: expert.length == 0 ? null : expert,
+            lastModifiedTime: timestamp,
+            definitions: definitions,
+            kulitanString: kulitanString,
+          ));
+    } else {
+      Get.to(() => PreviewPage(
+            wordID: wordKey,
+            word: wordController.text.trim(),
+            normalizedWord: normalizedWord,
+            prn: phoneticController.text.trim(),
+            prnPath: audioPath,
+            engTrans: engTransEmpty.value ? null : engTransList,
+            filTrans: filTransEmpty.value ? null : filTransList,
+            meanings: meanings,
+            types: typeFields,
+            kulitanChars: kulitanStringListGetter,
+            otherRelated: relatedMap.length == 0 ? null : relatedMap,
+            synonyms: synonymsMap.length == 0 ? null : synonymsMap,
+            antonyms: antonymsMap.length == 0 ? null : antonymsMap,
+            sources: referencesController.text.isEmpty ||
+                    referencesController.text.trim() == ''
+                ? null
+                : referencesController.text.trim(),
+            contributors: contributors.length == 0 ? null : contributors,
+            expert: expert.length == 0 ? null : expert,
+            lastModifiedTime: timestamp,
+            definitions: definitions,
+            kulitanString: kulitanString,
+          ));
+    }
   }
 }
