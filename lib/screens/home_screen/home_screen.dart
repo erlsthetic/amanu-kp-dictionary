@@ -1,5 +1,6 @@
 import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/screens/user_tools/modify_search_page.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/components/floating_button.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
@@ -14,10 +15,9 @@ import 'controllers/home_page_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-  final bool isLoggedIn = true;
-  final bool isExpert = false;
 
   final controller = Get.find<HomePageController>();
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
             observers: [CrabController()],
           ),
           BottomNavBar(size: _size, pController: controller),
-          isLoggedIn
+          appController.isLoggedIn
               ? CustomFloatingPanel(
                   onPressed: (index) {
                     print("Clicked $index");

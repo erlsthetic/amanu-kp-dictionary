@@ -191,24 +191,27 @@ class AppDrawer extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width * 0.75,
-                      child: Container(
-                          padding: EdgeInsets.all(10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              border: Border.all(
-                                color: pureWhite,
-                                width: 3.0,
-                              )),
-                          height: 50,
-                          width: 100,
-                          child: Text(
-                            "LOGOUT",
-                            style: GoogleFonts.poppins(
-                                color: pureWhite,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15),
-                          )),
+                      child: GestureDetector(
+                        onTap: Feedback.wrapForTap(() {}, context),
+                        child: Container(
+                            padding: EdgeInsets.all(10),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(
+                                  color: pureWhite,
+                                  width: 3.0,
+                                )),
+                            height: 50,
+                            width: 100,
+                            child: Text(
+                              "LOGOUT",
+                              style: GoogleFonts.poppins(
+                                  color: pureWhite,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15),
+                            )),
+                      ),
                     ),
                   )
                 : Expanded(flex: 1, child: Container()),

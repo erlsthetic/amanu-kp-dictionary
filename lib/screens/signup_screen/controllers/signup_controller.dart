@@ -288,7 +288,11 @@ class SignUpController extends GetxController {
     prefs.setInt("userPhone", userPhone);
     prefs.setBool("userIsExpert", isExpert);
     prefs.setBool("userExpertRequest", expertRequest);
-    if (isExpert && fullName!.isNotEmpty && userBio!.isNotEmpty) {
+    if (isExpert &&
+        fullName!.isNotEmpty &&
+        fullName != '' &&
+        userBio!.isNotEmpty &&
+        userBio != '') {
       prefs.setString("userFullName", fullName);
       prefs.setString("userBio", userBio);
     }

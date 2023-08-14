@@ -29,6 +29,23 @@ class DatabaseRepository extends GetxController {
     });
   }
 
+  Future<UserModel> getUserDetails(String uid) async {
+    final snapshot =
+        await _db.collection("users").where("uid", isEqualTo: uid).get();
+    final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+    return userData;
+  }
+
+  Future<String> getWordOfTheDay() async {
+    final snapshot = await _db.collection("amanu").doc("wordOfTheDay").get();
+    if (snapshot.exists) {
+      Map<String, dynamic>? data = snapshot.data();
+      return data?["wordOfTheDay"];
+    } else {
+      return "amanu";
+    }
+  }
+
   createReportOnDB(ReportModel report, String timestamp) async {
     await _db
         .collection("reports")

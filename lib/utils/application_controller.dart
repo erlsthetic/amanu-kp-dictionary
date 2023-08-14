@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:amanu/models/user_model.dart';
+import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,14 +20,14 @@ class ApplicationController extends GetxController {
 
   // -- ON START RUN
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     subscription = listenToConnectionState();
     isFirstTimeUse = true;
+    await getUserInfo();
+    await checkWordOfTheDay();
     checkBookmarks();
-    //getUserInfo(); TODO: UNCOMMENT
     dictionaryContent = sortDictionary(dictionaryContentUnsorted);
-    userIsExpert = true;
   }
 
   // -- USE MANAGEMENT
@@ -185,11 +187,12 @@ class ApplicationController extends GetxController {
 
   // -- USER MANAGEMENT
 
-  bool isLoggedIn = true; //TODO: SET TO FALSE
+  bool isLoggedIn = false;
   String? userID, userName, userEmail;
   int? userPhone;
   bool? userIsExpert, userExpertRequest;
   String? userFullName, userBio, userPic;
+  List<String>? userContributions;
 
   Future getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -197,47 +200,88 @@ class ApplicationController extends GetxController {
       isLoggedIn = prefs.getBool("isLoggedIn")!;
     } else {
       prefs.setBool("isLoggedIn", isLoggedIn);
+      print("savedLoginState: " + isLoggedIn.toString());
     }
-    if (isLoggedIn) {
-      userID = prefs.containsKey("userID") ? prefs.getString("userID") : null;
-      userName =
-          prefs.containsKey("userName") ? prefs.getString("userName") : null;
-      userEmail =
-          prefs.containsKey("userEmail") ? prefs.getString("userEmail") : null;
-      userPhone =
-          prefs.containsKey("userPhone") ? prefs.getInt("userPhone") : null;
-      userIsExpert = prefs.containsKey("userIsExpert")
-          ? prefs.getBool("userIsExpert")
-          : null;
-      userExpertRequest = prefs.containsKey("userExpertRequest")
-          ? prefs.getBool("userExpertRequest")
-          : null;
-      userFullName = prefs.containsKey("userFullName")
-          ? prefs.getString("userFullName")
-          : null;
-      userBio =
-          prefs.containsKey("userBio") ? prefs.getString("userBio") : null;
-      userPic =
-          prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
+    print("isLoggedIn: " + isLoggedIn.toString());
+    userID = prefs.containsKey("userID") ? prefs.getString("userID") : null;
+    userName =
+        prefs.containsKey("userName") ? prefs.getString("userName") : null;
+    userEmail =
+        prefs.containsKey("userEmail") ? prefs.getString("userEmail") : null;
+    userPhone =
+        prefs.containsKey("userPhone") ? prefs.getInt("userPhone") : null;
+    userIsExpert = prefs.containsKey("userIsExpert")
+        ? prefs.getBool("userIsExpert")
+        : null;
+    userExpertRequest = prefs.containsKey("userExpertRequest")
+        ? prefs.getBool("userExpertRequest")
+        : null;
+    userFullName = prefs.containsKey("userFullName")
+        ? prefs.getString("userFullName")
+        : null;
+    userBio = prefs.containsKey("userBio") ? prefs.getString("userBio") : null;
+    userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
+    userContributions = prefs.containsKey("userContributions")
+        ? prefs.getStringList("userContributions")
+        : [];
+
+    if (isLoggedIn && userID != null && hasConnection) {
+      UserModel user =
+          await DatabaseRepository.instance.getUserDetails(userID!);
+      userName = user.userName;
+      userEmail = user.email;
+      userPhone = user.phoneNo;
+      userIsExpert = user.isExpert;
+      userExpertRequest = user.expertRequest;
+      userFullName = user.exFullName;
+      userBio = user.exBio;
+      userPic = user.profileUrl;
+      userContributions = user.contributions;
+      saveUserDetails();
     }
+    print("userID: " + (userID ?? "null"));
+    print("userName: " + (userName ?? "null"));
+    print("userEmail: " + (userEmail ?? "null"));
+    print("userPhone: " + (userPhone == null ? "null" : userPhone.toString()));
+    print("userIsExpert: " +
+        (userIsExpert == null ? "null" : userIsExpert.toString()));
+    print("userExpertRequest: " +
+        (userExpertRequest == null ? "null" : userExpertRequest.toString()));
+    print("userFullName: " + (userFullName ?? "null"));
+    print("userBio: " + (userBio ?? "null"));
+    print("userPic: " + (userPic ?? "null"));
+    print("userContributions: " +
+        (userContributions == null ? "null" : userContributions.toString()));
+  }
+
+  void saveUserDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userID != null ? prefs.setString("userID", userID!) : null;
+    userEmail != null ? prefs.setString("userEmail", userEmail!) : null;
+    userName != null ? prefs.setString("userName", userName!) : null;
+    userPhone != null ? prefs.setInt("userPhone", userPhone!) : null;
+    userIsExpert != null ? prefs.setBool("userIsExpert", userIsExpert!) : null;
+    userExpertRequest != null
+        ? prefs.setBool("userExpertRequest", userExpertRequest!)
+        : null;
+    userFullName != null
+        ? prefs.setString("userFullName", userFullName!)
+        : null;
+    userBio != null ? prefs.setString("userBio", userBio!) : null;
+    userPic != null ? prefs.setString("userPic", userPic!) : null;
+    userContributions != null
+        ? prefs.setStringList("userContributions", userContributions!)
+        : null;
   }
 
   // -- WORD OF THE DAY
-  String wordOfTheDay = "hello";
+  String wordOfTheDay = "";
 
   Future checkWordOfTheDay() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (hasConnection) {
-      if (prefs.containsKey("wordOfTheDay")) {
-        //wordOfTheDay = queryForWOTD
-        final storedVersion = prefs.getString("wordOfTheDay");
-        if (wordOfTheDay != storedVersion) {
-          prefs.setString("wordOfTheDay", wordOfTheDay);
-        }
-      } else {
-        //wordOfTheDay = queryForWOTD
-        prefs.setString("wordOfTheDay", wordOfTheDay);
-      }
+      wordOfTheDay = await DatabaseRepository.instance.getWordOfTheDay();
+      prefs.setString("wordOfTheDay", wordOfTheDay);
     } else {
       if (prefs.containsKey("wordOfTheDay")) {
         wordOfTheDay = prefs.getString("wordOfTheDay")!;
@@ -245,6 +289,7 @@ class ApplicationController extends GetxController {
         wordOfTheDay = "amanu";
       }
     }
+    print("wordOfTheDay: " + wordOfTheDay);
   }
 
   // -- BOOKMARKS MANAGEMENT
@@ -257,6 +302,7 @@ class ApplicationController extends GetxController {
     } else {
       prefs.setStringList("bookmarks", bookmarks);
     }
+    print("Bookmarks: " + bookmarks.toString());
   }
 
   // -- DICTIONARY MANAGEMENT
@@ -300,6 +346,8 @@ class ApplicationController extends GetxController {
         dictionaryVersion = null;
       }
     }
+    print("dictionaryVersion: " + dictionaryVersion.toString());
+    print("dictionaryContentUnsorted: " + dictionaryContent.toString());
   }
 
   Future<Map<String, dynamic>> downloadDictionary() async {
