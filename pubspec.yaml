@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.8.1
   firebase_storage: ^11.2.3
   firebase_database: ^10.2.4
+  firebase_app_check: ^0.1.5+1
   google_sign_in: ^6.1.4
 
   # State Management and Persistence

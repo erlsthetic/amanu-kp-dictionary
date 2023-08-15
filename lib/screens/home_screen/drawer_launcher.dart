@@ -10,7 +10,7 @@ import 'controllers/drawerx_controller.dart';
 class DrawerLauncher extends StatelessWidget {
   DrawerLauncher({super.key});
 
-  final controller = Get.put(DrawerXController());
+  final controller = Get.find<DrawerXController>();
 
   @override
   Widget build(BuildContext context) => Obx(

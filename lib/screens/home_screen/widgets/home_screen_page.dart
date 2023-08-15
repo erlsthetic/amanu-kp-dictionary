@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
-import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';

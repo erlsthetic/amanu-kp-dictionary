@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:amanu/models/user_model.dart';
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -24,20 +25,312 @@ class ApplicationController extends GetxController {
   void onInit() async {
     super.onInit();
     isFirstTimeUse = true;
-    subscription = await listenToConnectionState();
     hasConnection = await InternetConnectionChecker().hasConnection;
-    await getUserInfo();
-    dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
-    wordOfTheDay = await checkWordOfTheDay();
-    await checkBookmarks();
-    await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
-        permanent: true);
+    subscription = await listenToConnectionState();
   }
 
   @override
   void onReady() async {
     super.onReady();
+    await updateUserInfo();
+    dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
+    wordOfTheDay = await checkWordOfTheDay();
+    await checkBookmarks();
+    await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
+        permanent: true);
+    await Get.put(DrawerXController(), permanent: true);
   }
+
+  // -- CONNECTION MANAGEMENT
+  late StreamSubscription subscription;
+  bool hasConnection = false;
+  bool isOnWifi = false;
+
+  StreamSubscription<dynamic> listenToConnectionState() {
+    return Connectivity().onConnectivityChanged.listen((result) async {
+      if (result != ConnectivityResult.none) {
+        hasConnection = await InternetConnectionChecker().hasConnection;
+      }
+      isOnWifi = hasConnection
+          ? result == ConnectivityResult.wifi
+              ? true
+              : false
+          : false;
+      print("hasConnection: ${hasConnection}");
+      print("isOnWiFi: ${isOnWifi}");
+    });
+  }
+
+  void showConnectionSnackbar(BuildContext context) {
+    final title = hasConnection ? "Connected" : "Disconnected";
+    final message = hasConnection
+        ? isOnWifi
+            ? "You are connected thru WiFi."
+            : "You are connected thru mobile data."
+        : "There is no internet connection";
+    final color = hasConnection
+        ? Colors.green.withOpacity(0.75)
+        : Colors.redAccent.withOpacity(0.75);
+    final icon = hasConnection ? Icons.check_circle : Icons.error;
+    Get.snackbar(title, message,
+        backgroundColor: color,
+        colorText: pureWhite,
+        icon: Icon(
+          icon,
+          color: pureWhite,
+          size: 20,
+        ),
+        duration: Duration(seconds: 5),
+        shouldIconPulse: true);
+  }
+
+  // -- USER MANAGEMENT
+
+  bool isLoggedIn = false;
+  String? userID, userName, userEmail;
+  int? userPhone;
+  bool? userIsExpert, userExpertRequest;
+  String? userFullName, userBio, userPic;
+  List<String>? userContributions;
+
+  Future updateUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isLoggedIn")) {
+      await changeLoginState(prefs.getBool("isLoggedIn")!);
+    } else {
+      changeLoginState(false);
+    }
+
+    if (isLoggedIn) {
+      if (hasConnection) {
+        UserModel userData =
+            await DatabaseRepository.instance.getUserDetails(userID!);
+        await changeUserDetails(
+            userID,
+            userData.userName,
+            userData.email,
+            userData.phoneNo,
+            userData.isExpert,
+            userData.expertRequest,
+            userData.exFullName,
+            userData.exBio,
+            userData.profileUrl,
+            userData.contributions);
+      } else {
+        if (prefs.containsKey("userID")) {
+          await getSavedUserDetails();
+        } else {
+          await changeLoginState(false);
+          await changeUserDetails(
+              null, null, null, null, null, null, null, null, null, null);
+        }
+      }
+    } else {
+      await changeUserDetails(
+          null, null, null, null, null, null, null, null, null, null);
+    }
+  }
+
+  Future getSavedUserDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userID = prefs.containsKey("userID") ? prefs.getString("userID") : null;
+    userName =
+        prefs.containsKey("userName") ? prefs.getString("userName") : null;
+    userEmail =
+        prefs.containsKey("userEmail") ? prefs.getString("userEmail") : null;
+    userPhone =
+        prefs.containsKey("userPhone") ? prefs.getInt("userPhone") : null;
+    userIsExpert = prefs.containsKey("userIsExpert")
+        ? prefs.getBool("userIsExpert")
+        : null;
+    userExpertRequest = prefs.containsKey("userExpertRequest")
+        ? prefs.getBool("userExpertRequest")
+        : null;
+    userFullName = prefs.containsKey("userFullName")
+        ? prefs.getString("userFullName")
+        : null;
+    userBio = prefs.containsKey("userBio") ? prefs.getString("userBio") : null;
+    userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
+    userContributions = prefs.containsKey("userContributions")
+        ? prefs.getStringList("userContributions")
+        : null;
+  }
+
+  Future changeLoginState(bool condition) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isLoggedIn", condition);
+    print("savedLoginState: " + condition.toString());
+  }
+
+  Future changeUserDetails(
+      String? _userID,
+      _userName,
+      _userEmail,
+      int? _userPhone,
+      bool? _userIsExpert,
+      _userExpertRequest,
+      String? _userFullName,
+      _userBio,
+      _userPic,
+      List<String>? _userContributions) async {
+    userID = _userID;
+    userName = _userName;
+    userEmail = _userEmail;
+    userPhone = _userPhone;
+    userIsExpert = _userIsExpert;
+    userExpertRequest = _userExpertRequest;
+    userFullName = _userFullName;
+    userBio = _userBio;
+    userPic = _userPic;
+    userContributions = _userContributions;
+    await saveUserDetails();
+    printUserDetails();
+  }
+
+  void printUserDetails() {
+    print("userID: " + (userID ?? "null"));
+    print("userName: " + (userName ?? "null"));
+    print("userEmail: " + (userEmail ?? "null"));
+    print("userPhone: " + (userPhone == null ? "null" : userPhone.toString()));
+    print("userIsExpert: " +
+        (userIsExpert == null ? "null" : userIsExpert.toString()));
+    print("userExpertRequest: " +
+        (userExpertRequest == null ? "null" : userExpertRequest.toString()));
+    print("userFullName: " + (userFullName ?? "null"));
+    print("userBio: " + (userBio ?? "null"));
+    print("userPic: " + (userPic ?? "null"));
+    print("userContributions: " +
+        (userContributions == null ? "null" : userContributions.toString()));
+  }
+
+  Future saveUserDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userID != null
+        ? prefs.setString("userID", userID!)
+        : prefs.remove("userID");
+    userEmail != null
+        ? prefs.setString("userEmail", userEmail!)
+        : prefs.remove("userEmail");
+    userName != null
+        ? prefs.setString("userName", userName!)
+        : prefs.remove("userName");
+    userPhone != null
+        ? prefs.setInt("userPhone", userPhone!)
+        : prefs.remove("userPhone");
+    userIsExpert != null
+        ? prefs.setBool("userIsExpert", userIsExpert!)
+        : prefs.remove("userIsExpert");
+    userExpertRequest != null
+        ? prefs.setBool("userExpertRequest", userExpertRequest!)
+        : prefs.remove("userExpertRequest");
+    userFullName != null
+        ? prefs.setString("userFullName", userFullName!)
+        : prefs.remove("userFullName");
+    userBio != null
+        ? prefs.setString("userBio", userBio!)
+        : prefs.remove("userBio");
+    userPic != null
+        ? prefs.setString("userPic", userPic!)
+        : prefs.remove("userPic");
+    userContributions != null
+        ? prefs.setStringList("userContributions", userContributions!)
+        : prefs.remove("userContributions");
+  }
+
+  // -- WORD OF THE DAY
+  late String wordOfTheDay;
+
+  Future<String> checkWordOfTheDay() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (hasConnection) {
+      String liveWotd = await DatabaseRepository.instance.getWordOfTheDay();
+      prefs.setString("wordOfTheDay", liveWotd);
+      return liveWotd;
+    } else {
+      if (prefs.containsKey("wordOfTheDay")) {
+        return prefs.getString("wordOfTheDay")!;
+      } else {
+        return "null";
+      }
+    }
+  }
+
+  // -- BOOKMARKS MANAGEMENT
+  RxList<String> bookmarks = <String>[].obs;
+
+  Future checkBookmarks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("bookmarks")) {
+      bookmarks.value = prefs.getStringList("bookmarks")!;
+    } else {
+      prefs.setStringList("bookmarks", bookmarks);
+    }
+    print("Bookmarks: " + bookmarks.toString());
+  }
+
+  // -- DICTIONARY MANAGEMENT
+  String? dictionaryVersion, dictionaryContentAsString;
+  RxBool noData = false.obs;
+
+  Future checkDictionary() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (hasConnection) {
+      if (prefs.containsKey("dictionaryVersion")) {
+        final storedVersion = prefs.getString("dictionaryVersion");
+        final currentVersion = await getDictionaryVersion();
+        if (currentVersion != storedVersion) {
+          dictionaryContentUnsorted = await downloadDictionary();
+          dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
+          prefs.setString("dictionaryVersion", currentVersion);
+          prefs.setString(
+              "dictionaryContentAsString", dictionaryContentAsString!);
+        } else if (currentVersion == storedVersion) {
+          dictionaryVersion = prefs.getString("dictionaryVersion");
+          dictionaryContentAsString =
+              prefs.getString("dictionaryContentAsString");
+          dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
+        }
+      } else {
+        dictionaryVersion = await getDictionaryVersion();
+        dictionaryContentUnsorted = await downloadDictionary();
+        dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
+        prefs.setString("dictionaryVersion", dictionaryVersion!);
+        prefs.setString(
+            "dictionaryContentAsString", dictionaryContentAsString!);
+      }
+    } else {
+      if (prefs.containsKey("dictionaryVersion")) {
+        dictionaryVersion = prefs.getString("dictionaryVersion");
+        dictionaryContentAsString =
+            prefs.getString("dictionaryContentAsString");
+        dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
+      } else {
+        noData.value = true;
+        dictionaryVersion = null;
+      }
+    }
+    print("dictionaryVersion: " + dictionaryVersion.toString());
+    print("dictionaryContentUnsorted: " + dictionaryContent.toString());
+  }
+
+  Future<Map<String, dynamic>> downloadDictionary() async {
+    final dictionarySnapshot = await _realtimeDB.child('dictionary').get();
+    return Map<String, dynamic>.from(dictionarySnapshot.value as dynamic);
+  }
+
+  Future<String> getDictionaryVersion() async {
+    final dictionaryVersion = await _realtimeDB.child('version').get();
+    return dictionaryVersion.value as String;
+  }
+
+  SortedMap<Comparable<dynamic>, dynamic> sortDictionary(
+      Map<String, dynamic> map) {
+    var sortedMap = new SortedMap(Ordering.byKey());
+    sortedMap.addAll(map);
+    return sortedMap;
+  }
+
+  var dictionaryContent = {};
 
   // -- USE MANAGEMENT
   late bool isFirstTimeUse;
@@ -150,233 +443,6 @@ class ApplicationController extends GetxController {
       return prefs.getBool("isFirstTimeRequests")!;
     }
   }
-
-  // -- CONNECTION MANAGEMENT
-  late StreamSubscription subscription;
-  bool hasConnection = false;
-  bool isOnWifi = false;
-
-  StreamSubscription<dynamic> listenToConnectionState() {
-    return Connectivity().onConnectivityChanged.listen((result) async {
-      if (result != ConnectivityResult.none) {
-        hasConnection = await InternetConnectionChecker().hasConnection;
-      }
-      isOnWifi = hasConnection
-          ? result == ConnectivityResult.wifi
-              ? true
-              : false
-          : false;
-      print("hasConnection: ${hasConnection}");
-      print("isOnWiFi: ${isOnWifi}");
-    });
-  }
-
-  void showConnectionSnackbar(BuildContext context) {
-    final title = hasConnection ? "Connected" : "Disconnected";
-    final message = hasConnection
-        ? isOnWifi
-            ? "You are connected thru WiFi."
-            : "You are connected thru mobile data."
-        : "There is no internet connection";
-    final color = hasConnection
-        ? Colors.green.withOpacity(0.75)
-        : Colors.redAccent.withOpacity(0.75);
-    final icon = hasConnection ? Icons.check_circle : Icons.error;
-    Get.snackbar(title, message,
-        backgroundColor: color,
-        colorText: pureWhite,
-        icon: Icon(
-          icon,
-          color: pureWhite,
-          size: 20,
-        ),
-        duration: Duration(seconds: 5),
-        shouldIconPulse: true);
-  }
-
-  // -- USER MANAGEMENT
-
-  bool isLoggedIn = false;
-  String? userID, userName, userEmail;
-  int? userPhone;
-  bool? userIsExpert, userExpertRequest;
-  String? userFullName, userBio, userPic;
-  List<String>? userContributions;
-
-  Future getUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("isLoggedIn")) {
-      isLoggedIn = prefs.getBool("isLoggedIn")!;
-    } else {
-      prefs.setBool("isLoggedIn", isLoggedIn);
-      print("savedLoginState: " + isLoggedIn.toString());
-    }
-    print("isLoggedIn: " + isLoggedIn.toString());
-    userID = prefs.containsKey("userID") ? prefs.getString("userID") : null;
-    userName =
-        prefs.containsKey("userName") ? prefs.getString("userName") : null;
-    userEmail =
-        prefs.containsKey("userEmail") ? prefs.getString("userEmail") : null;
-    userPhone =
-        prefs.containsKey("userPhone") ? prefs.getInt("userPhone") : null;
-    userIsExpert = prefs.containsKey("userIsExpert")
-        ? prefs.getBool("userIsExpert")
-        : null;
-    userExpertRequest = prefs.containsKey("userExpertRequest")
-        ? prefs.getBool("userExpertRequest")
-        : null;
-    userFullName = prefs.containsKey("userFullName")
-        ? prefs.getString("userFullName")
-        : null;
-    userBio = prefs.containsKey("userBio") ? prefs.getString("userBio") : null;
-    userPic = prefs.containsKey("userPic") ? prefs.getString("userPic") : null;
-    userContributions = prefs.containsKey("userContributions")
-        ? prefs.getStringList("userContributions")
-        : [];
-
-    if (isLoggedIn && userID != null && hasConnection) {
-      UserModel user =
-          await DatabaseRepository.instance.getUserDetails(userID!);
-      userName = user.userName;
-      userEmail = user.email;
-      userPhone = user.phoneNo;
-      userIsExpert = user.isExpert;
-      userExpertRequest = user.expertRequest;
-      userFullName = user.exFullName;
-      userBio = user.exBio;
-      userPic = user.profileUrl;
-      userContributions = user.contributions;
-      saveUserDetails();
-    }
-    print("userID: " + (userID ?? "null"));
-    print("userName: " + (userName ?? "null"));
-    print("userEmail: " + (userEmail ?? "null"));
-    print("userPhone: " + (userPhone == null ? "null" : userPhone.toString()));
-    print("userIsExpert: " +
-        (userIsExpert == null ? "null" : userIsExpert.toString()));
-    print("userExpertRequest: " +
-        (userExpertRequest == null ? "null" : userExpertRequest.toString()));
-    print("userFullName: " + (userFullName ?? "null"));
-    print("userBio: " + (userBio ?? "null"));
-    print("userPic: " + (userPic ?? "null"));
-    print("userContributions: " +
-        (userContributions == null ? "null" : userContributions.toString()));
-  }
-
-  void saveUserDetails() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userID != null ? prefs.setString("userID", userID!) : null;
-    userEmail != null ? prefs.setString("userEmail", userEmail!) : null;
-    userName != null ? prefs.setString("userName", userName!) : null;
-    userPhone != null ? prefs.setInt("userPhone", userPhone!) : null;
-    userIsExpert != null ? prefs.setBool("userIsExpert", userIsExpert!) : null;
-    userExpertRequest != null
-        ? prefs.setBool("userExpertRequest", userExpertRequest!)
-        : null;
-    userFullName != null
-        ? prefs.setString("userFullName", userFullName!)
-        : null;
-    userBio != null ? prefs.setString("userBio", userBio!) : null;
-    userPic != null ? prefs.setString("userPic", userPic!) : null;
-    userContributions != null
-        ? prefs.setStringList("userContributions", userContributions!)
-        : null;
-  }
-
-  // -- WORD OF THE DAY
-  late String wordOfTheDay;
-
-  Future<String> checkWordOfTheDay() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (hasConnection) {
-      String liveWotd = await DatabaseRepository.instance.getWordOfTheDay();
-      prefs.setString("wordOfTheDay", liveWotd);
-      return liveWotd;
-    } else {
-      if (prefs.containsKey("wordOfTheDay")) {
-        return prefs.getString("wordOfTheDay")!;
-      } else {
-        return "null";
-      }
-    }
-  }
-
-  // -- BOOKMARKS MANAGEMENT
-  RxList<String> bookmarks = <String>[].obs;
-
-  Future checkBookmarks() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("bookmarks")) {
-      bookmarks.value = prefs.getStringList("bookmarks")!;
-    } else {
-      prefs.setStringList("bookmarks", bookmarks);
-    }
-    print("Bookmarks: " + bookmarks.toString());
-  }
-
-  // -- DICTIONARY MANAGEMENT
-  String? dictionaryVersion, dictionaryContentAsString;
-  RxBool noData = false.obs;
-
-  Future checkDictionary() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (hasConnection) {
-      if (prefs.containsKey("dictionaryVersion")) {
-        final storedVersion = prefs.getString("dictionaryVersion");
-        final currentVersion = await getDictionaryVersion();
-        if (currentVersion != storedVersion) {
-          dictionaryContentUnsorted = await downloadDictionary();
-          dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
-          prefs.setString("dictionaryVersion", currentVersion);
-          prefs.setString(
-              "dictionaryContentAsString", dictionaryContentAsString!);
-        } else if (currentVersion == storedVersion) {
-          dictionaryVersion = prefs.getString("dictionaryVersion");
-          dictionaryContentAsString =
-              prefs.getString("dictionaryContentAsString");
-          dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
-        }
-      } else {
-        dictionaryVersion = await getDictionaryVersion();
-        dictionaryContentUnsorted = await downloadDictionary();
-        dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
-        prefs.setString("dictionaryVersion", dictionaryVersion!);
-        prefs.setString(
-            "dictionaryContentAsString", dictionaryContentAsString!);
-      }
-    } else {
-      if (prefs.containsKey("dictionaryVersion")) {
-        dictionaryVersion = prefs.getString("dictionaryVersion");
-        dictionaryContentAsString =
-            prefs.getString("dictionaryContentAsString");
-        dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
-      } else {
-        noData.value = true;
-        dictionaryVersion = null;
-      }
-    }
-    print("dictionaryVersion: " + dictionaryVersion.toString());
-    print("dictionaryContentUnsorted: " + dictionaryContent.toString());
-  }
-
-  Future<Map<String, dynamic>> downloadDictionary() async {
-    final dictionarySnapshot = await _realtimeDB.child('dictionary').get();
-    return Map<String, dynamic>.from(dictionarySnapshot.value as dynamic);
-  }
-
-  Future<String> getDictionaryVersion() async {
-    final dictionaryVersion = await _realtimeDB.child('version').get();
-    return dictionaryVersion.value as String;
-  }
-
-  SortedMap<Comparable<dynamic>, dynamic> sortDictionary(
-      Map<String, dynamic> map) {
-    var sortedMap = new SortedMap(Ordering.byKey());
-    sortedMap.addAll(map);
-    return sortedMap;
-  }
-
-  var dictionaryContent = {};
 
   Map<String, dynamic> dictionaryContentUnsorted = {
     "hello": {

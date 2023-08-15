@@ -96,7 +96,7 @@ class HomePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    print(wordOfTheDay);
+    print("wordOfTheDay: " + wordOfTheDay);
     wotdFound = appController.dictionaryContent.containsKey(wordOfTheDay);
     getInformation();
   }

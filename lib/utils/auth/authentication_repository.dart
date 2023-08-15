@@ -1,12 +1,19 @@
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/exceptions/login_email_failure_catch.dart';
 import 'package:amanu/utils/auth/exceptions/signup_email_failure_catch.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
+
+  final appController = Get.find<ApplicationController>();
 
   //Variables
   late final Rx<User?> _firebaseUser;
@@ -22,14 +29,50 @@ class AuthenticationRepository extends GetxController {
   void onReady() {
     _firebaseUser = Rx<User?>(_auth.currentUser);
     _firebaseUser.bindStream(_auth.userChanges());
-    //ever(_firebaseUser, setInitialScreen);
+    //ever(_firebaseUser, updateUserInfo);
   }
-
-  /*setInitialScreen(User? user) {
-    user == null
-        ? Get.offAll(() => DrawerLauncher())
-        : Get.offAll(() => DrawerLauncher());
-  }*/
+  /*
+  updateUserInfo(User? user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (user != null) {
+      appController.changeLoginState(true);
+      if (appController.hasConnection) {
+        UserModel userData =
+            await DatabaseRepository.instance.getUserDetails(user.uid);
+        await appController.changeUserDetails(
+            user.uid,
+            userData.userName,
+            userData.email,
+            userData.phoneNo,
+            userData.isExpert,
+            userData.expertRequest,
+            userData.exFullName,
+            userData.exBio,
+            userData.profileUrl,
+            userData.contributions);
+      } else {
+        if (prefs.containsKey("userID")) {
+          if (prefs.getString("userID") == user.uid) {
+            await appController.getSavedUserDetails();
+          } else {
+            await logout();
+          }
+        }
+      }
+    } else {
+      await appController.changeLoginState(false);
+      await appController.changeUserDetails(
+          null, null, null, null, null, null, null, null, null, null);
+    }
+    if (appController.isFirstTimeUse) {
+      await Future.delayed(Duration(milliseconds: 500));
+      Get.offAll(() => OnBoardingScreen());
+    } else {
+      await Future.delayed(Duration(milliseconds: 500));
+      Get.offAll(() => DrawerLauncher());
+    }
+  }
+  */
 
   Future<String?> createUserWithEmailAndPassword(
       String email, String password) async {
@@ -87,7 +130,18 @@ class AuthenticationRepository extends GetxController {
     try {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
-      Get.offAll(() => DrawerLauncher());
+      await appController.changeLoginState(false);
+      await appController.changeUserDetails(
+          null, null, null, null, null, null, null, null, null, null);
+      if (appController.isFirstTimeUse) {
+        await Future.delayed(Duration(milliseconds: 500));
+        Get.offAll(() => OnBoardingScreen());
+      } else {
+        await Future.delayed(Duration(milliseconds: 500));
+        Get.offAll(() => DrawerLauncher());
+        final drawerController = Get.find<DrawerXController>();
+        drawerController.currentItem.value = DrawerItems.home;
+      }
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     } on FormatException catch (e) {

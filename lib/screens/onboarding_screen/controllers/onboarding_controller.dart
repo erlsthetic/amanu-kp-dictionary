@@ -1,4 +1,6 @@
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:get/get.dart';
@@ -48,6 +50,8 @@ class OnBoardingController extends GetxController {
   void getStarted() {
     if (appController.isFirstTimeUse) {
       appController.isFirstTimeUse = false;
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
       Get.offAll(() => DrawerLauncher());
     } else {
       Get.off(() => WelcomeScreen());

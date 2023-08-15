@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:amanu/models/user_model.dart';
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
@@ -12,11 +15,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
   final authRepo = Get.find<AuthenticationRepository>();
+  final appController = Get.find<ApplicationController>();
   final dbRepo = Get.put(DatabaseRepository());
 
   final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
@@ -270,38 +273,6 @@ class SignUpController extends GetxController {
     });
   }
 
-  Future<void> savePreferences(
-      String uid,
-      String userName,
-      String userEmail,
-      int userPhone,
-      bool isExpert,
-      bool expertRequest,
-      String? fullName,
-      String? userBio,
-      String? userPic,
-      List<String>? contributions) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("userID", uid);
-    prefs.setString("userEmail", userEmail);
-    prefs.setString("userName", userName);
-    prefs.setInt("userPhone", userPhone);
-    prefs.setBool("userIsExpert", isExpert);
-    prefs.setBool("userExpertRequest", expertRequest);
-    if (isExpert &&
-        fullName!.isNotEmpty &&
-        fullName != '' &&
-        userBio!.isNotEmpty &&
-        userBio != '') {
-      prefs.setString("userFullName", fullName);
-      prefs.setString("userBio", userBio);
-    }
-    if (userPic!.isNotEmpty && userPic != '') {
-      prefs.setString("userPic", userPic);
-    }
-    prefs.setStringList("userContributions", contributions ?? []);
-  }
-
   Future<void> registerUser() async {
     if (selectEmpty.value == true) {
       cvError.value = true;
@@ -340,11 +311,12 @@ class SignUpController extends GetxController {
           exBio: exBio == '' ? null : exBio.trim(),
           cvUrl: cvUrl == '' ? null : cvUrl,
           profileUrl: null,
-          contributions: []);
+          contributions: null);
 
       await dbRepo.createUserOnDB(userData, uid);
 
-      await savePreferences(
+      await appController
+          .changeUserDetails(
               userData.uid,
               userData.userName,
               userData.email,
@@ -400,11 +372,12 @@ class SignUpController extends GetxController {
         exBio: exBio == '' ? null : exBio.trim(),
         cvUrl: cvUrl == '' ? null : cvUrl,
         profileUrl: authRepo.firebaseUser!.photoURL ?? null,
-        contributions: []);
+        contributions: null);
 
     await dbRepo.createUserOnDB(userData, uid);
 
-    await savePreferences(
+    await appController
+        .changeUserDetails(
             userData.uid,
             userData.userName,
             userData.email,
@@ -415,6 +388,10 @@ class SignUpController extends GetxController {
             userData.exBio,
             userData.profileUrl,
             userData.contributions)
-        .whenComplete(() => Get.offAll(DrawerLauncher()));
+        .whenComplete(() {
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
+      Get.offAll(DrawerLauncher());
+    });
   }
 }

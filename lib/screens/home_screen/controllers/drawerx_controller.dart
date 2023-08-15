@@ -1,6 +1,5 @@
 import 'package:amanu/screens/bookmarks_screen/bookmarks_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
-import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/models/drawer_item_model.dart';
@@ -9,6 +8,7 @@ import 'package:amanu/screens/requests_screen/requests_screen.dart';
 import 'package:amanu/screens/support_screen/support_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
+import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
@@ -31,6 +31,7 @@ class DrawerXController extends GetxController {
         homeController.currentIdx.value = 0;
         return HomeScreen();
       case DrawerItems.browse:
+        homeController.coastController = new CoastController(initialPage: 1);
         homeController.currentIdx.value = 1;
         return HomeScreen();
       case DrawerItems.bookmarks:
@@ -64,7 +65,5 @@ class DrawerXController extends GetxController {
     prefs.remove('userPic');
     prefs.remove('userContributions');
     AuthenticationRepository.instance.logout();
-    appController.getUserInfo();
-    Get.offAll(() => DrawerLauncher());
   }
 }
