@@ -1,3 +1,4 @@
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/models/drawer_item_model.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -49,9 +50,13 @@ class DrawerItems {
 
 class AppDrawer extends StatelessWidget {
   AppDrawer(
-      {super.key, required this.currentItem, required this.onSelectedItem});
+      {super.key,
+      required this.currentItem,
+      required this.onSelectedItem,
+      required this.controller});
   final DrawerItem currentItem;
   final ValueChanged<DrawerItem> onSelectedItem;
+  final DrawerXController controller;
 
   final appController = Get.find<ApplicationController>();
 
@@ -192,7 +197,11 @@ class AppDrawer extends StatelessWidget {
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: GestureDetector(
-                        onTap: Feedback.wrapForTap(() {}, context),
+                        onTap: Feedback.wrapForTap(() {
+                          appController.isLoggedIn
+                              ? controller.logoutUser()
+                              : null;
+                        }, context),
                         child: Container(
                             padding: EdgeInsets.all(10),
                             alignment: Alignment.center,

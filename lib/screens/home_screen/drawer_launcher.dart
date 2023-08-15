@@ -28,11 +28,13 @@ class DrawerLauncher extends StatelessWidget {
             borderRadius: 50,
             menuScreen: Builder(
               builder: (context) => AppDrawer(
-                  currentItem: controller.currentItem.value,
-                  onSelectedItem: (item) {
-                    controller.currentItem.value = item;
-                    ZoomDrawer.of(context)!.toggle();
-                  }),
+                currentItem: controller.currentItem.value,
+                onSelectedItem: (item) {
+                  controller.currentItem.value = item;
+                  ZoomDrawer.of(context)!.toggle();
+                },
+                controller: controller,
+              ),
             ),
             mainScreen: controller.getScreen()),
       );

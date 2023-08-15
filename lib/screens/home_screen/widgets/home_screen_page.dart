@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -26,7 +27,6 @@ class HomeScreenPage extends StatelessWidget {
   final double topPadding;
 
   final drawerController = Get.find<DrawerXController>();
-
   final controller = Get.find<HomePageController>();
 
   @override
@@ -64,25 +64,35 @@ class HomeScreenPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       color: orangeCard,
                     ),
-                    child: DictionaryCard(
-                        word: controller.word,
-                        prn: controller.prn,
-                        prnUrl: controller.prnUrl,
-                        engTrans: controller.engTrans,
-                        filTrans: controller.filTrans,
-                        meanings: controller.meanings,
-                        types: controller.types,
-                        definitions: controller.definitions,
-                        kulitanChars: controller.kulitanChars,
-                        kulitanString: controller.kulitanString,
-                        otherRelated: controller.otherRelated,
-                        synonyms: controller.synonyms,
-                        antonyms: controller.antonyms,
-                        sources: controller.sources,
-                        contributors: controller.contributors,
-                        expert: controller.expert,
-                        lastModifiedTime: controller.lastModifiedTime,
-                        width: double.infinity),
+                    child: controller.wotdFound
+                        ? DictionaryCard(
+                            word: controller.word,
+                            prn: controller.prn,
+                            prnUrl: controller.prnUrl,
+                            engTrans: controller.engTrans,
+                            filTrans: controller.filTrans,
+                            meanings: controller.meanings,
+                            types: controller.types,
+                            definitions: controller.definitions,
+                            kulitanChars: controller.kulitanChars,
+                            kulitanString: controller.kulitanString,
+                            otherRelated: controller.otherRelated,
+                            synonyms: controller.synonyms,
+                            antonyms: controller.antonyms,
+                            sources: controller.sources,
+                            contributors: controller.contributors,
+                            expert: controller.expert,
+                            lastModifiedTime: controller.lastModifiedTime,
+                            width: double.infinity)
+                        : Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 100,
+                            child: Text(
+                              "No data",
+                              style: TextStyle(color: cardText),
+                            ),
+                          ),
                   ),
                 ],
               )),

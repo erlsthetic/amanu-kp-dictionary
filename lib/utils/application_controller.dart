@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:amanu/models/user_model.dart';
+import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -22,12 +23,20 @@ class ApplicationController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    subscription = listenToConnectionState();
     isFirstTimeUse = true;
+    subscription = await listenToConnectionState();
+    hasConnection = await InternetConnectionChecker().hasConnection;
     await getUserInfo();
-    await checkWordOfTheDay();
-    checkBookmarks();
-    dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+    dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
+    wordOfTheDay = await checkWordOfTheDay();
+    await checkBookmarks();
+    await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
+        permanent: true);
+  }
+
+  @override
+  void onReady() async {
+    super.onReady();
   }
 
   // -- USE MANAGEMENT
@@ -275,21 +284,21 @@ class ApplicationController extends GetxController {
   }
 
   // -- WORD OF THE DAY
-  String wordOfTheDay = "";
+  late String wordOfTheDay;
 
-  Future checkWordOfTheDay() async {
+  Future<String> checkWordOfTheDay() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (hasConnection) {
-      wordOfTheDay = await DatabaseRepository.instance.getWordOfTheDay();
-      prefs.setString("wordOfTheDay", wordOfTheDay);
+      String liveWotd = await DatabaseRepository.instance.getWordOfTheDay();
+      prefs.setString("wordOfTheDay", liveWotd);
+      return liveWotd;
     } else {
       if (prefs.containsKey("wordOfTheDay")) {
-        wordOfTheDay = prefs.getString("wordOfTheDay")!;
+        return prefs.getString("wordOfTheDay")!;
       } else {
-        wordOfTheDay = "amanu";
+        return "null";
       }
     }
-    print("wordOfTheDay: " + wordOfTheDay);
   }
 
   // -- BOOKMARKS MANAGEMENT

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class HomePageController extends GetxController {
   static HomePageController get instance => Get.find();
+  HomePageController({required this.wordOfTheDay});
 
   final appController = Get.find<ApplicationController>();
 
@@ -15,7 +16,7 @@ class HomePageController extends GetxController {
     currentIdx.value = activePageIndex;
   }
 
-  String wordOfTheDay = "";
+  final String wordOfTheDay;
 
   String word = '';
   String prn = '';
@@ -35,8 +36,10 @@ class HomePageController extends GetxController {
   Map<dynamic, dynamic> expert = {};
   String lastModifiedTime = '';
 
+  late bool wotdFound;
+
   void getInformation() {
-    if (wordOfTheDay != "") {
+    if (wordOfTheDay != "" && wotdFound) {
       String wordID = wordOfTheDay;
       word = appController.dictionaryContent[wordID]["word"];
       prn = appController.dictionaryContent[wordID]["pronunciation"];
@@ -93,7 +96,8 @@ class HomePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    wordOfTheDay = appController.wordOfTheDay;
+    print(wordOfTheDay);
+    wotdFound = appController.dictionaryContent.containsKey(wordOfTheDay);
     getInformation();
   }
 }

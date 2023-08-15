@@ -1,5 +1,4 @@
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
-import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/auth/exceptions/login_email_failure_catch.dart';
 import 'package:amanu/utils/auth/exceptions/signup_email_failure_catch.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,14 +22,14 @@ class AuthenticationRepository extends GetxController {
   void onReady() {
     _firebaseUser = Rx<User?>(_auth.currentUser);
     _firebaseUser.bindStream(_auth.userChanges());
-    ever(_firebaseUser, setInitialScreen);
+    //ever(_firebaseUser, setInitialScreen);
   }
 
-  setInitialScreen(User? user) {
+  /*setInitialScreen(User? user) {
     user == null
         ? Get.offAll(() => DrawerLauncher())
         : Get.offAll(() => DrawerLauncher());
-  }
+  }*/
 
   Future<String?> createUserWithEmailAndPassword(
       String email, String password) async {

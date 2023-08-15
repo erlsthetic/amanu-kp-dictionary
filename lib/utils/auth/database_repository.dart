@@ -40,9 +40,9 @@ class DatabaseRepository extends GetxController {
     final snapshot = await _db.collection("amanu").doc("wordOfTheDay").get();
     if (snapshot.exists) {
       Map<String, dynamic>? data = snapshot.data();
-      return data?["wordOfTheDay"];
+      return data?["wordOfTheDay"] ?? "null";
     } else {
-      return "amanu";
+      return "null";
     }
   }
 
