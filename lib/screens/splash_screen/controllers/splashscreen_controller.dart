@@ -14,16 +14,18 @@ class SplashScreenController extends GetxController {
 
   RxBool animate = false.obs;
 
-  Future startAnimation() async {
+  @override
+  void onInit() async {
+    super.onInit();
     await Future.delayed(Duration(milliseconds: 100));
     animate.value = true;
     await Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform)
-        .then((value) => Get.put(DatabaseRepository(), permanent: true))
-        .then((value) => Get.put(ApplicationController(), permanent: true))
-        .then((value) => Get.put(AuthenticationRepository(), permanent: true));
-    final appController = Get.find<ApplicationController>();
+        options: DefaultFirebaseOptions.currentPlatform);
+    await Get.put(DatabaseRepository(), permanent: true);
+    await Get.put(ApplicationController(), permanent: true);
+    await Get.put(AuthenticationRepository(), permanent: true);
     await Future.delayed(Duration(milliseconds: 3000));
+    final appController = Get.find<ApplicationController>();
     if (appController.isFirstTimeUse) {
       Get.offAll(() => OnBoardingScreen());
     } else {

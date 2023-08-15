@@ -16,31 +16,43 @@ class OnBoardingController extends GetxController {
   RxInt currentPage = 0.obs;
   final appController = Get.find<ApplicationController>();
 
-  final onBoardingPages = [
+  List<OnBoardingPage> onBoardingPages = [
     OnBoardingPage(
         model: OnBoardingModel(
-            image: iOnBoardingAnim1,
-            header: tOnBoardingHead1,
-            subheading: tOnBoardingSubHead1,
-            colors: [pureWhite, pureWhite],
-            headColor: primaryOrangeDark,
-            subHeadColor: darkGrey)),
+      image: iOnBoardingAnim1,
+      header: tOnBoardingHead1,
+      subheading: tOnBoardingSubHead1,
+      colors: [pureWhite, pureWhite],
+      headColor: primaryOrangeDark,
+      subHeadColor: darkGrey,
+      hasSkip: true,
+      hasButton: false,
+      pageNo: 0,
+    )),
     OnBoardingPage(
         model: OnBoardingModel(
-            image: iOnBoardingAnim2,
-            header: tOnBoardingHead2,
-            subheading: tOnBoardingSubHead2,
-            colors: [primaryOrangeLight, primaryOrangeDark],
-            headColor: darkGrey,
-            subHeadColor: pureWhite)),
+      image: iOnBoardingAnim2,
+      header: tOnBoardingHead2,
+      subheading: tOnBoardingSubHead2,
+      colors: [primaryOrangeLight, primaryOrangeDark],
+      headColor: darkGrey,
+      subHeadColor: pureWhite,
+      hasSkip: true,
+      hasButton: false,
+      pageNo: 1,
+    )),
     OnBoardingPage(
         model: OnBoardingModel(
-            image: iOnBoardingAnim3,
-            header: tOnBoardingHead3,
-            subheading: tOnBoardingSubHead3,
-            colors: [pureWhite, pureWhite],
-            headColor: primaryOrangeDark,
-            subHeadColor: darkGrey)),
+      image: iOnBoardingAnim3,
+      header: tOnBoardingHead3,
+      subheading: tOnBoardingSubHead3,
+      colors: [pureWhite, pureWhite],
+      headColor: primaryOrangeDark,
+      subHeadColor: darkGrey,
+      hasSkip: false,
+      hasButton: true,
+      pageNo: 2,
+    )),
   ];
 
   onPageChangedCallback(int activePageIndex) {
@@ -58,5 +70,5 @@ class OnBoardingController extends GetxController {
     }
   }
 
-  skip() => controller.jumpToPage(page: 2);
+  void skip() => controller.jumpToPage(page: 2);
 }

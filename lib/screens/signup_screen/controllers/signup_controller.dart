@@ -314,7 +314,7 @@ class SignUpController extends GetxController {
           contributions: null);
 
       await dbRepo.createUserOnDB(userData, uid);
-
+      await appController.changeLoginState(true);
       await appController
           .changeUserDetails(
               userData.uid,
@@ -327,7 +327,7 @@ class SignUpController extends GetxController {
               userData.exBio,
               userData.profileUrl,
               userData.contributions)
-          .whenComplete(() => Get.offAll(DrawerLauncher()));
+          .whenComplete(() => Get.offAll(() => DrawerLauncher()));
     }
   }
 
@@ -375,7 +375,7 @@ class SignUpController extends GetxController {
         contributions: null);
 
     await dbRepo.createUserOnDB(userData, uid);
-
+    await appController.changeLoginState(true);
     await appController
         .changeUserDetails(
             userData.uid,
@@ -391,7 +391,7 @@ class SignUpController extends GetxController {
         .whenComplete(() {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(DrawerLauncher());
+      Get.offAll(() => DrawerLauncher());
     });
   }
 }

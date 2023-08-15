@@ -1,4 +1,8 @@
+import 'package:amanu/screens/onboarding_screen/controllers/onboarding_controller.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../models/onboarding_model.dart';
@@ -26,38 +30,110 @@ class OnBoardingPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: Text(
-                    model.header,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        color: model.headColor,
-                        height: 1),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        model.header,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                            color: model.headColor,
+                            height: 1),
+                      ),
+                      Text(
+                        model.subheading,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: model.subHeadColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    model.subheading,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: model.subHeadColor,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: 40.0,
-                  ),
-                )
+                model.hasButton
+                    ? Container(
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(20),
+                            splashColor: primaryOrangeLight,
+                            highlightColor: primaryOrangeLight.withOpacity(0.5),
+                            onTap: () {
+                              final obController =
+                                  Get.find<OnBoardingController>();
+                              obController.getStarted();
+                            },
+                            child: Ink(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: orangeGradient),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(tGetStarted.toUpperCase(),
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: pureWhite,
+                                      )),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: pureWhite,
+                                    size: 20.0,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container()
               ],
             ),
           ),
           Expanded(
             flex: 1,
-            child: Container(),
+            child: model.hasSkip
+                ? Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.centerLeft,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        splashColor: primaryOrangeLight,
+                        highlightColor: primaryOrangeLight.withOpacity(0.5),
+                        onTap: () {
+                          final obController = Get.find<OnBoardingController>();
+                          obController.skip();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text("SKIP",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                                color: model.pageNo == 0
+                                    ? primaryOrangeDark
+                                    : pureWhite,
+                              )),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
           )
         ],
       ),

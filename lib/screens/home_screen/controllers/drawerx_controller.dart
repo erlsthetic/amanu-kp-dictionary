@@ -28,6 +28,7 @@ class DrawerXController extends GetxController {
   Widget getScreen() {
     switch (currentItem.value) {
       case DrawerItems.home:
+        homeController.coastController = new CoastController(initialPage: 0);
         homeController.currentIdx.value = 0;
         return HomeScreen();
       case DrawerItems.browse:
