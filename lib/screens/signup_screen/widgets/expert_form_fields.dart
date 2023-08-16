@@ -224,7 +224,9 @@ class ExpertFormFields extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
               onPressed: () {
-                controller.registerUser();
+                controller.accountFromGoogle
+                    ? controller.registerUser()
+                    : controller.registerUserFromGoogle();
               },
               style: ElevatedButton.styleFrom(
                 alignment: Alignment.center,

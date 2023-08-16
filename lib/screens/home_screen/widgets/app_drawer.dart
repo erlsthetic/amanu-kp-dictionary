@@ -109,7 +109,7 @@ class AppDrawer extends StatelessWidget {
                           ),
                           Container(
                             child: Text(
-                              'Hello, Username',
+                              'Hello, ' + appController.userName!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
@@ -124,12 +124,13 @@ class AppDrawer extends StatelessWidget {
                           appController.isLoggedIn &&
                                   (appController.userIsExpert ?? false)
                               ? Container(
-                                  width: 70,
-                                  padding: EdgeInsets.all(4.0),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 4, horizontal: 8),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: expertBadge),
                                   child: Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -152,35 +153,75 @@ class AppDrawer extends StatelessWidget {
                                     ],
                                   ),
                                 )
-                              : Container(
-                                  width: 100,
-                                  padding: EdgeInsets.all(4.0),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: contributorBadge),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.person_add_rounded,
-                                          size: 14,
-                                          color: pureWhite.withOpacity(0.5)),
-                                      SizedBox(
-                                        width: 3.0,
+                              : appController.userExpertRequest ?? false
+                                  ? Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: darkGrey),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.pending_actions_rounded,
+                                              size: 14,
+                                              color:
+                                                  pureWhite.withOpacity(0.5)),
+                                          SizedBox(
+                                            width: 3.0,
+                                          ),
+                                          Text(
+                                            'Pending Expert',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                                color:
+                                                    pureWhite.withOpacity(0.5),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        'Contributor',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                            color: pureWhite.withOpacity(0.5),
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
+                                    )
+                                  : Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: contributorBadge),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.person_add_rounded,
+                                              size: 14,
+                                              color:
+                                                  pureWhite.withOpacity(0.5)),
+                                          SizedBox(
+                                            width: 3.0,
+                                          ),
+                                          Text(
+                                            'Contributor',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                                color:
+                                                    pureWhite.withOpacity(0.5),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                )
+                                    )
                         ],
                       ),
                     ),

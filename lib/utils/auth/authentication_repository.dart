@@ -1,14 +1,16 @@
+import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
-import 'package:amanu/utils/auth/exceptions/login_email_failure_catch.dart';
-import 'package:amanu/utils/auth/exceptions/signup_email_failure_catch.dart';
+import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:amanu/utils/auth/exceptions/auth_failure.dart';
+import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -31,8 +33,8 @@ class AuthenticationRepository extends GetxController {
     _firebaseUser.bindStream(_auth.userChanges());
     //ever(_firebaseUser, updateUserInfo);
   }
-  /*
-  updateUserInfo(User? user) async {
+
+  /*updateUserInfo(User? user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (user != null) {
       appController.changeLoginState(true);
@@ -69,61 +71,142 @@ class AuthenticationRepository extends GetxController {
       Get.offAll(() => OnBoardingScreen());
     } else {
       await Future.delayed(Duration(milliseconds: 500));
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
       Get.offAll(() => DrawerLauncher());
     }
-  }
-  */
+  }*/
 
-  Future<String?> createUserWithEmailAndPassword(
+  Future<Map<String, String>?> createUserWithEmailAndPassword(
       String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
-      return ex.message;
+      final ex = AuthFailure.code(e.code);
+      return {"title": ex.title, "message": ex.message};
     } catch (_) {
-      final ex = SignUpWithEmailAndPasswordFailure();
-      return ex.message;
+      final ex = AuthFailure();
+      return {"title": ex.title, "message": ex.message};
     }
     return null;
   }
 
-  Future<String?> logInUserWithEmailAndPassword(
+  Future<Map<String, String>?> logInUserWithEmailAndPassword(
       String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      if (firebaseUser != null) {
+        await appController.changeLoginState(true);
+        if (appController.hasConnection) {
+          UserModel userData = await DatabaseRepository.instance
+              .getUserDetails(firebaseUser!.uid);
+          await appController.changeUserDetails(
+              firebaseUser!.uid,
+              userData.userName,
+              userData.email,
+              userData.phoneNo,
+              userData.isExpert,
+              userData.expertRequest,
+              userData.exFullName,
+              userData.exBio,
+              userData.profileUrl,
+              userData.contributions);
+        }
+        if (appController.isFirstTimeUse) {
+          await Future.delayed(Duration(milliseconds: 500));
+          Get.offAll(() => OnBoardingScreen());
+        } else {
+          await Future.delayed(Duration(milliseconds: 500));
+          final drawerController = Get.find<DrawerXController>();
+          drawerController.currentItem.value = DrawerItems.home;
+          Get.offAll(() => DrawerLauncher());
+        }
+        Helper.successSnackBar(
+            title: "Login successful.",
+            message: "Logged in as ${appController.userName ?? ""}");
+      }
     } on FirebaseAuthException catch (e) {
-      final ex = LogInWithEmailAndPasswordFailure.code(e.code);
-      return ex.message;
+      final ex = AuthFailure.code(e.code);
+      return {"title": ex.title, "message": ex.message};
     } catch (_) {
-      final ex = LogInWithEmailAndPasswordFailure();
-      return ex.message;
+      final ex = AuthFailure();
+      return {"title": ex.title, "message": ex.message};
     }
     return null;
   }
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<Map<String, String>?> createUserWithGoogle() async {
     try {
-      // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      // Obtain the auth details from the request
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
-      // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      final ex = LogInWithEmailAndPasswordFailure.code(e.code);
-      throw ex.message;
+      final ex = AuthFailure.code(e.code);
+      return {"title": ex.title, "message": ex.message};
     } catch (_) {
-      final ex = LogInWithEmailAndPasswordFailure();
-      throw ex.message;
+      final ex = AuthFailure();
+      return {"title": ex.title, "message": ex.message};
     }
+    return null;
+  }
+
+  Future<Map<String, String>?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .whenComplete(() async {
+        if (firebaseUser != null) {
+          await appController.changeLoginState(true);
+          if (appController.hasConnection) {
+            UserModel userData = await DatabaseRepository.instance
+                .getUserDetails(firebaseUser!.uid);
+            await appController.changeUserDetails(
+                firebaseUser!.uid,
+                userData.userName,
+                userData.email,
+                userData.phoneNo,
+                userData.isExpert,
+                userData.expertRequest,
+                userData.exFullName,
+                userData.exBio,
+                userData.profileUrl,
+                userData.contributions);
+          }
+          if (appController.isFirstTimeUse) {
+            await Future.delayed(Duration(milliseconds: 500));
+            Get.offAll(() => OnBoardingScreen());
+          } else {
+            await Future.delayed(Duration(milliseconds: 500));
+            final drawerController = Get.find<DrawerXController>();
+            drawerController.currentItem.value = DrawerItems.home;
+            Get.offAll(() => DrawerLauncher());
+          }
+          Helper.successSnackBar(
+              title: "Login successful.",
+              message: "Logged in as ${appController.userName ?? ""}");
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      final ex = AuthFailure.code(e.code);
+      return {"title": ex.title, "message": ex.message};
+    } catch (_) {
+      final ex = AuthFailure();
+      return {"title": ex.title, "message": ex.message};
+    }
+    return null;
   }
 
   Future<void> logout() async {
@@ -138,15 +221,17 @@ class AuthenticationRepository extends GetxController {
         Get.offAll(() => OnBoardingScreen());
       } else {
         await Future.delayed(Duration(milliseconds: 500));
-        Get.offAll(() => DrawerLauncher());
         final drawerController = Get.find<DrawerXController>();
         drawerController.currentItem.value = DrawerItems.home;
+        Get.offAll(() => DrawerLauncher());
       }
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     } on FormatException catch (e) {
       throw e.message;
     } catch (e) {
+      Helper.errorSnackBar(
+          title: tOhSnap, message: "Unable to log out. Try again.");
       throw "Unable to log out. Try again.";
     }
   }

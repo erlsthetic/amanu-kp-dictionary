@@ -1,5 +1,6 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/screens/support_screen/pages/about_page.dart';
 import 'package:amanu/screens/support_screen/pages/feedback_page.dart';
 import 'package:amanu/screens/support_screen/pages/report_page.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -57,6 +58,11 @@ class SupportScreen extends StatelessWidget {
                             title: tRateApp,
                             image: iWelcomePageAnim,
                             onPressed: () {},
+                          ),
+                          SelectionOption(
+                            title: tAboutAmanu,
+                            image: iWelcomePageAnim,
+                            onPressed: () => Get.to(() => AboutPage()),
                           ),
                         ],
                       ),

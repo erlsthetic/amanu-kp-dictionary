@@ -9,7 +9,6 @@ import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
-import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +29,7 @@ class SignUpController extends GetxController {
 
   RxBool isLoading = false.obs;
   RxBool isGoogleLoading = false.obs;
+  bool accountFromGoogle = false;
 
   String uid = '';
   var email = '';
@@ -106,8 +106,8 @@ class SignUpController extends GetxController {
 
     if (value.isEmpty) {
       return "Enter a valid password";
-    } else if (passwordController.text.length < 8) {
-      return "Password should be at least 8 characters in length";
+    } else if (passwordController.text.length < 6) {
+      return "Password should be at least 6 characters in length";
     } else if (hasSpecialCharacters.hasMatch(passwordController.text)) {
       return "Password should not contain special characters";
     } else if (!hasUppercase.hasMatch(passwordController.text)) {
@@ -202,6 +202,7 @@ class SignUpController extends GetxController {
       return;
     }
     signUpFormKey.currentState!.save();
+    accountFromGoogle = false;
     Get.to(() => AccountSelectionScreen());
   }
 
@@ -289,12 +290,10 @@ class SignUpController extends GetxController {
     signUpFormKey.currentState!.save();
     registrationFormKey.currentState!.save();
 
-    String? error = await AuthenticationRepository.instance
+    Map<String, String>? error = await AuthenticationRepository.instance
         .createUserWithEmailAndPassword(email, password);
     if (error != null) {
-      Get.showSnackbar(GetSnackBar(
-        message: error.toString(),
-      ));
+      Helper.errorSnackBar(title: error["title"], message: error["message"]);
     } else {
       uid = authRepo.firebaseUser!.uid;
 
@@ -313,33 +312,44 @@ class SignUpController extends GetxController {
           profileUrl: null,
           contributions: null);
 
-      await dbRepo.createUserOnDB(userData, uid);
-      await appController.changeLoginState(true);
-      await appController
-          .changeUserDetails(
-              userData.uid,
-              userData.userName,
-              userData.email,
-              userData.phoneNo,
-              userData.isExpert,
-              userData.expertRequest,
-              userData.exFullName,
-              userData.exBio,
-              userData.profileUrl,
-              userData.contributions)
-          .whenComplete(() => Get.offAll(() => DrawerLauncher()));
+      await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
+        await appController.changeLoginState(true);
+        await appController
+            .changeUserDetails(
+                userData.uid,
+                userData.userName,
+                userData.email,
+                userData.phoneNo,
+                userData.isExpert,
+                userData.expertRequest,
+                userData.exFullName,
+                userData.exBio,
+                userData.profileUrl,
+                userData.contributions)
+            .whenComplete(() {
+          final drawerController = Get.find<DrawerXController>();
+          drawerController.currentItem.value = DrawerItems.home;
+          Get.offAll(() => DrawerLauncher());
+        });
+      });
     }
   }
 
   Future<void> googleSignUp() async {
     try {
       isGoogleLoading.value = true;
-      await AuthenticationRepository.instance.signInWithGoogle();
-      isGoogleLoading.value = true;
-      Get.to(() => AccountSelectionScreen());
+      Map<String, String>? error =
+          await AuthenticationRepository.instance.createUserWithGoogle();
+      if (error != null) {
+        Helper.errorSnackBar(title: error["title"], message: error["message"]);
+      }
+      isGoogleLoading.value = false;
+      if (await authRepo.firebaseUser != null) {
+        accountFromGoogle = true;
+        Get.off(() => AccountSelectionScreen());
+      }
     } catch (e) {
       isGoogleLoading.value = false;
-      Helper.errorSnackBar(title: tOhSnap, message: e.toString());
     }
   }
 
@@ -351,7 +361,8 @@ class SignUpController extends GetxController {
     if (!registrationValid ||
         cvError.value == true ||
         fileAccepted == false ||
-        selectEmpty == true) {
+        selectEmpty == true ||
+        authRepo.firebaseUser == null) {
       return;
     }
     registrationFormKey.currentState!.save();
@@ -374,24 +385,25 @@ class SignUpController extends GetxController {
         profileUrl: authRepo.firebaseUser!.photoURL ?? null,
         contributions: null);
 
-    await dbRepo.createUserOnDB(userData, uid);
-    await appController.changeLoginState(true);
-    await appController
-        .changeUserDetails(
-            userData.uid,
-            userData.userName,
-            userData.email,
-            userData.phoneNo,
-            userData.isExpert,
-            userData.expertRequest,
-            userData.exFullName,
-            userData.exBio,
-            userData.profileUrl,
-            userData.contributions)
-        .whenComplete(() {
-      final drawerController = Get.find<DrawerXController>();
-      drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => DrawerLauncher());
+    await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
+      await appController.changeLoginState(true);
+      await appController
+          .changeUserDetails(
+              userData.uid,
+              userData.userName,
+              userData.email,
+              userData.phoneNo,
+              userData.isExpert,
+              userData.expertRequest,
+              userData.exFullName,
+              userData.exBio,
+              userData.profileUrl,
+              userData.contributions)
+          .whenComplete(() {
+        final drawerController = Get.find<DrawerXController>();
+        drawerController.currentItem.value = DrawerItems.home;
+        Get.offAll(() => DrawerLauncher());
+      });
     });
   }
 }

@@ -1,6 +1,5 @@
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
-import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,15 +45,30 @@ class LoginController extends GetxController {
     }
   }
 
+  Future<void> userSignIn() async {
+    final credentialsValid = loginFormKey.currentState!.validate();
+    if (!credentialsValid) {
+      return;
+    }
+    loginFormKey.currentState!.save();
+    Map<String, String>? error = await AuthenticationRepository.instance
+        .logInUserWithEmailAndPassword(email, password);
+    if (error != null) {
+      Helper.errorSnackBar(title: error["title"], message: error["message"]);
+    }
+  }
+
   Future<void> googleSignIn() async {
     try {
       isGoogleLoading.value = true;
-      await AuthenticationRepository.instance.signInWithGoogle();
-      isGoogleLoading.value = true;
-      //Get.to(() => AccountSelectionScreen());
+      Map<String, String>? error =
+          await AuthenticationRepository.instance.signInWithGoogle();
+      if (error != null) {
+        Helper.errorSnackBar(title: error["title"], message: error["message"]);
+      }
+      isGoogleLoading.value = false;
     } catch (e) {
       isGoogleLoading.value = false;
-      Helper.errorSnackBar(title: tOhSnap, message: e.toString());
     }
   }
 

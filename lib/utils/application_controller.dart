@@ -96,7 +96,8 @@ class ApplicationController extends GetxController {
   Future updateUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isLoggedIn")) {
-      await changeLoginState(prefs.getBool("isLoggedIn")!);
+      await changeLoginState(prefs.getBool("isLoggedIn") ?? false);
+      userID = prefs.getString("userID") ?? null;
     } else {
       changeLoginState(false);
     }
@@ -158,6 +159,7 @@ class ApplicationController extends GetxController {
 
   Future changeLoginState(bool condition) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoggedIn = condition;
     prefs.setBool("isLoggedIn", condition);
     print("savedLoginState: " + condition.toString());
   }

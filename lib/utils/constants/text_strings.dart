@@ -157,6 +157,7 @@ const String tSupport = "Support";
 const String tReportAProblem = "Report a Problem";
 const String tFeedback = "Send Feedback";
 const String tRateApp = "Rate Application";
+const String tAboutAmanu = "About Amanu";
 
 // -- Report Page
 

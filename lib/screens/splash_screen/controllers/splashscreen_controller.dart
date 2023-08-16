@@ -1,8 +1,9 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
-import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:get/get.dart';
 import 'package:amanu/firebase_options.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -21,17 +22,21 @@ class SplashScreenController extends GetxController {
     animate.value = true;
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
+    await FirebaseAppCheck.instance.activate(
+      webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+      androidProvider: AndroidProvider.playIntegrity,
+    );
     await Get.put(DatabaseRepository(), permanent: true);
     await Get.put(ApplicationController(), permanent: true);
     await Get.put(AuthenticationRepository(), permanent: true);
-    await Future.delayed(Duration(milliseconds: 3000));
+    await Future.delayed(Duration(milliseconds: 5000));
     final appController = Get.find<ApplicationController>();
     if (appController.isFirstTimeUse) {
       Get.offAll(() => OnBoardingScreen());
     } else {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => DrawerLauncher());
+      Get.offAll(() => HomeScreen());
     }
   }
 }

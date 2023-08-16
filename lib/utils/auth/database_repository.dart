@@ -13,7 +13,7 @@ class DatabaseRepository extends GetxController {
   final _db = FirebaseFirestore.instance;
   final _realtimeDB = FirebaseDatabase.instance.ref();
 
-  createUserOnDB(UserModel user, String uid) async {
+  Future createUserOnDB(UserModel user, String uid) async {
     await _db.collection("users").doc(uid).set(user.toJson()).whenComplete(() {
       Helper.successSnackBar(
         title: tSuccess,
@@ -46,7 +46,7 @@ class DatabaseRepository extends GetxController {
     }
   }
 
-  createReportOnDB(ReportModel report, String timestamp) async {
+  Future createReportOnDB(ReportModel report, String timestamp) async {
     await _db
         .collection("reports")
         .doc(timestamp)
@@ -60,7 +60,7 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  createFeedbackOnDB(FeedbackModel feedback, String timestamp) async {
+  Future createFeedbackOnDB(FeedbackModel feedback, String timestamp) async {
     await _db
         .collection("feedbacks")
         .doc(timestamp)
@@ -74,7 +74,7 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  addWordOnDB(String word, Map details) async {
+  Future addWordOnDB(String word, Map details) async {
     await _realtimeDB
         .child("dictionary")
         .child(word)
@@ -86,7 +86,7 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  updateWordOnDB(String word, Map details) async {
+  Future updateWordOnDB(String word, Map details) async {
     await _realtimeDB
         .child("dictionary")
         .child(word)
@@ -98,7 +98,7 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  removeWordOnDB(String word, Map details) async {
+  Future removeWordOnDB(String word, Map details) async {
     await _realtimeDB.child("dictionary").child(word).remove().whenComplete(() {
       Helper.successSnackBar(title: tSuccess, message: tDeleteSuccess);
     }).catchError((error, stackTrace) {

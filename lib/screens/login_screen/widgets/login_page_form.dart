@@ -1,4 +1,3 @@
-import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/login_screen/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -102,7 +101,7 @@ class LoginForm extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                   onPressed: () {
-                    Get.off(() => HomeScreen());
+                    controller.userSignIn();
                   },
                   style: ElevatedButton.styleFrom(
                     alignment: Alignment.center,

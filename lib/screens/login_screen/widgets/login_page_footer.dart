@@ -47,7 +47,7 @@ class LoginFooterWidget extends StatelessWidget {
               label: controller.isGoogleLoading.value
                   ? ButtonLoadingWidget()
                   : Text(
-                      tSignUpWithGoogle,
+                      tSignInWithGoogle,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         fontSize: 16.0,
