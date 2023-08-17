@@ -17,7 +17,7 @@ class DrawerItems {
   static const join = DrawerItem('Join Amanu', iJoinAmanuIcon);
   static const support = DrawerItem('Support', iSupportIcon);
   static const profile = DrawerItem('Profile', iProfileIcon);
-  static const requests = DrawerItem('Requests', iProfileIcon);
+  static const requests = DrawerItem('Requests', iRequestsIcon);
 
   static const regular = <DrawerItem>[
     home,

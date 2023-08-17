@@ -1,6 +1,7 @@
 import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/utils/application_controller.dart';
+import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/components/floating_button.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
@@ -51,15 +52,27 @@ class HomeScreen extends StatelessWidget {
                   onPressed: (index) {
                     print("Clicked $index");
                     if (index == 0) {
-                      Get.to(() => ModifyWordPage());
+                      if (appController.hasConnection.value) {
+                        Get.to(() => ModifyWordPage());
+                      } else {
+                        appController.showConnectionSnackbar();
+                      }
                     } else if (index == 1) {
-                      Get.to(() => ModifySearchPage(
-                            editMode: true,
-                          ));
+                      if (appController.hasConnection.value) {
+                        Get.to(() => ModifySearchPage(
+                              editMode: true,
+                            ));
+                      } else {
+                        appController.showConnectionSnackbar();
+                      }
                     } else if (index == 2) {
-                      Get.to(() => ModifySearchPage(
-                            editMode: false,
-                          ));
+                      if (appController.hasConnection.value) {
+                        Get.to(() => ModifySearchPage(
+                              editMode: false,
+                            ));
+                      } else {
+                        appController.showConnectionSnackbar();
+                      }
                     }
                   },
                   positionBottom: _size.height * 0.1,

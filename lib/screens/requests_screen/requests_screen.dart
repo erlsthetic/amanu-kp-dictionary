@@ -7,7 +7,10 @@ import 'package:get/get.dart';
 class RequestsScreen extends StatelessWidget {
   RequestsScreen({
     super.key,
+    this.fromDrawer = true,
   });
+
+  final bool fromDrawer;
 
   final drawerController = Get.find<DrawerXController>();
 
@@ -47,6 +50,12 @@ class RequestsScreen extends StatelessWidget {
           size: size,
           screenPadding: screenPadding,
           title: tRequests,
+          firstIcon: fromDrawer
+              ? Icons.menu_rounded
+              : Icons.arrow_back_ios_new_rounded,
+          firstOnPressed: () {
+            fromDrawer ? drawerController.drawerToggle(context) : Get.back();
+          },
         ),
       ],
     ));

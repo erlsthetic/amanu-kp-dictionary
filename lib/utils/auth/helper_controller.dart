@@ -9,7 +9,7 @@ class Helper extends GetxController {
         shouldIconPulse: true,
         colorText: pureWhite,
         backgroundColor: primaryOrangeDark.withOpacity(0.75),
-        duration: Duration(seconds: 6),
+        duration: Duration(seconds: 4),
         snackPosition: SnackPosition.BOTTOM,
         margin: const EdgeInsets.all(10),
         icon: Icon(
@@ -24,7 +24,7 @@ class Helper extends GetxController {
         shouldIconPulse: true,
         colorText: pureWhite,
         backgroundColor: Colors.redAccent.withOpacity(0.75),
-        duration: Duration(seconds: 6),
+        duration: Duration(seconds: 4),
         snackPosition: SnackPosition.BOTTOM,
         margin: const EdgeInsets.all(10),
         icon: Icon(

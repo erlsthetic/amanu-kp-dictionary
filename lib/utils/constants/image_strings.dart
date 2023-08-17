@@ -30,6 +30,7 @@ const String iAmanuScannerIcon = "assets/svg/ICONS/AMANU_SCANNER.svg";
 const String iBookmarksIcon = "assets/svg/ICONS/BOOKMARKS.svg";
 const String iJoinAmanuIcon = "assets/svg/ICONS/JOIN_AMANU.svg";
 const String iProfileIcon = "assets/svg/ICONS/PROFILE.svg";
+const String iRequestsIcon = "assets/svg/ICONS/REQUESTS.svg";
 const String iSupportIcon = "assets/svg/ICONS/SUPPORT.svg";
 const String iToolsAdd = "assets/svg/ICONS/TOOLS_ADD.svg";
 const String iToolsDelete = "assets/svg/ICONS/TOOLS_DELETE.svg";

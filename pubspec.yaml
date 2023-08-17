@@ -123,6 +123,7 @@ flutter:
     - assets/svg/ICONS/BOOKMARKS.svg
     - assets/svg/ICONS/JOIN_AMANU.svg
     - assets/svg/ICONS/PROFILE.svg
+    - assets/svg/ICONS/REQUESTS.svg
     - assets/svg/ICONS/SUPPORT.svg
     - assets/svg/ICONS/TOOLS_ADD.svg
     - assets/svg/ICONS/TOOLS_DELETE.svg

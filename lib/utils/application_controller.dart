@@ -25,7 +25,7 @@ class ApplicationController extends GetxController {
   void onInit() async {
     super.onInit();
     isFirstTimeUse = true;
-    hasConnection = await InternetConnectionChecker().hasConnection;
+    hasConnection.value = await InternetConnectionChecker().hasConnection;
     subscription = await listenToConnectionState();
   }
 
@@ -43,15 +43,15 @@ class ApplicationController extends GetxController {
 
   // -- CONNECTION MANAGEMENT
   late StreamSubscription subscription;
-  bool hasConnection = false;
-  bool isOnWifi = false;
+  RxBool hasConnection = false.obs;
+  RxBool isOnWifi = false.obs;
 
   StreamSubscription<dynamic> listenToConnectionState() {
     return Connectivity().onConnectivityChanged.listen((result) async {
       if (result != ConnectivityResult.none) {
-        hasConnection = await InternetConnectionChecker().hasConnection;
+        hasConnection.value = await InternetConnectionChecker().hasConnection;
       }
-      isOnWifi = hasConnection
+      isOnWifi.value = hasConnection.value
           ? result == ConnectivityResult.wifi
               ? true
               : false
@@ -61,17 +61,17 @@ class ApplicationController extends GetxController {
     });
   }
 
-  void showConnectionSnackbar(BuildContext context) {
-    final title = hasConnection ? "Connected" : "Disconnected";
-    final message = hasConnection
-        ? isOnWifi
+  void showConnectionSnackbar() {
+    final title = hasConnection.value ? "Connected" : "Disconnected";
+    final message = hasConnection.value
+        ? isOnWifi.value
             ? "You are connected thru WiFi."
             : "You are connected thru mobile data."
         : "There is no internet connection";
-    final color = hasConnection
+    final color = hasConnection.value
         ? Colors.green.withOpacity(0.75)
         : Colors.redAccent.withOpacity(0.75);
-    final icon = hasConnection ? Icons.check_circle : Icons.error;
+    final icon = hasConnection.value ? Icons.check_circle : Icons.error;
     Get.snackbar(title, message,
         backgroundColor: color,
         colorText: pureWhite,
@@ -80,7 +80,7 @@ class ApplicationController extends GetxController {
           color: pureWhite,
           size: 20,
         ),
-        duration: Duration(seconds: 5),
+        duration: Duration(seconds: 3),
         shouldIconPulse: true);
   }
 
@@ -103,7 +103,7 @@ class ApplicationController extends GetxController {
     }
 
     if (isLoggedIn) {
-      if (hasConnection) {
+      if (hasConnection.value) {
         UserModel userData =
             await DatabaseRepository.instance.getUserDetails(userID!);
         await changeUserDetails(
@@ -244,7 +244,7 @@ class ApplicationController extends GetxController {
 
   Future<String> checkWordOfTheDay() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (hasConnection) {
+    if (hasConnection.value) {
       String liveWotd = await DatabaseRepository.instance.getWordOfTheDay();
       prefs.setString("wordOfTheDay", liveWotd);
       return liveWotd;
@@ -276,7 +276,7 @@ class ApplicationController extends GetxController {
 
   Future checkDictionary() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (hasConnection) {
+    if (hasConnection.value) {
       if (prefs.containsKey("dictionaryVersion")) {
         final storedVersion = prefs.getString("dictionaryVersion");
         final currentVersion = await getDictionaryVersion();
