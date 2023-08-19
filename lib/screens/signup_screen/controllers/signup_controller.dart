@@ -14,7 +14,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 class SignUpController extends GetxController {
@@ -223,7 +222,6 @@ class SignUpController extends GetxController {
     print("Phone No: +63 ${phoneNo}");
     print("Bio: ${exBio}");
     print("Ready to Register.");
-    //Get.to(() => AccountSelectionScreen());
   }
 
 // CV Select
@@ -278,23 +276,6 @@ class SignUpController extends GetxController {
     } catch (e) {
       cvUrl = '';
     }
-  }
-
-  Future<String?> uploadPic(String uid, String photoUrl) async {
-    final scaledUrl = photoUrl.replaceAll("s96-c", "s492-c");
-    final fileExt = extension(File(scaledUrl).path);
-    final path = 'users/${uid}/profile/profilePic${fileExt}';
-    final file = File(scaledUrl);
-    final ref = FirebaseStorage.instance.ref().child(path);
-    try {
-      await ref.putFile(file);
-      await ref.getDownloadURL().then((downloadUrl) {
-        return downloadUrl;
-      });
-    } catch (e) {
-      return null;
-    }
-    return null;
   }
 
   Future<void> registerUser() async {
@@ -359,7 +340,8 @@ class SignUpController extends GetxController {
                 userData.exFullName,
                 userData.exBio,
                 userData.profileUrl,
-                userData.contributions)
+                userData.contributions,
+                await appController.saveUserPicToLocal(userData.profileUrl))
             .whenComplete(() {
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;
@@ -413,7 +395,7 @@ class SignUpController extends GetxController {
     email = authRepo.firebaseUser!.email!;
 
     final photoURLUploaded =
-        await uploadPic(uid, authRepo.firebaseUser!.photoURL!);
+        await dbRepo.uploadPic(uid, authRepo.firebaseUser!.photoURL!, true);
     await uploadCV(uid);
 
     final userData = UserModel(
@@ -442,7 +424,8 @@ class SignUpController extends GetxController {
               userData.exFullName,
               userData.exBio,
               userData.profileUrl,
-              userData.contributions)
+              userData.contributions,
+              await appController.saveUserPicToLocal(userData.profileUrl))
           .whenComplete(() {
         final drawerController = Get.find<DrawerXController>();
         drawerController.currentItem.value = DrawerItems.home;

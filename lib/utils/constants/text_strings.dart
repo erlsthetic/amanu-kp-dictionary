@@ -179,16 +179,22 @@ const String tFeedbackRate = "Rate your experience.";
 const String tFeedbackNotes = "Additional notes";
 const String tFeedbackNotesTip = "Any comments or suggestions.";
 
-// -- Bookmarks Page
+// -- Bookmarks Screen
 const String tBookmarks = "Bookmarks";
 const String tRemoveBookmarkConfirmation = "Remove from bookmarks?";
 const String tRemove = "Remove";
 const String tAddBookmarkPrompt1 = "Add ";
 const String tAddBookmarkPrompt2 = "to bookmarks?";
 
-// -- Requests page
+// -- Requests Screen
 const String tRequests = "Requests";
 const String tApprove = "Approve";
+
+// -- Kulitan Scanner Screen
+const String tKulitanScanner = "Kulitan Scanner";
+
+// -- Profile Screen
+const String tProfile = "Kulitan Scanner";
 
 // -- Snackbar messages
 const String tOhSnap = "Oh Snap!";

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
@@ -13,6 +14,9 @@ import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortedmap/sortedmap.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:dio/dio.dart';
 
 class ApplicationController extends GetxController {
   static ApplicationController get instance => Get.find();
@@ -92,6 +96,7 @@ class ApplicationController extends GetxController {
   bool? userIsExpert, userExpertRequest;
   String? userFullName, userBio, userPic;
   List<String>? userContributions;
+  String? userPicLocal;
 
   Future updateUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -116,19 +121,20 @@ class ApplicationController extends GetxController {
             userData.exFullName,
             userData.exBio,
             userData.profileUrl,
-            userData.contributions);
+            userData.contributions,
+            await saveUserPicToLocal(userData.profileUrl));
       } else {
         if (prefs.containsKey("userID")) {
           await getSavedUserDetails();
         } else {
           await changeLoginState(false);
           await changeUserDetails(
-              null, null, null, null, null, null, null, null, null, null);
+              null, null, null, null, null, null, null, null, null, null, null);
         }
       }
     } else {
       await changeUserDetails(
-          null, null, null, null, null, null, null, null, null, null);
+          null, null, null, null, null, null, null, null, null, null, null);
     }
   }
 
@@ -155,6 +161,9 @@ class ApplicationController extends GetxController {
     userContributions = prefs.containsKey("userContributions")
         ? prefs.getStringList("userContributions")
         : null;
+    userPicLocal = prefs.containsKey("userPicLocal")
+        ? prefs.getString("userPicLocal")
+        : null;
   }
 
   Future changeLoginState(bool condition) async {
@@ -166,15 +175,16 @@ class ApplicationController extends GetxController {
 
   Future changeUserDetails(
       String? _userID,
-      _userName,
-      _userEmail,
+      String? _userName,
+      String? _userEmail,
       int? _userPhone,
       bool? _userIsExpert,
-      _userExpertRequest,
+      bool? _userExpertRequest,
       String? _userFullName,
-      _userBio,
-      _userPic,
-      List<String>? _userContributions) async {
+      String? _userBio,
+      String? _userPic,
+      List<String>? _userContributions,
+      String? _userPicLocal) async {
     userID = _userID;
     userName = _userName;
     userEmail = _userEmail;
@@ -185,8 +195,36 @@ class ApplicationController extends GetxController {
     userBio = _userBio;
     userPic = _userPic;
     userContributions = _userContributions;
+    userPicLocal = _userPicLocal;
     await saveUserDetails();
     printUserDetails();
+  }
+
+  Future<String?> saveUserPicToLocal(String? userPic) async {
+    if (userPic != null) {
+      try {
+        String picExt = userPic.split("?").first;
+        final appStorage = await getApplicationDocumentsDirectory();
+        final fileExt = extension(File(picExt).path);
+        final tempPhoto = File('${appStorage.path}/profilePic$fileExt');
+        final response = await Dio().get(
+          userPic,
+          options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: Duration(seconds: 15),
+          ),
+        );
+        final raf = tempPhoto.openSync(mode: FileMode.write);
+        raf.writeFromSync(response.data);
+        await raf.close();
+        return tempPhoto.path;
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
   void printUserDetails() {
@@ -203,6 +241,7 @@ class ApplicationController extends GetxController {
     print("userPic: " + (userPic ?? "null"));
     print("userContributions: " +
         (userContributions == null ? "null" : userContributions.toString()));
+    print("userPicLocal: " + (userPicLocal ?? "null"));
   }
 
   Future saveUserDetails() async {
@@ -237,6 +276,9 @@ class ApplicationController extends GetxController {
     userContributions != null
         ? prefs.setStringList("userContributions", userContributions!)
         : prefs.remove("userContributions");
+    userPicLocal != null
+        ? prefs.setString("userPicLocal", userPicLocal!)
+        : prefs.remove("userPicLocal");
   }
 
   // -- WORD OF THE DAY

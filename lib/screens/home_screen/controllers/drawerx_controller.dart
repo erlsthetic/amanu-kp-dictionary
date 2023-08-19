@@ -3,7 +3,9 @@ import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart'
 import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/models/drawer_item_model.dart';
+import 'package:amanu/screens/kulitan_scanner_screen/kulitan_scanner_screen.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:amanu/screens/profile_screen/profile_screen.dart';
 import 'package:amanu/screens/requests_screen/requests_screen.dart';
 import 'package:amanu/screens/support_screen/support_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -38,11 +40,11 @@ class DrawerXController extends GetxController {
       case DrawerItems.bookmarks:
         return BookmarksScreen();
       case DrawerItems.kulitan:
-        return HomeScreen();
+        return KulitanScannerScreen();
       case DrawerItems.join:
         return OnBoardingScreen();
       case DrawerItems.profile:
-        return SupportScreen();
+        return ProfileScreen();
       case DrawerItems.requests:
         return RequestsScreen();
       case DrawerItems.support:

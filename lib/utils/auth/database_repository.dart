@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:amanu/models/feedback_model.dart';
 import 'package:amanu/models/report_model.dart';
 import 'package:amanu/models/user_model.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path/path.dart';
 
 class DatabaseRepository extends GetxController {
   static DatabaseRepository get instance => Get.find();
@@ -27,6 +31,28 @@ class DatabaseRepository extends GetxController {
       );
       print(error.toString());
     });
+  }
+
+  Future<String?> uploadPic(
+      String uid, String photoSource, bool fromGoogle) async {
+    String scaledSource = photoSource;
+    if (fromGoogle) {
+      scaledSource = photoSource.replaceAll("s96-c", "s492-c");
+    }
+    final fileExt =
+        extension(fromGoogle ? File(scaledSource).path : scaledSource);
+    final path = 'users/${uid}/profile/profilePic${fileExt}';
+    final file = File(scaledSource);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    try {
+      await ref.putFile(file);
+      await ref.getDownloadURL().then((downloadUrl) {
+        return downloadUrl;
+      });
+    } catch (e) {
+      return null;
+    }
+    return null;
   }
 
   Future<UserModel> getUserDetails(String uid) async {
