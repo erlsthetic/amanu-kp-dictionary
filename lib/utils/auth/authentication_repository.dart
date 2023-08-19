@@ -98,7 +98,7 @@ class AuthenticationRepository extends GetxController {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       if (firebaseUser != null) {
         await appController.changeLoginState(true);
-        if (appController.hasConnection) {
+        if (appController.hasConnection.value) {
           UserModel userData = await DatabaseRepository.instance
               .getUserDetails(firebaseUser!.uid);
           await appController.changeUserDetails(
@@ -170,7 +170,7 @@ class AuthenticationRepository extends GetxController {
           .whenComplete(() async {
         if (firebaseUser != null) {
           await appController.changeLoginState(true);
-          if (appController.hasConnection) {
+          if (appController.hasConnection.value) {
             UserModel userData = await DatabaseRepository.instance
                 .getUserDetails(firebaseUser!.uid);
             await appController.changeUserDetails(

@@ -14,6 +14,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
@@ -268,25 +270,55 @@ class SignUpController extends GetxController {
     final path = 'users/${uid}/cv/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
     final ref = FirebaseStorage.instance.ref().child(path);
-    await ref.putFile(file);
-    await ref.getDownloadURL().then((downloadUrl) {
-      cvUrl = downloadUrl;
-    });
+    try {
+      await ref.putFile(file);
+      await ref.getDownloadURL().then((downloadUrl) {
+        cvUrl = downloadUrl;
+      });
+    } catch (e) {
+      cvUrl = '';
+    }
+  }
+
+  Future<String?> uploadPic(String uid, String photoUrl) async {
+    final scaledUrl = photoUrl.replaceAll("s96-c", "s492-c");
+    final fileExt = extension(File(scaledUrl).path);
+    final path = 'users/${uid}/profile/profilePic${fileExt}';
+    final file = File(scaledUrl);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    try {
+      await ref.putFile(file);
+      await ref.getDownloadURL().then((downloadUrl) {
+        return downloadUrl;
+      });
+    } catch (e) {
+      return null;
+    }
+    return null;
   }
 
   Future<void> registerUser() async {
-    if (selectEmpty.value == true) {
-      cvError.value = true;
+    if (userType == 0) {
+      final credentialsValid = signUpFormKey.currentState!.validate();
+      final registrationValid = registrationFormKey.currentState!.validate();
+      if (!registrationValid || !credentialsValid) {
+        return;
+      }
+    } else {
+      if (selectEmpty.value == true) {
+        cvError.value = true;
+      }
+      final credentialsValid = signUpFormKey.currentState!.validate();
+      final registrationValid = registrationFormKey.currentState!.validate();
+      if (!registrationValid ||
+          !credentialsValid ||
+          cvError.value == true ||
+          fileAccepted == false ||
+          selectEmpty == true) {
+        return;
+      }
     }
-    final credentialsValid = signUpFormKey.currentState!.validate();
-    final registrationValid = registrationFormKey.currentState!.validate();
-    if (!registrationValid ||
-        !credentialsValid ||
-        cvError.value == true ||
-        fileAccepted == false ||
-        selectEmpty == true) {
-      return;
-    }
+
     signUpFormKey.currentState!.save();
     registrationFormKey.currentState!.save();
 
@@ -297,7 +329,9 @@ class SignUpController extends GetxController {
     } else {
       uid = authRepo.firebaseUser!.uid;
 
-      await uploadCV(uid);
+      if (userType == 1) {
+        await uploadCV(uid);
+      }
 
       final userData = UserModel(
           uid: uid,
@@ -354,22 +388,32 @@ class SignUpController extends GetxController {
   }
 
   Future<void> registerUserFromGoogle() async {
-    if (selectEmpty.value == true) {
-      cvError.value = true;
+    if (userType == 0) {
+      final registrationValid = registrationFormKey.currentState!.validate();
+      if (!registrationValid) {
+        return;
+      }
+    } else {
+      if (selectEmpty.value == true) {
+        cvError.value = true;
+      }
+      final registrationValid = registrationFormKey.currentState!.validate();
+      if (!registrationValid ||
+          cvError.value == true ||
+          fileAccepted == false ||
+          selectEmpty == true ||
+          authRepo.firebaseUser == null) {
+        return;
+      }
     }
-    final registrationValid = registrationFormKey.currentState!.validate();
-    if (!registrationValid ||
-        cvError.value == true ||
-        fileAccepted == false ||
-        selectEmpty == true ||
-        authRepo.firebaseUser == null) {
-      return;
-    }
+
     registrationFormKey.currentState!.save();
 
     uid = authRepo.firebaseUser!.uid;
     email = authRepo.firebaseUser!.email!;
 
+    final photoURLUploaded =
+        await uploadPic(uid, authRepo.firebaseUser!.photoURL!);
     await uploadCV(uid);
 
     final userData = UserModel(
@@ -382,7 +426,7 @@ class SignUpController extends GetxController {
         exFullName: exFullName == '' ? null : exFullName.trim(),
         exBio: exBio == '' ? null : exBio.trim(),
         cvUrl: cvUrl == '' ? null : cvUrl,
-        profileUrl: authRepo.firebaseUser!.photoURL ?? null,
+        profileUrl: photoURLUploaded ?? null,
         contributions: null);
 
     await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {

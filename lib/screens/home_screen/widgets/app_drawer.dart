@@ -94,15 +94,25 @@ class AppDrawer extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(60),
                                 color: pureWhite),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(60),
-                                    color: primaryOrangeLight),
-                                child: Icon(
-                                  Icons.person_rounded,
-                                  size: 60,
-                                  color: pureWhite.withOpacity(0.5),
-                                )),
+                            child: appController.userPic == null
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color: primaryOrangeLight),
+                                    child: Icon(
+                                      Icons.person_rounded,
+                                      size: 60,
+                                      color: pureWhite.withOpacity(0.5),
+                                    ))
+                                : Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color: primaryOrangeLight),
+                                    child: Icon(
+                                      Icons.person_rounded,
+                                      size: 60,
+                                      color: pureWhite.withOpacity(0.5),
+                                    )),
                           ),
                           SizedBox(
                             height: 10,
