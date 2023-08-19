@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/models/drawer_item_model.dart';
@@ -88,13 +90,13 @@ class AppDrawer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            height: 120.0,
-                            width: 120.0,
-                            padding: EdgeInsets.all(10),
+                            height: 100.0,
+                            width: 100.0,
+                            padding: EdgeInsets.all(7.5),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(60),
+                                borderRadius: BorderRadius.circular(50),
                                 color: pureWhite),
-                            child: appController.userPic == null
+                            child: appController.userPicLocal == null
                                 ? Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(60),
@@ -107,12 +109,11 @@ class AppDrawer extends StatelessWidget {
                                 : Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(60),
-                                        color: primaryOrangeLight),
-                                    child: Icon(
-                                      Icons.person_rounded,
-                                      size: 60,
-                                      color: pureWhite.withOpacity(0.5),
-                                    )),
+                                        image: DecorationImage(
+                                            image: FileImage(File(
+                                                appController.userPicLocal!)),
+                                            fit: BoxFit.cover)),
+                                  ),
                           ),
                           SizedBox(
                             height: 10,

@@ -194,7 +194,7 @@ const String tApprove = "Approve";
 const String tKulitanScanner = "Kulitan Scanner";
 
 // -- Profile Screen
-const String tProfile = "Kulitan Scanner";
+const String tContributions = "Contributions";
 
 // -- Snackbar messages
 const String tOhSnap = "Oh Snap!";
