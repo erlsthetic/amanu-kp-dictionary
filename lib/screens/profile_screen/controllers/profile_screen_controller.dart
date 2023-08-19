@@ -14,7 +14,8 @@ class ProfileController extends GetxController {
   String? userName, userEmail, userFullName, userBio, userPic;
   bool? userIsExpert, userExpertRequest;
   List<String>? userContributions;
-  late String? contributionCount;
+  String contributionCount = '';
+  bool userNotFound = false;
 
   @override
   void onInit() async {
@@ -24,7 +25,7 @@ class ProfileController extends GetxController {
       if (userContributions != null && userContributions!.length > 0) {
         contributionCount = userContributions!.length.toString();
       } else {
-        contributionCount = null;
+        contributionCount = '0';
       }
     } else {
       userName = appController.userName;
@@ -39,7 +40,7 @@ class ProfileController extends GetxController {
           appController.userContributions!.length > 0) {
         contributionCount = appController.userContributions!.length.toString();
       } else {
-        contributionCount = null;
+        contributionCount = '0';
       }
     }
   }
@@ -62,12 +63,11 @@ class ProfileController extends GetxController {
         userFullName = user.exFullName;
         userBio = user.exBio;
       }
-      userContributions = user.contributions;
+      userContributions = user.contributions == null
+          ? null
+          : user.contributions!.map((e) => e.toString()).toList();
     } catch (e) {
-      Get.back();
-      Helper.errorSnackBar(
-          title: "Unable to get user details.",
-          message: "Please check your internet connection and try again.");
+      userNotFound = true;
     }
   }
 }

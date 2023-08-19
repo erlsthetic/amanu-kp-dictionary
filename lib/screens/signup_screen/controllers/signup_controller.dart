@@ -14,7 +14,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path/path.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();

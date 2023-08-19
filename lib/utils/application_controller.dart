@@ -183,7 +183,7 @@ class ApplicationController extends GetxController {
       String? _userFullName,
       String? _userBio,
       String? _userPic,
-      List<String>? _userContributions,
+      List<dynamic>? _userContributions,
       String? _userPicLocal) async {
     userID = _userID;
     userName = _userName;
@@ -194,7 +194,9 @@ class ApplicationController extends GetxController {
     userFullName = _userFullName;
     userBio = _userBio;
     userPic = _userPic;
-    userContributions = _userContributions;
+    userContributions = _userContributions == null
+        ? null
+        : _userContributions.map((e) => e.toString()).toList();
     userPicLocal = _userPicLocal;
     await saveUserDetails();
     printUserDetails();
@@ -541,10 +543,11 @@ class ApplicationController extends GetxController {
       "antonyms": {"ayoko": null, "bye": null},
       "sources": "Only Me. (n.d). Only Me. Sample.com",
       "contributors": {
+        "EJGV": "kXBFrfI4rmTzwyfXEipUoPSAMI43",
         "AmanuTeam": "sad8U389JSJsduash872",
         "AnotherPerson": "dfsd342csdx23423csf"
       },
-      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "expert": {"EJGV": "kXBFrfI4rmTzwyfXEipUoPSAMI43"},
       "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello9": {
@@ -657,10 +660,11 @@ class ApplicationController extends GetxController {
       "antonyms": {"ayoko": null, "bye": null},
       "sources": "Only Me. (n.d). Only Me. Sample.com",
       "contributors": {
+        "EJGV": "kXBFrfI4rmTzwyfXEipUoPSAMI43",
         "AmanuTeam": "sad8U389JSJsduash872",
         "AnotherPerson": "dfsd342csdx23423csf"
       },
-      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "expert": {"EJGV": "kXBFrfI4rmTzwyfXEipUoPSAMI43"},
       "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello5": {
@@ -890,10 +894,11 @@ class ApplicationController extends GetxController {
       "antonyms": null,
       "sources": "Only Me. (n.d). Only Me. Sample.com",
       "contributors": {
+        "EJGV": "kXBFrfI4rmTzwyfXEipUoPSAMI43",
         "AmanuTeam": "sad8U389JSJsduash872",
         "AnotherPerson": "dfsd342csdx23423csf"
       },
-      "expert": {"TheExpert": "sad8U389JSJsduash872"},
+      "expert": {"EJGV": "kXBFrfI4rmTzwyfXEipUoPSAMI43"},
       "lastModifiedTime": "2023-08-05 (12:40:33)"
     },
     "hello7": {

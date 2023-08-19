@@ -11,7 +11,7 @@ class UserModel {
   final String? exBio;
   final String? cvUrl;
   final String? profileUrl;
-  final List<String>? contributions;
+  final List<dynamic>? contributions;
 
   const UserModel(
       {required this.uid,

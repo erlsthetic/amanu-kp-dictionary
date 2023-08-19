@@ -1,5 +1,7 @@
 import 'package:amanu/components/tag_creator.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
+import 'package:amanu/screens/profile_screen/profile_screen.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
@@ -58,6 +60,7 @@ class DictionaryCard extends StatelessWidget {
   final bool audioIsOnline;
 
   final AudioPlayer player = AudioPlayer();
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -682,9 +685,17 @@ class DictionaryCard extends StatelessWidget {
                                               ? isPreview
                                                   ? () {}
                                                   : Feedback.wrapForTap(() {
-                                                      () => Get.to(DetailScreen(
-                                                          wordID: contributor
-                                                              .value));
+                                                      Get.to(() =>
+                                                          ProfileScreen(
+                                                            fromDrawer: false,
+                                                            ownProfile:
+                                                                contributor
+                                                                        .value ==
+                                                                    appController
+                                                                        .userID,
+                                                            userID: contributor
+                                                                .value,
+                                                          ));
                                                     }, context)
                                               : () {},
                                         )
@@ -725,9 +736,16 @@ class DictionaryCard extends StatelessWidget {
                                               ? isPreview
                                                   ? () {}
                                                   : Feedback.wrapForTap(() {
-                                                      () => Get.to(DetailScreen(
-                                                          wordID:
-                                                              expert.value));
+                                                      Get.to(() =>
+                                                          ProfileScreen(
+                                                            fromDrawer: false,
+                                                            ownProfile: expert
+                                                                    .value ==
+                                                                appController
+                                                                    .userID,
+                                                            userID:
+                                                                expert.value,
+                                                          ));
                                                     }, context)
                                               : () {},
                                         )
