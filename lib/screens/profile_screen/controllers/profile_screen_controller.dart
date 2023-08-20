@@ -13,19 +13,19 @@ class ProfileController extends GetxController {
   final appController = Get.find<ApplicationController>();
   String? userName, userEmail, userFullName, userBio, userPic;
   bool? userIsExpert, userExpertRequest;
-  List<String>? userContributions;
+  List<String> userContributions = [];
   String contributionCount = '';
-  bool userNotFound = false;
+  bool userNotFound = true;
 
   @override
   void onInit() async {
     super.onInit();
     if (isOtherProfile) {
       await getUserDetails();
-      if (userContributions != null && userContributions!.length > 0) {
-        contributionCount = userContributions!.length.toString();
+      if (userContributions.length > 0) {
+        contributionCount = userContributions.length.toString();
       } else {
-        contributionCount = '0';
+        contributionCount = '';
       }
     } else {
       userName = appController.userName;
@@ -35,13 +35,14 @@ class ProfileController extends GetxController {
       userPic = appController.userPicLocal ?? null;
       userFullName = appController.userFullName ?? null;
       userBio = appController.userBio ?? null;
-      userContributions = appController.userContributions ?? null;
+      userContributions = appController.userContributions ?? [];
       if (appController.userContributions != null &&
           appController.userContributions!.length > 0) {
         contributionCount = appController.userContributions!.length.toString();
       } else {
-        contributionCount = '0';
+        contributionCount = '';
       }
+      userNotFound = false;
     }
   }
 
@@ -64,10 +65,14 @@ class ProfileController extends GetxController {
         userBio = user.exBio;
       }
       userContributions = user.contributions == null
-          ? null
+          ? []
           : user.contributions!.map((e) => e.toString()).toList();
+      userNotFound = false;
     } catch (e) {
       userNotFound = true;
+      contributionCount = '';
     }
+
+    print("User not found: " + userNotFound.toString());
   }
 }

@@ -52,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
               child: controller.userNotFound
                   ? Center(
                       child: Text(
-                        "No contributions yet.",
+                        "User not found",
                         style: TextStyle(fontSize: 16, color: disabledGrey),
                       ),
                     )
@@ -459,7 +459,7 @@ class ProfileScreen extends StatelessWidget {
                                         horizontal: 10, vertical: 5),
                                     child: Text(
                                       tContributions.toUpperCase() +
-                                          (controller.contributionCount != null
+                                          (controller.contributionCount == ''
                                               ? " (${controller.contributionCount})"
                                               : ""),
                                       style: GoogleFonts.robotoSlab(
@@ -483,9 +483,8 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             Container(
                                 padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: (controller.userContributions == null &&
-                                        controller.userContributions!.length ==
-                                            0)
+                                child: (controller.userContributions.length ==
+                                        0)
                                     ? Container(
                                         child: Text(
                                           "No contributions yet.",
@@ -497,10 +496,10 @@ class ProfileScreen extends StatelessWidget {
                                     : Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: List.generate(
-                                            controller.userContributions!
-                                                .length, (index) {
+                                            controller.userContributions.length,
+                                            (index) {
                                           String wordID = controller
-                                              .userContributions![index];
+                                              .userContributions[index];
                                           List<String> type = [];
                                           for (var meaning in appController
                                                   .dictionaryContent[wordID]
