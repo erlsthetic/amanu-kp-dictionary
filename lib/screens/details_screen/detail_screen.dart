@@ -3,15 +3,12 @@ import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/components/floating_button.dart';
 import 'package:amanu/screens/details_screen/controllers/detail_controller.dart';
 import 'package:amanu/components/three_part_header.dart';
-import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class DetailScreen extends StatelessWidget {
   DetailScreen({
@@ -23,6 +20,7 @@ class DetailScreen extends StatelessWidget {
   final appController = Get.find<ApplicationController>();
   late final controller =
       Get.put(DetailController(wordID: wordID), tag: "_" + wordID);
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
