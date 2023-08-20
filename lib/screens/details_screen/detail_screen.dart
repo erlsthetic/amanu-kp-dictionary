@@ -1,7 +1,13 @@
+import 'package:amanu/components/delete_dialog.dart';
 import 'package:amanu/components/dictionary_card.dart';
+import 'package:amanu/components/floating_button.dart';
 import 'package:amanu/screens/details_screen/controllers/detail_controller.dart';
 import 'package:amanu/components/three_part_header.dart';
+import 'package:amanu/screens/user_tools/modify_search_page.dart';
+import 'package:amanu/screens/user_tools/modify_word_page.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +20,7 @@ class DetailScreen extends StatelessWidget {
   });
 
   final wordID;
-
+  final appController = Get.find<ApplicationController>();
   late final controller =
       Get.put(DetailController(wordID: wordID), tag: "_" + wordID);
 
@@ -83,6 +89,54 @@ class DetailScreen extends StatelessWidget {
                 },
               ),
             ),
+            appController.isLoggedIn
+                ? CustomFloatingPanel(
+                    onPressed: (index) {
+                      print("Clicked $index");
+                      if (index == 0) {
+                        if (appController.hasConnection.value) {
+                          Get.to(() => ModifyWordPage(
+                                editMode: true,
+                                editWordID: wordID,
+                                editWord: appController
+                                    .dictionaryContent[wordID]["word"],
+                              ));
+                        } else {
+                          appController.showConnectionSnackbar();
+                        }
+                      } else if (index == 1) {
+                        if (appController.hasConnection.value) {
+                          showDeleteDialog(context, wordID, null, false);
+                        } else {
+                          appController.showConnectionSnackbar();
+                        }
+                      }
+                    },
+                    positionBottom: size.height * 0.05,
+                    positionLeft: size.width - 85,
+                    size: 70,
+                    iconSize: 30,
+                    panelIcon: iToolBox,
+                    dockType: DockType.inside,
+                    dockOffset: 15,
+                    backgroundColor: pureWhite,
+                    contentColor: pureWhite,
+                    panelShape: PanelShape.rounded,
+                    borderRadius: BorderRadius.circular(40),
+                    borderColor: primaryOrangeDark,
+                    buttons: [
+                      iToolsEdit,
+                      iToolsDelete,
+                    ],
+                    iconBGColors: [
+                      primaryOrangeLight,
+                      darkerOrange.withOpacity(0.8)
+                    ],
+                    iconBGSize: 60,
+                    mainIconColor: primaryOrangeDark,
+                    shadowColor: primaryOrangeDark,
+                  )
+                : Container()
           ],
         ));
   }
