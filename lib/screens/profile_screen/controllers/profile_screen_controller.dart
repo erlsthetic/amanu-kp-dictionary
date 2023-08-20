@@ -5,13 +5,17 @@ import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
+import 'package:amanu/utils/image_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
   ProfileController({required this.isOtherProfile, this.userID});
+
   late TextEditingController userNameController,
       phoneNoController,
       exFullNameController,
@@ -21,13 +25,15 @@ class ProfileController extends GetxController {
   final bool isOtherProfile;
   final String? userID;
   final appController = Get.find<ApplicationController>();
+  final imageHelper = Get.put(ImageHelper());
 
   var newUserName = '';
   var newPhoneNo = '';
   var newExFullName = '';
   var newExBio = '';
-  Rx<File?>? newProfile = null.obs;
-  bool newExpReq = false;
+  File newProfile = File("");
+  RxString newProfilePath = ''.obs;
+  bool newExpertRequest = false;
 
   RxString userName = ''.obs,
       userEmail = ''.obs,
@@ -51,28 +57,8 @@ class ProfileController extends GetxController {
     exBioController = TextEditingController();
     if (isOtherProfile) {
       await getUserDetails();
-      if (userContributions.length > 0) {
-        contributionCount = userContributions.length.toString();
-      } else {
-        contributionCount = '';
-      }
     } else {
-      userName.value = appController.userName ?? '';
-      userEmail.value = appController.userEmail ?? '';
-      userPhoneNo = appController.userPhone ?? 0;
-      userIsExpert.value = appController.userIsExpert ?? false;
-      userExpertRequest.value = appController.userExpertRequest ?? false;
-      userPic.value = appController.userPicLocal ?? '';
-      userFullName.value = appController.userFullName ?? '';
-      userBio.value = appController.userBio ?? '';
-      userContributions = appController.userContributions ?? [];
-      if (appController.userContributions != null &&
-          appController.userContributions!.length > 0) {
-        contributionCount = appController.userContributions!.length.toString();
-      } else {
-        contributionCount = '';
-      }
-      userNotFound = false;
+      getCurrentUserDetails();
     }
   }
 
@@ -83,6 +69,25 @@ class ProfileController extends GetxController {
     phoneNoController.dispose();
     exFullNameController.dispose();
     exBioController.dispose();
+  }
+
+  void getCurrentUserDetails() {
+    userName.value = appController.userName ?? '';
+    userEmail.value = appController.userEmail ?? '';
+    userPhoneNo = appController.userPhone ?? 0;
+    userIsExpert.value = appController.userIsExpert ?? false;
+    userExpertRequest.value = appController.userExpertRequest ?? false;
+    userPic.value = appController.userPicLocal ?? '';
+    userFullName.value = appController.userFullName ?? '';
+    userBio.value = appController.userBio ?? '';
+    userContributions = appController.userContributions ?? [];
+    if (appController.userContributions != null &&
+        appController.userContributions!.length > 0) {
+      contributionCount = appController.userContributions!.length.toString();
+    } else {
+      contributionCount = '';
+    }
+    userNotFound = false;
   }
 
   void populateFields() {
@@ -96,8 +101,8 @@ class ProfileController extends GetxController {
     newPhoneNo = '';
     newExFullName = '';
     newExBio = '';
-    newProfile = null;
-    newExpReq = false;
+    newProfilePath.value = '';
+    newExpertRequest = userExpertRequest.value;
   }
 
   Future getUserDetails() async {
@@ -123,6 +128,11 @@ class ProfileController extends GetxController {
           ? []
           : user.contributions!.map((e) => e.toString()).toList();
       userNotFound = false;
+      if (userContributions.length > 0) {
+        contributionCount = userContributions.length.toString();
+      } else {
+        contributionCount = '';
+      }
     } catch (e) {
       userNotFound = true;
       contributionCount = '';
@@ -157,6 +167,8 @@ class ProfileController extends GetxController {
   String? validatePhone(String value) {
     if (phoneNoController.text.length != 10) {
       return "Enter a valid 10-digit number";
+    } else if (int.tryParse(phoneNoController.text) == null) {
+      return "Must only contain numbers";
     }
     return null;
   }
@@ -177,5 +189,108 @@ class ProfileController extends GetxController {
       return "Please describe your self and profession.";
     }
     return null;
+  }
+
+  Future getUserPhoto(ImageSource imageSource) async {
+    final files = await imageHelper.pickImage(source: imageSource);
+    if (files.isNotEmpty) {
+      final croppedFile = await imageHelper.cropImage(
+          file: files.first!, cropStyle: CropStyle.circle);
+      if (croppedFile != null) {
+        newProfilePath.value = croppedFile.path;
+        newProfile = File(croppedFile.path);
+      }
+    }
+  }
+
+  Future updateUserDetails() async {
+    if (!isOtherProfile) {
+      bool editFormIsValid = editAccountFormKey.currentState!.validate();
+      if (!editFormIsValid) {
+        return;
+      }
+      editAccountFormKey.currentState!.save();
+
+      String newUserPicURL = '';
+      if (newProfilePath.value != '') {
+        try {
+          newUserPicURL = (await DatabaseRepository.instance
+              .uploadPic(appController.userID!, newProfilePath.value, false))!;
+          print("Profile uploaded at: " + newUserPicURL.toString());
+        } catch (e) {
+          Helper.errorSnackBar(
+              title: tOhSnap,
+              message:
+                  "Unable to upload image. Please check your internet connection or contact support for help.");
+          return;
+        }
+      }
+
+      Map<String, dynamic> userChanges = {};
+      if (newPhoneNo != '' &&
+          int.tryParse(newPhoneNo) != appController.userPhone) {
+        userChanges["phoneNo"] = newPhoneNo != ''
+            ? int.tryParse(newPhoneNo) ?? 0
+            : appController.userPhone;
+      }
+      if (newExpertRequest != appController.userExpertRequest) {
+        userChanges["expertRequest"] = newExpertRequest;
+      }
+      if (newUserName != '' && newUserName != appController.userName) {
+        userChanges["userName"] =
+            newUserName != '' ? newUserName : appController.userName;
+      }
+      if (newExFullName != '' && newExFullName != appController.userFullName) {
+        userChanges["exFullName"] =
+            newExFullName != '' ? newExFullName : appController.userFullName;
+      }
+      if (newExBio != '' && newExBio != appController.userBio) {
+        userChanges["exBio"] =
+            newExBio != '' ? newExBio : appController.userBio;
+      }
+      if (newUserPicURL != '') {
+        userChanges["profileUrl"] =
+            newUserPicURL != '' ? newUserPicURL : appController.userPic;
+      }
+
+      await DatabaseRepository.instance
+          .updateUserOnDB(userChanges, appController.userID!)
+          .whenComplete(() async {
+        print("User changes: " + userChanges.toString());
+        await appController.changeLoginState(true);
+        await appController
+            .changeUserDetails(
+                appController.userID,
+                userChanges.containsKey("userName")
+                    ? userChanges["userName"]
+                    : appController.userName,
+                appController.userEmail,
+                userChanges.containsKey("phoneNo")
+                    ? userChanges["phoneNo"]
+                    : appController.userPhone,
+                appController.userIsExpert,
+                userChanges.containsKey("expertRequest")
+                    ? userChanges["expertRequest"]
+                    : appController.userExpertRequest,
+                userChanges.containsKey("exFullName")
+                    ? userChanges["exFullName"]
+                    : appController.userFullName,
+                userChanges.containsKey("exBio")
+                    ? userChanges["exBio"]
+                    : appController.userBio,
+                userChanges.containsKey("profileUrl")
+                    ? userChanges["profileUrl"]
+                    : appController.userPic,
+                appController.userContributions,
+                await appController.saveUserPicToLocal(
+                    userChanges.containsKey("profileUrl")
+                        ? userChanges["profileUrl"]
+                        : null))
+            .whenComplete(() {
+          appController.refresh();
+          getCurrentUserDetails();
+        });
+      });
+    }
   }
 }

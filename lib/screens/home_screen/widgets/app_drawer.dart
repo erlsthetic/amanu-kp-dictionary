@@ -6,6 +6,7 @@ import 'package:amanu/models/drawer_item_model.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -69,109 +70,82 @@ class AppDrawer extends StatelessWidget {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            !appController.isLoggedIn
-                ? Expanded(
-                    flex: 1,
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Container(
-                          height: 150,
-                          width: 150,
-                          child: SvgPicture.asset(iAmanuWhiteLogoWithLabel)),
-                    ),
-                  )
-                : Expanded(
-                    flex: appController.userIsExpert ?? false ? 3 : 1,
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 100.0,
-                            width: 100.0,
-                            padding: EdgeInsets.all(7.5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: pureWhite),
-                            child: appController.userPicLocal == null
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(60),
-                                        color: primaryOrangeLight),
-                                    child: Icon(
-                                      Icons.person_rounded,
-                                      size: 60,
-                                      color: pureWhite.withOpacity(0.5),
-                                    ))
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(60),
-                                        image: DecorationImage(
-                                            image: FileImage(File(
-                                                appController.userPicLocal!)),
-                                            fit: BoxFit.cover)),
-                                  ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            child: Text(
-                              'Hello, ' + appController.userName!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                  color: pureWhite,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          appController.isLoggedIn &&
-                                  (appController.userIsExpert ?? false)
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 4, horizontal: 8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: expertBadge),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.verified_rounded,
-                                          size: 14,
-                                          color: muteBlack.withOpacity(0.5)),
-                                      SizedBox(
-                                        width: 3.0,
+            GetBuilder<ApplicationController>(
+              builder: (ctl) {
+                return !ctl.isLoggedIn
+                    ? Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Container(
+                              height: 150,
+                              width: 150,
+                              child:
+                                  SvgPicture.asset(iAmanuWhiteLogoWithLabel)),
+                        ),
+                      )
+                    : Expanded(
+                        flex: ctl.userIsExpert ?? false ? 3 : 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 100.0,
+                                width: 100.0,
+                                padding: EdgeInsets.all(7.5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: pureWhite),
+                                child: ctl.userPicLocal == null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(60),
+                                            color: primaryOrangeLight),
+                                        child: Icon(
+                                          Icons.person_rounded,
+                                          size: 60,
+                                          color: pureWhite.withOpacity(0.5),
+                                        ))
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(60),
+                                            image: DecorationImage(
+                                                image: FileImage(
+                                                    File(ctl.userPicLocal!)),
+                                                fit: BoxFit.cover)),
                                       ),
-                                      Text(
-                                        'Expert',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                            color: muteBlack.withOpacity(0.5),
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : appController.userExpertRequest ?? false
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                child: Text(
+                                  'Hello, ' + ctl.userName!,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                      color: pureWhite,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              ctl.isLoggedIn && (ctl.userIsExpert ?? false)
                                   ? Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 8),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20),
-                                          color: darkGrey),
+                                          color: expertBadge),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
@@ -179,64 +153,102 @@ class AppDrawer extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.pending_actions_rounded,
+                                          Icon(Icons.verified_rounded,
                                               size: 14,
                                               color:
-                                                  pureWhite.withOpacity(0.5)),
+                                                  muteBlack.withOpacity(0.5)),
                                           SizedBox(
                                             width: 3.0,
                                           ),
                                           Text(
-                                            'Pending Expert',
+                                            tExpert,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
                                                 color:
-                                                    pureWhite.withOpacity(0.5),
+                                                    muteBlack.withOpacity(0.5),
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12),
                                           ),
                                         ],
                                       ),
                                     )
-                                  : Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: contributorBadge),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.person_add_rounded,
-                                              size: 14,
-                                              color:
-                                                  pureWhite.withOpacity(0.5)),
-                                          SizedBox(
-                                            width: 3.0,
+                                  : ctl.userExpertRequest ?? false
+                                      ? Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 8),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: darkGrey),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                  Icons.pending_actions_rounded,
+                                                  size: 14,
+                                                  color: pureWhite
+                                                      .withOpacity(0.5)),
+                                              SizedBox(
+                                                width: 3.0,
+                                              ),
+                                              Text(
+                                                tPending,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.poppins(
+                                                    color: pureWhite
+                                                        .withOpacity(0.5),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            'Contributor',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.poppins(
-                                                color:
-                                                    pureWhite.withOpacity(0.5),
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12),
+                                        )
+                                      : Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 8),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: contributorBadge),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.person_add_rounded,
+                                                  size: 14,
+                                                  color: pureWhite
+                                                      .withOpacity(0.5)),
+                                              SizedBox(
+                                                width: 3.0,
+                                              ),
+                                              Text(
+                                                tContributor,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.poppins(
+                                                    color: pureWhite
+                                                        .withOpacity(0.5),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    )
-                        ],
-                      ),
-                    ),
-                  ),
+                                        )
+                            ],
+                          ),
+                        ),
+                      );
+              },
+            ),
             ...appController.isLoggedIn
                 ? (appController.userIsExpert ?? false)
                     ? DrawerItems.withExpert.map(buildDrawerItem).toList()

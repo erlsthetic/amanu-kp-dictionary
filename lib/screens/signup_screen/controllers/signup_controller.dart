@@ -143,6 +143,8 @@ class SignUpController extends GetxController {
   String? validatePhone(String value) {
     if (phoneNoController.text.length != 10) {
       return "Enter a valid 10-digit number";
+    } else if (int.tryParse(phoneNoController.text) == null) {
+      return "Must only contain numbers";
     }
     return null;
   }
@@ -316,7 +318,7 @@ class SignUpController extends GetxController {
       final userData = UserModel(
           uid: uid,
           email: email.trim(),
-          phoneNo: int.parse(phoneNo.trim()),
+          phoneNo: int.tryParse(phoneNo.trim()) ?? 0,
           isExpert: false,
           expertRequest: userType == 1 ? true : false,
           userName: userName.trim(),
@@ -400,7 +402,7 @@ class SignUpController extends GetxController {
     final userData = UserModel(
         uid: uid,
         email: email.trim(),
-        phoneNo: int.parse(phoneNo.trim()),
+        phoneNo: int.tryParse(phoneNo.trim()) ?? 0,
         isExpert: false,
         expertRequest: userType == 1 ? true : false,
         userName: userName.trim(),

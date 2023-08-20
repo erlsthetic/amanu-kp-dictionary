@@ -33,8 +33,33 @@ class DatabaseRepository extends GetxController {
     });
   }
 
+  Future updateUserOnDB(Map<String, dynamic> changes, String uid) async {
+    await _db.collection("users").doc(uid).update(changes).whenComplete(() {
+      Helper.successSnackBar(
+        title: tSuccess,
+        message: tAccountUpdated,
+      );
+      // ignore: body_might_complete_normally_catch_error
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(
+        title: tOhSnap,
+        message: tSomethingWentWrong,
+      );
+      print(error.toString());
+    });
+  }
+
   Future<String?> uploadPic(
       String uid, String photoSource, bool fromGoogle) async {
+    final listResults = await FirebaseStorage.instance
+        .ref()
+        .child('users/${uid}/profile')
+        .listAll();
+    if (listResults.items.length > 0) {
+      for (Reference item in listResults.items) {
+        await item.delete();
+      }
+    }
     String scaledSource = photoSource;
     if (fromGoogle) {
       scaledSource = photoSource.replaceAll("s96-c", "s492-c");
@@ -44,13 +69,18 @@ class DatabaseRepository extends GetxController {
     final path = 'users/${uid}/profile/profilePic${fileExt}';
     final file = File(scaledSource);
     final ref = FirebaseStorage.instance.ref().child(path);
+    String dlUrl = '';
     try {
       await ref.putFile(file);
       await ref.getDownloadURL().then((downloadUrl) {
-        return downloadUrl;
+        dlUrl = downloadUrl;
+        return dlUrl;
       });
     } catch (e) {
       return null;
+    }
+    if (dlUrl != '') {
+      return dlUrl;
     }
     return null;
   }

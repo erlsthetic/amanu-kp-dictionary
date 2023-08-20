@@ -196,15 +196,15 @@ const String tKulitanScanner = "Kulitan Scanner";
 // -- Profile Screen
 const String tContributions = "Contributions";
 const String tSaveChanges = "Save changes";
-const String tPending = "Pending";
+const String tPending = "Pending Expert";
 const String tCancelExpertRequest = "Cancel expert request";
 const String tUpgradeExpert = "Upgrade to expert account";
 
 // -- Snackbar messages
 const String tOhSnap = "Oh Snap!";
 const String tSuccess = "Success!";
-const String tAccountCreated =
-    "Account has been created. Check email and verify your account.";
+const String tAccountCreated = "Account has been created.";
+const String tAccountUpdated = "Account has been updated";
 const String tSomethingWentWrong = "Something went wrong. Please try again.";
 const String tReportSent = "Report has been sent.";
 const String tReportSentBody =

@@ -31,7 +31,7 @@ class ImageHelper extends GetxController {
     CropStyle cropStyle = CropStyle.rectangle,
     int compressQuality = 100,
   }) async {
-    await _imageCropper.cropImage(
+    return await _imageCropper.cropImage(
       sourcePath: file.path,
       cropStyle: cropStyle,
       compressQuality: compressQuality,
