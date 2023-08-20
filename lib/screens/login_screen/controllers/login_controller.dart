@@ -1,5 +1,5 @@
 import 'package:amanu/utils/auth/authentication_repository.dart';
-import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

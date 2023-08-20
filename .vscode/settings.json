@@ -48,7 +48,7 @@
         "pubspec.lock": true,
         "amanu.iml": true,
         "build": true,
-        "ios": true
+        "ios": true,
     },
     "explorerExclude.backup": {}
 }

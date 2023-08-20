@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:amanu/models/feedback_model.dart';
 import 'package:amanu/models/report_model.dart';
 import 'package:amanu/models/user_model.dart';
-import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';

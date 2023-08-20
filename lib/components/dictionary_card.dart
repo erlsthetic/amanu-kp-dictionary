@@ -2,7 +2,7 @@ import 'package:amanu/components/tag_creator.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/profile_screen/profile_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
-import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';

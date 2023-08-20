@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:amanu/screens/user_tools/widgets/preview_edits_page.dart';
 import 'package:amanu/screens/user_tools/widgets/preview_page.dart';
 import 'package:amanu/utils/application_controller.dart';
-import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';

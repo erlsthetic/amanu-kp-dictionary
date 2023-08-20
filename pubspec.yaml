@@ -69,6 +69,8 @@ dependencies:
 
   # Utility packages
   file_picker: ^5.3.2
+  image_picker: ^1.0.2
+  image_cropper: ^5.0.0
   audio_waveforms: ^1.0.4
   connectivity_plus: ^4.0.2
   internet_connection_checker: ^1.0.0+1

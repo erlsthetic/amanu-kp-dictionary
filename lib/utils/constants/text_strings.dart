@@ -195,6 +195,10 @@ const String tKulitanScanner = "Kulitan Scanner";
 
 // -- Profile Screen
 const String tContributions = "Contributions";
+const String tSaveChanges = "Save changes";
+const String tPending = "Pending";
+const String tCancelExpertRequest = "Cancel expert request";
+const String tUpgradeExpert = "Upgrade to expert account";
 
 // -- Snackbar messages
 const String tOhSnap = "Oh Snap!";

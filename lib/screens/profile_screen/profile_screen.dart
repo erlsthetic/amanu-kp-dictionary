@@ -103,7 +103,8 @@ class ProfileScreen extends StatelessWidget {
                                                       color:
                                                           primaryOrangeDark)),
                                               padding: EdgeInsets.all(5),
-                                              child: controller.userPic == null
+                                              child: controller.userPic.value ==
+                                                      ''
                                                   ? Container(
                                                       decoration: BoxDecoration(
                                                           borderRadius:
@@ -125,13 +126,15 @@ class ProfileScreen extends StatelessWidget {
                                                             ? DecorationImage(
                                                                 image: FileImage(
                                                                     File(controller
-                                                                        .userPic!)),
+                                                                        .userPic
+                                                                        .value)),
                                                                 fit: BoxFit
                                                                     .cover)
                                                             : DecorationImage(
                                                                 image: NetworkImage(
                                                                     controller
-                                                                        .userPic!),
+                                                                        .userPic
+                                                                        .value),
                                                                 fit: BoxFit
                                                                     .cover),
                                                       ),
@@ -139,8 +142,8 @@ class ProfileScreen extends StatelessWidget {
                                             ),
                                             Positioned(
                                               bottom: 0,
-                                              child: controller.userIsExpert ??
-                                                      false
+                                              child: controller
+                                                      .userIsExpert.value
                                                   ? Container(
                                                       height: 23,
                                                       padding:
@@ -191,11 +194,11 @@ class ProfileScreen extends StatelessWidget {
                                                         ],
                                                       ),
                                                     )
-                                                  : !(controller.userIsExpert ??
-                                                              true) &&
-                                                          (controller
-                                                                  .userExpertRequest ??
-                                                              false)
+                                                  : (!controller.userIsExpert
+                                                              .value &&
+                                                          controller
+                                                              .userExpertRequest
+                                                              .value)
                                                       ? Container(
                                                           height: 23,
                                                           padding: EdgeInsets
@@ -236,7 +239,7 @@ class ProfileScreen extends StatelessWidget {
                                                                 width: 2.5,
                                                               ),
                                                               Text(
-                                                                tExpert,
+                                                                tPending,
                                                                 style: TextStyle(
                                                                     color: pureWhite
                                                                         .withOpacity(
@@ -291,7 +294,7 @@ class ProfileScreen extends StatelessWidget {
                                                                 width: 2.5,
                                                               ),
                                                               Text(
-                                                                tExpert,
+                                                                tContributor,
                                                                 style: TextStyle(
                                                                     color: pureWhite
                                                                         .withOpacity(
@@ -313,7 +316,324 @@ class ProfileScreen extends StatelessWidget {
                                                     child: GestureDetector(
                                                       onTap:
                                                           Feedback.wrapForTap(
-                                                              () {}, context),
+                                                              () {
+                                                        controller
+                                                            .populateFields();
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return Dialog(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            30.0)),
+                                                                child: Stack(
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration: BoxDecoration(
+                                                                          color:
+                                                                              pureWhite,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(30.0)),
+                                                                      margin: EdgeInsets.only(
+                                                                          right:
+                                                                              12,
+                                                                          top:
+                                                                              12),
+                                                                      width: double
+                                                                          .infinity,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        children: [
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            width:
+                                                                                double.infinity,
+                                                                            height:
+                                                                                60,
+                                                                            padding:
+                                                                                EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                                                            decoration:
+                                                                                BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
+                                                                            child:
+                                                                                Text(
+                                                                              "Edit profile",
+                                                                              style: GoogleFonts.robotoSlab(fontSize: 24, color: pureWhite, fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child:
+                                                                                Container(
+                                                                              constraints: BoxConstraints(
+                                                                                maxHeight: size.height * 0.6,
+                                                                              ),
+                                                                              width: double.infinity,
+                                                                              padding: EdgeInsets.fromLTRB(20, 20, 10, 20),
+                                                                              child: Scrollbar(
+                                                                                child: SingleChildScrollView(
+                                                                                  physics: BouncingScrollPhysics(),
+                                                                                  child: Form(
+                                                                                    key: controller.editAccountFormKey,
+                                                                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                                                                    child: Container(
+                                                                                      padding: EdgeInsets.only(right: 10),
+                                                                                      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                                                                        Container(
+                                                                                            height: 105,
+                                                                                            child: Stack(
+                                                                                              alignment: Alignment.center,
+                                                                                              children: [
+                                                                                                Positioned(
+                                                                                                  top: 0,
+                                                                                                  child: Container(
+                                                                                                    margin: EdgeInsets.only(bottom: 10),
+                                                                                                    child: Container(
+                                                                                                      height: 100,
+                                                                                                      width: 100,
+                                                                                                      margin: EdgeInsets.only(bottom: 7.5),
+                                                                                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(60), border: Border.all(width: 4, color: primaryOrangeDark)),
+                                                                                                      padding: EdgeInsets.all(5),
+                                                                                                      child: controller.newProfile == null && controller.userPic == ''
+                                                                                                          ? Container(
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(60), color: lightGrey),
+                                                                                                              child: Icon(
+                                                                                                                Icons.person_rounded,
+                                                                                                                size: 60,
+                                                                                                                color: pureWhite.withOpacity(0.5),
+                                                                                                              ))
+                                                                                                          : Container(
+                                                                                                              decoration: BoxDecoration(
+                                                                                                                borderRadius: BorderRadius.circular(60),
+                                                                                                                image: controller.newProfile != null && controller.newProfile!.value != null ? DecorationImage(image: FileImage(controller.newProfile!.value!), fit: BoxFit.cover) : DecorationImage(image: FileImage(File(controller.userPic.value)), fit: BoxFit.cover),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                                Positioned(
+                                                                                                  bottom: 0,
+                                                                                                  child: GestureDetector(
+                                                                                                    onTap: Feedback.wrapForTap(() {}, context),
+                                                                                                    child: Container(
+                                                                                                      height: 20,
+                                                                                                      padding: EdgeInsets.symmetric(
+                                                                                                        horizontal: 7.5,
+                                                                                                      ),
+                                                                                                      decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.circular(20), boxShadow: [
+                                                                                                        BoxShadow(
+                                                                                                          color: primaryOrangeDark.withOpacity(0.65),
+                                                                                                          blurRadius: 10,
+                                                                                                          spreadRadius: -4,
+                                                                                                        ),
+                                                                                                      ]),
+                                                                                                      child: Row(
+                                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                                        children: [
+                                                                                                          Icon(Icons.image, size: 15, color: pureWhite),
+                                                                                                          SizedBox(
+                                                                                                            width: 2.5,
+                                                                                                          ),
+                                                                                                          Text(
+                                                                                                            "CHANGE",
+                                                                                                            style: TextStyle(color: pureWhite, fontSize: 11, fontWeight: FontWeight.w600),
+                                                                                                          )
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                )
+                                                                                              ],
+                                                                                            )),
+                                                                                        SizedBox(
+                                                                                          height: 20,
+                                                                                        ),
+                                                                                        TextFormField(
+                                                                                          controller: controller.userNameController,
+                                                                                          maxLength: 30,
+                                                                                          onChanged: (value) {
+                                                                                            controller.checkUserName();
+                                                                                          },
+                                                                                          onSaved: (value) {
+                                                                                            controller.newUserName = value!;
+                                                                                          },
+                                                                                          validator: (value) {
+                                                                                            if (value != null) {
+                                                                                              return controller.validateUserName(value);
+                                                                                            } else {
+                                                                                              return "Enter a valid username";
+                                                                                            }
+                                                                                          },
+                                                                                          decoration: InputDecoration(prefixIcon: Icon(Icons.person_outline_outlined), labelText: tUsername, hintText: tUsername, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 10.0,
+                                                                                        ),
+                                                                                        TextFormField(
+                                                                                          controller: controller.phoneNoController,
+                                                                                          onSaved: (value) {
+                                                                                            controller.newPhoneNo = value!;
+                                                                                          },
+                                                                                          keyboardType: TextInputType.phone,
+                                                                                          validator: (value) {
+                                                                                            if (value != null) {
+                                                                                              return controller.validatePhone(value);
+                                                                                            } else {
+                                                                                              return "Enter a valid 10-digit number";
+                                                                                            }
+                                                                                          },
+                                                                                          decoration: InputDecoration(prefixIcon: Icon(Icons.phone_outlined), prefixText: "+63 ", labelText: tContact, hintText: "xxxxxxxxxx", border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                        ),
+                                                                                        controller.userIsExpert.value
+                                                                                            ? Column(
+                                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                                children: [
+                                                                                                  SizedBox(
+                                                                                                    height: 10.0,
+                                                                                                  ),
+                                                                                                  TextFormField(
+                                                                                                    controller: controller.exFullNameController,
+                                                                                                    onSaved: (value) {
+                                                                                                      controller.newExFullName = value!;
+                                                                                                    },
+                                                                                                    validator: (value) {
+                                                                                                      if (value != null) {
+                                                                                                        return controller.validateExFullName(value);
+                                                                                                      } else {
+                                                                                                        return "Enter a valid name";
+                                                                                                      }
+                                                                                                    },
+                                                                                                    decoration: InputDecoration(prefixIcon: Icon(Icons.person_outline_outlined), labelText: tName, hintText: tName, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                                  ),
+                                                                                                  SizedBox(
+                                                                                                    height: 10.0,
+                                                                                                  ),
+                                                                                                  TextFormField(
+                                                                                                    controller: controller.exBioController,
+                                                                                                    onSaved: (value) {
+                                                                                                      controller.newExBio = value!;
+                                                                                                    },
+                                                                                                    validator: (value) {
+                                                                                                      if (value != null) {
+                                                                                                        return controller.validateBio(value);
+                                                                                                      } else {
+                                                                                                        return "Please describe your self and profession.";
+                                                                                                      }
+                                                                                                    },
+                                                                                                    maxLines: 5,
+                                                                                                    maxLength: 200,
+                                                                                                    decoration: InputDecoration(labelText: tBio, alignLabelWithHint: true, hintText: tEnterBio, hintMaxLines: 5, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                                  ),
+                                                                                                ],
+                                                                                              )
+                                                                                            : Container(),
+                                                                                        SizedBox(
+                                                                                          height: 10.0,
+                                                                                        ),
+                                                                                        !controller.userIsExpert.value
+                                                                                            ? Container(
+                                                                                                padding: EdgeInsets.only(
+                                                                                                  left: 10,
+                                                                                                  right: 10,
+                                                                                                ),
+                                                                                                width: double.infinity,
+                                                                                                child: ElevatedButton(
+                                                                                                    onPressed: () {},
+                                                                                                    style: ElevatedButton.styleFrom(
+                                                                                                      backgroundColor: primaryOrangeLight,
+                                                                                                      alignment: Alignment.center,
+                                                                                                      minimumSize: Size(100, 45),
+                                                                                                      shape: RoundedRectangleBorder(
+                                                                                                        borderRadius: BorderRadius.circular(20),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    child: Text(
+                                                                                                      controller.userExpertRequest.value ? tCancelExpertRequest : tUpgradeExpert,
+                                                                                                      textAlign: TextAlign.center,
+                                                                                                      style: GoogleFonts.poppins(
+                                                                                                        fontSize: 16.0,
+                                                                                                        fontWeight: FontWeight.w600,
+                                                                                                        color: pureWhite,
+                                                                                                        letterSpacing: 1.0,
+                                                                                                      ),
+                                                                                                    )),
+                                                                                              )
+                                                                                            : Container(),
+                                                                                      ]),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Container(
+                                                                            padding: EdgeInsets.only(
+                                                                                left: 10,
+                                                                                right: 10,
+                                                                                bottom: 10),
+                                                                            width:
+                                                                                double.infinity,
+                                                                            child: ElevatedButton(
+                                                                                onPressed: () {},
+                                                                                style: ElevatedButton.styleFrom(
+                                                                                  alignment: Alignment.center,
+                                                                                  minimumSize: Size(100, 45),
+                                                                                  shape: RoundedRectangleBorder(
+                                                                                    borderRadius: BorderRadius.circular(20),
+                                                                                  ),
+                                                                                ),
+                                                                                child: Text(
+                                                                                  tSaveChanges.toUpperCase(),
+                                                                                  textAlign: TextAlign.center,
+                                                                                  style: GoogleFonts.poppins(
+                                                                                    fontSize: 16.0,
+                                                                                    fontWeight: FontWeight.w600,
+                                                                                    color: pureWhite,
+                                                                                    letterSpacing: 1.0,
+                                                                                  ),
+                                                                                )),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    Positioned(
+                                                                      right:
+                                                                          0.0,
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child:
+                                                                            Align(
+                                                                          alignment:
+                                                                              Alignment.topRight,
+                                                                          child:
+                                                                              CircleAvatar(
+                                                                            radius:
+                                                                                18.0,
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                            child:
+                                                                                Icon(Icons.close, color: primaryOrangeDark),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            });
+                                                      }, context),
                                                       child: Container(
                                                         height: 32,
                                                         width: 32,
@@ -364,8 +684,7 @@ class ProfileScreen extends StatelessWidget {
                                                         EdgeInsets.symmetric(
                                                             vertical: 1.5),
                                                     child: Text(
-                                                      controller.userName ??
-                                                          "User",
+                                                      controller.userName.value,
                                                       style: GoogleFonts
                                                           .robotoSlab(
                                                         fontWeight:
@@ -376,11 +695,12 @@ class ProfileScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  (controller.userIsExpert ??
-                                                              false) &&
+                                                  controller.userIsExpert
+                                                              .value &&
                                                           controller
-                                                                  .userFullName !=
-                                                              null
+                                                                  .userFullName
+                                                                  .value !=
+                                                              ''
                                                       ? Container(
                                                           padding: EdgeInsets
                                                               .symmetric(
@@ -388,7 +708,8 @@ class ProfileScreen extends StatelessWidget {
                                                                       1.5),
                                                           child: Text(
                                                             controller
-                                                                .userFullName!,
+                                                                .userFullName
+                                                                .value,
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               color: cardText,
@@ -401,8 +722,8 @@ class ProfileScreen extends StatelessWidget {
                                                         EdgeInsets.symmetric(
                                                             vertical: 1.5),
                                                     child: Text(
-                                                      controller.userEmail ??
-                                                          "user@email.com",
+                                                      controller
+                                                          .userEmail.value,
                                                       style: TextStyle(
                                                         fontStyle:
                                                             FontStyle.italic,
@@ -414,17 +735,19 @@ class ProfileScreen extends StatelessWidget {
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  (controller.userIsExpert ??
-                                                              false) &&
-                                                          controller.userBio !=
-                                                              null
+                                                  controller.userIsExpert
+                                                              .value &&
+                                                          controller.userBio
+                                                                  .value !=
+                                                              ''
                                                       ? Container(
                                                           padding: EdgeInsets
                                                               .symmetric(
                                                                   vertical:
                                                                       1.5),
                                                           child: Text(
-                                                            controller.userBio!,
+                                                            controller
+                                                                .userBio.value,
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               color: cardText,
@@ -583,7 +906,7 @@ class ProfileScreen extends StatelessWidget {
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
-          title: controller.userName ?? "User",
+          title: controller.userName.value,
           firstIcon: fromDrawer
               ? Icons.menu_rounded
               : Icons.arrow_back_ios_new_rounded,

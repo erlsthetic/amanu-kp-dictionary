@@ -6,7 +6,7 @@ import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/auth/exceptions/auth_failure.dart';
-import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';

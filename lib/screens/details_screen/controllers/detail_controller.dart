@@ -1,5 +1,5 @@
 import 'package:amanu/utils/application_controller.dart';
-import 'package:amanu/utils/auth/helper_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
