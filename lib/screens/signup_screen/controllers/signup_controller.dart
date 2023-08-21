@@ -363,7 +363,7 @@ class SignUpController extends GetxController {
       isGoogleLoading.value = false;
       if (await authRepo.firebaseUser != null) {
         accountFromGoogle = true;
-        Get.off(() => AccountSelectionScreen());
+        Get.to(() => AccountSelectionScreen());
       }
     } catch (e) {
       isGoogleLoading.value = false;
@@ -395,8 +395,11 @@ class SignUpController extends GetxController {
     uid = authRepo.firebaseUser!.uid;
     email = authRepo.firebaseUser!.email!;
 
-    final photoURLUploaded =
-        await dbRepo.uploadPic(uid, authRepo.firebaseUser!.photoURL!, true);
+    String? photoURLUploaded;
+    if (authRepo.firebaseUser!.photoURL != null) {
+      photoURLUploaded =
+          await dbRepo.uploadPic(uid, authRepo.firebaseUser!.photoURL!, true);
+    }
     await uploadCV(uid);
 
     final userData = UserModel(
