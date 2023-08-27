@@ -13,7 +13,7 @@ class LoginController extends GetxController {
   RxBool isObscure = true.obs;
   RxBool isContributor = true.obs;
 
-  RxBool isLoading = false.obs;
+  RxBool isProcessing = false.obs;
   RxBool isGoogleLoading = false.obs;
 
   late TextEditingController emailController, passwordController;
@@ -46,6 +46,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> userSignIn() async {
+    isProcessing.value = true;
     final credentialsValid = loginFormKey.currentState!.validate();
     if (!credentialsValid) {
       return;
@@ -56,6 +57,7 @@ class LoginController extends GetxController {
     if (error != null) {
       Helper.errorSnackBar(title: error["title"], message: error["message"]);
     }
+    isProcessing.value = false;
   }
 
   Future<void> googleSignIn() async {

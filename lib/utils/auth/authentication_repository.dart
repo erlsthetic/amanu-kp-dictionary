@@ -3,11 +3,14 @@ import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
+import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/auth/exceptions/auth_failure.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -170,35 +173,50 @@ class AuthenticationRepository extends GetxController {
           .signInWithCredential(credential)
           .whenComplete(() async {
         if (firebaseUser != null) {
-          await appController.changeLoginState(true);
-          if (appController.hasConnection.value) {
-            UserModel userData = await DatabaseRepository.instance
-                .getUserDetails(firebaseUser!.uid);
-            await appController.changeUserDetails(
-                firebaseUser!.uid,
-                userData.userName,
-                userData.email,
-                userData.phoneNo,
-                userData.isExpert,
-                userData.expertRequest,
-                userData.exFullName,
-                userData.exBio,
-                userData.profileUrl,
-                userData.contributions,
-                await appController.saveUserPicToLocal(userData.profileUrl));
-          }
-          if (appController.isFirstTimeUse) {
-            await Future.delayed(Duration(milliseconds: 500));
-            Get.offAll(() => OnBoardingScreen());
+          String userID = firebaseUser!.uid;
+          QuerySnapshot query = await FirebaseFirestore.instance
+              .collection('users')
+              .where('uid', isEqualTo: userID)
+              .get();
+          if (query.docs.length != 0) {
+            await appController.changeLoginState(true);
+            if (appController.hasConnection.value) {
+              UserModel userData = await DatabaseRepository.instance
+                  .getUserDetails(firebaseUser!.uid);
+              await appController.changeUserDetails(
+                  firebaseUser!.uid,
+                  userData.userName,
+                  userData.email,
+                  userData.phoneNo,
+                  userData.isExpert,
+                  userData.expertRequest,
+                  userData.exFullName,
+                  userData.exBio,
+                  userData.profileUrl,
+                  userData.contributions,
+                  await appController.saveUserPicToLocal(userData.profileUrl));
+            }
+            if (appController.isFirstTimeUse) {
+              await Future.delayed(Duration(milliseconds: 500));
+              Get.offAll(() => OnBoardingScreen());
+            } else {
+              await Future.delayed(Duration(milliseconds: 500));
+              final drawerController = Get.find<DrawerXController>();
+              drawerController.currentItem.value = DrawerItems.home;
+              Get.offAll(() => DrawerLauncher());
+            }
+            Helper.successSnackBar(
+                title: "Login successful.",
+                message: "Logged in as ${appController.userName ?? ""}");
           } else {
-            await Future.delayed(Duration(milliseconds: 500));
-            final drawerController = Get.find<DrawerXController>();
-            drawerController.currentItem.value = DrawerItems.home;
-            Get.offAll(() => DrawerLauncher());
+            Get.off(() => AccountSelectionScreen());
+            final controller = Get.put(SignUpController());
+            controller.email = firebaseUser!.email ?? '';
+            controller.accountFromGoogle = true;
+            Helper.successSnackBar(
+                title: "Let's pickup where you left off.",
+                message: "Continue setting up your account to gain access.");
           }
-          Helper.successSnackBar(
-              title: "Login successful.",
-              message: "Logged in as ${appController.userName ?? ""}");
         }
       });
     } on FirebaseAuthException catch (e) {
@@ -213,8 +231,10 @@ class AuthenticationRepository extends GetxController {
 
   Future<void> logout() async {
     try {
-      await GoogleSignIn().signOut();
-      await FirebaseAuth.instance.signOut();
+      if (firebaseUser != null) {
+        await GoogleSignIn().signOut();
+        await FirebaseAuth.instance.signOut();
+      }
       await appController.changeLoginState(false);
       await appController.changeUserDetails(
           null, null, null, null, null, null, null, null, null, null, null);

@@ -1,14 +1,15 @@
-import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
-import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
-    SearchWordController? controller, bool isFromModifySearch) {
-  final appController = Get.find<ApplicationController>();
+Future<dynamic> showConfirmDialog(
+    BuildContext context,
+    String title,
+    String content,
+    String option1Text,
+    String option2Text,
+    VoidCallback option1Tap,
+    VoidCallback option2Tap) {
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -30,7 +31,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                     Container(
                       alignment: Alignment.center,
                       width: double.infinity,
-                      height: 70,
+                      constraints: BoxConstraints(minHeight: 70),
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
@@ -38,7 +39,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                           borderRadius: BorderRadius.vertical(
                               top: Radius.circular(30.0))),
                       child: Text(
-                        tDeleteWord,
+                        title,
                         style: GoogleFonts.robotoSlab(
                             fontSize: 24,
                             color: pureWhite,
@@ -59,23 +60,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                               width: double.infinity,
                               alignment: Alignment.center,
                               child: Text(
-                                appController.userIsExpert ?? false
-                                    ? (tDeletePrompt1 +
-                                        (isFromModifySearch
-                                            ? controller!.suggestionMap[wordID]
-                                                ["word"]
-                                            : appController
-                                                    .dictionaryContent[wordID]
-                                                ["word"]) +
-                                        tDeletePrompt2)
-                                    : (tDeleteRequestPrompt1 +
-                                        (isFromModifySearch
-                                            ? controller!.suggestionMap[wordID]
-                                                ["word"]
-                                            : appController
-                                                    .dictionaryContent[wordID]
-                                                ["word"]) +
-                                        tDeleteRequestPrompt2),
+                                content,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(color: cardText, fontSize: 16),
                               ),
@@ -90,7 +75,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                                     borderRadius: BorderRadius.circular(25),
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(25),
-                                      onTap: () {},
+                                      onTap: option1Tap,
                                       splashColor: primaryOrangeLight,
                                       highlightColor:
                                           primaryOrangeLight.withOpacity(0.5),
@@ -99,7 +84,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            tDeleteYes.toUpperCase(),
+                                            option1Text.toUpperCase(),
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
                                               fontWeight: FontWeight.w600,
@@ -125,7 +110,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                                     borderRadius: BorderRadius.circular(25),
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(25),
-                                      onTap: () {},
+                                      onTap: option2Tap,
                                       splashColor: primaryOrangeDarkShine,
                                       highlightColor: primaryOrangeDarkShine
                                           .withOpacity(0.5),
@@ -134,7 +119,7 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            tCancel.toUpperCase(),
+                                            option2Text.toUpperCase(),
                                             overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
                                               fontWeight: FontWeight.w600,

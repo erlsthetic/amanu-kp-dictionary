@@ -12,7 +12,7 @@ class LoginForm extends StatelessWidget {
     super.key,
   });
 
-  final controller = Get.put(LoginController());
+  final controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +100,11 @@ class LoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                  onPressed: () {
-                    controller.userSignIn();
-                  },
+                  onPressed: controller.isGoogleLoading.value
+                      ? () {}
+                      : () {
+                          controller.userSignIn();
+                        },
                   style: ElevatedButton.styleFrom(
                     alignment: Alignment.center,
                     minimumSize: Size(100, 45),

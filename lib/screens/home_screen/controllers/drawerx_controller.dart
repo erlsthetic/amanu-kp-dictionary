@@ -22,6 +22,7 @@ class DrawerXController extends GetxController {
   final appController = Get.find<ApplicationController>();
 
   Rx<DrawerItem> currentItem = DrawerItems.home.obs;
+  RxBool isProcessing = false.obs;
 
   drawerToggle(context) {
     ZoomDrawer.of(context)!.toggle();
@@ -55,6 +56,7 @@ class DrawerXController extends GetxController {
   }
 
   Future<void> logoutUser() async {
+    isProcessing.value = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isLoggedIn", false);
     prefs.remove('userID');
@@ -67,6 +69,7 @@ class DrawerXController extends GetxController {
     prefs.remove('userBio');
     prefs.remove('userPic');
     prefs.remove('userContributions');
-    AuthenticationRepository.instance.logout();
+    await AuthenticationRepository.instance.logout();
+    isProcessing.value = true;
   }
 }

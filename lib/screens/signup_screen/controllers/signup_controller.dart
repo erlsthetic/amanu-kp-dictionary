@@ -167,37 +167,6 @@ class SignUpController extends GetxController {
     return null;
   }
 
-/*
-  Future checkEmailAvailability() async {
-    final isValid = signUpFormKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-
-    QuerySnapshot query = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: emailController.text)
-        .get();
-
-    bool emailAvailable;
-    if (query.docs.length == 0) {
-      emailAvailable = true;
-    } else {
-      emailAvailable = false;
-    }
-
-    if (emailAvailable) {
-      signUpFormKey.currentState!.save();
-      Get.to(() => AccountSelectionScreen());
-    } else {
-      Get.snackbar(
-          "Email is already in use", "Use other email or login instead.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent.withOpacity(0.5),
-          colorText: pureWhite);
-    }
-  }
-*/
   void checkCredentials() {
     final isValid = signUpFormKey.currentState!.validate();
     if (!isValid) {
@@ -206,23 +175,6 @@ class SignUpController extends GetxController {
     signUpFormKey.currentState!.save();
     accountFromGoogle = false;
     Get.to(() => AccountSelectionScreen());
-  }
-
-  void checkRegistration() {
-    final isValid = registrationFormKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
-    registrationFormKey.currentState!.save();
-
-    print("Email: ${email}");
-    print("Password: ${password}");
-    print("Account type: ${userType}");
-    print("Username: ${userName}");
-    print("Fullname: ${exFullName}");
-    print("Phone No: +63 ${phoneNo}");
-    print("Bio: ${exBio}");
-    print("Ready to Register.");
   }
 
 // CV Select
@@ -397,9 +349,11 @@ class SignUpController extends GetxController {
 
     String? photoURLUploaded;
     if (authRepo.firebaseUser!.photoURL != null) {
+      print(authRepo.firebaseUser!.photoURL);
       photoURLUploaded =
           await dbRepo.uploadPic(uid, authRepo.firebaseUser!.photoURL!, true);
     }
+
     await uploadCV(uid);
 
     final userData = UserModel(
