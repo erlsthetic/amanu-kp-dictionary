@@ -9,7 +9,7 @@ class SignupForm extends StatelessWidget {
   SignupForm({
     super.key,
   });
-  final controller = Get.put(SignUpController());
+  final controller = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +89,11 @@ class SignupForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                  onPressed: () {
-                    controller.checkCredentials();
-                  },
+                  onPressed: controller.isGoogleLoading.value
+                      ? () {}
+                      : () {
+                          controller.checkCredentials();
+                        },
                   style: ElevatedButton.styleFrom(
                     alignment: Alignment.center,
                     minimumSize: Size(100, 45),

@@ -1,3 +1,5 @@
+import 'package:amanu/components/processing_loader.dart';
+import 'package:amanu/screens/login_screen/controllers/login_controller.dart';
 import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -9,7 +11,9 @@ import 'widgets/login_page_footer.dart';
 import 'widgets/login_page_form.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +25,35 @@ class LoginScreen extends StatelessWidget {
           Get.off(() => WelcomeScreen());
           return Future.value(false);
         },
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Container(
-              padding: EdgeInsets.all(30.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderSubheaderWithImage(
-                      size: size,
-                      header: tLoginHead,
-                      subHeader: tLoginSubHead,
-                      imgString: iLoginPageAnim),
-                  LoginForm(),
-                  LoginFooterWidget()
-                ],
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  padding: EdgeInsets.all(30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeaderSubheaderWithImage(
+                          size: size,
+                          header: tLoginHead,
+                          subHeader: tLoginSubHead,
+                          imgString: iLoginPageAnim),
+                      LoginForm(),
+                      LoginFooterWidget()
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+            Obx(() => controller.isProcessing.value
+                ? IsProcessingLoader(size: size)
+                : Container())
+          ],
         ),
       ),
     );

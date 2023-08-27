@@ -14,6 +14,7 @@ import 'package:amanu/components/header_subheader.dart';
 
 class AccountSelectionScreen extends StatelessWidget {
   AccountSelectionScreen({super.key});
+
   final controller = Get.find<SignUpController>();
 
   @override
@@ -22,19 +23,24 @@ class AccountSelectionScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: WillPopScope(
-        onWillPop: () {
-          showConfirmDialog(
-              context,
-              "Exit account setup?",
-              "Your account details are not yet set. However, if you wish to exit now, you may still continue setting up your account by logging in.",
-              "Exit",
-              "Cancel", () {
-            AuthenticationRepository.instance.logout();
-          }, () {
-            Navigator.of(context).pop();
-          });
-          return Future.value(false);
-        },
+        onWillPop: controller.accountFromGoogle
+            ? () {
+                showConfirmDialog(
+                    context,
+                    "Exit account setup?",
+                    "Your account details are not yet set. However, if you wish to exit now, you may still continue setting up your account by logging in.",
+                    "Exit",
+                    "Cancel", () {
+                  AuthenticationRepository.instance.logout();
+                }, () {
+                  Navigator.of(context).pop();
+                });
+                return Future.value(false);
+              }
+            : () {
+                Get.back();
+                return Future.value(false);
+              },
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(

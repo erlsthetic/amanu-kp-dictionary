@@ -70,6 +70,6 @@ class DrawerXController extends GetxController {
     prefs.remove('userPic');
     prefs.remove('userContributions');
     await AuthenticationRepository.instance.logout();
-    isProcessing.value = true;
+    isProcessing.value = false;
   }
 }

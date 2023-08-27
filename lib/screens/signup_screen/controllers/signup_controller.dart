@@ -27,7 +27,7 @@ class SignUpController extends GetxController {
   RxBool isObscure = true.obs;
   RxBool isContributor = true.obs;
 
-  RxBool isLoading = false.obs;
+  RxBool isProcessing = false.obs;
   RxBool isGoogleLoading = false.obs;
   bool accountFromGoogle = false;
 
@@ -232,10 +232,12 @@ class SignUpController extends GetxController {
   }
 
   Future<void> registerUser() async {
+    isProcessing.value = true;
     if (userType == 0) {
       final credentialsValid = signUpFormKey.currentState!.validate();
       final registrationValid = registrationFormKey.currentState!.validate();
       if (!registrationValid || !credentialsValid) {
+        isProcessing.value = false;
         return;
       }
     } else {
@@ -249,6 +251,7 @@ class SignUpController extends GetxController {
           cvError.value == true ||
           fileAccepted == false ||
           selectEmpty == true) {
+        isProcessing.value = false;
         return;
       }
     }

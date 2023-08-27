@@ -1,4 +1,5 @@
 import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
+import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/header_subheader_image.dart';
@@ -9,7 +10,9 @@ import 'widgets/signup_page_footer.dart';
 import 'widgets/signup_page_form.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  SignupScreen({super.key});
+
+  final controller = Get.put(SignUpController());
 
   @override
   Widget build(BuildContext context) {

@@ -50,753 +50,124 @@ class ProfileScreen extends StatelessWidget {
               ),
               height: size.height - screenPadding.top - 50,
               width: size.width,
-              child: controller.userNotFound
-                  ? Center(
-                      child: Text(
-                        "User not found",
-                        style: TextStyle(fontSize: 16, color: disabledGrey),
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 40),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Obx(
-                              () => Container(
-                                margin: EdgeInsets.symmetric(horizontal: 15),
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    color: pureWhite,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color:
-                                            primaryOrangeDark.withOpacity(0.65),
-                                        blurRadius: 15,
-                                        spreadRadius: -8,
-                                      ),
-                                    ]),
-                                child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Container(
-                                                height: 120,
-                                                width: 120,
-                                                margin: EdgeInsets.only(
-                                                    bottom: 7.5),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            60),
-                                                    border: Border.all(
-                                                        width: 4,
-                                                        color:
-                                                            primaryOrangeDark)),
-                                                padding: EdgeInsets.all(5),
-                                                child: controller
-                                                            .userPic.value ==
-                                                        ''
-                                                    ? Container(
-                                                        decoration: BoxDecoration(
+              child: Obx(
+                () => controller.userNotFound.value
+                    ? controller.isProcessing.value ? Container() : Center(
+                        child: Text(
+                          "User not found",
+                          style: TextStyle(fontSize: 16, color: disabledGrey),
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 40),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Obx(
+                                () => Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 15),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: pureWhite,
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: primaryOrangeDark
+                                              .withOpacity(0.65),
+                                          blurRadius: 15,
+                                          spreadRadius: -8,
+                                        ),
+                                      ]),
+                                  child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Container(
+                                                  height: 120,
+                                                  width: 120,
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 7.5),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              60),
+                                                      border: Border.all(
+                                                          width: 4,
+                                                          color:
+                                                              primaryOrangeDark)),
+                                                  padding: EdgeInsets.all(5),
+                                                  child: controller
+                                                              .userPic.value ==
+                                                          ''
+                                                      ? Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          60),
+                                                              color: lightGrey),
+                                                          child: Icon(
+                                                            Icons
+                                                                .person_rounded,
+                                                            size: 60,
+                                                            color: pureWhite
+                                                                .withOpacity(
+                                                                    0.5),
+                                                          ))
+                                                      : Container(
+                                                          decoration:
+                                                              BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         60),
-                                                            color: lightGrey),
-                                                        child: Icon(
-                                                          Icons.person_rounded,
-                                                          size: 60,
-                                                          color: pureWhite
-                                                              .withOpacity(0.5),
-                                                        ))
-                                                    : Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(60),
-                                                          image: ownProfile
-                                                              ? DecorationImage(
-                                                                  image: FileImage(File(
-                                                                      controller
-                                                                          .userPic
-                                                                          .value)),
-                                                                  fit: BoxFit
-                                                                      .cover)
-                                                              : DecorationImage(
-                                                                  image: NetworkImage(
-                                                                      controller
-                                                                          .userPic
-                                                                          .value),
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                        ),
-                                                      ),
-                                              ),
-                                              Positioned(
-                                                bottom: 0,
-                                                child: controller
-                                                        .userIsExpert.value
-                                                    ? Container(
-                                                        height: 23,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                          horizontal: 7.5,
-                                                        ),
-                                                        decoration: BoxDecoration(
-                                                            color: expertBadge,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: expertBadge
-                                                                    .withOpacity(
-                                                                        0.65),
-                                                                blurRadius: 10,
-                                                                spreadRadius:
-                                                                    -4,
-                                                              ),
-                                                            ]),
-                                                        child: Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .verified_rounded,
-                                                              size: 15,
-                                                              color: muteBlack
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 2.5,
-                                                            ),
-                                                            Text(
-                                                              tExpert,
-                                                              style: TextStyle(
-                                                                  color: muteBlack
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                  fontSize:
-                                                                      11.5,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      )
-                                                    : (!controller.userIsExpert
-                                                                .value &&
-                                                            controller
-                                                                .userExpertRequest
-                                                                .value)
-                                                        ? Container(
-                                                            height: 23,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              horizontal: 7.5,
-                                                            ),
-                                                            decoration: BoxDecoration(
-                                                                color: darkGrey,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: darkGrey
-                                                                        .withOpacity(
-                                                                            0.65),
-                                                                    blurRadius:
-                                                                        10,
-                                                                    spreadRadius:
-                                                                        -4,
-                                                                  ),
-                                                                ]),
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .pending_actions_rounded,
-                                                                  size: 15,
-                                                                  color: pureWhite
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 2.5,
-                                                                ),
-                                                                Text(
-                                                                  tPending,
-                                                                  style: TextStyle(
-                                                                      color: pureWhite
-                                                                          .withOpacity(
-                                                                              0.5),
-                                                                      fontSize:
-                                                                          11.5,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )
-                                                        : Container(
-                                                            height: 23,
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                              horizontal: 7.5,
-                                                            ),
-                                                            decoration: BoxDecoration(
-                                                                color:
-                                                                    contributorBadge,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: contributorBadge
-                                                                        .withOpacity(
-                                                                            0.65),
-                                                                    blurRadius:
-                                                                        10,
-                                                                    spreadRadius:
-                                                                        -4,
-                                                                  ),
-                                                                ]),
-                                                            child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .person_add_rounded,
-                                                                  size: 15,
-                                                                  color: pureWhite
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 2.5,
-                                                                ),
-                                                                Text(
-                                                                  tContributor,
-                                                                  style: TextStyle(
-                                                                      color: pureWhite
-                                                                          .withOpacity(
-                                                                              0.5),
-                                                                      fontSize:
-                                                                          11.5,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                )
-                                                              ],
-                                                            ),
+                                                            image: ownProfile
+                                                                ? DecorationImage(
+                                                                    image: FileImage(File(controller
+                                                                        .userPic
+                                                                        .value)),
+                                                                    fit: BoxFit
+                                                                        .cover)
+                                                                : DecorationImage(
+                                                                    image: NetworkImage(controller
+                                                                        .userPic
+                                                                        .value),
+                                                                    fit: BoxFit
+                                                                        .cover),
                                                           ),
-                                              ),
-                                              ownProfile
-                                                  ? Positioned(
-                                                      right: 0,
-                                                      top: 2.5,
-                                                      child: GestureDetector(
-                                                        onTap:
-                                                            Feedback.wrapForTap(
-                                                                () {
-                                                          controller
-                                                              .populateFields();
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return Dialog(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              30.0)),
-                                                                  child: Stack(
-                                                                    children: [
-                                                                      Container(
-                                                                        decoration: BoxDecoration(
-                                                                            color:
-                                                                                pureWhite,
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(30.0)),
-                                                                        margin: EdgeInsets.only(
-                                                                            right:
-                                                                                12,
-                                                                            top:
-                                                                                12),
-                                                                        width: double
-                                                                            .infinity,
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.min,
-                                                                          children: [
-                                                                            Container(
-                                                                              alignment: Alignment.center,
-                                                                              width: double.infinity,
-                                                                              height: 60,
-                                                                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                                                              decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
-                                                                              child: Text(
-                                                                                "Edit profile",
-                                                                                style: GoogleFonts.robotoSlab(fontSize: 24, color: pureWhite, fontWeight: FontWeight.bold),
-                                                                              ),
-                                                                            ),
-                                                                            Flexible(
-                                                                              child: Container(
-                                                                                constraints: BoxConstraints(
-                                                                                  maxHeight: size.height * 0.6,
-                                                                                ),
-                                                                                width: double.infinity,
-                                                                                padding: EdgeInsets.fromLTRB(20, 20, 10, 20),
-                                                                                child: Scrollbar(
-                                                                                  child: SingleChildScrollView(
-                                                                                    physics: BouncingScrollPhysics(),
-                                                                                    child: Form(
-                                                                                      key: controller.editAccountFormKey,
-                                                                                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                                                                                      child: Container(
-                                                                                        padding: EdgeInsets.only(right: 10),
-                                                                                        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                                                                          Container(
-                                                                                              height: 105,
-                                                                                              child: Stack(
-                                                                                                alignment: Alignment.center,
-                                                                                                children: [
-                                                                                                  Positioned(
-                                                                                                    top: 0,
-                                                                                                    child: Container(
-                                                                                                      margin: EdgeInsets.only(bottom: 10),
-                                                                                                      child: Obx(
-                                                                                                        () => Container(
-                                                                                                          height: 100,
-                                                                                                          width: 100,
-                                                                                                          margin: EdgeInsets.only(bottom: 7.5),
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(60), border: Border.all(width: 4, color: primaryOrangeDark)),
-                                                                                                          padding: EdgeInsets.all(5),
-                                                                                                          child: controller.newProfilePath.value == '' && controller.userPic == ''
-                                                                                                              ? Container(
-                                                                                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(60), color: lightGrey),
-                                                                                                                  child: Icon(
-                                                                                                                    Icons.person_rounded,
-                                                                                                                    size: 60,
-                                                                                                                    color: pureWhite.withOpacity(0.5),
-                                                                                                                  ))
-                                                                                                              : Container(
-                                                                                                                  decoration: BoxDecoration(
-                                                                                                                    borderRadius: BorderRadius.circular(60),
-                                                                                                                    image: controller.newProfilePath.value != '' ? DecorationImage(image: FileImage(controller.newProfile), fit: BoxFit.cover) : DecorationImage(image: FileImage(File(controller.userPic.value)), fit: BoxFit.cover),
-                                                                                                                  ),
-                                                                                                                ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Positioned(
-                                                                                                    bottom: 0,
-                                                                                                    child: GestureDetector(
-                                                                                                      onTap: Feedback.wrapForTap(() {
-                                                                                                        showDialog(
-                                                                                                            context: context,
-                                                                                                            builder: (BuildContext context) {
-                                                                                                              return Dialog(
-                                                                                                                backgroundColor: Colors.transparent,
-                                                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                                                                                                                child: Stack(
-                                                                                                                  children: [
-                                                                                                                    Container(
-                                                                                                                      decoration: BoxDecoration(color: pureWhite, borderRadius: BorderRadius.circular(30.0)),
-                                                                                                                      margin: EdgeInsets.only(right: 12, top: 12),
-                                                                                                                      width: double.infinity,
-                                                                                                                      child: Column(
-                                                                                                                        mainAxisSize: MainAxisSize.min,
-                                                                                                                        children: [
-                                                                                                                          Container(
-                                                                                                                            alignment: Alignment.center,
-                                                                                                                            width: double.infinity,
-                                                                                                                            height: 60,
-                                                                                                                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                                                                                                            decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
-                                                                                                                            child: Text(
-                                                                                                                              "Change options",
-                                                                                                                              style: GoogleFonts.robotoSlab(fontSize: 24, color: pureWhite, fontWeight: FontWeight.bold),
-                                                                                                                            ),
-                                                                                                                          ),
-                                                                                                                          Container(
-                                                                                                                            width: double.infinity,
-                                                                                                                            padding: EdgeInsets.all(15.0),
-                                                                                                                            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                                                                                                              Container(
-                                                                                                                                padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                                                                                                width: double.infinity,
-                                                                                                                                child: ElevatedButton(
-                                                                                                                                    onPressed: () async {
-                                                                                                                                      await controller.getUserPhoto(ImageSource.camera);
-                                                                                                                                      Navigator.of(context).pop();
-                                                                                                                                    },
-                                                                                                                                    style: ElevatedButton.styleFrom(
-                                                                                                                                      elevation: 10,
-                                                                                                                                      shadowColor: primaryOrangeDark.withOpacity(0.5),
-                                                                                                                                      backgroundColor: pureWhite,
-                                                                                                                                      alignment: Alignment.center,
-                                                                                                                                      minimumSize: Size(100, 40),
-                                                                                                                                      shape: RoundedRectangleBorder(
-                                                                                                                                        borderRadius: BorderRadius.circular(20),
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                    child: Row(
-                                                                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                                                                      children: [
-                                                                                                                                        Icon(
-                                                                                                                                          Icons.photo_camera_rounded,
-                                                                                                                                          size: 20,
-                                                                                                                                          color: primaryOrangeDark,
-                                                                                                                                        ),
-                                                                                                                                        SizedBox(
-                                                                                                                                          width: 5,
-                                                                                                                                        ),
-                                                                                                                                        Text(
-                                                                                                                                          "Take a picture",
-                                                                                                                                          textAlign: TextAlign.center,
-                                                                                                                                          style: GoogleFonts.poppins(
-                                                                                                                                            fontSize: 14.0,
-                                                                                                                                            fontWeight: FontWeight.w600,
-                                                                                                                                            color: primaryOrangeDark,
-                                                                                                                                            letterSpacing: 1.0,
-                                                                                                                                          ),
-                                                                                                                                        ),
-                                                                                                                                      ],
-                                                                                                                                    )),
-                                                                                                                              ),
-                                                                                                                              SizedBox(
-                                                                                                                                height: 5,
-                                                                                                                              ),
-                                                                                                                              Container(
-                                                                                                                                padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                                                                                                width: double.infinity,
-                                                                                                                                child: ElevatedButton(
-                                                                                                                                    onPressed: () async {
-                                                                                                                                      await controller.getUserPhoto(ImageSource.gallery);
-                                                                                                                                      Navigator.of(context).pop();
-                                                                                                                                    },
-                                                                                                                                    style: ElevatedButton.styleFrom(
-                                                                                                                                      elevation: 10,
-                                                                                                                                      shadowColor: primaryOrangeDark.withOpacity(0.5),
-                                                                                                                                      backgroundColor: pureWhite,
-                                                                                                                                      alignment: Alignment.center,
-                                                                                                                                      minimumSize: Size(100, 40),
-                                                                                                                                      shape: RoundedRectangleBorder(
-                                                                                                                                        borderRadius: BorderRadius.circular(20),
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                    child: Row(
-                                                                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                                                                      children: [
-                                                                                                                                        Icon(
-                                                                                                                                          Icons.photo_library_rounded,
-                                                                                                                                          size: 20,
-                                                                                                                                          color: primaryOrangeDark,
-                                                                                                                                        ),
-                                                                                                                                        SizedBox(
-                                                                                                                                          width: 5,
-                                                                                                                                        ),
-                                                                                                                                        Text(
-                                                                                                                                          "Select from gallery",
-                                                                                                                                          textAlign: TextAlign.center,
-                                                                                                                                          style: GoogleFonts.poppins(
-                                                                                                                                            fontSize: 14.0,
-                                                                                                                                            fontWeight: FontWeight.w600,
-                                                                                                                                            color: primaryOrangeDark,
-                                                                                                                                            letterSpacing: 1.0,
-                                                                                                                                          ),
-                                                                                                                                        ),
-                                                                                                                                      ],
-                                                                                                                                    )),
-                                                                                                                              ),
-                                                                                                                            ]),
-                                                                                                                          ),
-                                                                                                                        ],
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                    Positioned(
-                                                                                                                      right: 0.0,
-                                                                                                                      child: GestureDetector(
-                                                                                                                        onTap: () {
-                                                                                                                          Navigator.of(context).pop();
-                                                                                                                        },
-                                                                                                                        child: Align(
-                                                                                                                          alignment: Alignment.topRight,
-                                                                                                                          child: CircleAvatar(
-                                                                                                                            radius: 18.0,
-                                                                                                                            backgroundColor: Colors.white,
-                                                                                                                            child: Icon(Icons.close, color: primaryOrangeDark),
-                                                                                                                          ),
-                                                                                                                        ),
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ],
-                                                                                                                ),
-                                                                                                              );
-                                                                                                            });
-                                                                                                      }, context),
-                                                                                                      child: Container(
-                                                                                                        height: 20,
-                                                                                                        padding: EdgeInsets.symmetric(
-                                                                                                          horizontal: 7.5,
-                                                                                                        ),
-                                                                                                        decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.circular(20), boxShadow: [
-                                                                                                          BoxShadow(
-                                                                                                            color: primaryOrangeDark.withOpacity(0.65),
-                                                                                                            blurRadius: 10,
-                                                                                                            spreadRadius: -4,
-                                                                                                          ),
-                                                                                                        ]),
-                                                                                                        child: Row(
-                                                                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                                          children: [
-                                                                                                            Icon(Icons.image, size: 15, color: pureWhite),
-                                                                                                            SizedBox(
-                                                                                                              width: 2.5,
-                                                                                                            ),
-                                                                                                            Text(
-                                                                                                              "CHANGE",
-                                                                                                              style: TextStyle(color: pureWhite, fontSize: 11, fontWeight: FontWeight.w600),
-                                                                                                            )
-                                                                                                          ],
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                  )
-                                                                                                ],
-                                                                                              )),
-                                                                                          SizedBox(
-                                                                                            height: 20,
-                                                                                          ),
-                                                                                          TextFormField(
-                                                                                            controller: controller.userNameController,
-                                                                                            maxLength: 30,
-                                                                                            onChanged: (value) {
-                                                                                              controller.checkUserName();
-                                                                                            },
-                                                                                            onSaved: (value) {
-                                                                                              controller.newUserName = value!;
-                                                                                            },
-                                                                                            validator: (value) {
-                                                                                              if (value != null) {
-                                                                                                return controller.validateUserName(value);
-                                                                                              } else {
-                                                                                                return "Enter a valid username";
-                                                                                              }
-                                                                                            },
-                                                                                            decoration: InputDecoration(prefixIcon: Icon(Icons.person_outline_outlined), labelText: tUsername, hintText: tUsername, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
-                                                                                          ),
-                                                                                          SizedBox(
-                                                                                            height: 10.0,
-                                                                                          ),
-                                                                                          TextFormField(
-                                                                                            controller: controller.phoneNoController,
-                                                                                            onSaved: (value) {
-                                                                                              controller.newPhoneNo = value!;
-                                                                                            },
-                                                                                            keyboardType: TextInputType.phone,
-                                                                                            validator: (value) {
-                                                                                              if (value != null) {
-                                                                                                return controller.validatePhone(value);
-                                                                                              } else {
-                                                                                                return "Enter a valid 10-digit number";
-                                                                                              }
-                                                                                            },
-                                                                                            decoration: InputDecoration(prefixIcon: Icon(Icons.phone_outlined), prefixText: "+63 ", labelText: tContact, hintText: "xxxxxxxxxx", border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
-                                                                                          ),
-                                                                                          controller.userIsExpert.value
-                                                                                              ? Column(
-                                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                                  children: [
-                                                                                                    SizedBox(
-                                                                                                      height: 10.0,
-                                                                                                    ),
-                                                                                                    TextFormField(
-                                                                                                      controller: controller.exFullNameController,
-                                                                                                      onSaved: (value) {
-                                                                                                        controller.newExFullName = value!;
-                                                                                                      },
-                                                                                                      validator: (value) {
-                                                                                                        if (value != null) {
-                                                                                                          return controller.validateExFullName(value);
-                                                                                                        } else {
-                                                                                                          return "Enter a valid name";
-                                                                                                        }
-                                                                                                      },
-                                                                                                      decoration: InputDecoration(prefixIcon: Icon(Icons.person_outline_outlined), labelText: tName, hintText: tName, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
-                                                                                                    ),
-                                                                                                    SizedBox(
-                                                                                                      height: 10.0,
-                                                                                                    ),
-                                                                                                    TextFormField(
-                                                                                                      controller: controller.exBioController,
-                                                                                                      onSaved: (value) {
-                                                                                                        controller.newExBio = value!;
-                                                                                                      },
-                                                                                                      validator: (value) {
-                                                                                                        if (value != null) {
-                                                                                                          return controller.validateBio(value);
-                                                                                                        } else {
-                                                                                                          return "Please describe your self and profession.";
-                                                                                                        }
-                                                                                                      },
-                                                                                                      maxLines: 5,
-                                                                                                      maxLength: 200,
-                                                                                                      decoration: InputDecoration(labelText: tBio, alignLabelWithHint: true, hintText: tEnterBio, hintMaxLines: 5, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
-                                                                                                    ),
-                                                                                                  ],
-                                                                                                )
-                                                                                              : Container(),
-                                                                                          SizedBox(
-                                                                                            height: 10.0,
-                                                                                          ),
-                                                                                          !controller.userIsExpert.value
-                                                                                              ? Container(
-                                                                                                  padding: EdgeInsets.only(
-                                                                                                    left: 10,
-                                                                                                    right: 10,
-                                                                                                  ),
-                                                                                                  width: double.infinity,
-                                                                                                  child: ElevatedButton(
-                                                                                                      onPressed: () {
-                                                                                                        if (controller.userExpertRequest.value) {
-                                                                                                          controller.newExpertRequest = false;
-                                                                                                        } else {
-                                                                                                          controller.newExpertRequest = true;
-                                                                                                        }
-                                                                                                      },
-                                                                                                      style: ElevatedButton.styleFrom(
-                                                                                                        backgroundColor: primaryOrangeLight,
-                                                                                                        alignment: Alignment.center,
-                                                                                                        minimumSize: Size(100, 45),
-                                                                                                        shape: RoundedRectangleBorder(
-                                                                                                          borderRadius: BorderRadius.circular(20),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      child: Text(
-                                                                                                        controller.userExpertRequest.value ? tCancelExpertRequest : tUpgradeExpert,
-                                                                                                        textAlign: TextAlign.center,
-                                                                                                        style: GoogleFonts.poppins(
-                                                                                                          fontSize: 16.0,
-                                                                                                          fontWeight: FontWeight.w600,
-                                                                                                          color: pureWhite,
-                                                                                                          letterSpacing: 1.0,
-                                                                                                        ),
-                                                                                                      )),
-                                                                                                )
-                                                                                              : Container(),
-                                                                                        ]),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            Container(
-                                                                              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                                              width: double.infinity,
-                                                                              child: ElevatedButton(
-                                                                                  onPressed: () async {
-                                                                                    await controller.updateUserDetails().whenComplete(() {
-                                                                                      Navigator.of(context).pop();
-                                                                                    });
-                                                                                  },
-                                                                                  style: ElevatedButton.styleFrom(
-                                                                                    alignment: Alignment.center,
-                                                                                    minimumSize: Size(100, 45),
-                                                                                    shape: RoundedRectangleBorder(
-                                                                                      borderRadius: BorderRadius.circular(20),
-                                                                                    ),
-                                                                                  ),
-                                                                                  child: Text(
-                                                                                    tSaveChanges.toUpperCase(),
-                                                                                    textAlign: TextAlign.center,
-                                                                                    style: GoogleFonts.poppins(
-                                                                                      fontSize: 16.0,
-                                                                                      fontWeight: FontWeight.w600,
-                                                                                      color: pureWhite,
-                                                                                      letterSpacing: 1.0,
-                                                                                    ),
-                                                                                  )),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      Positioned(
-                                                                        right:
-                                                                            0.0,
-                                                                        child:
-                                                                            GestureDetector(
-                                                                          onTap:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              Align(
-                                                                            alignment:
-                                                                                Alignment.topRight,
-                                                                            child:
-                                                                                CircleAvatar(
-                                                                              radius: 18.0,
-                                                                              backgroundColor: Colors.white,
-                                                                              child: Icon(Icons.close, color: primaryOrangeDark),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                );
-                                                              });
-                                                        }, context),
-                                                        child: Container(
-                                                          height: 32,
-                                                          width: 32,
+                                                        ),
+                                                ),
+                                                Positioned(
+                                                  bottom: 0,
+                                                  child: controller
+                                                          .userIsExpert.value
+                                                      ? Container(
+                                                          height: 23,
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            horizontal: 7.5,
+                                                          ),
                                                           decoration: BoxDecoration(
-                                                              color: pureWhite,
+                                                              color:
+                                                                  expertBadge,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           20),
                                                               boxShadow: [
                                                                 BoxShadow(
-                                                                  color: primaryOrangeDark
+                                                                  color: expertBadge
                                                                       .withOpacity(
                                                                           0.65),
                                                                   blurRadius:
@@ -805,259 +176,896 @@ class ProfileScreen extends StatelessWidget {
                                                                       -4,
                                                                 ),
                                                               ]),
-                                                          child: Icon(
-                                                            Icons.edit,
-                                                            size: 18,
+                                                          child: Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .verified_rounded,
+                                                                size: 15,
+                                                                color: muteBlack
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 2.5,
+                                                              ),
+                                                              Text(
+                                                                tExpert,
+                                                                style: TextStyle(
+                                                                    color: muteBlack
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    fontSize:
+                                                                        11.5,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : (!controller
+                                                                  .userIsExpert
+                                                                  .value &&
+                                                              controller
+                                                                  .userExpertRequest
+                                                                  .value)
+                                                          ? Container(
+                                                              height: 23,
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: 7.5,
+                                                              ),
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      darkGrey,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: darkGrey
+                                                                          .withOpacity(
+                                                                              0.65),
+                                                                      blurRadius:
+                                                                          10,
+                                                                      spreadRadius:
+                                                                          -4,
+                                                                    ),
+                                                                  ]),
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .pending_actions_rounded,
+                                                                    size: 15,
+                                                                    color: pureWhite
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 2.5,
+                                                                  ),
+                                                                  Text(
+                                                                    tPending,
+                                                                    style: TextStyle(
+                                                                        color: pureWhite.withOpacity(
+                                                                            0.5),
+                                                                        fontSize:
+                                                                            11.5,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : Container(
+                                                              height: 23,
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: 7.5,
+                                                              ),
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      contributorBadge,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: contributorBadge
+                                                                          .withOpacity(
+                                                                              0.65),
+                                                                      blurRadius:
+                                                                          10,
+                                                                      spreadRadius:
+                                                                          -4,
+                                                                    ),
+                                                                  ]),
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .person_add_rounded,
+                                                                    size: 15,
+                                                                    color: pureWhite
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 2.5,
+                                                                  ),
+                                                                  Text(
+                                                                    tContributor,
+                                                                    style: TextStyle(
+                                                                        color: pureWhite.withOpacity(
+                                                                            0.5),
+                                                                        fontSize:
+                                                                            11.5,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                ),
+                                                ownProfile
+                                                    ? Positioned(
+                                                        right: 0,
+                                                        top: 2.5,
+                                                        child: GestureDetector(
+                                                          onTap: Feedback
+                                                              .wrapForTap(() {
+                                                            controller
+                                                                .populateFields();
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Dialog(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(30.0)),
+                                                                    child:
+                                                                        Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          decoration: BoxDecoration(
+                                                                              color: pureWhite,
+                                                                              borderRadius: BorderRadius.circular(30.0)),
+                                                                          margin: EdgeInsets.only(
+                                                                              right: 12,
+                                                                              top: 12),
+                                                                          width:
+                                                                              double.infinity,
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            children: [
+                                                                              Container(
+                                                                                alignment: Alignment.center,
+                                                                                width: double.infinity,
+                                                                                height: 60,
+                                                                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                                                                decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
+                                                                                child: Text(
+                                                                                  "Edit profile",
+                                                                                  style: GoogleFonts.robotoSlab(fontSize: 24, color: pureWhite, fontWeight: FontWeight.bold),
+                                                                                ),
+                                                                              ),
+                                                                              Flexible(
+                                                                                child: Container(
+                                                                                  constraints: BoxConstraints(
+                                                                                    maxHeight: size.height * 0.6,
+                                                                                  ),
+                                                                                  width: double.infinity,
+                                                                                  padding: EdgeInsets.fromLTRB(20, 20, 10, 20),
+                                                                                  child: Scrollbar(
+                                                                                    child: SingleChildScrollView(
+                                                                                      physics: BouncingScrollPhysics(),
+                                                                                      child: Form(
+                                                                                        key: controller.editAccountFormKey,
+                                                                                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                                                                                        child: Container(
+                                                                                          padding: EdgeInsets.only(right: 10),
+                                                                                          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                                                                            Container(
+                                                                                                height: 105,
+                                                                                                child: Stack(
+                                                                                                  alignment: Alignment.center,
+                                                                                                  children: [
+                                                                                                    Positioned(
+                                                                                                      top: 0,
+                                                                                                      child: Container(
+                                                                                                        margin: EdgeInsets.only(bottom: 10),
+                                                                                                        child: Obx(
+                                                                                                          () => Container(
+                                                                                                            height: 100,
+                                                                                                            width: 100,
+                                                                                                            margin: EdgeInsets.only(bottom: 7.5),
+                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(60), border: Border.all(width: 4, color: primaryOrangeDark)),
+                                                                                                            padding: EdgeInsets.all(5),
+                                                                                                            child: controller.newProfilePath.value == '' && controller.userPic == ''
+                                                                                                                ? Container(
+                                                                                                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(60), color: lightGrey),
+                                                                                                                    child: Icon(
+                                                                                                                      Icons.person_rounded,
+                                                                                                                      size: 60,
+                                                                                                                      color: pureWhite.withOpacity(0.5),
+                                                                                                                    ))
+                                                                                                                : Container(
+                                                                                                                    decoration: BoxDecoration(
+                                                                                                                      borderRadius: BorderRadius.circular(60),
+                                                                                                                      image: controller.newProfilePath.value != '' ? DecorationImage(image: FileImage(controller.newProfile), fit: BoxFit.cover) : DecorationImage(image: FileImage(File(controller.userPic.value)), fit: BoxFit.cover),
+                                                                                                                    ),
+                                                                                                                  ),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Positioned(
+                                                                                                      bottom: 0,
+                                                                                                      child: GestureDetector(
+                                                                                                        onTap: Feedback.wrapForTap(() {
+                                                                                                          showDialog(
+                                                                                                              context: context,
+                                                                                                              builder: (BuildContext context) {
+                                                                                                                return Dialog(
+                                                                                                                  backgroundColor: Colors.transparent,
+                                                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                                                                                                                  child: Stack(
+                                                                                                                    children: [
+                                                                                                                      Container(
+                                                                                                                        decoration: BoxDecoration(color: pureWhite, borderRadius: BorderRadius.circular(30.0)),
+                                                                                                                        margin: EdgeInsets.only(right: 12, top: 12),
+                                                                                                                        width: double.infinity,
+                                                                                                                        child: Column(
+                                                                                                                          mainAxisSize: MainAxisSize.min,
+                                                                                                                          children: [
+                                                                                                                            Container(
+                                                                                                                              alignment: Alignment.center,
+                                                                                                                              width: double.infinity,
+                                                                                                                              height: 60,
+                                                                                                                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                                                                                                              decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
+                                                                                                                              child: Text(
+                                                                                                                                "Change options",
+                                                                                                                                style: GoogleFonts.robotoSlab(fontSize: 24, color: pureWhite, fontWeight: FontWeight.bold),
+                                                                                                                              ),
+                                                                                                                            ),
+                                                                                                                            Container(
+                                                                                                                              width: double.infinity,
+                                                                                                                              padding: EdgeInsets.all(15.0),
+                                                                                                                              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                                                                                                                                Container(
+                                                                                                                                  padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                                                                                                  width: double.infinity,
+                                                                                                                                  child: ElevatedButton(
+                                                                                                                                      onPressed: () async {
+                                                                                                                                        await controller.getUserPhoto(ImageSource.camera);
+                                                                                                                                        Navigator.of(context).pop();
+                                                                                                                                      },
+                                                                                                                                      style: ElevatedButton.styleFrom(
+                                                                                                                                        elevation: 10,
+                                                                                                                                        shadowColor: primaryOrangeDark.withOpacity(0.5),
+                                                                                                                                        backgroundColor: pureWhite,
+                                                                                                                                        alignment: Alignment.center,
+                                                                                                                                        minimumSize: Size(100, 40),
+                                                                                                                                        shape: RoundedRectangleBorder(
+                                                                                                                                          borderRadius: BorderRadius.circular(20),
+                                                                                                                                        ),
+                                                                                                                                      ),
+                                                                                                                                      child: Row(
+                                                                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                                                                        children: [
+                                                                                                                                          Icon(
+                                                                                                                                            Icons.photo_camera_rounded,
+                                                                                                                                            size: 20,
+                                                                                                                                            color: primaryOrangeDark,
+                                                                                                                                          ),
+                                                                                                                                          SizedBox(
+                                                                                                                                            width: 5,
+                                                                                                                                          ),
+                                                                                                                                          Text(
+                                                                                                                                            "Take a picture",
+                                                                                                                                            textAlign: TextAlign.center,
+                                                                                                                                            style: GoogleFonts.poppins(
+                                                                                                                                              fontSize: 14.0,
+                                                                                                                                              fontWeight: FontWeight.w600,
+                                                                                                                                              color: primaryOrangeDark,
+                                                                                                                                              letterSpacing: 1.0,
+                                                                                                                                            ),
+                                                                                                                                          ),
+                                                                                                                                        ],
+                                                                                                                                      )),
+                                                                                                                                ),
+                                                                                                                                SizedBox(
+                                                                                                                                  height: 5,
+                                                                                                                                ),
+                                                                                                                                Container(
+                                                                                                                                  padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                                                                                                  width: double.infinity,
+                                                                                                                                  child: ElevatedButton(
+                                                                                                                                      onPressed: () async {
+                                                                                                                                        await controller.getUserPhoto(ImageSource.gallery);
+                                                                                                                                        Navigator.of(context).pop();
+                                                                                                                                      },
+                                                                                                                                      style: ElevatedButton.styleFrom(
+                                                                                                                                        elevation: 10,
+                                                                                                                                        shadowColor: primaryOrangeDark.withOpacity(0.5),
+                                                                                                                                        backgroundColor: pureWhite,
+                                                                                                                                        alignment: Alignment.center,
+                                                                                                                                        minimumSize: Size(100, 40),
+                                                                                                                                        shape: RoundedRectangleBorder(
+                                                                                                                                          borderRadius: BorderRadius.circular(20),
+                                                                                                                                        ),
+                                                                                                                                      ),
+                                                                                                                                      child: Row(
+                                                                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                                                                        children: [
+                                                                                                                                          Icon(
+                                                                                                                                            Icons.photo_library_rounded,
+                                                                                                                                            size: 20,
+                                                                                                                                            color: primaryOrangeDark,
+                                                                                                                                          ),
+                                                                                                                                          SizedBox(
+                                                                                                                                            width: 5,
+                                                                                                                                          ),
+                                                                                                                                          Text(
+                                                                                                                                            "Select from gallery",
+                                                                                                                                            textAlign: TextAlign.center,
+                                                                                                                                            style: GoogleFonts.poppins(
+                                                                                                                                              fontSize: 14.0,
+                                                                                                                                              fontWeight: FontWeight.w600,
+                                                                                                                                              color: primaryOrangeDark,
+                                                                                                                                              letterSpacing: 1.0,
+                                                                                                                                            ),
+                                                                                                                                          ),
+                                                                                                                                        ],
+                                                                                                                                      )),
+                                                                                                                                ),
+                                                                                                                              ]),
+                                                                                                                            ),
+                                                                                                                          ],
+                                                                                                                        ),
+                                                                                                                      ),
+                                                                                                                      Positioned(
+                                                                                                                        right: 0.0,
+                                                                                                                        child: GestureDetector(
+                                                                                                                          onTap: () {
+                                                                                                                            Navigator.of(context).pop();
+                                                                                                                          },
+                                                                                                                          child: Align(
+                                                                                                                            alignment: Alignment.topRight,
+                                                                                                                            child: CircleAvatar(
+                                                                                                                              radius: 18.0,
+                                                                                                                              backgroundColor: Colors.white,
+                                                                                                                              child: Icon(Icons.close, color: primaryOrangeDark),
+                                                                                                                            ),
+                                                                                                                          ),
+                                                                                                                        ),
+                                                                                                                      ),
+                                                                                                                    ],
+                                                                                                                  ),
+                                                                                                                );
+                                                                                                              });
+                                                                                                        }, context),
+                                                                                                        child: Container(
+                                                                                                          height: 20,
+                                                                                                          padding: EdgeInsets.symmetric(
+                                                                                                            horizontal: 7.5,
+                                                                                                          ),
+                                                                                                          decoration: BoxDecoration(color: primaryOrangeDark, borderRadius: BorderRadius.circular(20), boxShadow: [
+                                                                                                            BoxShadow(
+                                                                                                              color: primaryOrangeDark.withOpacity(0.65),
+                                                                                                              blurRadius: 10,
+                                                                                                              spreadRadius: -4,
+                                                                                                            ),
+                                                                                                          ]),
+                                                                                                          child: Row(
+                                                                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                                            children: [
+                                                                                                              Icon(Icons.image, size: 15, color: pureWhite),
+                                                                                                              SizedBox(
+                                                                                                                width: 2.5,
+                                                                                                              ),
+                                                                                                              Text(
+                                                                                                                "CHANGE",
+                                                                                                                style: TextStyle(color: pureWhite, fontSize: 11, fontWeight: FontWeight.w600),
+                                                                                                              )
+                                                                                                            ],
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                )),
+                                                                                            SizedBox(
+                                                                                              height: 20,
+                                                                                            ),
+                                                                                            TextFormField(
+                                                                                              controller: controller.userNameController,
+                                                                                              maxLength: 30,
+                                                                                              onChanged: (value) {
+                                                                                                controller.checkUserName();
+                                                                                              },
+                                                                                              onSaved: (value) {
+                                                                                                controller.newUserName = value!;
+                                                                                              },
+                                                                                              validator: (value) {
+                                                                                                if (value != null) {
+                                                                                                  return controller.validateUserName(value);
+                                                                                                } else {
+                                                                                                  return "Enter a valid username";
+                                                                                                }
+                                                                                              },
+                                                                                              decoration: InputDecoration(prefixIcon: Icon(Icons.person_outline_outlined), labelText: tUsername, hintText: tUsername, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                            ),
+                                                                                            SizedBox(
+                                                                                              height: 10.0,
+                                                                                            ),
+                                                                                            TextFormField(
+                                                                                              controller: controller.phoneNoController,
+                                                                                              onSaved: (value) {
+                                                                                                controller.newPhoneNo = value!;
+                                                                                              },
+                                                                                              keyboardType: TextInputType.phone,
+                                                                                              validator: (value) {
+                                                                                                if (value != null) {
+                                                                                                  return controller.validatePhone(value);
+                                                                                                } else {
+                                                                                                  return "Enter a valid 10-digit number";
+                                                                                                }
+                                                                                              },
+                                                                                              decoration: InputDecoration(prefixIcon: Icon(Icons.phone_outlined), prefixText: "+63 ", labelText: tContact, hintText: "xxxxxxxxxx", border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                            ),
+                                                                                            controller.userIsExpert.value
+                                                                                                ? Column(
+                                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                                    children: [
+                                                                                                      SizedBox(
+                                                                                                        height: 10.0,
+                                                                                                      ),
+                                                                                                      TextFormField(
+                                                                                                        controller: controller.exFullNameController,
+                                                                                                        onSaved: (value) {
+                                                                                                          controller.newExFullName = value!;
+                                                                                                        },
+                                                                                                        validator: (value) {
+                                                                                                          if (value != null) {
+                                                                                                            return controller.validateExFullName(value);
+                                                                                                          } else {
+                                                                                                            return "Enter a valid name";
+                                                                                                          }
+                                                                                                        },
+                                                                                                        decoration: InputDecoration(prefixIcon: Icon(Icons.person_outline_outlined), labelText: tName, hintText: tName, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                                      ),
+                                                                                                      SizedBox(
+                                                                                                        height: 10.0,
+                                                                                                      ),
+                                                                                                      TextFormField(
+                                                                                                        controller: controller.exBioController,
+                                                                                                        onSaved: (value) {
+                                                                                                          controller.newExBio = value!;
+                                                                                                        },
+                                                                                                        validator: (value) {
+                                                                                                          if (value != null) {
+                                                                                                            return controller.validateBio(value);
+                                                                                                          } else {
+                                                                                                            return "Please describe your self and profession.";
+                                                                                                          }
+                                                                                                        },
+                                                                                                        maxLines: 5,
+                                                                                                        maxLength: 200,
+                                                                                                        decoration: InputDecoration(labelText: tBio, alignLabelWithHint: true, hintText: tEnterBio, hintMaxLines: 5, border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  )
+                                                                                                : Container(),
+                                                                                            SizedBox(
+                                                                                              height: 10.0,
+                                                                                            ),
+                                                                                            !controller.userIsExpert.value
+                                                                                                ? Container(
+                                                                                                    padding: EdgeInsets.only(
+                                                                                                      left: 10,
+                                                                                                      right: 10,
+                                                                                                    ),
+                                                                                                    width: double.infinity,
+                                                                                                    child: ElevatedButton(
+                                                                                                        onPressed: () {
+                                                                                                          if (controller.userExpertRequest.value) {
+                                                                                                            controller.newExpertRequest = false;
+                                                                                                          } else {
+                                                                                                            controller.newExpertRequest = true;
+                                                                                                          }
+                                                                                                        },
+                                                                                                        style: ElevatedButton.styleFrom(
+                                                                                                          backgroundColor: primaryOrangeLight,
+                                                                                                          alignment: Alignment.center,
+                                                                                                          minimumSize: Size(100, 45),
+                                                                                                          shape: RoundedRectangleBorder(
+                                                                                                            borderRadius: BorderRadius.circular(20),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        child: Text(
+                                                                                                          controller.userExpertRequest.value ? tCancelExpertRequest : tUpgradeExpert,
+                                                                                                          textAlign: TextAlign.center,
+                                                                                                          style: GoogleFonts.poppins(
+                                                                                                            fontSize: 16.0,
+                                                                                                            fontWeight: FontWeight.w600,
+                                                                                                            color: pureWhite,
+                                                                                                            letterSpacing: 1.0,
+                                                                                                          ),
+                                                                                                        )),
+                                                                                                  )
+                                                                                                : Container(),
+                                                                                          ]),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                                                width: double.infinity,
+                                                                                child: ElevatedButton(
+                                                                                    onPressed: () async {
+                                                                                      await controller.updateUserDetails().whenComplete(() {
+                                                                                        Navigator.of(context).pop();
+                                                                                      });
+                                                                                    },
+                                                                                    style: ElevatedButton.styleFrom(
+                                                                                      alignment: Alignment.center,
+                                                                                      minimumSize: Size(100, 45),
+                                                                                      shape: RoundedRectangleBorder(
+                                                                                        borderRadius: BorderRadius.circular(20),
+                                                                                      ),
+                                                                                    ),
+                                                                                    child: Text(
+                                                                                      tSaveChanges.toUpperCase(),
+                                                                                      textAlign: TextAlign.center,
+                                                                                      style: GoogleFonts.poppins(
+                                                                                        fontSize: 16.0,
+                                                                                        fontWeight: FontWeight.w600,
+                                                                                        color: pureWhite,
+                                                                                        letterSpacing: 1.0,
+                                                                                      ),
+                                                                                    )),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        Positioned(
+                                                                          right:
+                                                                              0.0,
+                                                                          child:
+                                                                              GestureDetector(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            child:
+                                                                                Align(
+                                                                              alignment: Alignment.topRight,
+                                                                              child: CircleAvatar(
+                                                                                radius: 18.0,
+                                                                                backgroundColor: Colors.white,
+                                                                                child: Icon(Icons.close, color: primaryOrangeDark),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                });
+                                                          }, context),
+                                                          child: Container(
+                                                            height: 32,
+                                                            width: 32,
+                                                            decoration: BoxDecoration(
+                                                                color:
+                                                                    pureWhite,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: primaryOrangeDark
+                                                                        .withOpacity(
+                                                                            0.65),
+                                                                    blurRadius:
+                                                                        10,
+                                                                    spreadRadius:
+                                                                        -4,
+                                                                  ),
+                                                                ]),
+                                                            child: Icon(
+                                                              Icons.edit,
+                                                              size: 18,
+                                                              color:
+                                                                  primaryOrangeDark,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container()
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 1.5),
+                                                        child: Text(
+                                                          controller
+                                                              .userName.value,
+                                                          style: GoogleFonts
+                                                              .robotoSlab(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 22,
                                                             color:
                                                                 primaryOrangeDark,
                                                           ),
                                                         ),
                                                       ),
-                                                    )
-                                                  : Container()
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 15,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.topLeft,
-                                              child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 1.5),
-                                                      child: Text(
-                                                        controller
-                                                            .userName.value,
-                                                        style: GoogleFonts
-                                                            .robotoSlab(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 22,
-                                                          color:
-                                                              primaryOrangeDark,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    controller.userIsExpert
-                                                                .value &&
-                                                            controller
-                                                                    .userFullName
-                                                                    .value !=
-                                                                ''
-                                                        ? Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        1.5),
-                                                            child: Text(
+                                                      controller.userIsExpert
+                                                                  .value &&
                                                               controller
-                                                                  .userFullName
-                                                                  .value,
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: cardText,
+                                                                      .userFullName
+                                                                      .value !=
+                                                                  ''
+                                                          ? Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          1.5),
+                                                              child: Text(
+                                                                controller
+                                                                    .userFullName
+                                                                    .value,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  color:
+                                                                      cardText,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 1.5),
-                                                      child: Text(
-                                                        controller
-                                                            .userEmail.value,
-                                                        style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                          fontSize: 14,
-                                                          color: cardText,
+                                                            )
+                                                          : Container(),
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 1.5),
+                                                        child: Text(
+                                                          controller
+                                                              .userEmail.value,
+                                                          style: TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                            fontSize: 14,
+                                                            color: cardText,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    controller.userIsExpert
-                                                                .value &&
-                                                            controller.userBio
-                                                                    .value !=
-                                                                ''
-                                                        ? Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        1.5),
-                                                            child: Text(
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      controller.userIsExpert
+                                                                  .value &&
                                                               controller.userBio
-                                                                  .value,
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: cardText,
+                                                                      .value !=
+                                                                  ''
+                                                          ? Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          1.5),
+                                                              child: Text(
+                                                                controller
+                                                                    .userBio
+                                                                    .value,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  color:
+                                                                      cardText,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          )
-                                                        : Container(),
-                                                  ]),
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ]),
+                                                            )
+                                                          : Container(),
+                                                    ]),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ]),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2,
-                                      color: primaryOrangeDark,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    child: Text(
-                                      tContributions.toUpperCase() +
-                                          (controller.contributionCount != ''
-                                              ? " (${controller.contributionCount})"
-                                              : ""),
-                                      style: GoogleFonts.robotoSlab(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Divider(
+                                        thickness: 2,
                                         color: primaryOrangeDark,
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2,
-                                      color: primaryOrangeDark,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: (controller.userContributions.length ==
-                                        0)
-                                    ? Container(
-                                        child: Text(
-                                          "No contributions yet.",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: disabledGrey),
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      child: Text(
+                                        tContributions.toUpperCase() +
+                                            (controller.contributionCount != ''
+                                                ? " (${controller.contributionCount})"
+                                                : ""),
+                                        style: GoogleFonts.robotoSlab(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: primaryOrangeDark,
                                         ),
-                                      )
-                                    : Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: List.generate(
-                                            controller.userContributions.length,
-                                            (index) {
-                                          String wordID = controller
-                                              .userContributions[index];
-                                          List<String> type = [];
-                                          for (var meaning in appController
-                                                  .dictionaryContent[wordID]
-                                              ['meanings']) {
-                                            type.add(meaning["partOfSpeech"]);
-                                          }
-                                          return BrowseCard(
-                                            onTap: () =>
-                                                Get.to(() => DetailScreen(
-                                                      wordID: wordID,
-                                                    )),
-                                            wordId: wordID,
-                                            word: appController
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Divider(
+                                        thickness: 2,
+                                        color: primaryOrangeDark,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: (controller.userContributions.length ==
+                                          0)
+                                      ? Container(
+                                          child: Text(
+                                            "No contributions yet.",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: disabledGrey),
+                                          ),
+                                        )
+                                      : Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: List.generate(
+                                              controller.userContributions
+                                                  .length, (index) {
+                                            String wordID = controller
+                                                .userContributions[index];
+                                            List<String> type = [];
+                                            for (var meaning in appController
                                                     .dictionaryContent[wordID]
-                                                ["word"],
-                                            type: type,
-                                            prnLink: appController
-                                                    .dictionaryContent[wordID]
-                                                ["pronunciationAudio"],
-                                            engTrans: appController
-                                                                .dictionaryContent[
-                                                            wordID][
-                                                        "englishTranslations"] ==
-                                                    null
-                                                ? []
-                                                : appController
-                                                            .dictionaryContent[
-                                                        wordID]
-                                                    ["englishTranslations"],
-                                            filTrans: appController
-                                                                .dictionaryContent[
-                                                            wordID][
-                                                        "filipinoTranslations"] ==
-                                                    null
-                                                ? []
-                                                : appController
-                                                            .dictionaryContent[
-                                                        wordID]
-                                                    ["filipinoTranslations"],
-                                            otherRelated:
-                                                appController.dictionaryContent[
-                                                                wordID]
-                                                            ["otherRelated"] ==
-                                                        null
-                                                    ? []
-                                                    : appController
-                                                        .dictionaryContent[
-                                                            wordID]
-                                                            ["otherRelated"]
-                                                        .keys
-                                                        .toList(),
-                                            synonyms: appController
-                                                            .dictionaryContent[
-                                                        wordID]["synonyms"] ==
-                                                    null
-                                                ? []
-                                                : appController
-                                                    .dictionaryContent[wordID]
-                                                        ["synonyms"]
-                                                    .keys
-                                                    .toList(),
-                                            antonyms: appController
-                                                            .dictionaryContent[
-                                                        wordID]["antonyms"] ==
-                                                    null
-                                                ? []
-                                                : appController
-                                                    .dictionaryContent[wordID]
-                                                        ["antonyms"]
-                                                    .keys
-                                                    .toList(),
-                                            player: player,
-                                          );
-                                        }),
-                                      ))
-                          ],
+                                                ['meanings']) {
+                                              type.add(meaning["partOfSpeech"]);
+                                            }
+                                            return BrowseCard(
+                                              onTap: () =>
+                                                  Get.to(() => DetailScreen(
+                                                        wordID: wordID,
+                                                      )),
+                                              wordId: wordID,
+                                              word: appController
+                                                      .dictionaryContent[wordID]
+                                                  ["word"],
+                                              type: type,
+                                              prnLink: appController
+                                                      .dictionaryContent[wordID]
+                                                  ["pronunciationAudio"],
+                                              engTrans: appController
+                                                                  .dictionaryContent[
+                                                              wordID][
+                                                          "englishTranslations"] ==
+                                                      null
+                                                  ? []
+                                                  : appController
+                                                              .dictionaryContent[
+                                                          wordID]
+                                                      ["englishTranslations"],
+                                              filTrans: appController
+                                                                  .dictionaryContent[
+                                                              wordID][
+                                                          "filipinoTranslations"] ==
+                                                      null
+                                                  ? []
+                                                  : appController
+                                                              .dictionaryContent[
+                                                          wordID]
+                                                      ["filipinoTranslations"],
+                                              otherRelated:
+                                                  appController.dictionaryContent[
+                                                                  wordID][
+                                                              "otherRelated"] ==
+                                                          null
+                                                      ? []
+                                                      : appController
+                                                          .dictionaryContent[
+                                                              wordID]
+                                                              ["otherRelated"]
+                                                          .keys
+                                                          .toList(),
+                                              synonyms: appController
+                                                              .dictionaryContent[
+                                                          wordID]["synonyms"] ==
+                                                      null
+                                                  ? []
+                                                  : appController
+                                                      .dictionaryContent[wordID]
+                                                          ["synonyms"]
+                                                      .keys
+                                                      .toList(),
+                                              antonyms: appController
+                                                              .dictionaryContent[
+                                                          wordID]["antonyms"] ==
+                                                      null
+                                                  ? []
+                                                  : appController
+                                                      .dictionaryContent[wordID]
+                                                          ["antonyms"]
+                                                      .keys
+                                                      .toList(),
+                                              player: player,
+                                            );
+                                          }),
+                                        ))
+                            ],
+                          ),
                         ),
                       ),
-                    )),
+              )),
         ),
+        IsProcessingWithHeader(
+            condition: controller.isProcessing,
+            size: size,
+            screenPadding: screenPadding),
         Obx(
           () => ThreePartHeader(
             size: size,

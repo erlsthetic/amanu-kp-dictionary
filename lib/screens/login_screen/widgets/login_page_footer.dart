@@ -39,7 +39,7 @@ class LoginFooterWidget extends StatelessWidget {
                       iGoogleIcon,
                       width: 20.0,
                     ),
-              onPressed: controller.isLoading.value
+              onPressed: controller.isProcessing.value
                   ? () {}
                   : controller.isGoogleLoading.value
                       ? () {}

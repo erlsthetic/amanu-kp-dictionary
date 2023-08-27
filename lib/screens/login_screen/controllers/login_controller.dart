@@ -57,7 +57,6 @@ class LoginController extends GetxController {
     if (error != null) {
       Helper.errorSnackBar(title: error["title"], message: error["message"]);
     }
-    isProcessing.value = false;
   }
 
   Future<void> googleSignIn() async {

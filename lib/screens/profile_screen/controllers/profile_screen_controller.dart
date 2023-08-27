@@ -44,9 +44,9 @@ class ProfileController extends GetxController {
   int userPhoneNo = 0;
   List<String> userContributions = [];
   String contributionCount = '';
-  bool userNotFound = true;
-
-  bool userNameAlreadyInUse = false;
+  RxBool userNotFound = true.obs;
+  RxBool isProcessing = false.obs;
+  RxBool userNameAlreadyInUse = false.obs;
 
   @override
   void onInit() async {
@@ -72,6 +72,7 @@ class ProfileController extends GetxController {
   }
 
   void getCurrentUserDetails() {
+    isProcessing.value = true;
     userName.value = appController.userName ?? '';
     userEmail.value = appController.userEmail ?? '';
     userPhoneNo = appController.userPhone ?? 0;
@@ -87,7 +88,8 @@ class ProfileController extends GetxController {
     } else {
       contributionCount = '';
     }
-    userNotFound = false;
+    userNotFound.value = false;
+    isProcessing.value = false;
   }
 
   void populateFields() {
@@ -112,8 +114,10 @@ class ProfileController extends GetxController {
           title: tOhSnap, message: "Unable to get user details.");
     }
     try {
+      isProcessing.value = true;
       UserModel user =
           await DatabaseRepository.instance.getUserDetails(userID!);
+      print("User found.");
       userName.value = user.userName;
       userEmail.value = user.email;
       userPhoneNo = user.phoneNo;
@@ -127,25 +131,24 @@ class ProfileController extends GetxController {
       userContributions = user.contributions == null
           ? []
           : user.contributions!.map((e) => e.toString()).toList();
-      userNotFound = false;
+      userNotFound.value = false;
       if (userContributions.length > 0) {
         contributionCount = userContributions.length.toString();
       } else {
         contributionCount = '';
       }
     } catch (e) {
-      userNotFound = true;
+      userNotFound.value = true;
       contributionCount = '';
     }
-
-    print("User not found: " + userNotFound.toString());
+    isProcessing.value = false;
   }
 
   String? validateUserName(String value) {
     if (userNameController.text.isEmpty) {
       return "Enter a valid username";
     } else if (userNameController.text == userName.value) {
-    } else if (userNameAlreadyInUse) {
+    } else if (userNameAlreadyInUse.value) {
       return "Username already in use";
     }
     return null;
@@ -158,9 +161,9 @@ class ProfileController extends GetxController {
         .get();
 
     if (query.docs.length == 0) {
-      userNameAlreadyInUse = false;
+      userNameAlreadyInUse.value = false;
     } else {
-      userNameAlreadyInUse = true;
+      userNameAlreadyInUse.value = true;
     }
   }
 
