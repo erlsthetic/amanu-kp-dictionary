@@ -1,4 +1,4 @@
-import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
+import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

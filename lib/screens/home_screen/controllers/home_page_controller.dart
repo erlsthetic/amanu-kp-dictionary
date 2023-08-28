@@ -62,7 +62,8 @@ class HomePageController extends GetxController {
         }
         definitions.add(tempDef);
       }
-      kulitanChars = appController.dictionaryContent[wordID]["kulitan-form"];
+      kulitanChars = new List.from(
+          appController.dictionaryContent[wordID]["kulitan-form"]);
       for (var line in kulitanChars) {
         for (var syl in line) {
           kulitanString = kulitanString + syl;

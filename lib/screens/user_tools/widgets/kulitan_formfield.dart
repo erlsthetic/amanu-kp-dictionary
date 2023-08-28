@@ -1,5 +1,5 @@
 import 'package:amanu/components/kulitan_preview.dart';
-import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
+import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:amanu/screens/user_tools/widgets/kulitan_editor.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -40,9 +40,14 @@ class KulitanFormField extends FormField {
                                     fontSize: 15, color: disabledGrey),
                               ),
                             )
-                          : KulitanPreview(
-                              kulitanCharList:
-                                  controller.kulitanStringListGetter,
+                          : Obx(
+                              () =>
+                                  controller.kulitanStringListGetter.isNotEmpty
+                                      ? KulitanPreview(
+                                          kulitanCharList: controller
+                                              .kulitanStringListGetter,
+                                        )
+                                      : Container(),
                             ),
                     ),
                   ),

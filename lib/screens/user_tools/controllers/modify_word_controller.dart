@@ -58,7 +58,7 @@ class ModifyController extends GetxController {
 
   void populateFields() async {
     isProcessing.value = true;
-    // reload dictionary
+    // TODO reload dictionary
     wordController.text = appController.dictionaryContent[editWordID]["word"];
     phoneticController.text =
         appController.dictionaryContent[editWordID]["pronunciation"];
@@ -111,7 +111,7 @@ class ModifyController extends GetxController {
       }
     }
     List<Map<String, dynamic>> meanings =
-        appController.dictionaryContent[editWordID]["meanings"];
+        List.from(appController.dictionaryContent[editWordID]["meanings"]);
     List<String> _types = [];
     List<List<Map<String, dynamic>>> _definitions = [];
     for (Map<String, dynamic> meaning in meanings) {
@@ -156,8 +156,16 @@ class ModifyController extends GetxController {
     }
     if (appController.dictionaryContent[editWordID]["kulitan-form"].length !=
         0) {
-      kulitanStringListGetter.value =
-          appController.dictionaryContent[editWordID]["kulitan-form"];
+      kulitanStringListGetter.clear();
+      for (var i in appController.dictionaryContent[editWordID]
+          ["kulitan-form"]) {
+        var newList = [];
+        for (var j in i) {
+          newList.add(j);
+        }
+        kulitanStringListGetter.add(newList);
+      }
+      kulitanStringListGetter.refresh();
     }
     currentLine = kulitanStringListGetter.length - 1;
     currentSpace = kulitanStringListGetter[currentLine].length;
@@ -204,11 +212,12 @@ class ModifyController extends GetxController {
           appController.dictionaryContent[editWordID]["sources"];
     }
     if (appController.dictionaryContent[editWordID]["contributors"] != null) {
-      contributors =
-          appController.dictionaryContent[editWordID]["contributors"];
+      contributors = new Map.from(
+          appController.dictionaryContent[editWordID]["contributors"]);
     }
     if (appController.dictionaryContent[editWordID]["expert"] != null) {
-      expert = appController.dictionaryContent[editWordID]["expert"];
+      expert =
+          new Map.from(appController.dictionaryContent[editWordID]["expert"]);
     }
     rebuildAudio.value = !rebuildAudio.value;
     isProcessing.value = false;
@@ -569,6 +578,23 @@ class ModifyController extends GetxController {
     }
 
     if (editMode) {
+      if (expert.isNotEmpty) {
+        String pastUsername = expert.keys.toList().first;
+        String pastUID = expert[pastUsername] ?? "";
+        contributors[pastUsername] = pastUID;
+      }
+      if (appController.userIsExpert ?? false) {
+        expert.clear();
+        expert[appController.userName ?? "User"] = appController.userID ?? "";
+      } else {
+        expert.clear();
+        if (contributors.containsValue(appController.userID ?? "")) {
+          contributors.removeWhere(
+              (key, value) => value == (appController.userID ?? ""));
+        }
+        contributors[appController.userName ?? "User"] =
+            appController.userID ?? "";
+      }
       Get.to(() => PreviewEditsPage(
             prevWordID: editWordID!,
             wordID: wordKey,
@@ -595,6 +621,15 @@ class ModifyController extends GetxController {
             kulitanString: kulitanString,
           ));
     } else {
+      if (appController.userIsExpert ?? false) {
+        expert.clear();
+        expert[appController.userName ?? "User"] = appController.userID ?? "";
+      } else {
+        expert.clear();
+        contributors.clear();
+        contributors[appController.userName ?? "User"] =
+            appController.userID ?? "";
+      }
       Get.to(() => PreviewPage(
             wordID: wordKey,
             word: wordController.text.trim(),

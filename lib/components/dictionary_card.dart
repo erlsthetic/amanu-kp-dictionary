@@ -650,7 +650,7 @@ class DictionaryCard extends StatelessWidget {
                                       child: Text(
                                     sources,
                                     style: TextStyle(
-                                        color: cardText, fontSize: 13),
+                                        color: cardText, fontSize: 14),
                                   )),
                                 )
                               ],
@@ -708,7 +708,7 @@ class DictionaryCard extends StatelessWidget {
                         : Container(),
                     expert.length != 0
                         ? Container(
-                            padding: EdgeInsets.only(left: 10.0),
+                            padding: EdgeInsets.only(left: 10.0, bottom: 5),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -750,6 +750,34 @@ class DictionaryCard extends StatelessWidget {
                                               : () {},
                                         )
                                     ]),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    lastModifiedTime != ''
+                        ? Container(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 70.0,
+                                  child: Text(
+                                    "Modified:",
+                                    style: TextStyle(
+                                        color: primaryOrangeDark, fontSize: 14),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      lastModifiedTime,
+                                      style: TextStyle(
+                                          color: cardText, fontSize: 14),
+                                    ),
                                   ),
                                 )
                               ],

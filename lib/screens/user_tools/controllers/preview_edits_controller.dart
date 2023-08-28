@@ -101,7 +101,7 @@ class PreviewEditsController extends GetxController {
         ? []
         : appController.dictionaryContent[prevWordID]["filipinoTranslations"];
     prevMeanings = appController.dictionaryContent[prevWordID]["meanings"];
-    for (Map<String, dynamic> meaning in meanings) {
+    for (Map<String, dynamic> meaning in prevMeanings) {
       prevTypes.add(meaning["partOfSpeech"]);
       List<Map<String, dynamic>> _tempDef = [];
       for (Map<String, dynamic> definition in meaning["definitions"]) {
@@ -109,9 +109,9 @@ class PreviewEditsController extends GetxController {
       }
       prevDefinitions.add(_tempDef);
     }
-    prevKulitanChars =
-        appController.dictionaryContent[prevWordID]["kulitan-form"];
-    for (var line in kulitanChars) {
+    prevKulitanChars = new List.from(
+        appController.dictionaryContent[prevWordID]["kulitan-form"]);
+    for (var line in prevKulitanChars) {
       for (var syl in line) {
         prevKulitanString = prevKulitanString + syl;
       }
@@ -153,5 +153,10 @@ class PreviewEditsController extends GetxController {
       audioUrl = downloadUrl;
     });
     return audioUrl;
+  }
+
+  Future submitEdits() async {
+    if (appController.userIsExpert ?? false) {
+    } else {}
   }
 }

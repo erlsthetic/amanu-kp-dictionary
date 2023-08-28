@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
+import 'package:amanu/screens/home_screen/home_screen.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -31,11 +34,6 @@ class ApplicationController extends GetxController {
     isFirstTimeUse = true;
     hasConnection.value = await InternetConnectionChecker().hasConnection;
     subscription = await listenToConnectionState();
-  }
-
-  @override
-  void onReady() async {
-    super.onReady();
     await updateUserInfo();
     dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
     wordOfTheDay = await checkWordOfTheDay();
@@ -43,6 +41,14 @@ class ApplicationController extends GetxController {
     await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
         permanent: true);
     await Get.put(DrawerXController(), permanent: true);
+
+    if (isFirstTimeUse) {
+      Get.offAll(() => OnBoardingScreen());
+    } else {
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
+      Get.offAll(() => HomeScreen());
+    }
   }
 
   // -- CONNECTION MANAGEMENT

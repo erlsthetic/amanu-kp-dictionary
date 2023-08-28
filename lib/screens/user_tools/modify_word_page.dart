@@ -1,4 +1,4 @@
-import 'package:amanu/screens/user_tools/controllers/tools_controller.dart';
+import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:amanu/screens/user_tools/widgets/connection_selector.dart';
 import 'package:amanu/screens/user_tools/widgets/kulitan_formfield.dart';
 import 'package:amanu/screens/user_tools/widgets/studio_formfield.dart';

@@ -30,13 +30,5 @@ class SplashScreenController extends GetxController {
     await Get.put(ApplicationController(), permanent: true);
     await Get.put(AuthenticationRepository(), permanent: true);
     await Future.delayed(Duration(milliseconds: 5000));
-    final appController = Get.find<ApplicationController>();
-    if (appController.isFirstTimeUse) {
-      Get.offAll(() => OnBoardingScreen());
-    } else {
-      final drawerController = Get.find<DrawerXController>();
-      drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => HomeScreen());
-    }
   }
 }
