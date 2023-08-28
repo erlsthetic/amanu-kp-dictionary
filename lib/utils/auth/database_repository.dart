@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:amanu/models/add_request_model.dart';
+import 'package:amanu/models/delete_request_model.dart';
+import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/models/feedback_model.dart';
 import 'package:amanu/models/report_model.dart';
 import 'package:amanu/models/user_model.dart';
@@ -124,6 +127,53 @@ class DatabaseRepository extends GetxController {
         .whenComplete(() {
       Get.back();
       Helper.successSnackBar(title: tFeedbackSent, message: tFeedbackSentBody);
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      print(error.toString());
+    });
+  }
+
+  Future createDeleteRequestOnDB(
+      DeleteRequestModel request, String timestamp, String uid) async {
+    await _db
+        .collection("requests")
+        .doc(timestamp + "-" + uid)
+        .set(request.toJson())
+        .whenComplete(() {
+      Get.back();
+      Helper.successSnackBar(
+          title: tDeleteRequestSent, message: tRequestSentBody);
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      print(error.toString());
+    });
+  }
+
+  Future createAddRequestOnDB(
+      AddRequestModel request, String timestamp, String uid) async {
+    await _db
+        .collection("requests")
+        .doc(timestamp + "-" + uid)
+        .set(request.toJson())
+        .whenComplete(() {
+      Get.back();
+      Helper.successSnackBar(title: tAddRequestSent, message: tRequestSentBody);
+    }).catchError((error, stackTrace) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      print(error.toString());
+    });
+  }
+
+  Future createEditRequestOnDB(
+      EditRequestModel request, String timestamp, String uid) async {
+    await _db
+        .collection("requests")
+        .doc(timestamp + "-" + uid)
+        .set(request.toJson())
+        .whenComplete(() {
+      Get.back();
+      Helper.successSnackBar(
+          title: tEditRequestSent, message: tRequestSentBody);
     }).catchError((error, stackTrace) {
       Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
       print(error.toString());

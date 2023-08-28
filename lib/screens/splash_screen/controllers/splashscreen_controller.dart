@@ -1,7 +1,3 @@
-import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
-import 'package:amanu/screens/home_screen/home_screen.dart';
-import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
-import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:get/get.dart';

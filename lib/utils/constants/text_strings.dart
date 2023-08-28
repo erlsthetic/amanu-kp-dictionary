@@ -212,6 +212,12 @@ const String tReportSentBody =
 
 const String tFeedbackSent = "Feedback has been sent.";
 const String tFeedbackSentBody = "Thank you for sharing us your thoughts.";
+const String tDeleteRequestSent = "Delete word request has been sent.";
+const String tAddRequestSent = "Add word request has been sent.";
+const String tEditRequestSent = "Edit word request has been sent.";
+const String tRequestSentBody =
+    "Your request has been sent for approval to our expert users.";
+
 const String tAddSuccess = " was added to the dictionary.";
 const String tEditSuccess = " was updated in the dictionary.";
 const String tDeleteSuccess = " was removed from the dictionary.";
