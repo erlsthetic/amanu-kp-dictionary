@@ -256,44 +256,51 @@ class ProfileController extends GetxController {
             newUserPicURL != '' ? newUserPicURL : appController.userPic;
       }
 
-      await DatabaseRepository.instance
-          .updateUserOnDB(userChanges, appController.userID!)
-          .whenComplete(() async {
-        print("User changes: " + userChanges.toString());
-        await appController.changeLoginState(true);
-        await appController
-            .changeUserDetails(
-                appController.userID,
-                userChanges.containsKey("userName")
-                    ? userChanges["userName"]
-                    : appController.userName,
-                appController.userEmail,
-                userChanges.containsKey("phoneNo")
-                    ? userChanges["phoneNo"]
-                    : appController.userPhone,
-                appController.userIsExpert,
-                userChanges.containsKey("expertRequest")
-                    ? userChanges["expertRequest"]
-                    : appController.userExpertRequest,
-                userChanges.containsKey("exFullName")
-                    ? userChanges["exFullName"]
-                    : appController.userFullName,
-                userChanges.containsKey("exBio")
-                    ? userChanges["exBio"]
-                    : appController.userBio,
-                userChanges.containsKey("profileUrl")
-                    ? userChanges["profileUrl"]
-                    : appController.userPic,
-                appController.userContributions,
-                await appController.saveUserPicToLocal(
-                    userChanges.containsKey("profileUrl")
-                        ? userChanges["profileUrl"]
-                        : null))
-            .whenComplete(() {
-          appController.refresh();
-          getCurrentUserDetails();
+      print("User changes: " + userChanges.toString());
+
+      if (userChanges.length <= 0) {
+        Helper.successSnackBar(
+            title: "No change detected.",
+            message: "Account details remained the same.");
+      } else {
+        await DatabaseRepository.instance
+            .updateUserOnDB(userChanges, appController.userID!)
+            .whenComplete(() async {
+          await appController.changeLoginState(true);
+          await appController
+              .changeUserDetails(
+                  appController.userID,
+                  userChanges.containsKey("userName")
+                      ? userChanges["userName"]
+                      : appController.userName,
+                  appController.userEmail,
+                  userChanges.containsKey("phoneNo")
+                      ? userChanges["phoneNo"]
+                      : appController.userPhone,
+                  appController.userIsExpert,
+                  userChanges.containsKey("expertRequest")
+                      ? userChanges["expertRequest"]
+                      : appController.userExpertRequest,
+                  userChanges.containsKey("exFullName")
+                      ? userChanges["exFullName"]
+                      : appController.userFullName,
+                  userChanges.containsKey("exBio")
+                      ? userChanges["exBio"]
+                      : appController.userBio,
+                  userChanges.containsKey("profileUrl")
+                      ? userChanges["profileUrl"]
+                      : appController.userPic,
+                  appController.userContributions,
+                  await appController.saveUserPicToLocal(
+                      userChanges.containsKey("profileUrl")
+                          ? userChanges["profileUrl"]
+                          : null))
+              .whenComplete(() {
+            appController.refresh();
+            getCurrentUserDetails();
+          });
         });
-      });
+      }
     }
   }
 }

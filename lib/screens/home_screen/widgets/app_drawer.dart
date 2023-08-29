@@ -135,6 +135,7 @@ class AppDrawer extends StatelessWidget {
                                     'Hello, ' + ctl.userName!,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
                                         color: pureWhite,
                                         fontWeight: FontWeight.w600,

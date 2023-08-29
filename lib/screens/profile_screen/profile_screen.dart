@@ -52,12 +52,15 @@ class ProfileScreen extends StatelessWidget {
               width: size.width,
               child: Obx(
                 () => controller.userNotFound.value
-                    ? controller.isProcessing.value ? Container() : Center(
-                        child: Text(
-                          "User not found",
-                          style: TextStyle(fontSize: 16, color: disabledGrey),
-                        ),
-                      )
+                    ? controller.isProcessing.value
+                        ? Container()
+                        : Center(
+                            child: Text(
+                              "User not found",
+                              style:
+                                  TextStyle(fontSize: 16, color: disabledGrey),
+                            ),
+                          )
                     : SingleChildScrollView(
                         physics: BouncingScrollPhysics(),
                         child: Container(
@@ -695,8 +698,12 @@ class ProfileScreen extends StatelessWidget {
                                                                                                         onPressed: () {
                                                                                                           if (controller.userExpertRequest.value) {
                                                                                                             controller.newExpertRequest = false;
+                                                                                                            controller.updateUserDetails();
+                                                                                                            Navigator.of(context).pop();
                                                                                                           } else {
                                                                                                             controller.newExpertRequest = true;
+                                                                                                            controller.updateUserDetails();
+                                                                                                            Navigator.of(context).pop();
                                                                                                           }
                                                                                                         },
                                                                                                         style: ElevatedButton.styleFrom(
@@ -714,6 +721,7 @@ class ProfileScreen extends StatelessWidget {
                                                                                                             fontSize: 16.0,
                                                                                                             fontWeight: FontWeight.w600,
                                                                                                             color: pureWhite,
+                                                                                                            height: 1,
                                                                                                             letterSpacing: 1.0,
                                                                                                           ),
                                                                                                         )),
