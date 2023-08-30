@@ -6,6 +6,9 @@ import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/models/feedback_model.dart';
 import 'package:amanu/models/report_model.dart';
 import 'package:amanu/models/user_model.dart';
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -88,15 +91,28 @@ class DatabaseRepository extends GetxController {
     return null;
   }
 
-  Future<UserModel> getUserDetails(String uid) async {
-    final snapshot =
-        await _db.collection("users").where("uid", isEqualTo: uid).get();
+  Future<UserModel?> getUserDetails(String uid) async {
+    final snapshot = await _db
+        .collection("users")
+        .where("uid", isEqualTo: uid)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
     final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
     return userData;
   }
 
   Future<String> getWordOfTheDay() async {
-    final snapshot = await _db.collection("amanu").doc("wordOfTheDay").get();
+    final snapshot = await _db
+        .collection("amanu")
+        .doc("wordOfTheDay")
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
     if (snapshot.exists) {
       Map<String, dynamic>? data = snapshot.data();
       return data?["wordOfTheDay"] ?? "null";
@@ -110,12 +126,12 @@ class DatabaseRepository extends GetxController {
         .collection("reports")
         .doc(timestamp)
         .set(report.toJson())
-        .whenComplete(() {
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    }).whenComplete(() {
       Get.back();
       Helper.successSnackBar(title: tReportSent, message: tReportSentBody);
-    }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-      print(error.toString());
     });
   }
 
@@ -124,12 +140,12 @@ class DatabaseRepository extends GetxController {
         .collection("feedbacks")
         .doc(timestamp)
         .set(feedback.toJson())
-        .whenComplete(() {
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    }).whenComplete(() {
       Get.back();
       Helper.successSnackBar(title: tFeedbackSent, message: tFeedbackSentBody);
-    }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-      print(error.toString());
     });
   }
 
@@ -139,13 +155,15 @@ class DatabaseRepository extends GetxController {
         .collection("requests")
         .doc(timestamp + "-" + uid)
         .set(request.toJson())
-        .whenComplete(() {
-      Get.back();
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    }).whenComplete(() {
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
+      Get.offAll(() => DrawerLauncher());
       Helper.successSnackBar(
           title: tDeleteRequestSent, message: tRequestSentBody);
-    }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-      print(error.toString());
     });
   }
 
@@ -155,12 +173,14 @@ class DatabaseRepository extends GetxController {
         .collection("requests")
         .doc(timestamp + "-" + uid)
         .set(request.toJson())
-        .whenComplete(() {
-      Get.back();
-      Helper.successSnackBar(title: tAddRequestSent, message: tRequestSentBody);
-    }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+        .catchError((error, stackTrace) {
       print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    }).whenComplete(() {
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
+      Get.offAll(() => DrawerLauncher());
+      Helper.successSnackBar(title: tAddRequestSent, message: tRequestSentBody);
     });
   }
 
@@ -170,13 +190,15 @@ class DatabaseRepository extends GetxController {
         .collection("requests")
         .doc(timestamp + "-" + uid)
         .set(request.toJson())
-        .whenComplete(() {
-      Get.back();
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    }).whenComplete(() {
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
+      Get.offAll(() => DrawerLauncher());
       Helper.successSnackBar(
           title: tEditRequestSent, message: tRequestSentBody);
-    }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-      print(error.toString());
     });
   }
 
@@ -186,9 +208,9 @@ class DatabaseRepository extends GetxController {
         .child(word)
         .set(details)
         .whenComplete(() {
-      Helper.successSnackBar(title: tSuccess, message: tAddSuccess);
+      return Helper.successSnackBar(title: tSuccess, message: tAddSuccess);
     }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
@@ -199,7 +221,8 @@ class DatabaseRepository extends GetxController {
           .child(prevWordID)
           .remove()
           .catchError((error, stackTrace) {
-        Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+        return Helper.errorSnackBar(
+            title: tOhSnap, message: tSomethingWentWrong);
       });
     }
     await _realtimeDB
@@ -207,17 +230,17 @@ class DatabaseRepository extends GetxController {
         .child(wordID)
         .set(details)
         .whenComplete(() {
-      Helper.successSnackBar(title: tSuccess, message: tEditSuccess);
+      return Helper.successSnackBar(title: tSuccess, message: tEditSuccess);
     }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
-  Future removeWordOnDB(String word, Map details) async {
+  Future removeWordOnDB(String word) async {
     await _realtimeDB.child("dictionary").child(word).remove().whenComplete(() {
-      Helper.successSnackBar(title: tSuccess, message: tDeleteSuccess);
+      return Helper.successSnackBar(title: tSuccess, message: tDeleteSuccess);
     }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 }

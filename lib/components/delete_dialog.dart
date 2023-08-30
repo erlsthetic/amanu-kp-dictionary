@@ -1,4 +1,5 @@
 import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
+import 'package:amanu/screens/user_tools/controllers/modify_search_controller.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -9,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
     SearchWordController? controller, bool isFromModifySearch) {
   final appController = Get.find<ApplicationController>();
+  final searchController = Get.put(ModifySearchController());
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -52,6 +54,47 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            SizedBox(
+                              height: 5,
+                            ),
+                            appController.userIsExpert ?? false
+                                ? Container()
+                                : Container(
+                                    width: double.infinity,
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Form(
+                                      key: searchController.notesFormKey,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      child: TextFormField(
+                                        controller:
+                                            searchController.notesController,
+                                        onSaved: (value) {
+                                          searchController.notes = value!;
+                                        },
+                                        validator: (value) {
+                                          if (searchController
+                                                  .notesController.text ==
+                                              '') {
+                                            return "Please leave some notes describing your request.";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        maxLines: 5,
+                                        maxLength: 1000,
+                                        decoration: InputDecoration(
+                                            labelText: tEditNotes,
+                                            alignLabelWithHint: true,
+                                            hintText: tEditNotesHint,
+                                            hintMaxLines: 5,
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.0))),
+                                      ),
+                                    ),
+                                  ),
                             SizedBox(
                               height: 5,
                             ),

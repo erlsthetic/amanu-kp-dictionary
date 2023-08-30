@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DeleteRequestModel {
+  final String requestId;
   final String uid;
   final int requestType;
   final bool isAvailable;
@@ -10,6 +11,7 @@ class DeleteRequestModel {
   final String word;
 
   const DeleteRequestModel({
+    required this.requestId,
     required this.uid,
     required this.timestamp,
     this.requestType = 2,
@@ -21,6 +23,7 @@ class DeleteRequestModel {
 
   toJson() {
     return {
+      "requestId": requestId,
       "uid": uid,
       "timestamp": timestamp,
       "requestType": requestType,
@@ -35,6 +38,7 @@ class DeleteRequestModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return DeleteRequestModel(
+      requestId: data["requestId"],
       uid: data["uid"],
       timestamp: data["timestamp"],
       requestType: data["requestType"],

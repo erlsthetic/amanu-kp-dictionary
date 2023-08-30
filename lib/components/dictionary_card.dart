@@ -8,6 +8,7 @@ import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/kulitan_preview.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -74,31 +75,52 @@ class DictionaryCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                        constraints: BoxConstraints(maxWidth: width * 0.7),
-                        child: Text(
-                          word,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.robotoSlab(
-                              fontSize: 30,
+                flex: 1,
+                child: Container(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          constraints: BoxConstraints(maxWidth: width * 0.7),
+                          height: 40,
+                          alignment: Alignment.centerLeft,
+                          child: AutoSizeText(
+                            word,
+                            style: GoogleFonts.robotoSlab(
                               color: primaryOrangeDark,
-                              fontWeight: FontWeight.bold),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text(
-                          "(" + types.join(', ') + ")",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                              fontSize: 15,
-                              color: primaryOrangeDark,
-                              fontWeight: FontWeight.w300),
-                        )),
-                  ],
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            presetFontSizes: [
+                              30,
+                              29,
+                              28,
+                              27,
+                              26,
+                              25,
+                              24,
+                              23,
+                              22
+                            ],
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Flexible(
+                        child: Container(
+                            height: 40,
+                            margin: EdgeInsets.only(left: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "(" + types.join(', ') + ")",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.roboto(
+                                  fontSize: 15,
+                                  color: primaryOrangeDark,
+                                  fontWeight: FontWeight.w300),
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -409,7 +431,7 @@ class DictionaryCard extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
             width: double.infinity,
             child: kulitanString == ''
                 ? Container(

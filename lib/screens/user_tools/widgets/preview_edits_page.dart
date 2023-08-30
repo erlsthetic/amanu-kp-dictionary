@@ -135,7 +135,8 @@ class PreviewEditsPage extends StatelessWidget {
                                           controller.notes = value!;
                                         },
                                         validator: (value) {
-                                          if (value != null) {
+                                          if (controller.notesController.text ==
+                                              '') {
                                             return "Please leave some notes describing the edits you made.";
                                           } else {
                                             return null;
@@ -180,7 +181,7 @@ class PreviewEditsPage extends StatelessWidget {
                                 contributors: controller.contributors,
                                 expert: controller.expert,
                                 lastModifiedTime: controller.lastModifiedTime,
-                                width: double.infinity,
+                                width: size.width - 60,
                                 isPreview: true,
                                 audioIsOnline: false,
                               ),
@@ -222,7 +223,7 @@ class PreviewEditsPage extends StatelessWidget {
                                 expert: controller.prevExpert,
                                 lastModifiedTime:
                                     controller.prevLastModifiedTime,
-                                width: double.infinity,
+                                width: size.width - 60,
                                 isPreview: true,
                               ),
                             ),
@@ -246,6 +247,10 @@ class PreviewEditsPage extends StatelessWidget {
                         TextStyle(fontWeight: FontWeight.w400, color: cardText),
                   ),
                 )),
+            IsProcessingWithHeader(
+                condition: controller.isProcessing,
+                size: size,
+                screenPadding: screenPadding),
             ThreePartHeader(
               size: size,
               screenPadding: screenPadding,

@@ -95,167 +95,173 @@ class AppDrawer extends StatelessWidget {
                           flex: ctl.userIsExpert ?? false ? 3 : 1,
                           child: Container(
                             alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width / 2,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 100.0,
-                                  width: 100.0,
-                                  padding: EdgeInsets.all(7.5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: pureWhite),
-                                  child: ctl.userPicLocal == null
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(60),
-                                              color: primaryOrangeLight),
-                                          child: Icon(
-                                            Icons.person_rounded,
-                                            size: 60,
-                                            color: pureWhite.withOpacity(0.5),
-                                          ))
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(60),
-                                              image: DecorationImage(
-                                                  image: FileImage(
-                                                      File(ctl.userPicLocal!)),
-                                                  fit: BoxFit.cover)),
-                                        ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  child: Text(
-                                    'Hello, ' + ctl.userName!,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.poppins(
-                                        color: pureWhite,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                ctl.isLoggedIn && (ctl.userIsExpert ?? false)
-                                    ? Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 8),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            color: expertBadge),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.verified_rounded,
-                                                size: 14,
-                                                color:
-                                                    muteBlack.withOpacity(0.5)),
-                                            SizedBox(
-                                              width: 3.0,
-                                            ),
-                                            Text(
-                                              tExpert,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.poppins(
-                                                  color: muteBlack
-                                                      .withOpacity(0.5),
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 12),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : ctl.userExpertRequest ?? false
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: FittedBox(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    padding: EdgeInsets.all(7.5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: pureWhite),
+                                    child: ctl.userPicLocal == null
                                         ? Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 8),
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: darkGrey),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                    Icons
-                                                        .pending_actions_rounded,
-                                                    size: 14,
-                                                    color: pureWhite
-                                                        .withOpacity(0.5)),
-                                                SizedBox(
-                                                  width: 3.0,
-                                                ),
-                                                Text(
-                                                  tPending,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.poppins(
-                                                      color: pureWhite
-                                                          .withOpacity(0.5),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          )
+                                                    BorderRadius.circular(60),
+                                                color: primaryOrangeLight),
+                                            child: Icon(
+                                              Icons.person_rounded,
+                                              size: 60,
+                                              color: pureWhite.withOpacity(0.5),
+                                            ))
                                         : Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 8),
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: contributorBadge),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.person_add_rounded,
-                                                    size: 14,
-                                                    color: pureWhite
-                                                        .withOpacity(0.5)),
-                                                SizedBox(
-                                                  width: 3.0,
-                                                ),
-                                                Text(
-                                                  tContributor,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.poppins(
+                                                    BorderRadius.circular(60),
+                                                image: DecorationImage(
+                                                    image: FileImage(File(
+                                                        ctl.userPicLocal!)),
+                                                    fit: BoxFit.cover)),
+                                          ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    width: (size.width * 0.5) - 20,
+                                    child: Text(
+                                      'Hello, ' + ctl.userName!,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.poppins(
+                                          height: 1.2,
+                                          color: pureWhite,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  ctl.isLoggedIn && (ctl.userIsExpert ?? false)
+                                      ? Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 8),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: expertBadge),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.verified_rounded,
+                                                  size: 14,
+                                                  color: muteBlack
+                                                      .withOpacity(0.5)),
+                                              SizedBox(
+                                                width: 3.0,
+                                              ),
+                                              Text(
+                                                tExpert,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.poppins(
+                                                    color: muteBlack
+                                                        .withOpacity(0.5),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : ctl.userExpertRequest ?? false
+                                          ? Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 4, horizontal: 8),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: darkGrey),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                      Icons
+                                                          .pending_actions_rounded,
+                                                      size: 14,
                                                       color: pureWhite
-                                                          .withOpacity(0.5),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                              ],
+                                                          .withOpacity(0.5)),
+                                                  SizedBox(
+                                                    width: 3.0,
+                                                  ),
+                                                  Text(
+                                                    tPending,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        color: pureWhite
+                                                            .withOpacity(0.5),
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 12),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 4, horizontal: 8),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: contributorBadge),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.person_add_rounded,
+                                                      size: 14,
+                                                      color: pureWhite
+                                                          .withOpacity(0.5)),
+                                                  SizedBox(
+                                                    width: 3.0,
+                                                  ),
+                                                  Text(
+                                                    tContributor,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        color: pureWhite
+                                                            .withOpacity(0.5),
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 12),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                ],
+                              ),
                             ),
                           ),
                         );

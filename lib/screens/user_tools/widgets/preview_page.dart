@@ -83,7 +83,9 @@ class PreviewPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           splashColor: primaryOrangeLight,
           focusColor: primaryOrangeLight.withOpacity(0.5),
-          onPressed: () {},
+          onPressed: () {
+            controller.submitWord();
+          },
           label: Text(
             tAddWord.toUpperCase(),
             textAlign: TextAlign.center,
@@ -131,7 +133,8 @@ class PreviewPage extends StatelessWidget {
                                           controller.notes = value!;
                                         },
                                         validator: (value) {
-                                          if (value != null) {
+                                          if (controller.notesController.text ==
+                                              '') {
                                             return "Please leave some notes describing your request.";
                                           } else {
                                             return null;
@@ -175,7 +178,7 @@ class PreviewPage extends StatelessWidget {
                                 contributors: controller.contributors,
                                 expert: controller.expert,
                                 lastModifiedTime: controller.lastModifiedTime,
-                                width: double.infinity,
+                                width: size.width - 60,
                                 isPreview: true,
                                 audioIsOnline: false,
                               ),
@@ -200,6 +203,10 @@ class PreviewPage extends StatelessWidget {
                         TextStyle(fontWeight: FontWeight.w400, color: cardText),
                   ),
                 )),
+            IsProcessingWithHeader(
+                condition: controller.isProcessing,
+                size: size,
+                screenPadding: screenPadding),
             ThreePartHeader(
               size: size,
               screenPadding: screenPadding,

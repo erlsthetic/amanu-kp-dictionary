@@ -61,10 +61,8 @@ class KulitanController extends GetxController {
     kulitanStringList[currentLine.value]
         .insert(currentSpace.value, kulitanChar);
     kulitanStringList.refresh();
-    if (currentSpace.value < 2) {
+    if (currentSpace.value < 3) {
       currentSpace.value += 1;
-    } else {
-      addLine();
     }
   }
 
@@ -80,7 +78,7 @@ class KulitanController extends GetxController {
         ", Space " +
         currentSpace.value.toString());
     print("Adding: " + kulitanChar);
-    if (kulitanStringList[currentLine.value].length <= 3) {
+    if (kulitanStringList[currentLine.value].length < 3) {
       if (currentSpace.value == 0) {
         insertCharacter(kulitanChar);
       } else if (currentSpace.value == 1) {
@@ -110,7 +108,6 @@ class KulitanController extends GetxController {
             [baseVowels], kulitanStringList[currentLine.value][1])) {
           if (classifyKulitan(
               [baseVowels], kulitanStringList[currentLine.value][0])) {
-            print("here");
             if (kulitanStringList[currentLine.value][0] ==
                     kulitanStringList[currentLine.value][1] &&
                 (classifyKulitan([baseVowels], kulitanChar))) {

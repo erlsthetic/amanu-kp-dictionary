@@ -7,6 +7,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 
 class PreviewEditsController extends GetxController {
@@ -39,6 +40,7 @@ class PreviewEditsController extends GetxController {
   final GlobalKey<FormState> notesFormKey = GlobalKey<FormState>();
   late TextEditingController notesController;
   var notes = '';
+  RxBool isProcessing = false.obs;
 
   @override
   void onInit() {
@@ -160,8 +162,11 @@ class PreviewEditsController extends GetxController {
 
   Future submitEdits() async {
     if (appController.userIsExpert ?? false) {
+      isProcessing.value = true;
       List<String> audioPaths =
           await uploadAudio(wordID, prnPath, 'dictionary');
+      String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
       var details = {
         "word": word,
         "normalizedWord": normalizedWord,
@@ -177,24 +182,46 @@ class PreviewEditsController extends GetxController {
         "sources": sources,
         "contributors": new Map.from(contributors),
         "expert": new Map.from(expert),
-        "lastModifiedTime": lastModifiedTime
+        "lastModifiedTime": timestamp
       };
       if (appController.hasConnection.value) {
-        DatabaseRepository.instance.updateWordOnDB(wordID, prevWordID, details);
+        await DatabaseRepository.instance
+            .updateWordOnDB(wordID, prevWordID, details);
       } else {
+        isProcessing.value = false;
         appController.showConnectionSnackbar();
       }
+      isProcessing.value = false;
     } else {
+      isProcessing.value = true;
       final notesValid = notesFormKey.currentState!.validate();
       if (!notesValid) {
         return;
       }
       notesFormKey.currentState!.save();
+      String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+      String timestampForPath = timestamp.replaceAll(" ", "");
       List<String> audioPaths = await uploadAudio(wordID, prnPath,
-          'requests/${lastModifiedTime + "-" + (appController.userID ?? '')}');
+          'requests/${timestampForPath + "-" + (appController.userID ?? '')}');
+      String kulitanStr = '';
+      for (var line in kulitanChars) {
+        String lineStr = '';
+        for (var ch in line) {
+          if (ch != null) {
+            lineStr += (ch + ",");
+          }
+        }
+        if (lineStr.length > 0) {
+          lineStr = lineStr.substring(0, lineStr.length - 1);
+        }
+        kulitanStr += (lineStr + "#");
+      }
       EditRequestModel request = EditRequestModel(
+          requestId: timestampForPath + "-" + (appController.userID ?? ''),
           uid: appController.userID ?? '',
-          timestamp: lastModifiedTime,
+          userName: appController.userName ?? '',
+          timestamp: timestampForPath,
           requestType: 1,
           isAvailable: true,
           requestNotes: notes == '' ? null : notes,
@@ -208,20 +235,22 @@ class PreviewEditsController extends GetxController {
           engTrans: engTrans,
           filTrans: filTrans,
           meanings: meanings,
-          kulitanChars: kulitanChars,
+          kulitanChars: kulitanStr,
           otherRelated: otherRelated,
           synonyms: synonyms,
           antonyms: antonyms,
           sources: sources,
           contributors: contributors,
           expert: expert,
-          lastModifiedTime: lastModifiedTime);
+          lastModifiedTime: timestamp);
       if (appController.hasConnection.value) {
-        DatabaseRepository.instance.createEditRequestOnDB(
-            request, lastModifiedTime, appController.userID ?? '');
+        await DatabaseRepository.instance.createEditRequestOnDB(
+            request, timestampForPath, appController.userID ?? '');
       } else {
+        isProcessing.value = false;
         appController.showConnectionSnackbar();
       }
+      isProcessing.value = false;
     }
   }
 }

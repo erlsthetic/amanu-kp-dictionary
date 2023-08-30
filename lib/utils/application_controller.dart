@@ -115,20 +115,22 @@ class ApplicationController extends GetxController {
 
     if (isLoggedIn) {
       if (hasConnection.value) {
-        UserModel userData =
+        UserModel? userData =
             await DatabaseRepository.instance.getUserDetails(userID!);
-        await changeUserDetails(
-            userID,
-            userData.userName,
-            userData.email,
-            userData.phoneNo,
-            userData.isExpert,
-            userData.expertRequest,
-            userData.exFullName,
-            userData.exBio,
-            userData.profileUrl,
-            userData.contributions,
-            await saveUserPicToLocal(userData.profileUrl));
+        if (userData != null) {
+          await changeUserDetails(
+              userID,
+              userData.userName,
+              userData.email,
+              userData.phoneNo,
+              userData.isExpert,
+              userData.expertRequest,
+              userData.exFullName,
+              userData.exBio,
+              userData.profileUrl,
+              userData.contributions,
+              await saveUserPicToLocal(userData.profileUrl));
+        }
       } else {
         if (prefs.containsKey("userID")) {
           await getSavedUserDetails();

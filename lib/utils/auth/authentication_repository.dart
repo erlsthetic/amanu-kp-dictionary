@@ -102,20 +102,22 @@ class AuthenticationRepository extends GetxController {
       if (firebaseUser != null) {
         await appController.changeLoginState(true);
         if (appController.hasConnection.value) {
-          UserModel userData = await DatabaseRepository.instance
+          UserModel? userData = await DatabaseRepository.instance
               .getUserDetails(firebaseUser!.uid);
-          await appController.changeUserDetails(
-              firebaseUser!.uid,
-              userData.userName,
-              userData.email,
-              userData.phoneNo,
-              userData.isExpert,
-              userData.expertRequest,
-              userData.exFullName,
-              userData.exBio,
-              userData.profileUrl,
-              userData.contributions,
-              await appController.saveUserPicToLocal(userData.profileUrl));
+          if (userData != null) {
+            await appController.changeUserDetails(
+                firebaseUser!.uid,
+                userData.userName,
+                userData.email,
+                userData.phoneNo,
+                userData.isExpert,
+                userData.expertRequest,
+                userData.exFullName,
+                userData.exBio,
+                userData.profileUrl,
+                userData.contributions,
+                await appController.saveUserPicToLocal(userData.profileUrl));
+          }
         }
         if (appController.isFirstTimeUse) {
           await Future.delayed(Duration(milliseconds: 500));
@@ -181,20 +183,23 @@ class AuthenticationRepository extends GetxController {
           if (query.docs.length != 0) {
             await appController.changeLoginState(true);
             if (appController.hasConnection.value) {
-              UserModel userData = await DatabaseRepository.instance
+              UserModel? userData = await DatabaseRepository.instance
                   .getUserDetails(firebaseUser!.uid);
-              await appController.changeUserDetails(
-                  firebaseUser!.uid,
-                  userData.userName,
-                  userData.email,
-                  userData.phoneNo,
-                  userData.isExpert,
-                  userData.expertRequest,
-                  userData.exFullName,
-                  userData.exBio,
-                  userData.profileUrl,
-                  userData.contributions,
-                  await appController.saveUserPicToLocal(userData.profileUrl));
+              if (userData != null) {
+                await appController.changeUserDetails(
+                    firebaseUser!.uid,
+                    userData.userName,
+                    userData.email,
+                    userData.phoneNo,
+                    userData.isExpert,
+                    userData.expertRequest,
+                    userData.exFullName,
+                    userData.exBio,
+                    userData.profileUrl,
+                    userData.contributions,
+                    await appController
+                        .saveUserPicToLocal(userData.profileUrl));
+              }
             }
             if (appController.isFirstTimeUse) {
               await Future.delayed(Duration(milliseconds: 500));

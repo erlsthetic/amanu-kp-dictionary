@@ -12,6 +12,12 @@ class ModifySearchController extends GetxController {
   late TextEditingController notesController;
   var notes = '';
 
+  @override
+  void onInit() {
+    super.onInit();
+    notesController = new TextEditingController();
+  }
+
   Future submitDelete(String wordID) async {
     if (appController.userIsExpert ?? false) {
       if (appController.hasConnection.value) {
@@ -24,9 +30,13 @@ class ModifySearchController extends GetxController {
       }
       notesFormKey.currentState!.save();
       final String timestamp =
-          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+          DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
       DeleteRequestModel request = DeleteRequestModel(
+          requestId: timestamp + "-" + (appController.userID ?? ''),
           uid: appController.userID ?? '',
+          requestType: 2,
+          isAvailable: true,
+          requestNotes: notes == '' ? null : notes,
           timestamp: timestamp,
           wordID: wordID,
           word: appController.dictionaryContent[wordID]["word"]);

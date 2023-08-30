@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditRequestModel {
+  final String requestId;
   final String uid;
+  final String userName;
   final int requestType;
   final bool isAvailable;
   final String timestamp;
@@ -16,7 +18,7 @@ class EditRequestModel {
   final List<dynamic> engTrans;
   final List<dynamic> filTrans;
   final List<Map<String, dynamic>> meanings;
-  final List<List<dynamic>> kulitanChars;
+  final String kulitanChars;
   final Map<dynamic, dynamic> otherRelated;
   final Map<dynamic, dynamic> synonyms;
   final Map<dynamic, dynamic> antonyms;
@@ -26,7 +28,9 @@ class EditRequestModel {
   final String lastModifiedTime;
 
   const EditRequestModel({
+    required this.requestId,
     required this.uid,
+    required this.userName,
     required this.timestamp,
     this.requestType = 1,
     this.isAvailable = true,
@@ -53,7 +57,9 @@ class EditRequestModel {
 
   toJson() {
     return {
+      "requestId": requestId,
       "uid": uid,
+      "userName": userName,
       "timestamp": timestamp,
       "requestType": requestType,
       "isAvailable": isAvailable,
@@ -83,7 +89,9 @@ class EditRequestModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return EditRequestModel(
+      requestId: data["requestId"],
       uid: data["uid"],
+      userName: data["userName"],
       timestamp: data["timestamp"],
       requestType: data["requestType"],
       isAvailable: data["isAvailable"],

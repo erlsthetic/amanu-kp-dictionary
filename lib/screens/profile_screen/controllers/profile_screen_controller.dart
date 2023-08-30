@@ -115,26 +115,31 @@ class ProfileController extends GetxController {
     }
     try {
       isProcessing.value = true;
-      UserModel user =
+      UserModel? user =
           await DatabaseRepository.instance.getUserDetails(userID!);
-      print("User found.");
-      userName.value = user.userName;
-      userEmail.value = user.email;
-      userPhoneNo = user.phoneNo;
-      userIsExpert.value = user.isExpert;
-      userExpertRequest.value = user.expertRequest;
-      userPic.value = user.profileUrl ?? '';
-      if (user.isExpert) {
-        userFullName.value = user.exFullName ?? '';
-        userBio.value = user.exBio ?? '';
-      }
-      userContributions = user.contributions == null
-          ? []
-          : user.contributions!.map((e) => e.toString()).toList();
-      userNotFound.value = false;
-      if (userContributions.length > 0) {
-        contributionCount = userContributions.length.toString();
+      if (user != null) {
+        print("User found.");
+        userName.value = user.userName;
+        userEmail.value = user.email;
+        userPhoneNo = user.phoneNo;
+        userIsExpert.value = user.isExpert;
+        userExpertRequest.value = user.expertRequest;
+        userPic.value = user.profileUrl ?? '';
+        if (user.isExpert) {
+          userFullName.value = user.exFullName ?? '';
+          userBio.value = user.exBio ?? '';
+        }
+        userContributions = user.contributions == null
+            ? []
+            : user.contributions!.map((e) => e.toString()).toList();
+        userNotFound.value = false;
+        if (userContributions.length > 0) {
+          contributionCount = userContributions.length.toString();
+        } else {
+          contributionCount = '';
+        }
       } else {
+        userNotFound.value = true;
         contributionCount = '';
       }
     } catch (e) {

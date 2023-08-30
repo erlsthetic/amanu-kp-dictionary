@@ -53,6 +53,7 @@ class TagCreator extends StatelessWidget {
                 )
               : Container(),
           Text(label,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontSize: fontSize,
                   color: textColor,

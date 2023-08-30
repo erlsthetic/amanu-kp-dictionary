@@ -6,6 +6,7 @@ import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 
 class PreviewController extends GetxController {
@@ -37,10 +38,12 @@ class PreviewController extends GetxController {
   final GlobalKey<FormState> notesFormKey = GlobalKey<FormState>();
   late TextEditingController notesController;
   var notes = '';
+  RxBool isProcessing = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+    notesController = new TextEditingController();
   }
 
   final String wordID;
@@ -79,8 +82,11 @@ class PreviewController extends GetxController {
 
   Future submitWord() async {
     if (appController.userIsExpert ?? false) {
+      isProcessing.value = true;
       List<String> audioPaths =
           await uploadAudio(wordID, prnPath, 'dictionary');
+      String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
       var details = {
         "word": word,
         "normalizedWord": normalizedWord,
@@ -96,26 +102,47 @@ class PreviewController extends GetxController {
         "sources": sources,
         "contributors": new Map.from(contributors),
         "expert": new Map.from(expert),
-        "lastModifiedTime": lastModifiedTime
+        "lastModifiedTime": timestamp
       };
       if (appController.hasConnection.value) {
-        DatabaseRepository.instance.addWordOnDB(word, details);
+        await DatabaseRepository.instance.addWordOnDB(word, details);
       } else {
+        isProcessing.value = false;
         appController.showConnectionSnackbar();
       }
+      isProcessing.value = false;
     } else {
+      isProcessing.value = true;
       final notesValid = notesFormKey.currentState!.validate();
       if (!notesValid) {
+        isProcessing.value = false;
         return;
       }
       notesFormKey.currentState!.save();
+      String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+      String timestampForPath = timestamp.replaceAll(" ", "");
       List<String> audioPaths = await uploadAudio(wordID, prnPath,
-          'requests/${lastModifiedTime + "-" + (appController.userID ?? '')}');
+          'requests/${timestampForPath + "-" + (appController.userID ?? '')}');
+      String kulitanStr = '';
+      for (var line in kulitanChars) {
+        String lineStr = '';
+        for (var ch in line) {
+          if (ch != null) {
+            lineStr += (ch + ",");
+          }
+        }
+        if (lineStr.length > 0) {
+          lineStr = lineStr.substring(0, lineStr.length - 1);
+        }
+        kulitanStr += (lineStr + "#");
+      }
       AddRequestModel request = AddRequestModel(
           uid: appController.userID ?? '',
-          timestamp: lastModifiedTime,
+          timestamp: timestampForPath,
           requestType: 1,
           isAvailable: true,
+          requestNotes: notes == '' ? null : notes,
           wordID: wordID,
           word: word,
           normalizedWord: normalizedWord,
@@ -125,20 +152,22 @@ class PreviewController extends GetxController {
           engTrans: engTrans,
           filTrans: filTrans,
           meanings: meanings,
-          kulitanChars: kulitanChars,
+          kulitanChars: kulitanStr,
           otherRelated: otherRelated,
           synonyms: synonyms,
           antonyms: antonyms,
           sources: sources,
           contributors: contributors,
           expert: expert,
-          lastModifiedTime: lastModifiedTime);
+          lastModifiedTime: timestamp);
       if (appController.hasConnection.value) {
-        DatabaseRepository.instance.createAddRequestOnDB(
-            request, lastModifiedTime, appController.userID ?? '');
+        await DatabaseRepository.instance.createAddRequestOnDB(
+            request, timestampForPath, appController.userID ?? '');
       } else {
+        isProcessing.value = false;
         appController.showConnectionSnackbar();
       }
+      isProcessing.value = false;
     }
   }
 }
