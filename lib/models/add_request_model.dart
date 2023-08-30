@@ -5,12 +5,13 @@ class AddRequestModel {
   final int requestType;
   final bool isAvailable;
   final String timestamp;
-  final String requestNotes;
+  final String? requestNotes;
   final String wordID;
   final String word;
   final String normalizedWord;
   final String prn;
   final String prnUrl;
+  final String prnStoragePath;
   final List<dynamic> engTrans;
   final List<dynamic> filTrans;
   final List<Map<String, dynamic>> meanings;
@@ -28,12 +29,13 @@ class AddRequestModel {
     required this.timestamp,
     this.requestType = 0,
     this.isAvailable = true,
-    this.requestNotes = "",
+    this.requestNotes = null,
     required this.wordID,
     required this.word,
     required this.normalizedWord,
     required this.prn,
     required this.prnUrl,
+    required this.prnStoragePath,
     required this.engTrans,
     required this.filTrans,
     required this.meanings,
@@ -59,6 +61,7 @@ class AddRequestModel {
       "normalizedWord": normalizedWord,
       "prn": prn,
       "prnUrl": prnUrl,
+      "prnStoragePath": prnStoragePath,
       "engTrans": engTrans,
       "filTrans": filTrans,
       "meanings": meanings,
@@ -87,6 +90,7 @@ class AddRequestModel {
       normalizedWord: data["normalizedWord"],
       prn: data["prn"],
       prnUrl: data["prnUrl"],
+      prnStoragePath: data["prnStoragePath"],
       engTrans: data["engTrans"],
       filTrans: data["filTrans"],
       meanings: data["meanings"],

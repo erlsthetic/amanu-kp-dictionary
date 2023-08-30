@@ -248,7 +248,7 @@ class ModifyController extends GetxController {
     return null;
   }
 
-  final GlobalKey<FormState> addWordFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> modifyWordFormKey = GlobalKey<FormState>();
 
   late PlayerController playerController;
   RxBool rebuildAudio = true.obs;
@@ -483,7 +483,7 @@ class ModifyController extends GetxController {
     getTextFieldTagsData(synonymController, importedSynonyms, synonymsMap);
     getTextFieldTagsData(antonymController, importedAntonyms, antonymsMap);
 
-    final informationValid = addWordFormKey.currentState!.validate();
+    final informationValid = modifyWordFormKey.currentState!.validate();
     if (!informationValid ||
         wordController.text.isEmpty ||
         phoneticController.text.isEmpty ||
@@ -491,7 +491,7 @@ class ModifyController extends GetxController {
         kulitanError.value) {
       return;
     }
-    addWordFormKey.currentState!.save();
+    modifyWordFormKey.currentState!.save();
 
     String normalizedWord = normalizeWord(wordController.text.trim());
     //String wordKey = await availableKey(normalizedWord);

@@ -1,6 +1,7 @@
 import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:amanu/screens/user_tools/controllers/preview_controller.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,8 @@ class PreviewPage extends StatelessWidget {
       definitions: definitions,
       kulitanString: kulitanString));
 
+  final appController = Get.find<ApplicationController>();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -110,34 +113,74 @@ class PreviewPage extends StatelessWidget {
                     child: Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 65, horizontal: 30),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: orangeCard,
-                          ),
-                          child: DictionaryCard(
-                            word: controller.word,
-                            prn: controller.prn,
-                            prnUrl: controller.prnPath,
-                            engTrans: controller.engTrans,
-                            filTrans: controller.filTrans,
-                            meanings: controller.meanings,
-                            types: controller.types,
-                            definitions: controller.definitions,
-                            kulitanChars: controller.kulitanChars,
-                            kulitanString: controller.kulitanString,
-                            otherRelated: controller.otherRelated,
-                            synonyms: controller.synonyms,
-                            antonyms: controller.antonyms,
-                            sources: controller.sources,
-                            contributors: controller.contributors,
-                            expert: controller.expert,
-                            lastModifiedTime: controller.lastModifiedTime,
-                            width: double.infinity,
-                            isPreview: true,
-                            audioIsOnline: false,
-                          ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            appController.userIsExpert ?? false
+                                ? Container()
+                                : Container(
+                                    width: double.infinity,
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Form(
+                                      key: controller.notesFormKey,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      child: TextFormField(
+                                        controller: controller.notesController,
+                                        onSaved: (value) {
+                                          controller.notes = value!;
+                                        },
+                                        validator: (value) {
+                                          if (value != null) {
+                                            return "Please leave some notes describing your request.";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        maxLines: 5,
+                                        maxLength: 1000,
+                                        decoration: InputDecoration(
+                                            labelText: tEditNotes,
+                                            alignLabelWithHint: true,
+                                            hintText: tEditNotesHint,
+                                            hintMaxLines: 5,
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.0))),
+                                      ),
+                                    ),
+                                  ),
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: orangeCard,
+                              ),
+                              child: DictionaryCard(
+                                word: controller.word,
+                                prn: controller.prn,
+                                prnUrl: controller.prnPath,
+                                engTrans: controller.engTrans,
+                                filTrans: controller.filTrans,
+                                meanings: controller.meanings,
+                                types: controller.types,
+                                definitions: controller.definitions,
+                                kulitanChars: controller.kulitanChars,
+                                kulitanString: controller.kulitanString,
+                                otherRelated: controller.otherRelated,
+                                synonyms: controller.synonyms,
+                                antonyms: controller.antonyms,
+                                sources: controller.sources,
+                                contributors: controller.contributors,
+                                expert: controller.expert,
+                                lastModifiedTime: controller.lastModifiedTime,
+                                width: double.infinity,
+                                isPreview: true,
+                                audioIsOnline: false,
+                              ),
+                            ),
+                          ],
                         )),
                   )),
             ),

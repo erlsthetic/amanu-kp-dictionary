@@ -192,10 +192,19 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  Future updateWordOnDB(String word, Map details) async {
+  Future updateWordOnDB(String wordID, String prevWordID, Map details) async {
+    if (prevWordID != wordID) {
+      await _realtimeDB
+          .child("dictionary")
+          .child(prevWordID)
+          .remove()
+          .catchError((error, stackTrace) {
+        Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      });
+    }
     await _realtimeDB
         .child("dictionary")
-        .child(word)
+        .child(wordID)
         .set(details)
         .whenComplete(() {
       Helper.successSnackBar(title: tSuccess, message: tEditSuccess);

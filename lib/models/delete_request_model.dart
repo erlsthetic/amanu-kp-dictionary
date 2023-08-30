@@ -5,16 +5,16 @@ class DeleteRequestModel {
   final int requestType;
   final bool isAvailable;
   final String timestamp;
-  final String requestNotes;
+  final String? requestNotes;
   final String wordID;
   final String word;
 
   const DeleteRequestModel({
     required this.uid,
     required this.timestamp,
-    this.requestType = 0,
+    this.requestType = 2,
     this.isAvailable = true,
-    this.requestNotes = "",
+    this.requestNotes = null,
     required this.wordID,
     required this.word,
   });

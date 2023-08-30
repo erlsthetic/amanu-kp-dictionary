@@ -126,6 +126,9 @@ class PreviewEditsPage extends StatelessWidget {
                                     width: double.infinity,
                                     margin: EdgeInsets.only(bottom: 10),
                                     child: Form(
+                                      key: controller.notesFormKey,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
                                       child: TextFormField(
                                         controller: controller.notesController,
                                         onSaved: (value) {

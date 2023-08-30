@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/utils/application_controller.dart';
+import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,7 @@ class PreviewEditsController extends GetxController {
   static PreviewEditsController get instance => Get.find();
 
   final appController = Get.find<ApplicationController>();
-
+  final GlobalKey<FormState> notesFormKey = GlobalKey<FormState>();
   late TextEditingController notesController;
   var notes = '';
 
@@ -142,21 +144,84 @@ class PreviewEditsController extends GetxController {
         appController.dictionaryContent[prevWordID]["lastModifiedTime"];
   }
 
-  Future<String> uploadAudio(String wordID, String audioPath) async {
+  Future<List<String>> uploadAudio(
+      String wordID, String audioPath, String storagePath) async {
     final file = File(audioPath);
     final ext = p.extension(audioPath);
-    final path = 'dictionary/${wordID}/audio${ext}';
+    final path = '${storagePath}/${wordID}/audio${ext}';
     final ref = FirebaseStorage.instance.ref().child(path);
     await ref.putFile(file);
     String audioUrl = '';
     await ref.getDownloadURL().then((downloadUrl) {
       audioUrl = downloadUrl;
     });
-    return audioUrl;
+    return [path, audioUrl];
   }
 
   Future submitEdits() async {
     if (appController.userIsExpert ?? false) {
-    } else {}
+      List<String> audioPaths =
+          await uploadAudio(wordID, prnPath, 'dictionary');
+      var details = {
+        "word": word,
+        "normalizedWord": normalizedWord,
+        "pronunciation": prn,
+        "pronunciationAudio": audioPaths[1],
+        "englishTranslations": new List.from(engTrans),
+        "filipinoTranslations": new List.from(filTrans),
+        "meanings": new List.from(meanings),
+        "kulitan-form": new List.from(kulitanChars),
+        "otherRelated": new Map.from(otherRelated),
+        "synonyms": new Map.from(synonyms),
+        "antonyms": new Map.from(antonyms),
+        "sources": sources,
+        "contributors": new Map.from(contributors),
+        "expert": new Map.from(expert),
+        "lastModifiedTime": lastModifiedTime
+      };
+      if (appController.hasConnection.value) {
+        DatabaseRepository.instance.updateWordOnDB(wordID, prevWordID, details);
+      } else {
+        appController.showConnectionSnackbar();
+      }
+    } else {
+      final notesValid = notesFormKey.currentState!.validate();
+      if (!notesValid) {
+        return;
+      }
+      notesFormKey.currentState!.save();
+      List<String> audioPaths = await uploadAudio(wordID, prnPath,
+          'requests/${lastModifiedTime + "-" + (appController.userID ?? '')}');
+      EditRequestModel request = EditRequestModel(
+          uid: appController.userID ?? '',
+          timestamp: lastModifiedTime,
+          requestType: 1,
+          isAvailable: true,
+          requestNotes: notes == '' ? null : notes,
+          prevWordID: prevWordID,
+          wordID: wordID,
+          word: word,
+          normalizedWord: normalizedWord,
+          prn: prn,
+          prnUrl: audioPaths[1],
+          prnStoragePath: audioPaths[0],
+          engTrans: engTrans,
+          filTrans: filTrans,
+          meanings: meanings,
+          kulitanChars: kulitanChars,
+          otherRelated: otherRelated,
+          synonyms: synonyms,
+          antonyms: antonyms,
+          sources: sources,
+          contributors: contributors,
+          expert: expert,
+          lastModifiedTime: lastModifiedTime);
+      if (appController.hasConnection.value) {
+        DatabaseRepository.instance.createEditRequestOnDB(
+            request, lastModifiedTime, appController.userID ?? '');
+      } else {
+        appController.showConnectionSnackbar();
+      }
+    }
   }
 }

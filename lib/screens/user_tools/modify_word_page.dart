@@ -67,7 +67,7 @@ class ModifyWordPage extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     child: Form(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      key: controller.addWordFormKey,
+                      key: controller.modifyWordFormKey,
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 40, horizontal: 30),
