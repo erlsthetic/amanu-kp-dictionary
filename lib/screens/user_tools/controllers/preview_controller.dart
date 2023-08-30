@@ -138,7 +138,9 @@ class PreviewController extends GetxController {
         kulitanStr += (lineStr + "#");
       }
       AddRequestModel request = AddRequestModel(
+          requestId: timestampForPath + "-" + (appController.userID ?? ''),
           uid: appController.userID ?? '',
+          userName: appController.userName ?? '',
           timestamp: timestampForPath,
           requestType: 1,
           isAvailable: true,

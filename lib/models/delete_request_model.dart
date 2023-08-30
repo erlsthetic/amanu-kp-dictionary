@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DeleteRequestModel {
   final String requestId;
   final String uid;
+  final String userName;
   final int requestType;
   final bool isAvailable;
   final String timestamp;
@@ -13,6 +14,7 @@ class DeleteRequestModel {
   const DeleteRequestModel({
     required this.requestId,
     required this.uid,
+    required this.userName,
     required this.timestamp,
     this.requestType = 2,
     this.isAvailable = true,
@@ -25,6 +27,7 @@ class DeleteRequestModel {
     return {
       "requestId": requestId,
       "uid": uid,
+      "userName": userName,
       "timestamp": timestamp,
       "requestType": requestType,
       "isAvailable": isAvailable,
@@ -40,6 +43,7 @@ class DeleteRequestModel {
     return DeleteRequestModel(
       requestId: data["requestId"],
       uid: data["uid"],
+      userName: data["userName"],
       timestamp: data["timestamp"],
       requestType: data["requestType"],
       isAvailable: data["isAvailable"],

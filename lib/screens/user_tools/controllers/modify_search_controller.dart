@@ -34,6 +34,7 @@ class ModifySearchController extends GetxController {
       DeleteRequestModel request = DeleteRequestModel(
           requestId: timestamp + "-" + (appController.userID ?? ''),
           uid: appController.userID ?? '',
+          userName: appController.userName ?? '',
           requestType: 2,
           isAvailable: true,
           requestNotes: notes == '' ? null : notes,

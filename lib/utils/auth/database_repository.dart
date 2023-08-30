@@ -167,6 +167,34 @@ class DatabaseRepository extends GetxController {
     });
   }
 
+  Future<DeleteRequestModel?> getDeleteRequest(String requestID) async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("requestId", isEqualTo: requestID)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final request =
+        snapshot.docs.map((e) => DeleteRequestModel.fromSnapshot(e)).single;
+    return request;
+  }
+
+  Future<List<DeleteRequestModel>> getAllDeleteRequests() async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("requestType", isEqualTo: 2)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final requests =
+        snapshot.docs.map((e) => DeleteRequestModel.fromSnapshot(e)).toList();
+    return requests;
+  }
+
   Future createAddRequestOnDB(
       AddRequestModel request, String timestamp, String uid) async {
     await _db
@@ -182,6 +210,34 @@ class DatabaseRepository extends GetxController {
       Get.offAll(() => DrawerLauncher());
       Helper.successSnackBar(title: tAddRequestSent, message: tRequestSentBody);
     });
+  }
+
+  Future<AddRequestModel?> getAddRequest(String requestID) async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("requestId", isEqualTo: requestID)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final request =
+        snapshot.docs.map((e) => AddRequestModel.fromSnapshot(e)).single;
+    return request;
+  }
+
+  Future<List<AddRequestModel>> getAllAddRequests() async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("requestType", isEqualTo: 0)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final requests =
+        snapshot.docs.map((e) => AddRequestModel.fromSnapshot(e)).toList();
+    return requests;
   }
 
   Future createEditRequestOnDB(
@@ -200,6 +256,34 @@ class DatabaseRepository extends GetxController {
       Helper.successSnackBar(
           title: tEditRequestSent, message: tRequestSentBody);
     });
+  }
+
+  Future<EditRequestModel?> getEditRequest(String requestID) async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("requestId", isEqualTo: requestID)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final request =
+        snapshot.docs.map((e) => EditRequestModel.fromSnapshot(e)).single;
+    return request;
+  }
+
+  Future<List<EditRequestModel>> getAllEditRequests() async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("requestType", isEqualTo: 1)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final requests =
+        snapshot.docs.map((e) => EditRequestModel.fromSnapshot(e)).toList();
+    return requests;
   }
 
   Future addWordOnDB(String word, Map details) async {
