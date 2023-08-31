@@ -38,6 +38,7 @@ class KulitanEditorPage extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(
                     40, 40, 40, (4.0 * 60) + (5.0 * 10.0) + (2.0 * 20.0) + 30),
                 child: Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
@@ -52,164 +53,166 @@ class KulitanEditorPage extends StatelessWidget {
                             color: pureWhite,
                             blurStyle: BlurStyle.inner)
                       ]),
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-                      child: Obx(
-                        () => Column(
-                          children: <Widget>[
-                            for (MapEntry line
-                                in controller.kulitanStringList.asMap().entries)
-                              Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                child: Obx(
-                                  () =>
-                                      (controller.currentSpace.value == 0 &&
-                                              line.key ==
-                                                  controller.currentLine.value)
-                                          ? Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 8,
-                                                  child: Container(
-                                                    constraints: BoxConstraints(
-                                                        minHeight: 60,
-                                                        maxHeight: 80,
-                                                        minWidth: 180,
-                                                        maxWidth: 240),
-                                                    child: FittedBox(
-                                                      child: AnimatedOpacity(
-                                                        opacity: controller
-                                                                .blinkerShow
-                                                                .value
-                                                            ? 1.0
-                                                            : 0.0,
-                                                        duration: Duration(
-                                                            milliseconds:
-                                                                controller
-                                                                    .showDuration),
-                                                        child: Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 3),
-                                                          height: 35,
-                                                          width: 2.0,
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  primaryOrangeDark,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                        ),
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 40, horizontal: 30),
+                        child: Obx(
+                          () => Column(
+                            children: <Widget>[
+                              for (MapEntry line in controller.kulitanStringList
+                                  .asMap()
+                                  .entries)
+                                Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Obx(
+                                    () => (controller.currentSpace.value == 0 &&
+                                            line.key ==
+                                                controller.currentLine.value)
+                                        ? Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 8,
+                                                child: Container(
+                                                  constraints: BoxConstraints(
+                                                      minHeight: 60,
+                                                      maxHeight: 80,
+                                                      minWidth: 180,
+                                                      maxWidth: 240),
+                                                  child: FittedBox(
+                                                    child: AnimatedOpacity(
+                                                      opacity: controller
+                                                              .blinkerShow.value
+                                                          ? 1.0
+                                                          : 0.0,
+                                                      duration: Duration(
+                                                          milliseconds:
+                                                              controller
+                                                                  .showDuration),
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 3),
+                                                        height: 35,
+                                                        width: 2.0,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                primaryOrangeDark,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5)),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                                Expanded(
-                                                    flex: 2, child: Container())
-                                              ],
-                                            )
-                                          : Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 8,
-                                                  child: Container(
-                                                    constraints: BoxConstraints(
-                                                        minHeight: 60,
-                                                        maxHeight: 80,
-                                                        minWidth: 180,
-                                                        maxWidth: 240),
-                                                    child:
-                                                        line.value.length == 0
-                                                            ? Container()
-                                                            : FittedBox(
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                                child: Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      line.value
-                                                                          .join(),
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              'KulitanKeith',
-                                                                          fontSize:
-                                                                              35,
-                                                                          color:
-                                                                              primaryOrangeDark),
-                                                                    ),
-                                                                    if (line.key ==
-                                                                        controller
-                                                                            .currentLine
-                                                                            .value)
-                                                                      AnimatedOpacity(
-                                                                        opacity: controller.blinkerShow.value
-                                                                            ? 1.0
-                                                                            : 0.0,
-                                                                        duration:
-                                                                            Duration(milliseconds: controller.showDuration),
-                                                                        child:
-                                                                            Container(
-                                                                          margin:
-                                                                              EdgeInsets.only(left: 3),
-                                                                          height:
-                                                                              35,
-                                                                          width:
-                                                                              2.0,
-                                                                          decoration: BoxDecoration(
-                                                                              color: primaryOrangeDark,
-                                                                              borderRadius: BorderRadius.circular(5)),
-                                                                        ),
-                                                                      )
-                                                                  ],
-                                                                ),
+                                              ),
+                                              Expanded(
+                                                  flex: 2, child: Container())
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 8,
+                                                child: Container(
+                                                  constraints: BoxConstraints(
+                                                      minHeight: 60,
+                                                      maxHeight: 80,
+                                                      minWidth: 180,
+                                                      maxWidth: 240),
+                                                  child: line.value.length == 0
+                                                      ? Container()
+                                                      : FittedBox(
+                                                          fit: BoxFit.contain,
+                                                          child: Row(
+                                                            children: [
+                                                              Text(
+                                                                line.value
+                                                                    .join(),
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        'KulitanKeith',
+                                                                    fontSize:
+                                                                        35,
+                                                                    color:
+                                                                        primaryOrangeDark),
                                                               ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    constraints: BoxConstraints(
-                                                        minHeight: 60,
-                                                        maxHeight: 80,
-                                                        minWidth: 30,
-                                                        maxWidth: 60),
-                                                    child: line.value.length ==
-                                                            0
-                                                        ? Container()
-                                                        : Container(
-                                                            child: Text(
-                                                              line.value
-                                                                  .join()
-                                                                  .replaceAll(
-                                                                      "aa", "á")
-                                                                  .replaceAll(
-                                                                      "ai", "e")
-                                                                  .replaceAll(
-                                                                      "au", "o")
-                                                                  .replaceAll(
-                                                                      "ii", "í")
-                                                                  .replaceAll(
-                                                                      "uu",
-                                                                      "ú"),
-                                                              style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  color:
-                                                                      primaryOrangeDark),
-                                                            ),
+                                                              if (line.key ==
+                                                                  controller
+                                                                      .currentLine
+                                                                      .value)
+                                                                AnimatedOpacity(
+                                                                  opacity: controller
+                                                                          .blinkerShow
+                                                                          .value
+                                                                      ? 1.0
+                                                                      : 0.0,
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          controller
+                                                                              .showDuration),
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            left:
+                                                                                3),
+                                                                    height: 35,
+                                                                    width: 2.0,
+                                                                    decoration: BoxDecoration(
+                                                                        color:
+                                                                            primaryOrangeDark,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(5)),
+                                                                  ),
+                                                                )
+                                                            ],
                                                           ),
-                                                  ),
+                                                        ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  constraints: BoxConstraints(
+                                                      minHeight: 60,
+                                                      maxHeight: 80,
+                                                      minWidth: 30,
+                                                      maxWidth: 60),
+                                                  child: line.value.length == 0
+                                                      ? Container()
+                                                      : Container(
+                                                          child: Text(
+                                                            line.value
+                                                                .join()
+                                                                .replaceAll(
+                                                                    "aa", "á")
+                                                                .replaceAll(
+                                                                    "ai", "e")
+                                                                .replaceAll(
+                                                                    "au", "o")
+                                                                .replaceAll(
+                                                                    "ii", "í")
+                                                                .replaceAll(
+                                                                    "uu", "ú"),
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color:
+                                                                    primaryOrangeDark),
+                                                          ),
+                                                        ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

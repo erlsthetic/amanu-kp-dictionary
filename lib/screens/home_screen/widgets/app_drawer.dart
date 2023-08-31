@@ -75,24 +75,25 @@ class AppDrawer extends StatelessWidget {
           SafeArea(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GetBuilder<ApplicationController>(
                 builder: (ctl) {
                   return !ctl.isLoggedIn
                       ? Expanded(
-                          flex: 1,
+                          flex: 3,
                           child: Container(
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width / 2,
                             child: Container(
-                                height: 150,
-                                width: 150,
+                                height: 130,
+                                width: 130,
                                 child:
                                     SvgPicture.asset(iAmanuWhiteLogoWithLabel)),
                           ),
                         )
                       : Expanded(
-                          flex: ctl.userIsExpert ?? false ? 3 : 1,
+                          flex: 4,
                           child: Container(
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width * 0.5,
@@ -274,7 +275,7 @@ class AppDrawer extends StatelessWidget {
                   : DrawerItems.regular.map(buildDrawerItem).toList(),
               appController.isLoggedIn
                   ? Expanded(
-                      flex: appController.userIsExpert ?? false ? 2 : 1,
+                      flex: 2,
                       child: Container(
                         alignment: Alignment.center,
                         width: MediaQuery.of(context).size.width * 0.75,
@@ -314,7 +315,7 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ),
                     )
-                  : Expanded(flex: 1, child: Container()),
+                  : Expanded(flex: 2, child: Container()),
             ],
           )),
           Obx(() => controller.isProcessing.value
