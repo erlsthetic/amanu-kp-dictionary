@@ -8,33 +8,88 @@ import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PreviewEditsPage extends StatelessWidget {
-  final String? prevWordID;
-  final String wordID;
-  final String word;
+class RequestDetailsPage extends StatelessWidget {
   final String requestID;
   final String requesterID;
   final int requestType;
   final String requesterUserName;
+  final String notes;
+  final String? prevWordID;
+  final String wordID;
+  final String word;
+  final String normalizedWord;
+  final String prn;
+  final String prnUrl;
+  final List<dynamic>? engTrans;
+  final List<dynamic>? filTrans;
+  final List<Map<String, dynamic>> meanings;
+  final List<String> types;
+  final List<List<dynamic>> kulitanChars;
+  final Map<dynamic, dynamic>? otherRelated;
+  final Map<dynamic, dynamic>? synonyms;
+  final Map<dynamic, dynamic>? antonyms;
+  final String? sources;
+  final Map<dynamic, dynamic>? contributors;
+  final Map<dynamic, dynamic>? expert;
+  final String lastModifiedTime;
+  final List<List<Map<String, dynamic>>> definitions;
+  final String kulitanString;
 
-  PreviewEditsPage(
-      {super.key,
-      required this.wordID,
-      required this.word,
-      required this.prevWordID,
-      required this.requestID,
-      required this.requestType,
-      required this.requesterID,
-      required this.requesterUserName});
+  RequestDetailsPage({
+    super.key,
+    required this.wordID,
+    required this.word,
+    required this.prevWordID,
+    required this.requestID,
+    required this.requestType,
+    required this.requesterID,
+    required this.requesterUserName,
+    required this.notes,
+    required this.normalizedWord,
+    required this.prn,
+    required this.prnUrl,
+    required this.engTrans,
+    required this.filTrans,
+    required this.meanings,
+    required this.types,
+    required this.kulitanChars,
+    required this.otherRelated,
+    required this.synonyms,
+    required this.antonyms,
+    required this.sources,
+    required this.contributors,
+    required this.expert,
+    required this.lastModifiedTime,
+    required this.definitions,
+    required this.kulitanString,
+  });
 
   late final controller = Get.put(RequestDetailsController(
-      prevWordID: prevWordID,
-      wordID: wordID,
-      word: word,
       requestID: requestID,
       requestType: requestType,
       requesterID: requesterID,
-      requesterUserName: requesterUserName));
+      requesterUserName: requesterUserName,
+      notes: notes,
+      prevWordID: prevWordID,
+      wordID: wordID,
+      word: word,
+      normalizedWord: normalizedWord,
+      prn: prn,
+      prnUrl: prnUrl,
+      engTrans: engTrans ?? [],
+      filTrans: filTrans ?? [],
+      meanings: meanings,
+      types: types,
+      kulitanChars: kulitanChars,
+      otherRelated: otherRelated ?? {},
+      synonyms: synonyms ?? {},
+      antonyms: antonyms ?? {},
+      sources: sources ?? '',
+      contributors: contributors ?? {},
+      expert: expert ?? {},
+      lastModifiedTime: lastModifiedTime,
+      definitions: definitions,
+      kulitanString: kulitanString));
 
   final appController = Get.find<ApplicationController>();
 
@@ -200,7 +255,8 @@ class PreviewEditsPage extends StatelessWidget {
           onPressed: (index) {
             print("Clicked $index");
             if (index == 0) {
-            } else if (index == 1) {}
+            } else if (index == 1) {
+            } else if (index == 2) {}
           },
           positionBottom: size.height * 0.05,
           positionLeft: size.width - 85,
@@ -215,10 +271,15 @@ class PreviewEditsPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(40),
           borderColor: primaryOrangeDark,
           buttons: [
+            iToolsApprove,
             iToolsEdit,
             iToolsDelete,
           ],
-          iconBGColors: [primaryOrangeLight, darkerOrange.withOpacity(0.8)],
+          iconBGColors: [
+            primaryOrangeDark,
+            primaryOrangeLight,
+            darkerOrange.withOpacity(0.8)
+          ],
           iconBGSize: 60,
           mainIconColor: primaryOrangeDark,
           shadowColor: primaryOrangeDark,

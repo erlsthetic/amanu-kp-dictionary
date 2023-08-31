@@ -8,20 +8,18 @@ class RequestCard extends StatelessWidget {
   RequestCard(
       {super.key,
       required this.timestamp,
+      required this.requestType,
       required this.word,
       required this.userName,
       required this.onTap,
-      required this.onTapButton1,
-      required this.onTapButton2,
       this.notes = ''});
 
   final String timestamp;
+  final int requestType;
   final String word;
   final String userName;
   final String notes;
   final VoidCallback onTap;
-  final VoidCallback onTapButton1;
-  final VoidCallback onTapButton2;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,6 @@ class RequestCard extends StatelessWidget {
         child: Ink(
           height: 100,
           width: double.infinity,
-          padding: EdgeInsets.fromLTRB(20, 10, 10, 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: pureWhite,
@@ -49,62 +46,66 @@ class RequestCard extends StatelessWidget {
               ]),
           child: Row(
             children: [
+              Container(
+                height: double.infinity,
+                width: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(20)),
+                    color: requestType == 0
+                        ? primaryOrangeDark
+                        : requestType == 1
+                            ? primaryOrangeLight
+                            : darkerOrange.withOpacity(0.8)),
+                child: Icon(
+                  requestType == 0
+                      ? Icons.add
+                      : requestType == 1
+                          ? Icons.edit
+                          : Icons.delete,
+                  size: 15,
+                ),
+              ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 40,
-                      child: AutoSizeText(
-                        word.toLowerCase(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.robotoSlab(
-                            color: primaryOrangeDark,
-                            fontWeight: FontWeight.w800),
-                        presetFontSizes: [30, 29, 28, 27, 26, 25, 24, 23, 22],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      height: 22.5,
-                      child: Text(
-                        notes,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            color: disabledGrey,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          alignment: Alignment.centerLeft,
-                          height: 22.5,
-                          child: Text(
-                            "by:",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.roboto(
-                                fontSize: 14,
-                                color: disabledGrey,
-                                fontWeight: FontWeight.w500),
-                          ),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 40,
+                        child: AutoSizeText(
+                          word.toLowerCase(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.robotoSlab(
+                              color: primaryOrangeDark,
+                              fontWeight: FontWeight.w800),
+                          presetFontSizes: [30, 29, 28, 27, 26, 25, 24, 23, 22],
                         ),
-                        TagCreator(
-                          label: userName,
-                          color: contributorBadge,
-                          textColor: pureWhite.withOpacity(0.75),
-                          isBadge: true,
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        height: 22.5,
+                        child: Text(
+                          notes,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              color: disabledGrey,
+                              fontWeight: FontWeight.w600),
                         ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 10),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            alignment: Alignment.centerLeft,
+                            height: 22.5,
                             child: Text(
-                              timestamp,
+                              "by:",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
@@ -113,96 +114,32 @@ class RequestCard extends StatelessWidget {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: primaryOrangeDark.withOpacity(0.5),
-                      blurRadius: 12,
-                      spreadRadius: -5,
-                    ),
-                  ],
-                ),
-                child: Material(
-                  color: pureWhite,
-                  borderRadius: BorderRadius.circular(20),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    splashColor: primaryOrangeLight,
-                    highlightColor: primaryOrangeLight.withOpacity(0.5),
-                    onTap: onTapButton1,
-                    child: Ink(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: primaryOrangeDark.withAlpha(75),
-                        ),
-                        child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.edit,
-                              color: primaryOrangeDark,
-                              size: 30,
-                            ))),
+                          TagCreator(
+                            label: userName,
+                            color: contributorBadge,
+                            textColor: pureWhite.withOpacity(0.75),
+                            isBadge: true,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                timestamp,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    color: disabledGrey,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: primaryOrangeDark.withOpacity(0.5),
-                      blurRadius: 12,
-                      spreadRadius: -5,
-                    ),
-                  ],
-                ),
-                child: Material(
-                  color: pureWhite,
-                  borderRadius: BorderRadius.circular(20),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    splashColor: primaryOrangeLight,
-                    highlightColor: primaryOrangeLight.withOpacity(0.5),
-                    onTap: onTapButton2,
-                    child: Ink(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: primaryOrangeDark.withAlpha(75),
-                        ),
-                        child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.delete,
-                              color: primaryOrangeDark,
-                              size: 30,
-                            ))),
-                  ),
-                ),
-              )
             ],
           ),
         ),

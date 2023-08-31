@@ -286,6 +286,16 @@ class DatabaseRepository extends GetxController {
     return requests;
   }
 
+  Future changeRequestState(String requestID) async {
+    await _db
+        .collection("requests")
+        .doc(requestID)
+        .update({"isAvailable": false}).catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+  }
+
   Future addWordOnDB(String word, Map details) async {
     await _realtimeDB
         .child("dictionary")

@@ -18,6 +18,7 @@ class RequestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Scaffold(
@@ -37,12 +38,16 @@ class RequestsScreen extends StatelessWidget {
                     itemCount: controller.requests.length,
                     itemBuilder: (context, index) {
                       return RequestCard(
-                          timestamp: controller.requests[index]["timestamp"],
-                          word: controller.requests[index]["word"],
-                          userName: controller.requests[index]["userName"],
-                          onTap: () {},
-                          onTapButton1: () {},
-                          onTapButton2: () {});
+                        timestamp: controller.requests[index].timestamp,
+                        requestType: controller.requests[index].requestType,
+                        word: controller.requests[index].word,
+                        userName: controller.requests[index].userName,
+                        onTap: () async {
+                          await controller.requestSelect(
+                              controller.requests[index].requestId,
+                              controller.requests[index].requestType);
+                        },
+                      );
                     },
                   )
                 : Container(),

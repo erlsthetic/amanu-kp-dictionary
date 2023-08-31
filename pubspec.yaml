@@ -131,6 +131,7 @@ flutter:
     - assets/svg/ICONS/TOOLS_ADD.svg
     - assets/svg/ICONS/TOOLS_DELETE.svg
     - assets/svg/ICONS/TOOLS_EDIT.svg
+    - assets/svg/ICONS/TOOLS_APPROVE.svg
     - assets/svg/ICONS/TOOLS_USER.svg
     - assets/svg/ICONS/CLOSE.svg
 

@@ -35,6 +35,7 @@ const String iSupportIcon = "assets/svg/ICONS/SUPPORT.svg";
 const String iToolsAdd = "assets/svg/ICONS/TOOLS_ADD.svg";
 const String iToolsDelete = "assets/svg/ICONS/TOOLS_DELETE.svg";
 const String iToolsEdit = "assets/svg/ICONS/TOOLS_EDIT.svg";
+const String iToolsApprove = "assets/svg/ICONS/TOOLS_APPROVE.svg";
 const String iToolBox = "assets/svg/ICONS/TOOLS_USER.svg";
 const String iClose = "assets/svg/ICONS/CLOSE.svg";
 //anim

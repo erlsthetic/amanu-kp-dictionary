@@ -2,49 +2,68 @@ import 'package:amanu/models/add_request_model.dart';
 import 'package:amanu/models/delete_request_model.dart';
 import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/utils/application_controller.dart';
-import 'package:amanu/utils/auth/database_repository.dart';
-import 'package:amanu/utils/constants/text_strings.dart';
-import 'package:amanu/utils/helper_controller.dart';
 import 'package:get/get.dart';
 
 class RequestDetailsController extends GetxController {
-  RequestDetailsController(
-      {required this.prevWordID,
-      required this.wordID,
-      required this.word,
-      required this.requestID,
-      required this.requestType,
-      required this.requesterID,
-      required this.requesterUserName});
+  RequestDetailsController({
+    required this.requestID,
+    required this.requestType,
+    required this.requesterID,
+    required this.requesterUserName,
+    required this.notes,
+    required this.prevWordID,
+    required this.wordID,
+    required this.word,
+    required this.normalizedWord,
+    required this.prn,
+    required this.prnUrl,
+    required this.engTrans,
+    required this.filTrans,
+    required this.meanings,
+    required this.types,
+    required this.kulitanChars,
+    required this.otherRelated,
+    required this.synonyms,
+    required this.antonyms,
+    required this.sources,
+    required this.contributors,
+    required this.expert,
+    required this.lastModifiedTime,
+    required this.definitions,
+    required this.kulitanString,
+  });
 
   static RequestDetailsController get instance => Get.find();
   final appController = Get.find<ApplicationController>();
 
-  final String? prevWordID;
-  final String wordID;
-  final String word;
+  RxBool isProcessing = false.obs;
+
   final String requestID;
   final int requestType;
   final String requesterID;
   final String requesterUserName;
-  RxBool isProcessing = false.obs;
+  final String notes;
 
-  String prn = '';
-  String prnUrl = '';
-  List<dynamic> engTrans = [];
-  List<dynamic> filTrans = [];
-  List<Map<String, dynamic>> meanings = [];
-  List<String> types = [];
-  List<List<Map<String, dynamic>>> definitions = [];
-  var kulitanChars = [];
-  String kulitanString = '';
-  Map<dynamic, dynamic> otherRelated = {};
-  Map<dynamic, dynamic> synonyms = {};
-  Map<dynamic, dynamic> antonyms = {};
-  String sources = '';
-  Map<dynamic, dynamic> contributors = {};
-  Map<dynamic, dynamic> expert = {};
-  String lastModifiedTime = '';
+  final String? prevWordID;
+  final String wordID;
+  final String word;
+  final String normalizedWord;
+  final String prn;
+  final String prnUrl;
+  final List<dynamic> engTrans;
+  final List<dynamic> filTrans;
+  final List<Map<String, dynamic>> meanings;
+  final List<String> types;
+  final List<List<dynamic>> kulitanChars;
+  final Map<dynamic, dynamic> otherRelated;
+  final Map<dynamic, dynamic> synonyms;
+  final Map<dynamic, dynamic> antonyms;
+  final String sources;
+  final Map<dynamic, dynamic> contributors;
+  final Map<dynamic, dynamic> expert;
+  final String lastModifiedTime;
+  final List<List<Map<String, dynamic>>> definitions;
+  final String kulitanString;
 
   String prevWord = '';
   String prevPrn = '';
@@ -64,8 +83,7 @@ class RequestDetailsController extends GetxController {
   Map<dynamic, dynamic> prevExpert = {};
   String prevLastModifiedTime = '';
 
-  String notes = '';
-
+/*
   Future getAddDetails(AddRequestModel request) async {
     notes = request.requestNotes ?? '';
     prn = request.prn;
@@ -187,7 +205,7 @@ class RequestDetailsController extends GetxController {
     lastModifiedTime =
         appController.dictionaryContent[wordID]["lastModifiedTime"];
   }
-
+*/
   void getPrevInformation() {
     prevWord = appController.dictionaryContent[prevWordID]["word"];
     prevPrn = appController.dictionaryContent[prevWordID]["pronunciation"];
@@ -248,33 +266,8 @@ class RequestDetailsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    if (requestType == 0) {
-      AddRequestModel? request =
-          await DatabaseRepository.instance.getAddRequest(requestID);
-      if (request == null) {
-        Get.back();
-        Helper.errorSnackBar(
-            title: tOhSnap,
-            message: "Unable to get request. PLease try again.");
-      }
-    } else if (requestType == 1) {
-      EditRequestModel? request =
-          await DatabaseRepository.instance.getEditRequest(requestID);
-      if (request == null) {
-        Get.back();
-        Helper.errorSnackBar(
-            title: tOhSnap,
-            message: "Unable to get request. PLease try again.");
-      }
-    } else if (requestType == 2) {
-      DeleteRequestModel? request =
-          await DatabaseRepository.instance.getDeleteRequest(requestID);
-      if (request == null) {
-        Get.back();
-        Helper.errorSnackBar(
-            title: tOhSnap,
-            message: "Unable to get request. PLease try again.");
-      }
+    if (requestType == 2) {
+      getPrevInformation();
     }
   }
 }
