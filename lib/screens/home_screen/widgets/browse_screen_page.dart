@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:amanu/components/join_dialog.dart';
 import 'package:amanu/components/shimmer_browse_card.dart';
-import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/alphabetical_scroll_list.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
@@ -9,7 +8,6 @@ import 'package:amanu/screens/profile_screen/profile_screen.dart';
 import 'package:amanu/screens/requests_screen/requests_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/components/browse_card.dart';
 import 'package:amanu/components/search_button.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:audioplayers/audioplayers.dart';
