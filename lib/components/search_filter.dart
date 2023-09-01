@@ -57,53 +57,59 @@ class SearchFilter extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(20.0),
-                              child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "SEARCH BY",
-                                      style: TextStyle(
-                                          color: primaryOrangeDark,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Divider(
-                                      color: disabledGrey,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Wrap(
-                                      alignment: WrapAlignment.spaceAround,
-                                      spacing: 15,
-                                      runSpacing: 5,
+                            Flexible(
+                              child: SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        for (var option in {
-                                          "Word": "word",
-                                          "Eng Trans": "engTrans",
-                                          "Fil Trans": "filTrans",
-                                          "Related": "related",
-                                          "Synonym": "synonym",
-                                          "Antonym": "antonym",
-                                          "Definition": "definition"
-                                        }.entries)
-                                          FilterOption(
-                                              controller: controller,
-                                              label: option.key,
-                                              refVal: option.value)
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ]),
+                                        Text(
+                                          "SEARCH BY",
+                                          style: TextStyle(
+                                              color: primaryOrangeDark,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Divider(
+                                          color: disabledGrey,
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Wrap(
+                                          alignment: WrapAlignment.spaceAround,
+                                          spacing: 15,
+                                          runSpacing: 5,
+                                          children: [
+                                            for (var option in {
+                                              "Word": "word",
+                                              "Eng Trans": "engTrans",
+                                              "Fil Trans": "filTrans",
+                                              "Related": "related",
+                                              "Synonym": "synonym",
+                                              "Antonym": "antonym",
+                                              "Definition": "definition"
+                                            }.entries)
+                                              FilterOption(
+                                                  controller: controller,
+                                                  label: option.key,
+                                                  refVal: option.value)
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                      ]),
+                                ),
+                              ),
                             )
                           ],
                         ),

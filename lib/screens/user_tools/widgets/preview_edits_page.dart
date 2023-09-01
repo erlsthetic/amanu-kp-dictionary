@@ -86,7 +86,9 @@ class PreviewEditsPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton.extended(
           splashColor: primaryOrangeLight,
           focusColor: primaryOrangeLight.withOpacity(0.5),
-          onPressed: () {},
+          onPressed: () {
+            controller.submitEdits();
+          },
           label: Text(
             appController.userIsExpert ?? false
                 ? tConfirmEdits.toUpperCase()

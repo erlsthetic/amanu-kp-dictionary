@@ -46,6 +46,7 @@ class PreviewEditsController extends GetxController {
   void onInit() {
     super.onInit();
     getInformation();
+    notesController = TextEditingController();
   }
 
   final String prevWordID;

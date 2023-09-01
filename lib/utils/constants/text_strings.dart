@@ -121,6 +121,8 @@ const String tKulitanEditor = "Kulitan Editor";
 const String tSubmit = "Submit";
 
 // -- Modify Screen
+
+const String tRequestWord = "Request word";
 const String tEdit = "Edit";
 const String tEditWord = "Edit word";
 const String tConfirmEdits = "Confirm edits";
@@ -138,6 +140,8 @@ const String tDeletePrompt2 = '" from the dictionary?';
 
 const String tProceed = "Proceed";
 
+const String tRequest = "Request";
+
 const String tDeleteYes = "Delete";
 const String tCancel = "Cancel";
 const String tConfirm = "Confirm";
@@ -150,6 +154,12 @@ const String tEditRequestPrompt2 = '"?';
 const String tEditNotes = 'Notes';
 const String tEditNotesHint =
     'Describe the edits you made and other notes you want the experts to know.';
+
+const String tAddNotesHint =
+    'Describe the word you are requesting to be added.';
+
+const String tDeleteNotesHint =
+    "State your reason for requesting this word's removal.";
 
 // -- Support Screen
 

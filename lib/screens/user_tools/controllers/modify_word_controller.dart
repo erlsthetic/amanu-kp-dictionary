@@ -352,16 +352,20 @@ class ModifyController extends GetxController {
 
   final RxList<String> typeFields = <String>[].obs;
   final List<TextEditingController> customTypeController = [];
+  final List<FocusNode> typeFieldFocusNode = [];
+  final List<List<FocusNode>> definitionFieldFocusNode = [];
   final RxList<List<List<TextEditingController>>> definitionsFields =
       <List<List<TextEditingController>>>[].obs;
   // TD is              D                  TD
   //[[[TE, TE, TE, TE], [TE, TE, TE, TE]], [[TE, TE, TE, TE]]]
-  void addTypeField(int i) {
+  Future addTypeField(int i) async {
     typeListKey.currentState?.insertItem(i);
     customTypeController.insert(i, TextEditingController());
+    typeFieldFocusNode.insert(i, FocusNode());
     definitionListKey.insert(i, GlobalKey());
     typeFields.insert(i, '');
     definitionsFields.insert(i, []);
+    definitionFieldFocusNode.insert(i, []);
     addDefinitionField(i, 0);
   }
 
@@ -380,6 +384,7 @@ class ModifyController extends GetxController {
       TextEditingController(),
     ]);
     definitionListKey[i].currentState?.insertItem(j);
+    definitionFieldFocusNode[i].insert(j, FocusNode());
   }
 
   void removeDefinitionField(int i, int j) {

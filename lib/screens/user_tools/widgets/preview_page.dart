@@ -87,7 +87,9 @@ class PreviewPage extends StatelessWidget {
             controller.submitWord();
           },
           label: Text(
-            tAddWord.toUpperCase(),
+            (appController.userIsExpert ?? false)
+                ? tAddWord.toUpperCase()
+                : tRequestWord.toUpperCase(),
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 16.0,
@@ -145,7 +147,7 @@ class PreviewPage extends StatelessWidget {
                                         decoration: InputDecoration(
                                             labelText: tEditNotes,
                                             alignLabelWithHint: true,
-                                            hintText: tEditNotesHint,
+                                            hintText: tAddNotesHint,
                                             hintMaxLines: 5,
                                             border: OutlineInputBorder(
                                                 borderRadius:
