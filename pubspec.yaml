@@ -164,6 +164,7 @@ flutter:
     - assets/svg/contributor-illus.svg
     - assets/svg/expert-illus.svg
     - assets/svg/join-amanu-illus.svg
+    - assets/svg/scroll-hint.svg
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

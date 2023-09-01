@@ -245,8 +245,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                                       ));
                                 }
                               } else {
-                                showJoinDialog(context, "title", "content",
-                                    "option1Text", "option2Text", () {}, () {});
+                                showJoinDialog(context);
                               }
                             },
                             splashColor: primaryOrangeLight,

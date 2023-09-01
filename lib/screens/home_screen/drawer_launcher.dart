@@ -28,6 +28,7 @@ class DrawerLauncher extends StatelessWidget {
             borderRadius: 50,
             menuScreen: Builder(
               builder: (context) => AppDrawer(
+                ctx: context,
                 currentItem: controller.currentItem.value,
                 onSelectedItem: (item) {
                   controller.currentItem.value = item;

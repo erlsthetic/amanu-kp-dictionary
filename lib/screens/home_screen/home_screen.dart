@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
             onPageChanged: (page) {
               controller.currentIdx.value = page;
             },
-            observers: [CrabController()],
+            observers: [controller.crabController],
           ),
           BottomNavBar(size: _size, pController: controller),
           appController.isLoggedIn

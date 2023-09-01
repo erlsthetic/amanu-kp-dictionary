@@ -6,14 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<dynamic> showJoinDialog(
-    BuildContext context,
-    String title,
-    String content,
-    String option1Text,
-    String option2Text,
-    VoidCallback option1Tap,
-    VoidCallback option2Tap) {
+Future<dynamic> showJoinDialog(BuildContext context) {
   final size = MediaQuery.of(context).size;
   return showDialog(
       context: context,

@@ -33,10 +33,12 @@ class DrawerXController extends GetxController {
       case DrawerItems.home:
         homeController.coastController = new CoastController(initialPage: 0);
         homeController.currentIdx.value = 0;
+        homeController.crabController = new CrabController();
         return HomeScreen();
       case DrawerItems.browse:
         homeController.coastController = new CoastController(initialPage: 1);
         homeController.currentIdx.value = 1;
+        homeController.crabController = new CrabController();
         return HomeScreen();
       case DrawerItems.bookmarks:
         return BookmarksScreen();

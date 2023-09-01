@@ -11,6 +11,7 @@ import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -58,10 +59,12 @@ class AppDrawer extends StatelessWidget {
       {super.key,
       required this.currentItem,
       required this.onSelectedItem,
-      required this.controller});
+      required this.controller,
+      required this.ctx});
   final DrawerItem currentItem;
   final ValueChanged<DrawerItem> onSelectedItem;
   final DrawerXController controller;
+  final BuildContext ctx;
 
   final appController = Get.find<ApplicationController>();
 
@@ -352,15 +355,15 @@ class AppDrawer extends StatelessWidget {
               GoogleFonts.robotoSlab(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         onTap: () {
-          onSelectedItem(item);
-          if (Get.isRegistered<HomePageController>()) {
-            final homeController = Get.find<HomePageController>();
-            if (currentItem == DrawerItems.home ||
-                currentItem == DrawerItems.browse) {
-              homeController.coastController.animateTo(
-                  beach: item == DrawerItems.home ? 0 : 1,
-                  duration: Duration(milliseconds: 50));
-            }
+          final homeController = Get.find<HomePageController>();
+          if ((currentItem == DrawerItems.home && item == DrawerItems.browse) ||
+              (currentItem == DrawerItems.browse && item == DrawerItems.home)) {
+            ZoomDrawer.of(ctx)!.toggle();
+            homeController.coastController.animateTo(
+                beach: item == DrawerItems.home ? 0 : 1,
+                duration: Duration(milliseconds: 300));
+          } else {
+            onSelectedItem(item);
           }
         },
       ),

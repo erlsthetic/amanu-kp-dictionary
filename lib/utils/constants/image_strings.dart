@@ -53,6 +53,7 @@ const String iResetPhone = "assets/anim/reset_Phone.png";
 const String iResetEmail = "assets/anim/reset_Email.png";
 const String iResetOTP = "assets/anim/reset_OTP.png";
 const String iJoinAmanuIllus = "assets/svg/join-amanu-illus.svg";
+const String iScrollHint = "assets/svg/scroll-hint.svg";
 
 // -- FEEDBACK ICONS
 const String iRateVeryBad = "assets/icons/very-bad.svg";

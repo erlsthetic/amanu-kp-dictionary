@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:amanu/components/join_dialog.dart';
 import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/widgets/alphabetical_scroll_list.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/profile_screen/profile_screen.dart';
 import 'package:amanu/screens/requests_screen/requests_screen.dart';
@@ -46,7 +46,8 @@ class BrowseScreenPage extends StatelessWidget {
               height: size.height - 110,
               width: size.width,
               child: appController.dictionaryContent.length != 0
-                  ? ListView.builder(
+                  ? AlphabeticalListView()
+                  /*ListView.builder(
                       physics: BouncingScrollPhysics(),
                       padding: EdgeInsets.only(top: 30, bottom: 100),
                       itemCount: appController.dictionaryContent.length,
@@ -104,7 +105,7 @@ class BrowseScreenPage extends StatelessWidget {
                           player: player,
                         );
                       },
-                    )
+                    )*/
                   : ListView.builder(
                       padding: EdgeInsets.only(top: 30, bottom: 100),
                       itemCount: 30,
@@ -212,8 +213,7 @@ class BrowseScreenPage extends StatelessWidget {
                                     ));
                               }
                             } else {
-                              showJoinDialog(context, "title", "content",
-                                  "option1Text", "option2Text", () {}, () {});
+                              showJoinDialog(context);
                             }
                           },
                           splashColor: primaryOrangeLight,

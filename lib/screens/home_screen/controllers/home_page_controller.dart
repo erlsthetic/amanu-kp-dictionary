@@ -11,6 +11,7 @@ class HomePageController extends GetxController {
   final RxInt currentIdx = 0.obs;
 
   CoastController coastController = CoastController(initialPage: 0);
+  CrabController crabController = CrabController();
 
   onPageChangedCallback(int activePageIndex) {
     currentIdx.value = activePageIndex;

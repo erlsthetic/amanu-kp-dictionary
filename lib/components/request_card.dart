@@ -70,7 +70,7 @@ class RequestCard extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
