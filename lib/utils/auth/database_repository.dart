@@ -286,11 +286,11 @@ class DatabaseRepository extends GetxController {
     return requests;
   }
 
-  Future changeRequestState(String requestID) async {
+  Future changeRequestState(String requestID, bool condition) async {
     await _db
         .collection("requests")
         .doc(requestID)
-        .update({"isAvailable": false}).catchError((error, stackTrace) {
+        .update({"isAvailable": condition}).catchError((error, stackTrace) {
       print(error.toString());
       return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });

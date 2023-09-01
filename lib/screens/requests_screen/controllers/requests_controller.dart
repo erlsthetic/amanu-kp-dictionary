@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 
 class RequestsController extends GetxController {
   static RequestsController get instance => Get.find();
-  late final BuildContext context;
+  late BuildContext context;
   final appController = Get.find<ApplicationController>();
   List<dynamic> requests = [];
 
@@ -39,6 +39,7 @@ class RequestsController extends GetxController {
           String requesterID = request.uid;
           String requesterUserName = request.userName;
           String notes = request.requestNotes ?? '';
+          String timestamp = request.timestamp;
           String? prevWordID = null;
           String wordID = request.wordID;
           String word = request.word;
@@ -61,6 +62,9 @@ class RequestsController extends GetxController {
             definitions.add(_tempDef);
           }
           String kulitanChStr = request.kulitanChars;
+          if (kulitanChStr[kulitanChStr.length - 1] == '#') {
+            kulitanChStr = kulitanChStr.substring(0, kulitanChStr.length - 1);
+          }
           List<dynamic> kulitanLines = kulitanChStr.split("#");
           for (String line in kulitanLines) {
             List<dynamic> chars = line.split(",");
@@ -89,6 +93,7 @@ class RequestsController extends GetxController {
               requesterID: requesterID,
               requesterUserName: requesterUserName,
               notes: notes,
+              timestamp: timestamp,
               normalizedWord: normalizedWord,
               prn: prn,
               prnUrl: prnUrl,
@@ -125,6 +130,7 @@ class RequestsController extends GetxController {
           String requesterID = request.uid;
           String requesterUserName = request.userName;
           String notes = request.requestNotes ?? '';
+          String timestamp = request.timestamp;
           String? prevWordID = request.prevWordID;
           String wordID = request.wordID;
           String word = request.word;
@@ -147,6 +153,9 @@ class RequestsController extends GetxController {
             definitions.add(_tempDef);
           }
           String kulitanChStr = request.kulitanChars;
+          if (kulitanChStr[kulitanChStr.length - 1] == '#') {
+            kulitanChStr = kulitanChStr.substring(0, kulitanChStr.length - 1);
+          }
           List<dynamic> kulitanLines = kulitanChStr.split("#");
           for (String line in kulitanLines) {
             List<dynamic> chars = line.split(",");
@@ -175,6 +184,7 @@ class RequestsController extends GetxController {
               requesterID: requesterID,
               requesterUserName: requesterUserName,
               notes: notes,
+              timestamp: timestamp,
               normalizedWord: normalizedWord,
               prn: prn,
               prnUrl: prnUrl,
@@ -211,6 +221,7 @@ class RequestsController extends GetxController {
           String requesterID = request.uid;
           String requesterUserName = request.userName;
           String notes = request.requestNotes ?? '';
+          String timestamp = request.timestamp;
           String? prevWordID = null;
           String wordID = request.wordID;
           String word = request.word;
@@ -254,14 +265,13 @@ class RequestsController extends GetxController {
           Map<dynamic, dynamic> antonyms = new Map.from(
               appController.dictionaryContent[wordID]["antonyms"] ?? {});
           String sources =
-              appController.dictionaryContent[prevWordID]["sources"];
+              appController.dictionaryContent[wordID]["sources"] ?? "";
           Map<dynamic, dynamic> contributors = new Map.from(
               appController.dictionaryContent[wordID]["contributors"] ?? {});
           Map<dynamic, dynamic> expert = new Map.from(
               appController.dictionaryContent[wordID]["expert"] ?? {});
-          String lastModifiedTime = appController.dictionaryContent[prevWordID]
-                  ["lastModifiedTime"] ??
-              '';
+          String lastModifiedTime =
+              appController.dictionaryContent[wordID]["lastModifiedTime"] ?? '';
           Get.to(() => RequestDetailsPage(
               wordID: wordID,
               word: word,
@@ -271,6 +281,7 @@ class RequestsController extends GetxController {
               requesterID: requesterID,
               requesterUserName: requesterUserName,
               notes: notes,
+              timestamp: timestamp,
               normalizedWord: normalizedWord,
               prn: prn,
               prnUrl: prnUrl,
@@ -293,20 +304,26 @@ class RequestsController extends GetxController {
     }
   }
 
-  @override
-  void onInit() async {
-    super.onInit();
+  Future getAllRequests() async {
     List<AddRequestModel> addRequests =
         await DatabaseRepository.instance.getAllAddRequests();
     List<EditRequestModel> editRequests =
         await DatabaseRepository.instance.getAllEditRequests();
     List<DeleteRequestModel> deleteRequests =
         await DatabaseRepository.instance.getAllDeleteRequests();
-    requests.addAll(addRequests);
-    requests.addAll(editRequests);
-    requests.addAll(deleteRequests);
-    requests.sort(
+    var tempReq = [];
+    tempReq.addAll(addRequests);
+    tempReq.addAll(editRequests);
+    tempReq.addAll(deleteRequests);
+    tempReq.sort(
       (a, b) => a.requestId.compareTo(b.requestId),
     );
+    requests = new List.from(tempReq);
+  }
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await getAllRequests();
   }
 }

@@ -32,7 +32,7 @@ class RequestCard extends StatelessWidget {
         highlightColor: primaryOrangeLight.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20),
         child: Ink(
-          height: 100,
+          height: 120,
           width: double.infinity,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -48,7 +48,7 @@ class RequestCard extends StatelessWidget {
             children: [
               Container(
                 height: double.infinity,
-                width: 20,
+                width: 25,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     borderRadius:
@@ -64,17 +64,19 @@ class RequestCard extends StatelessWidget {
                       : requestType == 1
                           ? Icons.edit
                           : Icons.delete,
-                  size: 15,
+                  size: 20,
+                  color: pureWhite,
                 ),
               ),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        height: 40,
+                        height: 35,
                         child: AutoSizeText(
                           word.toLowerCase(),
                           maxLines: 1,
@@ -87,10 +89,10 @@ class RequestCard extends StatelessWidget {
                       ),
                       Container(
                         alignment: Alignment.topLeft,
-                        height: 22.5,
+                        height: 35,
                         child: Text(
                           notes,
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                               fontSize: 14,
@@ -99,11 +101,11 @@ class RequestCard extends StatelessWidget {
                         ),
                       ),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(right: 10),
-                            alignment: Alignment.centerLeft,
-                            height: 22.5,
+                            alignment: Alignment.topLeft,
+                            height: 22,
                             child: Text(
                               "by:",
                               maxLines: 1,
@@ -123,6 +125,8 @@ class RequestCard extends StatelessWidget {
                           Flexible(
                             child: Container(
                               margin: EdgeInsets.only(left: 10),
+                              alignment: Alignment.topLeft,
+                              height: 22,
                               child: Text(
                                 timestamp,
                                 maxLines: 1,

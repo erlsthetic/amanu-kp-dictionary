@@ -192,7 +192,7 @@ class PreviewEditsPage extends StatelessWidget {
                               margin: EdgeInsets.all(10),
                               alignment: Alignment.center,
                               child: Text(
-                                "ORIGINAL:",
+                                "LIVE VERSION:",
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: disabledGrey,

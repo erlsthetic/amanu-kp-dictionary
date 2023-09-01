@@ -142,7 +142,7 @@ class PreviewController extends GetxController {
           uid: appController.userID ?? '',
           userName: appController.userName ?? '',
           timestamp: timestampForPath,
-          requestType: 1,
+          requestType: 0,
           isAvailable: true,
           requestNotes: notes == '' ? null : notes,
           wordID: wordID,

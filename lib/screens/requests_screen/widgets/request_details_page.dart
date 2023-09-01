@@ -1,5 +1,6 @@
 import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/components/floating_button.dart';
+import 'package:amanu/components/tag_creator.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:amanu/screens/requests_screen/controllers/request_details_controller.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -14,6 +15,7 @@ class RequestDetailsPage extends StatelessWidget {
   final int requestType;
   final String requesterUserName;
   final String notes;
+  final String timestamp;
   final String? prevWordID;
   final String wordID;
   final String word;
@@ -45,6 +47,7 @@ class RequestDetailsPage extends StatelessWidget {
     required this.requesterID,
     required this.requesterUserName,
     required this.notes,
+    required this.timestamp,
     required this.normalizedWord,
     required this.prn,
     required this.prnUrl,
@@ -70,6 +73,7 @@ class RequestDetailsPage extends StatelessWidget {
       requesterID: requesterID,
       requesterUserName: requesterUserName,
       notes: notes,
+      timestamp: timestamp,
       prevWordID: prevWordID,
       wordID: wordID,
       word: word,
@@ -113,35 +117,123 @@ class RequestDetailsPage extends StatelessWidget {
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 65, horizontal: 30),
+                    padding: EdgeInsets.symmetric(vertical: 40, horizontal: 30),
                     child: Column(
                       children: [
                         Container(
                             width: double.infinity,
                             margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(20),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: orangeCard),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        height: 22,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          "Requester:",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: primaryOrangeDark),
+                                        )),
+                                    TagCreator(
+                                      label: controller.requesterUserName,
+                                      isBadge: true,
+                                      isExpert: false,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 2.5,
+                                ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        height: 22,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          "Request type:",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: primaryOrangeDark),
+                                        )),
+                                    TagCreator(
+                                      label: controller.requestType == 0
+                                          ? "Add word"
+                                          : controller.requestType == 1
+                                              ? "Edit word"
+                                              : "Delete word",
+                                      color: controller.requestType == 0
+                                          ? primaryOrangeDark
+                                          : controller.requestType == 1
+                                              ? primaryOrangeLight
+                                              : darkerOrange.withOpacity(0.8),
+                                      textColor: pureWhite,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 2.5,
+                                ),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        height: 22,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          "Posted:",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: primaryOrangeDark),
+                                        )),
+                                    Container(
+                                        height: 22,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Text(
+                                          controller.timestamp,
+                                          style: TextStyle(
+                                              fontSize: 14, color: cardText),
+                                        )),
+                                  ],
+                                ),
                                 Container(
                                     width: double.infinity,
                                     alignment: Alignment.center,
-                                    padding: EdgeInsets.only(bottom: 10),
+                                    padding:
+                                        EdgeInsets.only(bottom: 10, top: 10),
                                     child: Text(
                                       "Notes:",
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: primaryOrangeDark),
                                     )),
                                 Container(
+                                  padding: EdgeInsets.only(bottom: 10),
                                   width: double.infinity,
                                   child: Text(
-                                    "Notes",
+                                    controller.notes,
                                     textAlign: TextAlign.justify,
-                                    style: TextStyle(fontSize: 15),
+                                    style: TextStyle(
+                                        fontSize: 15, color: cardText),
                                   ),
                                 )
                               ],
@@ -195,7 +287,7 @@ class RequestDetailsPage extends StatelessWidget {
                                     margin: EdgeInsets.all(10),
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "ORIGINAL:",
+                                      "LIVE VERSION:",
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: disabledGrey,
@@ -247,7 +339,13 @@ class RequestDetailsPage extends StatelessWidget {
         ThreePartHeader(
           size: size,
           screenPadding: screenPadding,
-          title: word,
+          title: (controller.requestType == 0
+                  ? 'Add: "'
+                  : controller.requestType == 1
+                      ? 'Edit: "'
+                      : 'Delete: "') +
+              word +
+              '"',
           secondIcon: Icons.bookmark_outline_rounded,
           secondIconDisabled: true,
         ),
@@ -270,16 +368,21 @@ class RequestDetailsPage extends StatelessWidget {
           panelShape: PanelShape.rounded,
           borderRadius: BorderRadius.circular(40),
           borderColor: primaryOrangeDark,
-          buttons: [
-            iToolsApprove,
-            iToolsEdit,
-            iToolsDelete,
-          ],
-          iconBGColors: [
-            primaryOrangeDark,
-            primaryOrangeLight,
-            darkerOrange.withOpacity(0.8)
-          ],
+          buttons: (controller.requestType == 0 || controller.requestType == 1)
+              ? [
+                  iToolsApprove,
+                  iToolsEdit,
+                  iToolsDelete,
+                ]
+              : [iToolsApprove, iToolsDelete],
+          iconBGColors:
+              (controller.requestType == 0 || controller.requestType == 1)
+                  ? [
+                      primaryOrangeDark,
+                      primaryOrangeLight,
+                      darkerOrange.withOpacity(0.8)
+                    ]
+                  : [primaryOrangeDark, darkerOrange.withOpacity(0.8)],
           iconBGSize: 60,
           mainIconColor: primaryOrangeDark,
           shadowColor: primaryOrangeDark,

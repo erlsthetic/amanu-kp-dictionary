@@ -8,6 +8,7 @@ class RequestDetailsController extends GetxController {
     required this.requesterID,
     required this.requesterUserName,
     required this.notes,
+    required this.timestamp,
     required this.prevWordID,
     required this.wordID,
     required this.word,
@@ -40,6 +41,7 @@ class RequestDetailsController extends GetxController {
   final String requesterID;
   final String requesterUserName;
   final String notes;
+  final String timestamp;
 
   final String? prevWordID;
   final String wordID;
@@ -140,7 +142,7 @@ class RequestDetailsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    if (requestType == 2) {
+    if (requestType == 1) {
       getPrevInformation();
     }
   }

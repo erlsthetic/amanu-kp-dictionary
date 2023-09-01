@@ -16,7 +16,7 @@ class AddRequestModel {
   final String prnStoragePath;
   final List<dynamic> engTrans;
   final List<dynamic> filTrans;
-  final List<Map<String, dynamic>> meanings;
+  final List<dynamic> meanings;
   final String kulitanChars;
   final Map<dynamic, dynamic> otherRelated;
   final Map<dynamic, dynamic> synonyms;

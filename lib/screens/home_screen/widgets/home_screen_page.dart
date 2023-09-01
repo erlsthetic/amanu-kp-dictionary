@@ -1,8 +1,13 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:amanu/components/dictionary_card.dart';
+import 'package:amanu/components/join_dialog.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/screens/profile_screen/profile_screen.dart';
+import 'package:amanu/screens/requests_screen/requests_screen.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -109,6 +114,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
   final Size screenSize;
   final double topPadding;
   final DrawerXController drawerController;
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(
@@ -227,7 +233,22 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              if (appController.isLoggedIn) {
+                                if (appController.userIsExpert ?? false) {
+                                  Get.to(() => RequestsScreen(
+                                        fromDrawer: false,
+                                      ));
+                                } else {
+                                  Get.to(() => ProfileScreen(
+                                        fromDrawer: false,
+                                      ));
+                                }
+                              } else {
+                                showJoinDialog(context, "title", "content",
+                                    "option1Text", "option2Text", () {}, () {});
+                              }
+                            },
                             splashColor: primaryOrangeLight,
                             highlightColor: primaryOrangeLight.withOpacity(0.5),
                             borderRadius: BorderRadius.circular(20),
@@ -235,13 +256,51 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
-                                  color: primaryOrangeLight.withOpacity(0.7),
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              child: Icon(
-                                Icons.person_rounded,
-                                color: pureWhite,
-                                size: 25,
+                                color: appController.isLoggedIn &&
+                                        !(appController.userIsExpert ?? false)
+                                    ? Colors.transparent
+                                    : primaryOrangeLight.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: appController.isLoggedIn &&
+                                        !(appController.userIsExpert ?? false)
+                                    ? Border.all(width: 2, color: pureWhite)
+                                    : null,
                               ),
+                              child: appController.isLoggedIn
+                                  ? (appController.userIsExpert ?? false)
+                                      ? Icon(
+                                          Icons.book,
+                                          color: pureWhite,
+                                          size: 25,
+                                        )
+                                      : appController.userPicLocal == null
+                                          ? Icon(
+                                              Icons.person_rounded,
+                                              color: pureWhite,
+                                              size: 25,
+                                            )
+                                          : FittedBox(
+                                              fit: BoxFit.cover,
+                                              child: Container(
+                                                margin: EdgeInsets.all(3),
+                                                height: 50,
+                                                width: 50,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            60),
+                                                    image: DecorationImage(
+                                                        image: FileImage(File(
+                                                            appController
+                                                                .userPicLocal!)),
+                                                        fit: BoxFit.cover)),
+                                              ),
+                                            )
+                                  : Icon(
+                                      Icons.people_alt_rounded,
+                                      color: pureWhite,
+                                      size: 25,
+                                    ),
                             ),
                           ),
                         ),
