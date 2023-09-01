@@ -96,9 +96,9 @@ class FeedbackPage extends StatelessWidget {
                               height: 15.0,
                             ),
                             Container(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                physics: BouncingScrollPhysics(),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              child: FittedBox(
                                 child: Row(children: [
                                   for (int i = 0; i < 5; i++)
                                     RateOption(

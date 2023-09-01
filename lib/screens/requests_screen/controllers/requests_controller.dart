@@ -324,6 +324,10 @@ class RequestsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await getAllRequests();
+    if (appController.hasConnection.value) {
+      await getAllRequests();
+    } else {
+      appController.showConnectionSnackbar();
+    }
   }
 }

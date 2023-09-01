@@ -1,6 +1,7 @@
 import 'package:amanu/components/request_card.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/requests_screen/controllers/requests_controller.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
@@ -16,6 +17,7 @@ class RequestsScreen extends StatelessWidget {
   final bool fromDrawer;
   final drawerController = Get.find<DrawerXController>();
   final controller = Get.put(RequestsController());
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +60,13 @@ class RequestsScreen extends StatelessWidget {
                               userName: controller.requests[index].userName,
                               notes: controller.requests[index].requestNotes,
                               onTap: () async {
-                                await controller.requestSelect(
-                                    controller.requests[index].requestId,
-                                    controller.requests[index].requestType);
+                                if (appController.hasConnection.value) {
+                                  await controller.requestSelect(
+                                      controller.requests[index].requestId,
+                                      controller.requests[index].requestType);
+                                } else {
+                                  appController.showConnectionSnackbar();
+                                }
                               },
                             );
                           },
