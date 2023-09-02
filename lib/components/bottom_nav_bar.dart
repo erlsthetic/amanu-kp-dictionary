@@ -1,4 +1,5 @@
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
+import 'package:amanu/screens/kulitan_scanner_screen/kulitan_scanner_screen.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +48,12 @@ class BottomNavBar extends StatelessWidget {
                             width: double.infinity,
                             child: SvgPicture.asset(iAmanuWhiteButtonIcon),
                           )),
-                      elevation: 0.1,
-                      onPressed: () {}),
+                      elevation: 3,
+                      onPressed: () {
+                        Get.to(() => KulitanScannerScreen(
+                              fromDrawer: false,
+                            ));
+                      }),
                 ),
               ),
             ),

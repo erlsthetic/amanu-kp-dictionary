@@ -1,3 +1,4 @@
+import 'package:amanu/components/loader_dialog.dart';
 import 'package:amanu/screens/bookmarks_screen/bookmarks_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
@@ -57,8 +58,9 @@ class DrawerXController extends GetxController {
     }
   }
 
-  Future<void> logoutUser() async {
+  Future<void> logoutUser(BuildContext context) async {
     isProcessing.value = true;
+    showLoaderDialog(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isLoggedIn", false);
     prefs.remove('userID');

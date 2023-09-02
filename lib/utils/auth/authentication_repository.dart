@@ -214,10 +214,10 @@ class AuthenticationRepository extends GetxController {
                 title: "Login successful.",
                 message: "Logged in as ${appController.userName ?? ""}");
           } else {
-            Get.off(() => AccountSelectionScreen());
             final controller = Get.put(SignUpController());
             controller.email = firebaseUser!.email ?? '';
             controller.accountFromGoogle = true;
+            Get.off(() => AccountSelectionScreen());
             Helper.successSnackBar(
                 title: "Let's pickup where you left off.",
                 message: "Continue setting up your account to gain access.");
@@ -252,6 +252,9 @@ class AuthenticationRepository extends GetxController {
         drawerController.currentItem.value = DrawerItems.home;
         Get.offAll(() => DrawerLauncher());
       }
+      Helper.successSnackBar(
+          title: "Logout success.",
+          message: "User has been logged out of this device.");
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     } on FormatException catch (e) {

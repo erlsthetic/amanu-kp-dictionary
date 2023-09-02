@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:amanu/components/browse_card.dart';
+import 'package:amanu/components/loader_dialog.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/profile_screen/controllers/profile_screen_controller.dart';
@@ -695,15 +696,19 @@ class ProfileScreen extends StatelessWidget {
                                                                                                     ),
                                                                                                     width: double.infinity,
                                                                                                     child: ElevatedButton(
-                                                                                                        onPressed: () {
+                                                                                                        onPressed: () async {
                                                                                                           if (controller.userExpertRequest.value) {
                                                                                                             controller.newExpertRequest = false;
-                                                                                                            controller.updateUserDetails();
-                                                                                                            Navigator.of(context).pop();
+                                                                                                            showLoaderDialog(context);
+                                                                                                            await controller.updateUserDetails().whenComplete(() {
+                                                                                                              Navigator.of(context).pop();
+                                                                                                            });
                                                                                                           } else {
                                                                                                             controller.newExpertRequest = true;
-                                                                                                            controller.updateUserDetails();
-                                                                                                            Navigator.of(context).pop();
+                                                                                                            showLoaderDialog(context);
+                                                                                                            await controller.updateUserDetails().whenComplete(() {
+                                                                                                              Navigator.of(context).pop();
+                                                                                                            });
                                                                                                           }
                                                                                                         },
                                                                                                         style: ElevatedButton.styleFrom(
@@ -739,6 +744,7 @@ class ProfileScreen extends StatelessWidget {
                                                                                 width: double.infinity,
                                                                                 child: ElevatedButton(
                                                                                     onPressed: () async {
+                                                                                      showLoaderDialog(context);
                                                                                       await controller.updateUserDetails().whenComplete(() {
                                                                                         Navigator.of(context).pop();
                                                                                       });

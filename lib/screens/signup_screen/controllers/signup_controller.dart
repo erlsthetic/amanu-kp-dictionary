@@ -304,6 +304,7 @@ class SignUpController extends GetxController {
           Get.offAll(() => DrawerLauncher());
         });
       });
+      isProcessing.value = false;
     }
   }
 
@@ -393,5 +394,7 @@ class SignUpController extends GetxController {
         Get.offAll(() => DrawerLauncher());
       });
     });
+
+    isProcessing.value = false;
   }
 }

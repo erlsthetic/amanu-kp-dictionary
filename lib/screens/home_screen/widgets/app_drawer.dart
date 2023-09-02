@@ -291,7 +291,7 @@ class AppDrawer extends StatelessWidget {
                                     "Are you sure you want to log out?",
                                     "Logout",
                                     "Cancel", () {
-                                    controller.logoutUser();
+                                    controller.logoutUser(context);
                                   }, () {
                                     Navigator.of(context).pop();
                                   })

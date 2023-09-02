@@ -504,7 +504,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -563,7 +563,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": null,
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -621,7 +621,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -680,7 +680,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -739,7 +739,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -797,7 +797,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -855,7 +855,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -914,7 +914,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -969,7 +969,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -1027,7 +1027,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [
@@ -1085,7 +1085,7 @@ class ApplicationController extends GetxController {
       "normalizedWord": "hello",
       "pronunciation": "həˈləʊ",
       "pronunciationAudio":
-          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fhello%2Faudio.mp3?alt=media&token=2b865188-63b5-4b90-904c-6722a492e467",
+          "https://firebasestorage.googleapis.com/v0/b/amanu-kpd.appspot.com/o/dictionary%2Fsample%2Faudio.mp3?alt=media&token=c3f767b0-d1f7-4fe3-b3f0-16bcedb91f7e",
       "englishTranslations": ["hello", "hi"],
       "filipinoTranslations": ["kamusta", "musta"],
       "meanings": [

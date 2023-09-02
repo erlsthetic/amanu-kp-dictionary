@@ -297,9 +297,10 @@ class ProfileController extends GetxController {
                       : appController.userPic,
                   appController.userContributions,
                   await appController.saveUserPicToLocal(
-                      userChanges.containsKey("profileUrl")
-                          ? userChanges["profileUrl"]
-                          : null))
+                          userChanges.containsKey("profileUrl")
+                              ? userChanges["profileUrl"]
+                              : appController.userPicLocal) ??
+                      appController.userPicLocal)
               .whenComplete(() {
             appController.refresh();
             getCurrentUserDetails();
