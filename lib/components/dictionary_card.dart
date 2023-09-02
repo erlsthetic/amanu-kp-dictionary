@@ -1,4 +1,5 @@
 import 'package:amanu/components/tag_creator.dart';
+import 'package:amanu/components/text_span_builder.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/screens/profile_screen/profile_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -301,19 +302,24 @@ class DictionaryCard extends StatelessWidget {
                                           width: double.infinity,
                                           child: Text.rich(
                                             TextSpan(
-                                              text: definition
-                                                      .value["definition"] +
-                                                  (definition.value[
-                                                                  "definition"][
-                                                              definition
-                                                                      .value[
-                                                                          "definition"]
-                                                                      .length -
-                                                                  1] ==
-                                                          "."
-                                                      ? ""
-                                                      : "."),
                                               children: [
+                                                buildTextSpan(
+                                                    text: definition.value[
+                                                            "definition"] +
+                                                        (definition.value[
+                                                                    "definition"][definition
+                                                                        .value[
+                                                                            "definition"]
+                                                                        .length -
+                                                                    1] ==
+                                                                "."
+                                                            ? ""
+                                                            : "."),
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: cardText),
+                                                    boldWeight:
+                                                        FontWeight.w600),
                                                 definition.value["dialect"] !=
                                                             null ||
                                                         definition.value[
@@ -369,14 +375,15 @@ class DictionaryCard extends StatelessWidget {
                                           left: 40,
                                         ),
                                         margin: EdgeInsets.only(top: 2.5),
-                                        child: Text(
-                                          '"' +
-                                              definition.value["example"] +
-                                              '"',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontStyle: FontStyle.italic,
-                                              color: primaryOrangeDark),
+                                        child: Text.rich(
+                                          buildTextSpan(
+                                              text: '"' +
+                                                  definition.value["example"] +
+                                                  '"',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: primaryOrangeDark),
+                                              boldWeight: FontWeight.w600),
                                         ),
                                       )
                                     : Container(),
@@ -386,15 +393,16 @@ class DictionaryCard extends StatelessWidget {
                                           left: 40,
                                         ),
                                         margin: EdgeInsets.only(top: 2.5),
-                                        child: Text(
-                                          '"' +
-                                              definition
-                                                  .value["exampleTranslation"] +
-                                              '"',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontStyle: FontStyle.italic,
-                                              color: darkerOrange),
+                                        child: Text.rich(
+                                          buildTextSpan(
+                                              text: '"' +
+                                                  definition.value[
+                                                      "exampleTranslation"] +
+                                                  '"',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: darkerOrange),
+                                              boldWeight: FontWeight.w600),
                                         ),
                                       )
                                     : Container(),
@@ -669,10 +677,12 @@ class DictionaryCard extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Container(
-                                      child: Text(
-                                    sources,
-                                    style: TextStyle(
-                                        color: cardText, fontSize: 14),
+                                      child: Text.rich(
+                                    buildTextSpan(
+                                        text: sources,
+                                        style: TextStyle(
+                                            color: cardText, fontSize: 14),
+                                        boldWeight: FontWeight.w600),
                                   )),
                                 )
                               ],

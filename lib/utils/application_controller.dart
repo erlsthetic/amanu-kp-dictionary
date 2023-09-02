@@ -512,7 +512,8 @@ class ApplicationController extends GetxController {
           "partOfSpeech": "noun",
           "definitions": [
             {
-              "definition": "an utterance of 'hello'; a greeting.",
+              "definition":
+                  "an utterance of <i>'hello'</i>; a <b>greeting</b>.",
               "example": "she said her hello to the stranger.",
               "exampleTranslation":
                   "sinabi niya ang kanyang pangangamusta sa tao.",
@@ -525,14 +526,14 @@ class ApplicationController extends GetxController {
           "partOfSpeech": "exclamation",
           "definitions": [
             {
-              "definition": "used as a greeting.",
+              "definition": "<b>used as a <i>greeting</i></b>.",
               "example": "hello there, Katie!",
               "exampleTranslation": "kamusta, Katie!",
               "dialect": null,
               "origin": null,
             },
             {
-              "definition": "used as opening in phone calls.",
+              "definition": "used as <b>opening</b> in <i>phone</i> calls.",
               "example": "Hello, this is Katie speaking.",
               "exampleTranslation": "Kamusta, si Katie ito.",
               "dialect": "somewhere",
