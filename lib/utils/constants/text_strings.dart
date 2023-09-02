@@ -231,3 +231,7 @@ const String tRequestSentBody =
 const String tAddSuccess = " was added to the dictionary.";
 const String tEditSuccess = " was updated in the dictionary.";
 const String tDeleteSuccess = " was removed from the dictionary.";
+
+const String tDeleteNotFound = " was not found in the dictionary.";
+const String tDeleteNotFoundBody =
+    "Either the word does not exist or was deleted by another user.";

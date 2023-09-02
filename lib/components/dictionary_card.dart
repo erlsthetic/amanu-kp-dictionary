@@ -306,20 +306,25 @@ class DictionaryCard extends StatelessWidget {
                                                 buildTextSpan(
                                                     text: definition.value[
                                                             "definition"] +
-                                                        (definition.value[
-                                                                    "definition"][definition
-                                                                        .value[
-                                                                            "definition"]
-                                                                        .length -
-                                                                    1] ==
-                                                                "."
+                                                        (((definition.value["definition"]
+                                                                        [
+                                                                        definition.value["definition"].length -
+                                                                            1] ==
+                                                                    ".") ||
+                                                                definition.value["definition"].substring(definition.value["definition"].length - 5) ==
+                                                                    ".</b>" ||
+                                                                definition.value["definition"].substring(definition.value["definition"].length - 5) ==
+                                                                    ".</i>" ||
+                                                                definition.value["definition"].substring(definition.value["definition"].length - 4) ==
+                                                                    ".<i>" ||
+                                                                definition.value["definition"].substring(definition.value["definition"].length - 4) ==
+                                                                    ".<b>")
                                                             ? ""
                                                             : "."),
                                                     style: TextStyle(
                                                         fontSize: 15,
                                                         color: cardText),
-                                                    boldWeight:
-                                                        FontWeight.w600),
+                                                    boldWeight: FontWeight.w600),
                                                 definition.value["dialect"] !=
                                                             null ||
                                                         definition.value[

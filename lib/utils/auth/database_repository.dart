@@ -296,13 +296,14 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  Future addWordOnDB(String word, Map details) async {
+  Future addWordOnDB(String wordID, Map details) async {
     await _realtimeDB
         .child("dictionary")
-        .child(word)
+        .child(wordID)
         .set(details)
         .whenComplete(() {
-      return Helper.successSnackBar(title: tSuccess, message: tAddSuccess);
+      return Helper.successSnackBar(
+          title: tSuccess, message: details["word"] + tAddSuccess);
     }).catchError((error, stackTrace) {
       return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
@@ -324,17 +325,30 @@ class DatabaseRepository extends GetxController {
         .child(wordID)
         .set(details)
         .whenComplete(() {
-      return Helper.successSnackBar(title: tSuccess, message: tEditSuccess);
+      return Helper.successSnackBar(
+          title: tSuccess, message: details["word"] + tEditSuccess);
     }).catchError((error, stackTrace) {
       return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
-  Future removeWordOnDB(String word) async {
-    await _realtimeDB.child("dictionary").child(word).remove().whenComplete(() {
-      return Helper.successSnackBar(title: tSuccess, message: tDeleteSuccess);
-    }).catchError((error, stackTrace) {
-      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-    });
+  Future removeWordOnDB(String wordID, String word) async {
+    final snapshot = await _realtimeDB.child("dictionary").child(wordID).get();
+    if (snapshot.exists) {
+      await _realtimeDB
+          .child("dictionary")
+          .child(wordID)
+          .remove()
+          .whenComplete(() {
+        return Helper.successSnackBar(
+            title: tSuccess, message: word + tDeleteSuccess);
+      }).catchError((error, stackTrace) {
+        return Helper.errorSnackBar(
+            title: tOhSnap, message: tSomethingWentWrong);
+      });
+    } else {
+      return Helper.errorSnackBar(
+          title: word + tDeleteNotFound, message: tDeleteNotFoundBody);
+    }
   }
 }

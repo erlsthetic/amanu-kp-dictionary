@@ -498,6 +498,16 @@ class ApplicationController extends GetxController {
     }
   }
 
+  Future<bool> checkFirstTimeOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeOnboarding")) {
+      return prefs.getBool("isFirstTimeOnboarding")!;
+    } else {
+      prefs.setBool("isFirstTimeOnboarding", true);
+      return prefs.getBool("isFirstTimeOnboarding")!;
+    }
+  }
+
   Map<String, dynamic> dictionaryContentUnsorted = {
     "hello": {
       "word": "hello",

@@ -143,8 +143,8 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                                           borderRadius:
                                               BorderRadius.circular(25),
                                           onTap: () {
-                                            searchController
-                                                .submitDelete(wordID);
+                                            searchController.submitDelete(
+                                                wordID, context);
                                           },
                                           splashColor: primaryOrangeLight,
                                           highlightColor: primaryOrangeLight

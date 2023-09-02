@@ -162,96 +162,100 @@ class PreviewEditsController extends GetxController {
   }
 
   Future submitEdits() async {
-    if (appController.userIsExpert ?? false) {
-      isProcessing.value = true;
-      List<String> audioPaths =
-          await uploadAudio(wordID, prnPath, 'dictionary');
-      String timestamp =
-          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
-      var details = {
-        "word": word,
-        "normalizedWord": normalizedWord,
-        "pronunciation": prn,
-        "pronunciationAudio": audioPaths[1],
-        "englishTranslations": new List.from(engTrans),
-        "filipinoTranslations": new List.from(filTrans),
-        "meanings": new List.from(meanings),
-        "kulitan-form": new List.from(kulitanChars),
-        "otherRelated": new Map.from(otherRelated),
-        "synonyms": new Map.from(synonyms),
-        "antonyms": new Map.from(antonyms),
-        "sources": sources,
-        "contributors": new Map.from(contributors),
-        "expert": new Map.from(expert),
-        "lastModifiedTime": timestamp
-      };
-      if (appController.hasConnection.value) {
-        await DatabaseRepository.instance
-            .updateWordOnDB(wordID, prevWordID, details);
-      } else {
+    if (appController.hasConnection.value) {
+      if (appController.userIsExpert ?? false) {
+        isProcessing.value = true;
+        List<String> audioPaths =
+            await uploadAudio(wordID, prnPath, 'dictionary');
+        String timestamp =
+            DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+        var details = {
+          "word": word,
+          "normalizedWord": normalizedWord,
+          "pronunciation": prn,
+          "pronunciationAudio": audioPaths[1],
+          "englishTranslations": new List.from(engTrans),
+          "filipinoTranslations": new List.from(filTrans),
+          "meanings": new List.from(meanings),
+          "kulitan-form": new List.from(kulitanChars),
+          "otherRelated": new Map.from(otherRelated),
+          "synonyms": new Map.from(synonyms),
+          "antonyms": new Map.from(antonyms),
+          "sources": sources,
+          "contributors": new Map.from(contributors),
+          "expert": new Map.from(expert),
+          "lastModifiedTime": timestamp
+        };
+        if (appController.hasConnection.value) {
+          await DatabaseRepository.instance
+              .updateWordOnDB(wordID, prevWordID, details);
+        } else {
+          isProcessing.value = false;
+          appController.showConnectionSnackbar();
+        }
         isProcessing.value = false;
-        appController.showConnectionSnackbar();
-      }
-      isProcessing.value = false;
-    } else {
-      isProcessing.value = true;
-      final notesValid = notesFormKey.currentState!.validate();
-      if (!notesValid) {
-        return;
-      }
-      notesFormKey.currentState!.save();
-      String timestamp =
-          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
-      String timestampForPath = timestamp.replaceAll(" ", "");
-      List<String> audioPaths = await uploadAudio(wordID, prnPath,
-          'requests/${timestampForPath + "-" + (appController.userID ?? '')}');
-      String kulitanStr = '';
-      for (var line in kulitanChars) {
-        String lineStr = '';
-        for (var ch in line) {
-          if (ch != null) {
-            lineStr += (ch + ",");
+      } else {
+        isProcessing.value = true;
+        final notesValid = notesFormKey.currentState!.validate();
+        if (!notesValid) {
+          return;
+        }
+        notesFormKey.currentState!.save();
+        String timestamp =
+            DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+        String timestampForPath = timestamp.replaceAll(" ", "");
+        List<String> audioPaths = await uploadAudio(wordID, prnPath,
+            'requests/${timestampForPath + "-" + (appController.userID ?? '')}');
+        String kulitanStr = '';
+        for (var line in kulitanChars) {
+          String lineStr = '';
+          for (var ch in line) {
+            if (ch != null) {
+              lineStr += (ch + ",");
+            }
           }
+          if (lineStr.length > 0) {
+            lineStr = lineStr.substring(0, lineStr.length - 1);
+          }
+          kulitanStr += (lineStr + "#");
         }
-        if (lineStr.length > 0) {
-          lineStr = lineStr.substring(0, lineStr.length - 1);
+        EditRequestModel request = EditRequestModel(
+            requestId: timestampForPath + "-" + (appController.userID ?? ''),
+            uid: appController.userID ?? '',
+            userName: appController.userName ?? '',
+            timestamp: timestampForPath,
+            requestType: 1,
+            isAvailable: true,
+            requestNotes: notes == '' ? null : notes,
+            prevWordID: prevWordID,
+            wordID: wordID,
+            word: word,
+            normalizedWord: normalizedWord,
+            prn: prn,
+            prnUrl: audioPaths[1],
+            prnStoragePath: audioPaths[0],
+            engTrans: engTrans,
+            filTrans: filTrans,
+            meanings: meanings,
+            kulitanChars: kulitanStr,
+            otherRelated: otherRelated,
+            synonyms: synonyms,
+            antonyms: antonyms,
+            sources: sources,
+            contributors: contributors,
+            expert: expert,
+            lastModifiedTime: timestamp);
+        if (appController.hasConnection.value) {
+          await DatabaseRepository.instance.createEditRequestOnDB(
+              request, timestampForPath, appController.userID ?? '');
+        } else {
+          isProcessing.value = false;
+          appController.showConnectionSnackbar();
         }
-        kulitanStr += (lineStr + "#");
-      }
-      EditRequestModel request = EditRequestModel(
-          requestId: timestampForPath + "-" + (appController.userID ?? ''),
-          uid: appController.userID ?? '',
-          userName: appController.userName ?? '',
-          timestamp: timestampForPath,
-          requestType: 1,
-          isAvailable: true,
-          requestNotes: notes == '' ? null : notes,
-          prevWordID: prevWordID,
-          wordID: wordID,
-          word: word,
-          normalizedWord: normalizedWord,
-          prn: prn,
-          prnUrl: audioPaths[1],
-          prnStoragePath: audioPaths[0],
-          engTrans: engTrans,
-          filTrans: filTrans,
-          meanings: meanings,
-          kulitanChars: kulitanStr,
-          otherRelated: otherRelated,
-          synonyms: synonyms,
-          antonyms: antonyms,
-          sources: sources,
-          contributors: contributors,
-          expert: expert,
-          lastModifiedTime: timestamp);
-      if (appController.hasConnection.value) {
-        await DatabaseRepository.instance.createEditRequestOnDB(
-            request, timestampForPath, appController.userID ?? '');
-      } else {
         isProcessing.value = false;
-        appController.showConnectionSnackbar();
       }
-      isProcessing.value = false;
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 }

@@ -18,10 +18,14 @@ class ModifySearchController extends GetxController {
     notesController = new TextEditingController();
   }
 
-  Future submitDelete(String wordID) async {
+  Future submitDelete(String wordID, BuildContext context) async {
     if (appController.userIsExpert ?? false) {
       if (appController.hasConnection.value) {
-        DatabaseRepository.instance.removeWordOnDB(wordID);
+        DatabaseRepository.instance.removeWordOnDB(
+            wordID, appController.dictionaryContent[wordID]["word"]);
+        Navigator.pop(context);
+      } else {
+        appController.showConnectionSnackbar();
       }
     } else {
       final notesValid = notesFormKey.currentState!.validate();
@@ -44,6 +48,9 @@ class ModifySearchController extends GetxController {
       if (appController.hasConnection.value) {
         DatabaseRepository.instance.createDeleteRequestOnDB(
             request, timestamp, appController.userID ?? '');
+        Navigator.pop(context);
+      } else {
+        appController.showConnectionSnackbar();
       }
     }
   }
