@@ -1,4 +1,5 @@
 import 'package:amanu/screens/splash_screen/splash_screen.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,12 +7,12 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
-      overlays: [SystemUiOverlay.bottom]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent),
+        systemNavigationBarColor: primaryOrangeDark,
+        systemNavigationBarIconBrightness: Brightness.light),
   );
   runApp(const Amanu());
 }

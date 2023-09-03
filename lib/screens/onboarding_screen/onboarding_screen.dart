@@ -14,40 +14,43 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final obController = Get.put(OnBoardingController());
-
-    return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Obx(
-            () => LiquidSwipe(
-              pages: obController.onBoardingPages,
-              liquidController: obController.controller,
-              onPageChangeCallback: obController.onPageChangedCallback,
-              slideIconWidget: obController.currentPage.value == 2
-                  ? Container()
-                  : Icon(Icons.arrow_back_ios),
-              enableSideReveal: true,
-              enableLoop: false,
-              positionSlideIcon: 0.6,
-            ),
-          ),
-          Obx(
-            () => Positioned(
-              bottom: 20 + MediaQuery.of(context).padding.bottom,
-              child: AnimatedSmoothIndicator(
-                activeIndex: obController.currentPage.value,
-                count: 3,
-                effect: const WormEffect(
-                  dotColor: primaryOrangeLight,
-                  activeDotColor: darkGrey,
-                  dotHeight: 5.0,
-                  dotWidth: 20.0,
-                ),
+    final screenPadding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Obx(
+              () => LiquidSwipe(
+                pages: obController.onBoardingPages,
+                liquidController: obController.controller,
+                onPageChangeCallback: obController.onPageChangedCallback,
+                slideIconWidget: obController.currentPage.value == 2
+                    ? Container()
+                    : Icon(Icons.arrow_back_ios),
+                enableSideReveal: true,
+                enableLoop: false,
+                positionSlideIcon: 0.6,
               ),
             ),
-          )
-        ],
+            Obx(
+              () => Positioned(
+                bottom: 20 + MediaQuery.of(context).padding.bottom,
+                child: AnimatedSmoothIndicator(
+                  activeIndex: obController.currentPage.value,
+                  count: 3,
+                  effect: const WormEffect(
+                    dotColor: primaryOrangeLight,
+                    activeDotColor: darkGrey,
+                    dotHeight: 5.0,
+                    dotWidth: 20.0,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

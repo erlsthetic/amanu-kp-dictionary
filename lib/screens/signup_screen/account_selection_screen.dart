@@ -20,115 +20,119 @@ class AccountSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: WillPopScope(
-        onWillPop: controller.accountFromGoogle
-            ? () {
-                showConfirmDialog(
-                    context,
-                    "Exit account setup?",
-                    "Your account details are not yet set. However, if you wish to exit now, you may still continue setting up your account by logging in.",
-                    "Exit",
-                    "Cancel", () {
-                  AuthenticationRepository.instance.logout();
-                }, () {
-                  Navigator.of(context).pop();
-                });
-                return Future.value(false);
-              }
-            : () {
-                Get.back();
-                return Future.value(false);
-              },
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
-            padding: EdgeInsets.all(30.0),
-            child: Column(children: [
-              Container(
-                width: double.infinity,
-                child: HeaderSubheader(
-                    size: size,
-                    header: tAccountRegistrationHead,
-                    subHeader: tChooseAccountType),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0),
-                child: Column(
-                  children: [
-                    _OptionCard(
-                      isContributor: controller.isContributor,
+    final screenPadding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: WillPopScope(
+          onWillPop: controller.accountFromGoogle
+              ? () {
+                  showConfirmDialog(
+                      context,
+                      "Exit account setup?",
+                      "Your account details are not yet set. However, if you wish to exit now, you may still continue setting up your account by logging in.",
+                      "Exit",
+                      "Cancel", () {
+                    AuthenticationRepository.instance.logout();
+                  }, () {
+                    Navigator.of(context).pop();
+                  });
+                  return Future.value(false);
+                }
+              : () {
+                  Get.back();
+                  return Future.value(false);
+                },
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.all(30.0),
+              child: Column(children: [
+                Container(
+                  width: double.infinity,
+                  child: HeaderSubheader(
                       size: size,
-                      condition: true,
-                      optionIdx: 0,
-                      header: tContributor,
-                      description: tContributorDesc,
-                      imgString: iContributorIllus,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    _OptionCard(
-                      isContributor: controller.isContributor,
-                      size: size,
-                      condition: false,
-                      optionIdx: 1,
-                      header: tExpert,
-                      description: tExpertDesc,
-                      imgString: iExpertIllus,
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Obx(
-                      () => SizedBox(
-                        width: double.infinity,
-                        height: 50.0,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (controller.isContributor.value) {
-                              controller.userType = 0;
-                              controller.exFullName = '';
-                              controller.exBio = '';
-                              controller.cvUrl = '';
-                              Get.to(() => AccountRegistrationScreen());
-                              print("Email: ${controller.email}");
-                              print("Password: ${controller.password}");
-                              print(
-                                  "Account type: ${controller.userType} | Contributor");
-                            } else {
-                              controller.userType = 1;
-                              Get.to(() => AccountRegistrationScreen());
-                              print("Email: ${controller.email}");
-                              print("Password: ${controller.password}");
-                              print(
-                                  "Account type: ${controller.userType} | Expert");
-                            }
-                          },
-                          child: Text(
-                            controller.isContributor.value
-                                ? tSignUpAsContributor.toUpperCase()
-                                : tRequestExpertAccount.toUpperCase(),
-                            style: GoogleFonts.poppins(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
-                              color: pureWhite,
-                              letterSpacing: 1.0,
+                      header: tAccountRegistrationHead,
+                      subHeader: tChooseAccountType),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    children: [
+                      _OptionCard(
+                        isContributor: controller.isContributor,
+                        size: size,
+                        condition: true,
+                        optionIdx: 0,
+                        header: tContributor,
+                        description: tContributorDesc,
+                        imgString: iContributorIllus,
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _OptionCard(
+                        isContributor: controller.isContributor,
+                        size: size,
+                        condition: false,
+                        optionIdx: 1,
+                        header: tExpert,
+                        description: tExpertDesc,
+                        imgString: iExpertIllus,
+                      ),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      Obx(
+                        () => SizedBox(
+                          width: double.infinity,
+                          height: 50.0,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (controller.isContributor.value) {
+                                controller.userType = 0;
+                                controller.exFullName = '';
+                                controller.exBio = '';
+                                controller.cvUrl = '';
+                                Get.to(() => AccountRegistrationScreen());
+                                print("Email: ${controller.email}");
+                                print("Password: ${controller.password}");
+                                print(
+                                    "Account type: ${controller.userType} | Contributor");
+                              } else {
+                                controller.userType = 1;
+                                Get.to(() => AccountRegistrationScreen());
+                                print("Email: ${controller.email}");
+                                print("Password: ${controller.password}");
+                                print(
+                                    "Account type: ${controller.userType} | Expert");
+                              }
+                            },
+                            child: Text(
+                              controller.isContributor.value
+                                  ? tSignUpAsContributor.toUpperCase()
+                                  : tRequestExpertAccount.toUpperCase(),
+                              style: GoogleFonts.poppins(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                                color: pureWhite,
+                                letterSpacing: 1.0,
+                              ),
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ]),
+                    ],
+                  ),
+                )
+              ]),
+            ),
           ),
         ),
       ),

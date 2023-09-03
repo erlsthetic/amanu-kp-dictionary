@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:path/path.dart';
 import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:file_picker/file_picker.dart';
@@ -142,12 +143,18 @@ class StudioController extends GetxController {
       submitError.value = true;
       submitErrorMsg.value =
           "No audio detected. Please select an audio file or use the recorder.";
+      Helper.errorSnackBar(
+          title: "No audio detected.",
+          message: "Please select an audio file or use the recorder.");
       return;
     } else if (isRecordingCompleted.value &&
         (!selectEmpty.value && fileAccepted.value)) {
       submitError.value = true;
       submitErrorMsg.value =
           "Two audios detected. Please remove audio from one of the options.";
+      Helper.errorSnackBar(
+          title: "Two audios detected.",
+          message: "Please remove audio from one of the options.");
       return;
     } else {
       if (isRecordingCompleted.value) {

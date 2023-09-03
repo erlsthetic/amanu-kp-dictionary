@@ -15,28 +15,31 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-        body: Stack(
-      children: [
-        Positioned(
-          top: screenPadding.top + 50,
-          left: 0,
-          right: 0,
-          child: Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              height: size.height - screenPadding.top - 50,
-              width: size.width,
-              child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(), child: Container())),
-        ),
-        ThreePartHeader(
-          size: size,
-          screenPadding: screenPadding,
-          title: tAboutAmanu,
-        ),
-      ],
-    ));
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+          body: Stack(
+        children: [
+          Positioned(
+            top: screenPadding.top + 50,
+            left: 0,
+            right: 0,
+            child: Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                height: size.height - screenPadding.top - 50,
+                width: size.width,
+                child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(), child: Container())),
+          ),
+          ThreePartHeader(
+            size: size,
+            screenPadding: screenPadding,
+            title: tAboutAmanu,
+          ),
+        ],
+      )),
+    );
   }
 }

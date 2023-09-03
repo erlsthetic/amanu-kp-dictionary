@@ -13,65 +13,69 @@ class ForgotPasswordPhone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.1,
-              ),
-              HeaderSubheaderWithImage(
-                size: size,
-                header: tResetViaSMS,
-                subHeader: tForgotSMSSub,
-                imgString: iResetPhone,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                heightBetween: 30,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Form(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.phone_outlined),
-                          prefixText: "+63 ",
-                          labelText: tContact,
-                          hintText: "xxxxxxxxxx",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0))),
-                    ),
-                    SizedBox(height: 20.0),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(double.infinity, 45.0),
-                            shape: RoundedRectangleBorder(
+    final screenPadding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.1,
+                ),
+                HeaderSubheaderWithImage(
+                  size: size,
+                  header: tResetViaSMS,
+                  subHeader: tForgotSMSSub,
+                  imgString: iResetPhone,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  heightBetween: 30,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Form(
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.phone_outlined),
+                            prefixText: "+63 ",
+                            labelText: tContact,
+                            hintText: "xxxxxxxxxx",
+                            border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20.0))),
-                        onPressed: () {
-                          Get.to(() => const ForgotPasswordOTP());
-                        },
-                        child: Text(
-                          tSendOTP.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: pureWhite,
-                            letterSpacing: 1.0,
+                      ),
+                      SizedBox(height: 20.0),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: Size(double.infinity, 45.0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0))),
+                          onPressed: () {
+                            Get.to(() => const ForgotPasswordOTP());
+                          },
+                          child: Text(
+                            tSendOTP.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: pureWhite,
+                              letterSpacing: 1.0,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

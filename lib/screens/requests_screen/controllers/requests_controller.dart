@@ -22,6 +22,7 @@ class RequestsController extends GetxController {
   }
 
   Future requestSelect(String requestID, int requestType) async {
+    if (appController.hasConnection.value) {}
     if (requestType == 0) {
       AddRequestModel? request =
           await DatabaseRepository.instance.getAddRequest(requestID);

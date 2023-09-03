@@ -1,4 +1,5 @@
 import 'package:amanu/models/feedback_model.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 class FeedbackController extends GetxController {
   static FeedbackController get instance => Get.find();
   final databaseRepo = Get.put(DatabaseRepository());
+  final appController = Get.find<ApplicationController>();
 
   RxBool isProcessing = false.obs;
   RxBool noSelection = false.obs;
@@ -42,21 +44,25 @@ class FeedbackController extends GetxController {
   ];
 
   Future<void> sendFeedback() async {
-    selectedRate.value == 0 ? noSelection.value = true : null;
-    final String timestamp =
-        DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
-    final feedbackFormValid = feedbackFormKey.currentState!.validate();
-    if (!feedbackFormValid || selectedRate.value == 0 || noSelection == true) {
-      return;
+    if (appController.hasConnection.value) {
+      selectedRate.value == 0 ? noSelection.value = true : null;
+      final String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+      final feedbackFormValid = feedbackFormKey.currentState!.validate();
+      if (!feedbackFormValid ||
+          selectedRate.value == 0 ||
+          noSelection == true) {
+        return;
+      }
+      feedbackFormKey.currentState!.save();
+      isProcessing.value = true;
+
+      final feedbackInfo = FeedbackModel(
+          rating: selectedRate.value,
+          additionalNotes: additionalNotes != '' ? additionalNotes : null,
+          timestamp: timestamp);
+
+      await databaseRepo.createFeedbackOnDB(feedbackInfo, timestamp);
     }
-    feedbackFormKey.currentState!.save();
-    isProcessing.value = true;
-
-    final feedbackInfo = FeedbackModel(
-        rating: selectedRate.value,
-        additionalNotes: additionalNotes != '' ? additionalNotes : null,
-        timestamp: timestamp);
-
-    await databaseRepo.createFeedbackOnDB(feedbackInfo, timestamp);
   }
 }

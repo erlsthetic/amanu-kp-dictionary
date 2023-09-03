@@ -24,75 +24,79 @@ class RequestsScreen extends StatelessWidget {
     controller.context = context;
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-        body: Stack(
-      children: [
-        Positioned(
-          top: screenPadding.top + 50,
-          left: 0,
-          right: 0,
-          child: FutureBuilder(
-            future: controller.getAllRequests(),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done)
-                return Container(
-                  height: size.height - 110,
-                  width: size.width,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              else
-                return Container(
-                  height: size.height - 110,
-                  width: size.width,
-                  child: controller.requests.length != 0
-                      ? ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          padding: EdgeInsets.only(top: 30, bottom: 100),
-                          itemCount: controller.requests.length,
-                          itemBuilder: (context, index) {
-                            return RequestCard(
-                              timestamp: controller.requests[index].timestamp,
-                              requestType:
-                                  controller.requests[index].requestType,
-                              word: controller.requests[index].word,
-                              userName: controller.requests[index].userName,
-                              notes: controller.requests[index].requestNotes,
-                              onTap: () async {
-                                if (appController.hasConnection.value) {
-                                  await controller.requestSelect(
-                                      controller.requests[index].requestId,
-                                      controller.requests[index].requestType);
-                                } else {
-                                  appController.showConnectionSnackbar();
-                                }
-                              },
-                            );
-                          },
-                        )
-                      : Center(
-                          child: Text(
-                            "No requests at the moment.",
-                            style: TextStyle(fontSize: 16, color: disabledGrey),
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+          body: Stack(
+        children: [
+          Positioned(
+            top: screenPadding.top + 50,
+            left: 0,
+            right: 0,
+            child: FutureBuilder(
+              future: controller.getAllRequests(),
+              builder: (ctx, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done)
+                  return Container(
+                    height: size.height - 110,
+                    width: size.width,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                else
+                  return Container(
+                    height: size.height - 110,
+                    width: size.width,
+                    child: controller.requests.length != 0
+                        ? ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            padding: EdgeInsets.only(top: 30, bottom: 100),
+                            itemCount: controller.requests.length,
+                            itemBuilder: (context, index) {
+                              return RequestCard(
+                                timestamp: controller.requests[index].timestamp,
+                                requestType:
+                                    controller.requests[index].requestType,
+                                word: controller.requests[index].word,
+                                userName: controller.requests[index].userName,
+                                notes: controller.requests[index].requestNotes,
+                                onTap: () async {
+                                  if (appController.hasConnection.value) {
+                                    await controller.requestSelect(
+                                        controller.requests[index].requestId,
+                                        controller.requests[index].requestType);
+                                  } else {
+                                    appController.showConnectionSnackbar();
+                                  }
+                                },
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                              "No requests at the moment.",
+                              style:
+                                  TextStyle(fontSize: 16, color: disabledGrey),
+                            ),
                           ),
-                        ),
-                );
+                  );
+              },
+            ),
+          ),
+          ThreePartHeader(
+            size: size,
+            screenPadding: screenPadding,
+            title: tRequests,
+            firstIcon: fromDrawer
+                ? Icons.menu_rounded
+                : Icons.arrow_back_ios_new_rounded,
+            firstOnPressed: () {
+              fromDrawer ? drawerController.drawerToggle(context) : Get.back();
             },
           ),
-        ),
-        ThreePartHeader(
-          size: size,
-          screenPadding: screenPadding,
-          title: tRequests,
-          firstIcon: fromDrawer
-              ? Icons.menu_rounded
-              : Icons.arrow_back_ios_new_rounded,
-          firstOnPressed: () {
-            fromDrawer ? drawerController.drawerToggle(context) : Get.back();
-          },
-        ),
-      ],
-    ));
+        ],
+      )),
+    );
   }
 }

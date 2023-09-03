@@ -35,73 +35,77 @@ class HomeScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPersistentHeader(
-          delegate: SliverSearchAppBar(
-              screenSize: size,
-              topPadding: topPadding,
-              drawerController: drawerController),
-          pinned: true,
-        ),
-        SliverList(
-            delegate: SliverChildListDelegate([
-          Container(
-              width: double.infinity,
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 100),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Text(
-                      tWordOfTheDay.toUpperCase(),
-                      style: GoogleFonts.roboto(
-                        color: disabledGrey,
-                        fontSize: 15,
+    final screenPadding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            delegate: SliverSearchAppBar(
+                screenSize: size,
+                topPadding: topPadding,
+                drawerController: drawerController),
+            pinned: true,
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            Container(
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(30, 0, 30, 100),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Text(
+                        tWordOfTheDay.toUpperCase(),
+                        style: GoogleFonts.roboto(
+                          color: disabledGrey,
+                          fontSize: 15,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: orangeCard,
-                    ),
-                    child: controller.wotdFound
-                        ? DictionaryCard(
-                            word: controller.word,
-                            prn: controller.prn,
-                            prnUrl: controller.prnUrl,
-                            engTrans: controller.engTrans,
-                            filTrans: controller.filTrans,
-                            meanings: controller.meanings,
-                            types: controller.types,
-                            definitions: controller.definitions,
-                            kulitanChars: controller.kulitanChars,
-                            kulitanString: controller.kulitanString,
-                            otherRelated: controller.otherRelated,
-                            synonyms: controller.synonyms,
-                            antonyms: controller.antonyms,
-                            sources: controller.sources,
-                            contributors: controller.contributors,
-                            expert: controller.expert,
-                            lastModifiedTime: controller.lastModifiedTime,
-                            width: double.infinity)
-                        : Container(
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            height: 100,
-                            child: Text(
-                              "No data",
-                              style: TextStyle(color: cardText),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: orangeCard,
+                      ),
+                      child: controller.wotdFound
+                          ? DictionaryCard(
+                              word: controller.word,
+                              prn: controller.prn,
+                              prnUrl: controller.prnUrl,
+                              engTrans: controller.engTrans,
+                              filTrans: controller.filTrans,
+                              meanings: controller.meanings,
+                              types: controller.types,
+                              definitions: controller.definitions,
+                              kulitanChars: controller.kulitanChars,
+                              kulitanString: controller.kulitanString,
+                              otherRelated: controller.otherRelated,
+                              synonyms: controller.synonyms,
+                              antonyms: controller.antonyms,
+                              sources: controller.sources,
+                              contributors: controller.contributors,
+                              expert: controller.expert,
+                              lastModifiedTime: controller.lastModifiedTime,
+                              width: double.infinity)
+                          : Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: 100,
+                              child: Text(
+                                "No data",
+                                style: TextStyle(color: cardText),
+                              ),
                             ),
-                          ),
-                  ),
-                ],
-              )),
-        ])),
-      ],
+                    ),
+                  ],
+                )),
+          ])),
+        ],
+      ),
     );
   }
 }
@@ -160,15 +164,17 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
               )),*/
           Positioned(
             top: max(
-                (topPadding + 60) * (1 - shrinkFactor) +
+                (topPadding + 40) * (1 - shrinkFactor) +
                     (shrinkFactor * (topPadding + 10)),
                 topPadding + 10),
             child: Crab(
               tag: "AmanuLogo",
               child: Container(
-                height: (screenSize.height * 0.20) * (1 - shrinkFactor),
+                height: ((screenSize.height * 0.35) - 30 - (topPadding + 45)) *
+                    (1 - shrinkFactor),
                 width: (screenSize.width),
                 child: FittedBox(
+                  fit: BoxFit.contain,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -218,57 +218,160 @@ class SignUpController extends GetxController {
   }
 
   Future<void> uploadCV(String uid) async {
-    final path = 'users/${uid}/cv/${pickedFile!.name}';
-    final file = File(pickedFile!.path!);
-    final ref = FirebaseStorage.instance.ref().child(path);
-    try {
-      await ref.putFile(file);
-      await ref.getDownloadURL().then((downloadUrl) {
-        cvUrl = downloadUrl;
-      });
-    } catch (e) {
-      cvUrl = '';
+    if (appController.hasConnection.value) {
+      final path = 'users/${uid}/cv/${pickedFile!.name}';
+      final file = File(pickedFile!.path!);
+      final ref = FirebaseStorage.instance.ref().child(path);
+      try {
+        await ref.putFile(file);
+        await ref.getDownloadURL().then((downloadUrl) {
+          cvUrl = downloadUrl;
+        });
+      } catch (e) {
+        cvUrl = '';
+      }
     }
   }
 
   Future<void> registerUser() async {
-    isProcessing.value = true;
-    if (userType == 0) {
-      final credentialsValid = signUpFormKey.currentState!.validate();
-      final registrationValid = registrationFormKey.currentState!.validate();
-      if (!registrationValid || !credentialsValid) {
-        isProcessing.value = false;
-        return;
+    if (appController.hasConnection.value) {
+      isProcessing.value = true;
+      if (userType == 0) {
+        final credentialsValid = signUpFormKey.currentState!.validate();
+        final registrationValid = registrationFormKey.currentState!.validate();
+        if (!registrationValid || !credentialsValid) {
+          isProcessing.value = false;
+          return;
+        }
+      } else {
+        if (selectEmpty.value == true) {
+          cvError.value = true;
+        }
+        final credentialsValid = signUpFormKey.currentState!.validate();
+        final registrationValid = registrationFormKey.currentState!.validate();
+        if (!registrationValid ||
+            !credentialsValid ||
+            cvError.value == true ||
+            fileAccepted == false ||
+            selectEmpty == true) {
+          isProcessing.value = false;
+          return;
+        }
       }
+
+      signUpFormKey.currentState!.save();
+      registrationFormKey.currentState!.save();
+
+      Map<String, String>? error = await AuthenticationRepository.instance
+          .createUserWithEmailAndPassword(email, password);
+      if (error != null) {
+        Helper.errorSnackBar(title: error["title"], message: error["message"]);
+      } else {
+        uid = authRepo.firebaseUser!.uid;
+
+        if (userType == 1) {
+          await uploadCV(uid);
+        }
+
+        final userData = UserModel(
+            uid: uid,
+            email: email.trim(),
+            phoneNo: int.tryParse(phoneNo.trim()) ?? 0,
+            isExpert: false,
+            expertRequest: userType == 1 ? true : false,
+            userName: userName.trim(),
+            exFullName: exFullName == '' ? null : exFullName.trim(),
+            exBio: exBio == '' ? null : exBio.trim(),
+            cvUrl: cvUrl == '' ? null : cvUrl,
+            profileUrl: null,
+            contributions: null);
+
+        await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
+          await appController.changeLoginState(true);
+          await appController
+              .changeUserDetails(
+                  userData.uid,
+                  userData.userName,
+                  userData.email,
+                  userData.phoneNo,
+                  userData.isExpert,
+                  userData.expertRequest,
+                  userData.exFullName,
+                  userData.exBio,
+                  userData.profileUrl,
+                  userData.contributions,
+                  await appController.saveUserPicToLocal(userData.profileUrl))
+              .whenComplete(() {
+            final drawerController = Get.find<DrawerXController>();
+            drawerController.currentItem.value = DrawerItems.home;
+            Get.offAll(() => DrawerLauncher());
+          });
+        });
+      }
+      isProcessing.value = false;
     } else {
-      if (selectEmpty.value == true) {
-        cvError.value = true;
-      }
-      final credentialsValid = signUpFormKey.currentState!.validate();
-      final registrationValid = registrationFormKey.currentState!.validate();
-      if (!registrationValid ||
-          !credentialsValid ||
-          cvError.value == true ||
-          fileAccepted == false ||
-          selectEmpty == true) {
-        isProcessing.value = false;
-        return;
+      appController.showConnectionSnackbar();
+    }
+  }
+
+  Future<void> googleSignUp() async {
+    if (appController.hasConnection.value) {
+      try {
+        isGoogleLoading.value = true;
+        Map<String, String>? error =
+            await AuthenticationRepository.instance.createUserWithGoogle();
+        if (error != null) {
+          Helper.errorSnackBar(
+              title: error["title"], message: error["message"]);
+        }
+        isGoogleLoading.value = false;
+        if (await authRepo.firebaseUser != null) {
+          accountFromGoogle = true;
+          Get.to(() => AccountSelectionScreen());
+        }
+      } catch (e) {
+        isGoogleLoading.value = false;
       }
     }
+  }
 
-    signUpFormKey.currentState!.save();
-    registrationFormKey.currentState!.save();
-
-    Map<String, String>? error = await AuthenticationRepository.instance
-        .createUserWithEmailAndPassword(email, password);
-    if (error != null) {
-      Helper.errorSnackBar(title: error["title"], message: error["message"]);
-    } else {
-      uid = authRepo.firebaseUser!.uid;
-
-      if (userType == 1) {
-        await uploadCV(uid);
+  Future<void> registerUserFromGoogle() async {
+    if (appController.hasConnection.value) {
+      isProcessing.value = true;
+      if (userType == 0) {
+        final registrationValid = registrationFormKey.currentState!.validate();
+        if (!registrationValid) {
+          isProcessing.value = false;
+          return;
+        }
+      } else {
+        if (selectEmpty.value == true) {
+          cvError.value = true;
+        }
+        final registrationValid = registrationFormKey.currentState!.validate();
+        if (!registrationValid ||
+            cvError.value == true ||
+            fileAccepted == false ||
+            selectEmpty == true ||
+            authRepo.firebaseUser == null) {
+          isProcessing.value = false;
+          return;
+        }
       }
+
+      registrationFormKey.currentState!.save();
+
+      uid = authRepo.firebaseUser!.uid;
+      email = authRepo.firebaseUser!.email!;
+
+      String? photoURLUploaded;
+      if (authRepo.firebaseUser!.photoURL != null) {
+        print(authRepo.firebaseUser!.photoURL);
+        photoURLUploaded =
+            await dbRepo.uploadPic(uid, authRepo.firebaseUser!.photoURL!, true);
+      }
+
+      await uploadCV(uid);
 
       final userData = UserModel(
           uid: uid,
@@ -280,7 +383,7 @@ class SignUpController extends GetxController {
           exFullName: exFullName == '' ? null : exFullName.trim(),
           exBio: exBio == '' ? null : exBio.trim(),
           cvUrl: cvUrl == '' ? null : cvUrl,
-          profileUrl: null,
+          profileUrl: photoURLUploaded ?? null,
           contributions: null);
 
       await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
@@ -305,96 +408,8 @@ class SignUpController extends GetxController {
         });
       });
       isProcessing.value = false;
-    }
-  }
-
-  Future<void> googleSignUp() async {
-    try {
-      isGoogleLoading.value = true;
-      Map<String, String>? error =
-          await AuthenticationRepository.instance.createUserWithGoogle();
-      if (error != null) {
-        Helper.errorSnackBar(title: error["title"], message: error["message"]);
-      }
-      isGoogleLoading.value = false;
-      if (await authRepo.firebaseUser != null) {
-        accountFromGoogle = true;
-        Get.to(() => AccountSelectionScreen());
-      }
-    } catch (e) {
-      isGoogleLoading.value = false;
-    }
-  }
-
-  Future<void> registerUserFromGoogle() async {
-    if (userType == 0) {
-      final registrationValid = registrationFormKey.currentState!.validate();
-      if (!registrationValid) {
-        return;
-      }
     } else {
-      if (selectEmpty.value == true) {
-        cvError.value = true;
-      }
-      final registrationValid = registrationFormKey.currentState!.validate();
-      if (!registrationValid ||
-          cvError.value == true ||
-          fileAccepted == false ||
-          selectEmpty == true ||
-          authRepo.firebaseUser == null) {
-        return;
-      }
+      appController.showConnectionSnackbar();
     }
-
-    registrationFormKey.currentState!.save();
-
-    uid = authRepo.firebaseUser!.uid;
-    email = authRepo.firebaseUser!.email!;
-
-    String? photoURLUploaded;
-    if (authRepo.firebaseUser!.photoURL != null) {
-      print(authRepo.firebaseUser!.photoURL);
-      photoURLUploaded =
-          await dbRepo.uploadPic(uid, authRepo.firebaseUser!.photoURL!, true);
-    }
-
-    await uploadCV(uid);
-
-    final userData = UserModel(
-        uid: uid,
-        email: email.trim(),
-        phoneNo: int.tryParse(phoneNo.trim()) ?? 0,
-        isExpert: false,
-        expertRequest: userType == 1 ? true : false,
-        userName: userName.trim(),
-        exFullName: exFullName == '' ? null : exFullName.trim(),
-        exBio: exBio == '' ? null : exBio.trim(),
-        cvUrl: cvUrl == '' ? null : cvUrl,
-        profileUrl: photoURLUploaded ?? null,
-        contributions: null);
-
-    await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
-      await appController.changeLoginState(true);
-      await appController
-          .changeUserDetails(
-              userData.uid,
-              userData.userName,
-              userData.email,
-              userData.phoneNo,
-              userData.isExpert,
-              userData.expertRequest,
-              userData.exFullName,
-              userData.exBio,
-              userData.profileUrl,
-              userData.contributions,
-              await appController.saveUserPicToLocal(userData.profileUrl))
-          .whenComplete(() {
-        final drawerController = Get.find<DrawerXController>();
-        drawerController.currentItem.value = DrawerItems.home;
-        Get.offAll(() => DrawerLauncher());
-      });
-    });
-
-    isProcessing.value = false;
   }
 }

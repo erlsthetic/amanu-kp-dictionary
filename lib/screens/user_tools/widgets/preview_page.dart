@@ -79,144 +79,149 @@ class PreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          splashColor: primaryOrangeLight,
-          focusColor: primaryOrangeLight.withOpacity(0.5),
-          onPressed: () {
-            controller.submitWord();
-          },
-          label: Text(
-            (appController.userIsExpert ?? false)
-                ? tAddWord.toUpperCase()
-                : tRequestWord.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
-              color: pureWhite,
-              letterSpacing: 1.0,
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            splashColor: primaryOrangeLight,
+            focusColor: primaryOrangeLight.withOpacity(0.5),
+            onPressed: () {
+              controller.submitWord();
+            },
+            label: Text(
+              (appController.userIsExpert ?? false)
+                  ? tAddWord.toUpperCase()
+                  : tRequestWord.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+                color: pureWhite,
+                letterSpacing: 1.0,
+              ),
             ),
+            icon: Icon(Icons.add),
           ),
-          icon: Icon(Icons.add),
-        ),
-        body: Stack(
-          children: [
-            Positioned(
-              top: screenPadding.top + 50,
-              left: 0,
-              right: 0,
-              child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  height: size.height - screenPadding.top - 50,
-                  width: size.width,
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 65, horizontal: 30),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            appController.userIsExpert ?? false
-                                ? Container()
-                                : Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.only(bottom: 10),
-                                    child: Form(
-                                      key: controller.notesFormKey,
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                      child: TextFormField(
-                                        controller: controller.notesController,
-                                        onSaved: (value) {
-                                          controller.notes = value!;
-                                        },
-                                        validator: (value) {
-                                          if (controller.notesController.text ==
-                                              '') {
-                                            return "Please leave some notes describing your request.";
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                        maxLines: 5,
-                                        maxLength: 1000,
-                                        decoration: InputDecoration(
-                                            labelText: tEditNotes,
-                                            alignLabelWithHint: true,
-                                            hintText: tAddNotesHint,
-                                            hintMaxLines: 5,
-                                            border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20.0))),
+          body: Stack(
+            children: [
+              Positioned(
+                top: screenPadding.top + 50,
+                left: 0,
+                right: 0,
+                child: Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    height: size.height - screenPadding.top - 50,
+                    width: size.width,
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 65, horizontal: 30),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              appController.userIsExpert ?? false
+                                  ? Container()
+                                  : Container(
+                                      width: double.infinity,
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: Form(
+                                        key: controller.notesFormKey,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        child: TextFormField(
+                                          controller:
+                                              controller.notesController,
+                                          onSaved: (value) {
+                                            controller.notes = value!;
+                                          },
+                                          validator: (value) {
+                                            if (controller
+                                                    .notesController.text ==
+                                                '') {
+                                              return "Please leave some notes describing your request.";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                          maxLines: 5,
+                                          maxLength: 1000,
+                                          decoration: InputDecoration(
+                                              labelText: tEditNotes,
+                                              alignLabelWithHint: true,
+                                              hintText: tAddNotesHint,
+                                              hintMaxLines: 5,
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0))),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: orangeCard,
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: orangeCard,
+                                ),
+                                child: DictionaryCard(
+                                  word: controller.word,
+                                  prn: controller.prn,
+                                  prnUrl: controller.prnPath,
+                                  engTrans: controller.engTrans,
+                                  filTrans: controller.filTrans,
+                                  meanings: controller.meanings,
+                                  types: controller.types,
+                                  definitions: controller.definitions,
+                                  kulitanChars: controller.kulitanChars,
+                                  kulitanString: controller.kulitanString,
+                                  otherRelated: controller.otherRelated,
+                                  synonyms: controller.synonyms,
+                                  antonyms: controller.antonyms,
+                                  sources: controller.sources,
+                                  contributors: controller.contributors,
+                                  expert: controller.expert,
+                                  lastModifiedTime: controller.lastModifiedTime,
+                                  width: size.width - 60,
+                                  isPreview: true,
+                                  audioIsOnline: false,
+                                ),
                               ),
-                              child: DictionaryCard(
-                                word: controller.word,
-                                prn: controller.prn,
-                                prnUrl: controller.prnPath,
-                                engTrans: controller.engTrans,
-                                filTrans: controller.filTrans,
-                                meanings: controller.meanings,
-                                types: controller.types,
-                                definitions: controller.definitions,
-                                kulitanChars: controller.kulitanChars,
-                                kulitanString: controller.kulitanString,
-                                otherRelated: controller.otherRelated,
-                                synonyms: controller.synonyms,
-                                antonyms: controller.antonyms,
-                                sources: controller.sources,
-                                contributors: controller.contributors,
-                                expert: controller.expert,
-                                lastModifiedTime: controller.lastModifiedTime,
-                                width: size.width - 60,
-                                isPreview: true,
-                                audioIsOnline: false,
-                              ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
+                    )),
+              ),
+              Positioned(
+                  top: screenPadding.top + 80,
+                  left: 30,
+                  right: 30,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                        color: disabledGrey.withOpacity(0.75),
+                        borderRadius: BorderRadius.circular(20.0)),
+                    child: Text(
+                      tThisIsAPreview,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400, color: cardText),
+                    ),
                   )),
-            ),
-            Positioned(
-                top: screenPadding.top + 80,
-                left: 30,
-                right: 30,
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                      color: disabledGrey.withOpacity(0.75),
-                      borderRadius: BorderRadius.circular(20.0)),
-                  child: Text(
-                    tThisIsAPreview,
-                    style:
-                        TextStyle(fontWeight: FontWeight.w400, color: cardText),
-                  ),
-                )),
-            IsProcessingWithHeader(
-                condition: controller.isProcessing,
+              IsProcessingWithHeader(
+                  condition: controller.isProcessing,
+                  size: size,
+                  screenPadding: screenPadding),
+              ThreePartHeader(
                 size: size,
-                screenPadding: screenPadding),
-            ThreePartHeader(
-              size: size,
-              screenPadding: screenPadding,
-              title: controller.word,
-              secondIcon: Icons.bookmark_outline_rounded,
-              secondIconDisabled: true,
-            ),
-          ],
-        ));
+                screenPadding: screenPadding,
+                title: controller.word,
+                secondIcon: Icons.bookmark_outline_rounded,
+                secondIconDisabled: true,
+              ),
+            ],
+          )),
+    );
   }
 }

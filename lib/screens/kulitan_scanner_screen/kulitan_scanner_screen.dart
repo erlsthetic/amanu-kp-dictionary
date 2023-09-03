@@ -17,46 +17,49 @@ class KulitanScannerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-        body: Stack(
-      children: [
-        Positioned(
-          top: screenPadding.top + 50,
-          left: 0,
-          right: 0,
-          child: Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              height: size.height - screenPadding.top - 50,
-              width: size.width,
-              child: Column(
-                children: [
-                  SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                      child: Column(
-                        children: [],
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+          body: Stack(
+        children: [
+          Positioned(
+            top: screenPadding.top + 50,
+            left: 0,
+            right: 0,
+            child: Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                height: size.height - screenPadding.top - 50,
+                width: size.width,
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                        child: Column(
+                          children: [],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )),
-        ),
-        ThreePartHeader(
-          size: size,
-          screenPadding: screenPadding,
-          title: tKulitanScanner,
-          firstIcon: fromDrawer
-              ? Icons.menu_rounded
-              : Icons.arrow_back_ios_new_rounded,
-          firstOnPressed: () {
-            fromDrawer ? drawerController.drawerToggle(context) : Get.back();
-          },
-        ),
-      ],
-    ));
+                  ],
+                )),
+          ),
+          ThreePartHeader(
+            size: size,
+            screenPadding: screenPadding,
+            title: tKulitanScanner,
+            firstIcon: fromDrawer
+                ? Icons.menu_rounded
+                : Icons.arrow_back_ios_new_rounded,
+            firstOnPressed: () {
+              fromDrawer ? drawerController.drawerToggle(context) : Get.back();
+            },
+          ),
+        ],
+      )),
+    );
   }
 }

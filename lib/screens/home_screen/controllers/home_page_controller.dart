@@ -1,4 +1,5 @@
 import 'package:amanu/utils/application_controller.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:coast/coast.dart';
 import 'package:get/get.dart';
 
@@ -101,5 +102,11 @@ class HomePageController extends GetxController {
     print("wordOfTheDay: " + wordOfTheDay);
     wotdFound = appController.dictionaryContent.containsKey(wordOfTheDay);
     getInformation();
+    if (appController.noData.value) {
+      Helper.errorSnackBar(
+          title: "Dictionary currently has no data",
+          message:
+              "Please connect to the internet to sync dictionary's data to local device.");
+    }
   }
 }

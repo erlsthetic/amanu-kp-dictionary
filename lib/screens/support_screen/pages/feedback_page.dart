@@ -19,147 +19,151 @@ class FeedbackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          splashColor: primaryOrangeLight,
-          focusColor: primaryOrangeLight.withOpacity(0.5),
-          onPressed: () {
-            controller.sendFeedback();
-          },
-          label: Text(
-            tFeedback.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
-              color: pureWhite,
-              letterSpacing: 1.0,
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            splashColor: primaryOrangeLight,
+            focusColor: primaryOrangeLight.withOpacity(0.5),
+            onPressed: () {
+              controller.sendFeedback();
+            },
+            label: Text(
+              tFeedback.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+                color: pureWhite,
+                letterSpacing: 1.0,
+              ),
             ),
+            icon: Icon(Icons.send),
           ),
-          icon: Icon(Icons.send),
-        ),
-        body: Stack(
-          children: [
-            Positioned(
-              top: screenPadding.top + 50,
-              left: 0,
-              right: 0,
-              child: Container(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  height: size.height - screenPadding.top - 50,
-                  width: size.width,
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Form(
-                      key: controller.feedbackFormKey,
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-                        child: Column(
-                          children: [
-                            Container(
+          body: Stack(
+            children: [
+              Positioned(
+                top: screenPadding.top + 50,
+                left: 0,
+                right: 0,
+                child: Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    height: size.height - screenPadding.top - 50,
+                    width: size.width,
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Form(
+                        key: controller.feedbackFormKey,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 40, horizontal: 30),
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: double.infinity,
+                                  child: Image.asset(iOnBoardingAnim1)),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Container(
                                 width: double.infinity,
-                                child: Image.asset(iOnBoardingAnim1)),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Text(
-                                tFeedbackInstructions,
-                                textAlign: TextAlign.left,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: darkGrey,
+                                child: Text(
+                                  tFeedbackInstructions,
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.normal,
+                                    color: darkGrey,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: Text(
-                                tFeedbackRate,
-                                textAlign: TextAlign.left,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: darkGrey,
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: Text(
+                                  tFeedbackRate,
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.normal,
+                                    color: darkGrey,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              child: FittedBox(
-                                child: Row(children: [
-                                  for (int i = 0; i < 5; i++)
-                                    RateOption(
-                                        label: controller.ratesText[i],
-                                        value: i + 1,
-                                        controller: controller,
-                                        icon: controller.ratesIcon[i])
-                                ]),
+                              SizedBox(
+                                height: 15.0,
                               ),
-                            ),
-                            Obx(() => controller.noSelection.value
-                                ? Container(
-                                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                    width: double.infinity,
-                                    child: Text(
-                                      'Please select a rating.',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.red[700],
-                                          fontSize: 11.5),
-                                    ))
-                                : Container()),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            TextFormField(
-                              controller: controller.notesController,
-                              onSaved: (value) {
-                                controller.additionalNotes = value!;
-                              },
-                              maxLines: 5,
-                              decoration: InputDecoration(
-                                  labelText: tFeedbackNotes,
-                                  alignLabelWithHint: true,
-                                  hintText: tFeedbackNotesTip,
-                                  hintMaxLines: 5,
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0))),
-                            ),
-                            SizedBox(
-                              height: 40.0,
-                            ),
-                          ],
+                              Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: FittedBox(
+                                  child: Row(children: [
+                                    for (int i = 0; i < 5; i++)
+                                      RateOption(
+                                          label: controller.ratesText[i],
+                                          value: i + 1,
+                                          controller: controller,
+                                          icon: controller.ratesIcon[i])
+                                  ]),
+                                ),
+                              ),
+                              Obx(() => controller.noSelection.value
+                                  ? Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                      width: double.infinity,
+                                      child: Text(
+                                        'Please select a rating.',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.red[700],
+                                            fontSize: 11.5),
+                                      ))
+                                  : Container()),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              TextFormField(
+                                controller: controller.notesController,
+                                onSaved: (value) {
+                                  controller.additionalNotes = value!;
+                                },
+                                maxLines: 5,
+                                decoration: InputDecoration(
+                                    labelText: tFeedbackNotes,
+                                    alignLabelWithHint: true,
+                                    hintText: tFeedbackNotesTip,
+                                    hintMaxLines: 5,
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0))),
+                              ),
+                              SizedBox(
+                                height: 40.0,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )),
-            ),
-            IsProcessingWithHeader(
-                condition: controller.isProcessing,
+                    )),
+              ),
+              IsProcessingWithHeader(
+                  condition: controller.isProcessing,
+                  size: size,
+                  screenPadding: screenPadding),
+              ThreePartHeader(
                 size: size,
-                screenPadding: screenPadding),
-            ThreePartHeader(
-              size: size,
-              screenPadding: screenPadding,
-              title: tFeedback,
-            ),
-          ],
-        ));
+                screenPadding: screenPadding,
+                title: tFeedback,
+              ),
+            ],
+          )),
+    );
   }
 }
 

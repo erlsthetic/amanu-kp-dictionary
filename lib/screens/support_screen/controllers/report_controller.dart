@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:amanu/models/report_model.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:intl/intl.dart';
 class ReportController extends GetxController {
   static ReportController get instance => Get.find();
   final databaseRepo = Get.put(DatabaseRepository());
+  final appController = Get.find<ApplicationController>();
   RxBool isProcessing = false.obs;
 
   RxString? typeSelected;
@@ -108,37 +110,45 @@ class ReportController extends GetxController {
   }
 
   Future<void> uploadPhoto(String time) async {
-    final path = 'reports/${time}/${pickedFile!.name}';
-    final file = File(pickedFile!.path!);
-    final ref = FirebaseStorage.instance.ref().child(path);
-    await ref.putFile(file);
-    await ref.getDownloadURL().then((downloadUrl) {
-      fileUrl = downloadUrl;
-    });
+    if (appController.hasConnection.value) {
+      final path = 'reports/${time}/${pickedFile!.name}';
+      final file = File(pickedFile!.path!);
+      final ref = FirebaseStorage.instance.ref().child(path);
+      await ref.putFile(file);
+      await ref.getDownloadURL().then((downloadUrl) {
+        fileUrl = downloadUrl;
+      });
+    } else {
+      appController.showConnectionSnackbar();
+    }
   }
 
   Future<void> sendReport() async {
-    final String timestamp =
-        DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
-    final reportFormValid = reportFormKey.currentState!.validate();
-    if (!reportFormValid || (selectEmpty == false && fileAccepted == false)) {
-      return;
+    if (appController.hasConnection.value) {
+      final String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+      final reportFormValid = reportFormKey.currentState!.validate();
+      if (!reportFormValid || (selectEmpty == false && fileAccepted == false)) {
+        return;
+      }
+      reportFormKey.currentState!.save();
+      isProcessing.value = true;
+
+      if (selectEmpty == false && fileAccepted == true) {
+        await uploadPhoto(timestamp);
+      }
+
+      final reportInfo = ReportModel(
+          email: email != '' ? email : null,
+          problemType: reportType,
+          subject: subject,
+          details: reportDetail,
+          timestamp: timestamp,
+          imgUrl: fileUrl != '' ? fileUrl : null);
+
+      await databaseRepo.createReportOnDB(reportInfo, timestamp);
+    } else {
+      appController.showConnectionSnackbar();
     }
-    reportFormKey.currentState!.save();
-    isProcessing.value = true;
-
-    if (selectEmpty == false && fileAccepted == true) {
-      await uploadPhoto(timestamp);
-    }
-
-    final reportInfo = ReportModel(
-        email: email != '' ? email : null,
-        problemType: reportType,
-        subject: subject,
-        details: reportDetail,
-        timestamp: timestamp,
-        imgUrl: fileUrl != '' ? fileUrl : null);
-
-    await databaseRepo.createReportOnDB(reportInfo, timestamp);
   }
 }

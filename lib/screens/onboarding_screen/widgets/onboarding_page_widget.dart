@@ -25,34 +25,32 @@ class OnBoardingPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: model.hasButton ? 4 : 3,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        model.header,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                            color: model.headColor,
-                            height: 1),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      model.header,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                          color: model.headColor,
+                          height: 1),
+                    ),
+                    Text(
+                      model.subheading,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: model.subHeadColor,
                       ),
-                      Text(
-                        model.subheading,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: model.subHeadColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 model.hasButton
                     ? Container(
@@ -99,10 +97,10 @@ class OnBoardingPage extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: model.hasSkip
-                ? Container(
+          model.hasSkip
+              ? Expanded(
+                  flex: 1,
+                  child: Container(
                     height: double.infinity,
                     width: double.infinity,
                     alignment: Alignment.centerLeft,
@@ -132,9 +130,8 @@ class OnBoardingPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
-                : Container(),
-          )
+                  ))
+              : Container()
         ],
       ),
       decoration: BoxDecoration(

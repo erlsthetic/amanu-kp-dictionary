@@ -19,39 +19,39 @@ class ModifySearchController extends GetxController {
   }
 
   Future submitDelete(String wordID, BuildContext context) async {
-    if (appController.userIsExpert ?? false) {
-      if (appController.hasConnection.value) {
+    if (appController.hasConnection.value) {
+      if (appController.userIsExpert ?? false) {
         DatabaseRepository.instance.removeWordOnDB(
             wordID, appController.dictionaryContent[wordID]["word"]);
         Navigator.pop(context);
       } else {
-        appController.showConnectionSnackbar();
+        final notesValid = notesFormKey.currentState!.validate();
+        if (!notesValid) {
+          return;
+        }
+        notesFormKey.currentState!.save();
+        final String timestamp =
+            DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
+        DeleteRequestModel request = DeleteRequestModel(
+            requestId: timestamp + "-" + (appController.userID ?? ''),
+            uid: appController.userID ?? '',
+            userName: appController.userName ?? '',
+            requestType: 2,
+            isAvailable: true,
+            requestNotes: notes == '' ? null : notes,
+            timestamp: timestamp,
+            wordID: wordID,
+            word: appController.dictionaryContent[wordID]["word"]);
+        if (appController.hasConnection.value) {
+          DatabaseRepository.instance.createDeleteRequestOnDB(
+              request, timestamp, appController.userID ?? '');
+          Navigator.pop(context);
+        } else {
+          appController.showConnectionSnackbar();
+        }
       }
     } else {
-      final notesValid = notesFormKey.currentState!.validate();
-      if (!notesValid) {
-        return;
-      }
-      notesFormKey.currentState!.save();
-      final String timestamp =
-          DateFormat('yyyy-MM-dd(HH:mm:ss)').format(DateTime.now());
-      DeleteRequestModel request = DeleteRequestModel(
-          requestId: timestamp + "-" + (appController.userID ?? ''),
-          uid: appController.userID ?? '',
-          userName: appController.userName ?? '',
-          requestType: 2,
-          isAvailable: true,
-          requestNotes: notes == '' ? null : notes,
-          timestamp: timestamp,
-          wordID: wordID,
-          word: appController.dictionaryContent[wordID]["word"]);
-      if (appController.hasConnection.value) {
-        DatabaseRepository.instance.createDeleteRequestOnDB(
-            request, timestamp, appController.userID ?? '');
-        Navigator.pop(context);
-      } else {
-        appController.showConnectionSnackbar();
-      }
+      appController.showConnectionSnackbar();
     }
   }
 }

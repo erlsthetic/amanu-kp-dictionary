@@ -17,109 +17,114 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(gradient: orangeGradient),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Image(
-                image: AssetImage(iWelcomePageAnim),
+    final screenPadding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+        body: Container(
+          padding: EdgeInsets.all(30.0),
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(gradient: orangeGradient),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 5,
+                child: Image(
+                  image: AssetImage(iWelcomePageAnim),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: Text(
-                      tWelcomeHead,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                        color: pureWhite,
-                        height: 1,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      tWelcomeSubHead,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: pureWhite.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => Get.to(() => LoginScreen()),
-                          child: Text(tLogin.toUpperCase()),
-                          style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              foregroundColor: pureWhite,
-                              side: BorderSide(color: pureWhite, width: 2.0),
-                              padding: EdgeInsets.all(10.0),
-                              minimumSize: Size(100, 50)),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => Get.to(() => SignupScreen()),
-                          child: Text(tSignup.toUpperCase()),
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              foregroundColor: primaryOrangeDark,
-                              backgroundColor: pureWhite,
-                              padding: EdgeInsets.all(10.0),
-                              minimumSize: Size(100, 50)),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    child: GestureDetector(
-                      onTap: Feedback.wrapForTap(() {
-                        final drawerController = Get.find<DrawerXController>();
-                        drawerController.currentItem.value = DrawerItems.home;
-                        Get.offAll(() => DrawerLauncher());
-                      }, context),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
                       child: Text(
-                        tCancel.toUpperCase(),
-                        style: TextStyle(color: pureWhite, fontSize: 15),
+                        tWelcomeHead,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.bold,
+                          color: pureWhite,
+                          height: 1,
+                        ),
                       ),
                     ),
-                  )
-                ],
+                    Expanded(
+                      child: Text(
+                        tWelcomeSubHead,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: pureWhite.withOpacity(0.8),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Get.to(() => LoginScreen()),
+                            child: Text(tLogin.toUpperCase()),
+                            style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                foregroundColor: pureWhite,
+                                side: BorderSide(color: pureWhite, width: 2.0),
+                                padding: EdgeInsets.all(10.0),
+                                minimumSize: Size(100, 50)),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => Get.to(() => SignupScreen()),
+                            child: Text(tSignup.toUpperCase()),
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                foregroundColor: primaryOrangeDark,
+                                backgroundColor: pureWhite,
+                                padding: EdgeInsets.all(10.0),
+                                minimumSize: Size(100, 50)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      child: GestureDetector(
+                        onTap: Feedback.wrapForTap(() {
+                          final drawerController =
+                              Get.find<DrawerXController>();
+                          drawerController.currentItem.value = DrawerItems.home;
+                          Get.offAll(() => DrawerLauncher());
+                        }, context),
+                        child: Text(
+                          tCancel.toUpperCase(),
+                          style: TextStyle(color: pureWhite, fontSize: 15),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

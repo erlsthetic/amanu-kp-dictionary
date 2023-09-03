@@ -25,69 +25,72 @@ class ModifySearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
-    return Scaffold(
-        body: Stack(
-      children: [
-        Positioned(
-          top: screenPadding.top + 50 + 64,
-          left: 0,
-          right: 0,
-          child: SearchResultList(
-            height: size.height - 110,
-            width: size.width,
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+          body: Stack(
+        children: [
+          Positioned(
+            top: screenPadding.top + 50 + 64,
+            left: 0,
+            right: 0,
+            child: SearchResultList(
+              height: size.height - 110,
+              width: size.width,
+              size: size,
+              controller: controller,
+              player: player,
+              category: editMode ? "edit" : "delete",
+            ),
+          ),
+          ThreePartHeader(
             size: size,
-            controller: controller,
-            player: player,
-            category: editMode ? "edit" : "delete",
+            screenPadding: screenPadding,
+            title: editMode
+                ? appController.userIsExpert ?? false
+                    ? tEditWord
+                    : tEditWord + tEditWordRequest
+                : appController.userIsExpert ?? false
+                    ? tDeleteWord
+                    : tDeleteWordRequest,
+            additionalHeight: 64.0,
+            secondIconDisabled: true,
           ),
-        ),
-        ThreePartHeader(
-          size: size,
-          screenPadding: screenPadding,
-          title: editMode
-              ? appController.userIsExpert ?? false
-                  ? tEditWord
-                  : tEditWord + tEditWordRequest
-              : appController.userIsExpert ?? false
-                  ? tDeleteWord
-                  : tDeleteWordRequest,
-          additionalHeight: 64.0,
-          secondIconDisabled: true,
-        ),
-        Positioned(
-          top: screenPadding.top + 20,
-          right: 20,
-          child: Hero(
-              tag: 'secondButton',
-              child: Transform.scale(
-                  scale: 1.2, child: SearchFilter(controller: controller))),
-        ),
-        Positioned(
-          top: screenPadding.top + 65,
-          left: 0,
-          child: Container(
-            height: 55.0,
-            width: size.width - 40,
-            margin: EdgeInsets.symmetric(horizontal: 20.0),
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                color: pureWhite),
-            child:
-                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Icon(
-                Icons.search,
-                size: 30.0,
-                color: primaryOrangeDark,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(child: SearchField(controller: controller))
-            ]),
+          Positioned(
+            top: screenPadding.top + 20,
+            right: 20,
+            child: Hero(
+                tag: 'secondButton',
+                child: Transform.scale(
+                    scale: 1.2, child: SearchFilter(controller: controller))),
           ),
-        ),
-      ],
-    ));
+          Positioned(
+            top: screenPadding.top + 65,
+            left: 0,
+            child: Container(
+              height: 55.0,
+              width: size.width - 40,
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  color: pureWhite),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                Icon(
+                  Icons.search,
+                  size: 30.0,
+                  color: primaryOrangeDark,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(child: SearchField(controller: controller))
+              ]),
+            ),
+          ),
+        ],
+      )),
+    );
   }
 }

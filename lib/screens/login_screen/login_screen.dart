@@ -18,42 +18,46 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: WillPopScope(
-        onWillPop: () {
-          Get.off(() => WelcomeScreen());
-          return Future.value(false);
-        },
-        child: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Container(
-                  padding: EdgeInsets.all(30.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HeaderSubheaderWithImage(
-                          size: size,
-                          header: tLoginHead,
-                          subHeader: tLoginSubHead,
-                          imgString: iLoginPageAnim),
-                      LoginForm(),
-                      LoginFooterWidget()
-                    ],
+    final screenPadding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenPadding.bottom),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: WillPopScope(
+          onWillPop: () {
+            Get.off(() => WelcomeScreen());
+            return Future.value(false);
+          },
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Container(
+                    padding: EdgeInsets.all(30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HeaderSubheaderWithImage(
+                            size: size,
+                            header: tLoginHead,
+                            subHeader: tLoginSubHead,
+                            imgString: iLoginPageAnim),
+                        LoginForm(),
+                        LoginFooterWidget()
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Obx(() => controller.isProcessing.value
-                ? IsProcessingLoader(size: size)
-                : Container())
-          ],
+              Obx(() => controller.isProcessing.value
+                  ? IsProcessingLoader(size: size)
+                  : Container())
+            ],
+          ),
         ),
       ),
     );

@@ -13,6 +13,7 @@ import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,7 +42,8 @@ class ApplicationController extends GetxController {
     await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
         permanent: true);
     await Get.put(DrawerXController(), permanent: true);
-
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     if (isFirstTimeUse) {
       Get.offAll(() => OnBoardingScreen());
     } else {
@@ -508,6 +510,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  //
   Map<String, dynamic> dictionaryContentUnsorted = {
     "hello": {
       "word": "hello",
