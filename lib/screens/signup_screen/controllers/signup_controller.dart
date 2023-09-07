@@ -90,26 +90,31 @@ class SignUpController extends GetxController {
           width: double.infinity,
           padding: EdgeInsets.all(20),
           alignment: Alignment.center,
-          child: Column(children: [
-            Flexible(
-              child: Container(
-                width: double.infinity,
-                child: SvgPicture.asset(iPrivacyPolicy),
-              ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              height: 150,
+              width: double.infinity,
+              child: SvgPicture.asset(iPrivacyPolicy),
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 tPrivacyPolicyHeader,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                    fontSize: 20, fontWeight: FontWeight.w700, color: cardText),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: primaryOrangeDark,
+                    height: 1.1),
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 tPrivacyPolicyBody,
-                style: GoogleFonts.poppins(
+                textAlign: TextAlign.justify,
+                style: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.w500, color: cardText),
               ),
             ),
