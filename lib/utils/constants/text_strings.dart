@@ -235,3 +235,9 @@ const String tDeleteSuccess = " was removed from the dictionary.";
 const String tDeleteNotFound = " was not found in the dictionary.";
 const String tDeleteNotFoundBody =
     "Either the word does not exist or was deleted by another user.";
+
+const String tPrivacyPolicy = "Privacy policy";
+const String tPrivacyPolicyHeader =
+    "Understanding the information we collect from you.";
+const String tPrivacyPolicyBody =
+    "Here at Amanu, we value the privacy of our users and their personal information. To better understand your privacy rights in using our application, here are the information we collect from you, how we use it, and how you can manage the privacy settings of these information.\n\nUpon signing up for an account, all users are required to provide an email, username, and phone number. These information will be used as your identification in the application. Expert accounts, however, are required more information compared to Contributor accounts. These additional requirements includes: Full name, Bio, and a Curriculum Vitae (Resumé), which will be used in verifying their expert account request.\n\nAmong these information, username, fullname, and bio are the only information that is visible to public by default. These are used as your identification in the application for other users to see. However, you may also opt to publicize your email and phone number in your profile page using the privacy settings in the modify profile dialog. Your CV, on the other hand, is only stored in the database visible to our application supervisors.\n\nBy signing up for an account in Amanu, you accept that these information will be collected and used by the application.";

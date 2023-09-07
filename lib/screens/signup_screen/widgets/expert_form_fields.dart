@@ -264,7 +264,10 @@ class ExpertFormFields extends StatelessWidget {
                 TextSpan(
                     text: "Privacy Policy",
                     style: TextStyle(color: primaryOrangeDark),
-                    recognizer: TapGestureRecognizer()..onTap = () {}),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        controller.showPrivacyPolicy(context);
+                      }),
                 TextSpan(text: ".")
               ],
             ),

@@ -5,6 +5,7 @@ import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/screens/requests_screen/widgets/request_details_page.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,19 @@ class RequestsController extends GetxController {
   List<dynamic> requests = [];
 
   void showRequestNotAvailableDialog() {
-    showInfoDialog(context, "Request unavailable",
-        "Request is currently being assessed by other experts.");
+    showInfoDialog(
+        context,
+        "Request unavailable",
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: Text(
+            "Request is currently being assessed by other experts.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: cardText, fontSize: 16),
+          ),
+        ));
   }
 
   Future requestSelect(String requestID, int requestType) async {

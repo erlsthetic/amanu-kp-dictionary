@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amanu/components/info_dialog.dart';
 import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
@@ -8,12 +9,17 @@ import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/constants/image_strings.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
@@ -74,6 +80,41 @@ class SignUpController extends GetxController {
     phoneNoController.dispose();
     exFullNameController.dispose();
     exBioController.dispose();
+  }
+
+  void showPrivacyPolicy(BuildContext context) {
+    showInfoDialog(
+        context,
+        tPrivacyPolicy,
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: Column(children: [
+            Flexible(
+              child: Container(
+                width: double.infinity,
+                child: SvgPicture.asset(iPrivacyPolicy),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                tPrivacyPolicyHeader,
+                style: GoogleFonts.poppins(
+                    fontSize: 20, fontWeight: FontWeight.w700, color: cardText),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                tPrivacyPolicyBody,
+                style: GoogleFonts.poppins(
+                    fontSize: 16, fontWeight: FontWeight.w500, color: cardText),
+              ),
+            ),
+          ]),
+        ));
   }
 
 //Validation
