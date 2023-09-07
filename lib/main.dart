@@ -24,7 +24,7 @@ class Amanu extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Amanu: Kapampangan Dictionary and Kulitan Script Reader',
+      title: 'Amánu: Kapampangan Dictionary and Kulitan Script Reader',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,

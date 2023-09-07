@@ -51,7 +51,7 @@ class SearchResultList extends StatelessWidget {
                 ? ListView.builder(
                     physics: BouncingScrollPhysics(),
                     padding:
-                        contentPadding ?? EdgeInsets.only(top: 30, bottom: 100),
+                        contentPadding ?? EdgeInsets.only(top: 30, bottom: 50),
                     itemCount: controller.suggestionMap.length,
                     itemBuilder: (context, index) {
                       String wordID =
@@ -144,7 +144,7 @@ class SearchResultList extends StatelessWidget {
                   )
                 : controller.loading.value
                     ? ListView.builder(
-                        padding: EdgeInsets.only(top: 30, bottom: 100),
+                        padding: EdgeInsets.only(top: 30, bottom: 50),
                         itemCount: 30,
                         itemBuilder: (context, index) {
                           return ShimmerBrowseCard();

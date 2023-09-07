@@ -286,6 +286,17 @@ class DatabaseRepository extends GetxController {
     return requests;
   }
 
+  Future removeRequest(String requestID) async {
+    await _db
+        .collection("requests")
+        .doc(requestID)
+        .delete()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+  }
+
   Future changeRequestState(String requestID, bool condition) async {
     await _db
         .collection("requests")

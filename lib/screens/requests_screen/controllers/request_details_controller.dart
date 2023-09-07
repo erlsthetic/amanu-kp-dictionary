@@ -1,4 +1,8 @@
+import 'package:amanu/components/loader_dialog.dart';
+import 'package:amanu/screens/requests_screen/controllers/requests_controller.dart';
 import 'package:amanu/utils/application_controller.dart';
+import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RequestDetailsController extends GetxController {
@@ -137,6 +141,41 @@ class RequestDetailsController extends GetxController {
         : appController.dictionaryContent[prevWordID]["expert"];
     prevLastModifiedTime =
         appController.dictionaryContent[prevWordID]["lastModifiedTime"];
+  }
+
+  Future deleteRequest(context) async {
+    showLoaderDialog(context);
+    if (appController.hasConnection.value) {
+      DatabaseRepository.instance
+          .removeRequest(requestID)
+          .whenComplete(() async {
+        final requestController = Get.find<RequestsController>();
+        if (appController.hasConnection.value) {
+          await requestController.getAllRequests();
+        } else {
+          appController.showConnectionSnackbar();
+        }
+        Navigator.of(context).pop();
+        Get.back();
+      });
+    } else {
+      Navigator.of(context).pop();
+      appController.showConnectionSnackbar();
+    }
+  }
+
+  Future editRequest() async {
+    if (appController.hasConnection.value) {
+    } else {
+      appController.showConnectionSnackbar();
+    }
+  }
+
+  Future approveRequest() async {
+    if (appController.hasConnection.value) {
+    } else {
+      appController.showConnectionSnackbar();
+    }
   }
 
   @override

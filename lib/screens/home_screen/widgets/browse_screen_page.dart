@@ -108,7 +108,7 @@ class BrowseScreenPage extends StatelessWidget {
                         },
                       )*/
                     : ListView.builder(
-                        padding: EdgeInsets.only(top: 30, bottom: 100),
+                        padding: EdgeInsets.only(top: 30, bottom: 50),
                         itemCount: 30,
                         itemBuilder: (context, index) {
                           return ShimmerBrowseCard();

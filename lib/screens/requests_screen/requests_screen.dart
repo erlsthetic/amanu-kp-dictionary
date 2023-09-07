@@ -51,7 +51,7 @@ class RequestsScreen extends StatelessWidget {
                     child: controller.requests.length != 0
                         ? ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.only(top: 30, bottom: 100),
+                            padding: EdgeInsets.only(top: 30, bottom: 50),
                             itemCount: controller.requests.length,
                             itemBuilder: (context, index) {
                               return RequestCard(

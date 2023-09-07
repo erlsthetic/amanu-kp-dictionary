@@ -44,7 +44,7 @@ class BookmarksScreen extends StatelessWidget {
                   child: appController.bookmarks.length != 0
                       ? ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          padding: EdgeInsets.only(top: 30, bottom: 100),
+                          padding: EdgeInsets.only(top: 30, bottom: 50),
                           itemCount: appController.bookmarks.length,
                           itemBuilder: (context, index) {
                             String wordID = appController.bookmarks[index];
