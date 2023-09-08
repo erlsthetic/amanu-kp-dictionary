@@ -59,6 +59,7 @@ class RequestsController extends GetxController {
           String normalizedWord = request.normalizedWord;
           String prn = request.prn;
           String prnUrl = request.prnUrl;
+          String prnAudioPath = request.prnStoragePath;
           List<dynamic> engTrans = new List.from(request.engTrans);
           List<dynamic> filTrans = new List.from(request.filTrans);
           List<Map<String, dynamic>> meanings = new List.from(request.meanings);
@@ -123,7 +124,8 @@ class RequestsController extends GetxController {
               expert: expert,
               lastModifiedTime: lastModifiedTime,
               definitions: definitions,
-              kulitanString: kulitanString));
+              kulitanString: kulitanString,
+              prnAudioPath: prnAudioPath));
         }
       }
     } else if (requestType == 1) {
@@ -150,6 +152,7 @@ class RequestsController extends GetxController {
           String normalizedWord = request.normalizedWord;
           String prn = request.prn;
           String prnUrl = request.prnUrl;
+          String prnAudioPath = request.prnStoragePath;
           List<dynamic> engTrans = new List.from(request.engTrans);
           List<dynamic> filTrans = new List.from(request.filTrans);
           List<Map<String, dynamic>> meanings = new List.from(request.meanings);
@@ -189,32 +192,34 @@ class RequestsController extends GetxController {
           Map<dynamic, dynamic> expert = new Map.from(request.expert);
           String lastModifiedTime = request.lastModifiedTime;
           Get.to(() => RequestDetailsPage(
-              wordID: wordID,
-              word: word,
-              prevWordID: prevWordID,
-              requestID: requestId,
-              requestType: requestType,
-              requesterID: requesterID,
-              requesterUserName: requesterUserName,
-              notes: notes,
-              timestamp: timestamp,
-              normalizedWord: normalizedWord,
-              prn: prn,
-              prnUrl: prnUrl,
-              engTrans: engTrans,
-              filTrans: filTrans,
-              meanings: meanings,
-              types: types,
-              kulitanChars: kulitanChars,
-              otherRelated: otherRelated,
-              synonyms: synonyms,
-              antonyms: antonyms,
-              sources: sources,
-              contributors: contributors,
-              expert: expert,
-              lastModifiedTime: lastModifiedTime,
-              definitions: definitions,
-              kulitanString: kulitanString));
+                wordID: wordID,
+                word: word,
+                prevWordID: prevWordID,
+                requestID: requestId,
+                requestType: requestType,
+                requesterID: requesterID,
+                requesterUserName: requesterUserName,
+                notes: notes,
+                timestamp: timestamp,
+                normalizedWord: normalizedWord,
+                prn: prn,
+                prnUrl: prnUrl,
+                engTrans: engTrans,
+                filTrans: filTrans,
+                meanings: meanings,
+                types: types,
+                kulitanChars: kulitanChars,
+                otherRelated: otherRelated,
+                synonyms: synonyms,
+                antonyms: antonyms,
+                sources: sources,
+                contributors: contributors,
+                expert: expert,
+                lastModifiedTime: lastModifiedTime,
+                definitions: definitions,
+                kulitanString: kulitanString,
+                prnAudioPath: prnAudioPath,
+              ));
         }
       }
     } else if (requestType == 2) {
@@ -245,6 +250,7 @@ class RequestsController extends GetxController {
           String prnUrl = appController.dictionaryContent[wordID]
                   ["pronunciationAudio"] ??
               '';
+          String prnAudioPath = '';
           List<dynamic> engTrans = new List.from(
               appController.dictionaryContent[wordID]["englishTranslations"] ??
                   []);
@@ -286,32 +292,34 @@ class RequestsController extends GetxController {
           String lastModifiedTime =
               appController.dictionaryContent[wordID]["lastModifiedTime"] ?? '';
           Get.to(() => RequestDetailsPage(
-              wordID: wordID,
-              word: word,
-              prevWordID: prevWordID,
-              requestID: requestId,
-              requestType: requestType,
-              requesterID: requesterID,
-              requesterUserName: requesterUserName,
-              notes: notes,
-              timestamp: timestamp,
-              normalizedWord: normalizedWord,
-              prn: prn,
-              prnUrl: prnUrl,
-              engTrans: engTrans,
-              filTrans: filTrans,
-              meanings: meanings,
-              types: types,
-              kulitanChars: kulitanChars,
-              otherRelated: otherRelated,
-              synonyms: synonyms,
-              antonyms: antonyms,
-              sources: sources,
-              contributors: contributors,
-              expert: expert,
-              lastModifiedTime: lastModifiedTime,
-              definitions: definitions,
-              kulitanString: kulitanString));
+                wordID: wordID,
+                word: word,
+                prevWordID: prevWordID,
+                requestID: requestId,
+                requestType: requestType,
+                requesterID: requesterID,
+                requesterUserName: requesterUserName,
+                notes: notes,
+                timestamp: timestamp,
+                normalizedWord: normalizedWord,
+                prn: prn,
+                prnUrl: prnUrl,
+                engTrans: engTrans,
+                filTrans: filTrans,
+                meanings: meanings,
+                types: types,
+                kulitanChars: kulitanChars,
+                otherRelated: otherRelated,
+                synonyms: synonyms,
+                antonyms: antonyms,
+                sources: sources,
+                contributors: contributors,
+                expert: expert,
+                lastModifiedTime: lastModifiedTime,
+                definitions: definitions,
+                kulitanString: kulitanString,
+                prnAudioPath: prnAudioPath,
+              ));
         }
       }
     }

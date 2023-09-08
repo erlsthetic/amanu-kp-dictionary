@@ -8,7 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as p;
 
 class PreviewEditsController extends GetxController {
   PreviewEditsController({
@@ -147,26 +146,12 @@ class PreviewEditsController extends GetxController {
         appController.dictionaryContent[prevWordID]["lastModifiedTime"];
   }
 
-  Future<List<String>> uploadAudio(
-      String wordID, String audioPath, String storagePath) async {
-    final file = File(audioPath);
-    final ext = p.extension(audioPath);
-    final path = '${storagePath}/${wordID}/audio${ext}';
-    final ref = FirebaseStorage.instance.ref().child(path);
-    await ref.putFile(file);
-    String audioUrl = '';
-    await ref.getDownloadURL().then((downloadUrl) {
-      audioUrl = downloadUrl;
-    });
-    return [path, audioUrl];
-  }
-
   Future submitEdits() async {
     if (appController.hasConnection.value) {
       if (appController.userIsExpert ?? false) {
         isProcessing.value = true;
-        List<String> audioPaths =
-            await uploadAudio(wordID, prnPath, 'dictionary');
+        List<String> audioPaths = await DatabaseRepository.instance
+            .uploadAudio(wordID, prnPath, 'dictionary');
         String timestamp =
             DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
         var details = {
@@ -204,7 +189,9 @@ class PreviewEditsController extends GetxController {
         String timestamp =
             DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
         String timestampForPath = timestamp.replaceAll(" ", "");
-        List<String> audioPaths = await uploadAudio(wordID, prnPath,
+        List<String> audioPaths = await DatabaseRepository.instance.uploadAudio(
+            wordID,
+            prnPath,
             'requests/${timestampForPath + "-" + (appController.userID ?? '')}');
         String kulitanStr = '';
         for (var line in kulitanChars) {

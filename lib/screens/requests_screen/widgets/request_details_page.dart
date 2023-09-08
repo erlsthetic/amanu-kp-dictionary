@@ -36,6 +36,7 @@ class RequestDetailsPage extends StatelessWidget {
   final String lastModifiedTime;
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
+  final String prnAudioPath;
 
   RequestDetailsPage({
     super.key,
@@ -65,6 +66,7 @@ class RequestDetailsPage extends StatelessWidget {
     required this.lastModifiedTime,
     required this.definitions,
     required this.kulitanString,
+    required this.prnAudioPath,
   });
 
   late final controller = Get.put(RequestDetailsController(
@@ -93,7 +95,8 @@ class RequestDetailsPage extends StatelessWidget {
       expert: expert ?? {},
       lastModifiedTime: lastModifiedTime,
       definitions: definitions,
-      kulitanString: kulitanString));
+      kulitanString: kulitanString,
+      prnAudioPath: prnAudioPath));
 
   final appController = Get.find<ApplicationController>();
 
@@ -363,7 +366,9 @@ class RequestDetailsPage extends StatelessWidget {
               print("Clicked $index");
               if (index == 0) {
               } else if (index == 1) {
-              } else if (index == 2) {}
+              } else if (index == 2) {
+                controller.deleteRequest(context);
+              }
             },
             positionBottom: size.height * 0.05,
             positionLeft: size.width - 85,

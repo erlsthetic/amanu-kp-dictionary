@@ -15,7 +15,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 
 class DatabaseRepository extends GetxController {
   static DatabaseRepository get instance => Get.find();
@@ -71,7 +71,7 @@ class DatabaseRepository extends GetxController {
       scaledSource = photoSource.replaceAll("s96-c", "s492-c");
     }
     final fileExt =
-        extension(fromGoogle ? File(scaledSource).path : scaledSource);
+        p.extension(fromGoogle ? File(scaledSource).path : scaledSource);
     final path = 'users/${uid}/profile/profilePic${fileExt}';
     final file = File(scaledSource);
     final ref = FirebaseStorage.instance.ref().child(path);
@@ -286,6 +286,20 @@ class DatabaseRepository extends GetxController {
     return requests;
   }
 
+  Future<List<String>> uploadAudio(
+      String wordID, String audioPath, String storagePath) async {
+    final file = File(audioPath);
+    final ext = p.extension(audioPath);
+    final path = '${storagePath}/${wordID}/audio${ext}';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    await ref.putFile(file);
+    String audioUrl = '';
+    await ref.getDownloadURL().then((downloadUrl) {
+      audioUrl = downloadUrl;
+    });
+    return [path, audioUrl];
+  }
+
   Future removeRequest(String requestID) async {
     await _db
         .collection("requests")
@@ -305,6 +319,29 @@ class DatabaseRepository extends GetxController {
       print(error.toString());
       return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
+  }
+
+  Future<String> getAvailableWordKey(String key) async {
+    final _realtimeDB = FirebaseDatabase.instance.ref();
+    int modifier = 0;
+    String currentString = key;
+    bool notAvailable;
+    var snapshot = await _realtimeDB.child("dictionary").child(key).get();
+    if (snapshot.exists) {
+      notAvailable = true;
+      while (notAvailable) {
+        currentString = key + modifier.toString();
+        snapshot =
+            await _realtimeDB.child("dictionary").child(currentString).get();
+        if (snapshot.exists) {
+          modifier += 1;
+        } else {
+          return currentString;
+        }
+      }
+    } else {
+      return currentString;
+    }
   }
 
   Future addWordOnDB(String wordID, Map details) async {

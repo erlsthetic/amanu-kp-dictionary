@@ -13,18 +13,27 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ModifyWordPage extends StatelessWidget {
-  ModifyWordPage({
-    super.key,
-    this.editMode = false,
-    this.editWordID,
-    this.editWord = '',
-  });
+  ModifyWordPage(
+      {super.key,
+      this.editMode = false,
+      this.editWordID,
+      this.editWord = '',
+      this.requestMode = false,
+      this.requestID,
+      this.requestType});
 
   final bool? editMode;
+  final bool? requestMode;
   final String? editWord;
   final String? editWordID;
-  late final controller = Get.put(
-      ModifyController(editMode: editMode ?? false, editWordID: editWordID));
+  final String? requestID;
+  final int? requestType;
+  late final controller = Get.put(ModifyController(
+      editMode: editMode ?? false,
+      editWordID: editWordID,
+      requestMode: requestMode ?? false,
+      requestID: requestID,
+      requestType: requestType));
 
   final appController = Get.find<ApplicationController>();
 

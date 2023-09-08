@@ -1,9 +1,18 @@
+import 'dart:io';
+
 import 'package:amanu/components/loader_dialog.dart';
 import 'package:amanu/screens/requests_screen/controllers/requests_controller.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:amanu/utils/constants/text_strings.dart';
+import 'package:amanu/utils/helper_controller.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class RequestDetailsController extends GetxController {
   RequestDetailsController({
@@ -33,6 +42,7 @@ class RequestDetailsController extends GetxController {
     required this.lastModifiedTime,
     required this.definitions,
     required this.kulitanString,
+    required this.prnAudioPath,
   });
 
   static RequestDetailsController get instance => Get.find();
@@ -46,7 +56,7 @@ class RequestDetailsController extends GetxController {
   final String requesterUserName;
   final String notes;
   final String timestamp;
-
+  final String prnAudioPath;
   final String? prevWordID;
   final String wordID;
   final String word;
@@ -173,6 +183,52 @@ class RequestDetailsController extends GetxController {
 
   Future approveRequest() async {
     if (appController.hasConnection.value) {
+      String wordKey =
+          await DatabaseRepository.instance.getAvailableWordKey(wordID);
+      final appStorage = await getApplicationDocumentsDirectory();
+      final fileExt = extension(File(prnAudioPath).path);
+      final tempAudioFile = File('${appStorage.path}/audio$fileExt');
+      await FirebaseStorage.instance
+          .ref()
+          .child(prnAudioPath)
+          .writeToFile(tempAudioFile)
+          .then((taskSnapshot) async {
+        if (taskSnapshot.state == TaskState.success) {
+          await FirebaseStorage.instance.ref().child(prnAudioPath).delete();
+        } else {
+          Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+        }
+      });
+      List<String> audioPaths = await DatabaseRepository.instance
+          .uploadAudio(wordID, tempAudioFile.path, 'dictionary');
+      String timestamp =
+          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+      var details = {
+        "word": word,
+        "normalizedWord": normalizedWord,
+        "pronunciation": prn,
+        "pronunciationAudio": audioPaths[1],
+        "englishTranslations": new List.from(engTrans),
+        "filipinoTranslations": new List.from(filTrans),
+        "meanings": new List.from(meanings),
+        "kulitan-form": new List.from(kulitanChars),
+        "otherRelated": new Map.from(otherRelated),
+        "synonyms": new Map.from(synonyms),
+        "antonyms": new Map.from(antonyms),
+        "sources": sources,
+        "contributors": new Map.from(contributors),
+        "expert": new Map.from(expert),
+        "lastModifiedTime": timestamp
+      };
+      if (appController.hasConnection.value) {
+        await DatabaseRepository.instance
+            .addWordOnDB(wordKey, details)
+            .whenComplete(() async {
+          await DatabaseRepository.instance.removeRequest(requestID);
+        });
+      } else {
+        appController.showConnectionSnackbar();
+      }
     } else {
       appController.showConnectionSnackbar();
     }

@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:amanu/models/add_request_model.dart';
+import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/screens/user_tools/widgets/preview_edits_page.dart';
 import 'package:amanu/screens/user_tools/widgets/preview_page.dart';
 import 'package:amanu/utils/application_controller.dart';
+import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:dio/dio.dart';
@@ -16,13 +19,23 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 class ModifyController extends GetxController {
-  ModifyController({this.editMode = false, this.editWordID});
+  ModifyController(
+      {this.editMode = false,
+      this.editWordID,
+      this.requestMode = false,
+      this.requestID,
+      this.requestType});
   final bool editMode;
   final String? editWordID;
+  final bool requestMode;
+  final String? requestID;
+  final int? requestType;
   static ModifyController get instance => Get.find();
   bool importError = false;
   final appController = Get.find<ApplicationController>();
   RxBool isProcessing = false.obs;
+  String? prnStoragePath = '';
+  String? requestEditID = '';
 
   @override
   void onInit() {
@@ -38,7 +51,9 @@ class ModifyController extends GetxController {
     antonymController = TextfieldTagsController();
     referencesController = TextEditingController();
     if (editMode) {
-      populateFields();
+      getEditDetails();
+    } else if (requestMode) {
+      getRequestDetails();
     }
   }
 
@@ -56,24 +71,31 @@ class ModifyController extends GetxController {
     referencesController.dispose();
   }
 
-  void populateFields() async {
+  Future populateFields(
+    String word,
+    String prn,
+    String prnAudioUrl,
+    List<dynamic>? engTrans,
+    List<dynamic>? filTrans,
+    List<dynamic> meaningsList,
+    List<List<dynamic>> kulitanChars,
+    Map<dynamic, dynamic>? otherRelated,
+    Map<dynamic, dynamic>? synonyms,
+    Map<dynamic, dynamic>? antonyms,
+    String? sources,
+    Map<dynamic, dynamic>? contributorsList,
+    Map<dynamic, dynamic>? expertList,
+  ) async {
     isProcessing.value = true;
-    // TODO reload dictionary
-    wordController.text = appController.dictionaryContent[editWordID]["word"];
-    phoneticController.text =
-        appController.dictionaryContent[editWordID]["pronunciation"];
-    String prnUrl =
-        appController.dictionaryContent[editWordID]["pronunciationAudio"];
-    String prnUrlExt = appController.dictionaryContent[editWordID]
-            ["pronunciationAudio"]
-        .split("?")
-        .first!;
+    wordController.text = word;
+    phoneticController.text = prn;
+    String prnExt = prnAudioUrl.split("?").first;
     final appStorage = await getApplicationDocumentsDirectory();
-    final fileExt = extension(File(prnUrlExt).path);
+    final fileExt = extension(File(prnExt).path);
     final tempAudioFile = File('${appStorage.path}/audio$fileExt');
     try {
       final response = await Dio().get(
-        prnUrl,
+        prnAudioUrl,
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
@@ -96,25 +118,10 @@ class ModifyController extends GetxController {
     playerController.preparePlayer(path: audioPath);
     playerController.seekTo(0);
     hasFile.value = true;
-    if (appController.dictionaryContent[editWordID]["englishTranslations"] !=
-        null) {
-      for (var trans in appController.dictionaryContent[editWordID]
-          ["englishTranslations"]) {
-        engTransController..addTag = trans;
-      }
-    }
-    if (appController.dictionaryContent[editWordID]["filipinoTranslations"] !=
-        null) {
-      for (var trans in appController.dictionaryContent[editWordID]
-          ["filipinoTranslations"]) {
-        filTransController..addTag = trans;
-      }
-    }
-    List<Map<String, dynamic>> meanings =
-        List.from(appController.dictionaryContent[editWordID]["meanings"]);
+    List<Map<String, dynamic>> meaningsGetList = List.from(meaningsList);
     List<String> _types = [];
     List<List<Map<String, dynamic>>> _definitions = [];
-    for (Map<String, dynamic> meaning in meanings) {
+    for (Map<String, dynamic> meaning in meaningsGetList) {
       _types.add(meaning["partOfSpeech"]);
       List<Map<String, dynamic>> tempDef = [];
       for (Map<String, dynamic> definition in meaning["definitions"]) {
@@ -154,11 +161,9 @@ class ModifyController extends GetxController {
         }
       }
     }
-    if (appController.dictionaryContent[editWordID]["kulitan-form"].length !=
-        0) {
+    if (kulitanChars != 0) {
       kulitanStringListGetter.clear();
-      for (var i in appController.dictionaryContent[editWordID]
-          ["kulitan-form"]) {
+      for (var i in kulitanChars) {
         var newList = [];
         for (var j in i) {
           newList.add(j);
@@ -180,44 +185,38 @@ class ModifyController extends GetxController {
     } else {
       kulitanListEmpty.value = false;
     }
-    if (appController.dictionaryContent[editWordID]["otherRelated"] != null) {
-      for (var rel in appController
-          .dictionaryContent[editWordID]["otherRelated"].entries) {
+    if (otherRelated != null) {
+      for (var rel in otherRelated.entries) {
         relatedController..addTag = rel.key;
         if (rel.value != null) {
           importedRelated[rel.key] = rel.value;
         }
       }
     }
-    if (appController.dictionaryContent[editWordID]["synonyms"] != null) {
-      for (var syn
-          in appController.dictionaryContent[editWordID]["synonyms"].entries) {
+    if (synonyms != null) {
+      for (var syn in synonyms.entries) {
         synonymController..addTag = syn.key;
         if (syn.value != null) {
           importedSynonyms[syn.key] = syn.value;
         }
       }
     }
-    if (appController.dictionaryContent[editWordID]["antonyms"] != null) {
-      for (var ant
-          in appController.dictionaryContent[editWordID]["antonyms"].entries) {
+    if (antonyms != null) {
+      for (var ant in antonyms.entries) {
         antonymController..addTag = ant.key;
         if (ant.value != null) {
           importedAntonyms[ant.key] = ant.value;
         }
       }
     }
-    if (appController.dictionaryContent[editWordID]["sources"] != null) {
-      referencesController.text =
-          appController.dictionaryContent[editWordID]["sources"];
+    if (sources != null) {
+      referencesController.text = sources;
     }
-    if (appController.dictionaryContent[editWordID]["contributors"] != null) {
-      contributors = new Map.from(
-          appController.dictionaryContent[editWordID]["contributors"]);
+    if (contributorsList != null) {
+      contributors = new Map.from(contributorsList);
     }
-    if (appController.dictionaryContent[editWordID]["expert"] != null) {
-      expert =
-          new Map.from(appController.dictionaryContent[editWordID]["expert"]);
+    if (expertList != null) {
+      expert = new Map.from(expertList);
     }
     rebuildAudio.value = !rebuildAudio.value;
     isProcessing.value = false;
@@ -225,6 +224,103 @@ class ModifyController extends GetxController {
         title: "Form ready!",
         message:
             "Form has been filled with information. You can now edit using the form.");
+  }
+
+  Future getEditDetails() async {
+    // TODO reload dictionary
+    await populateFields(
+        appController.dictionaryContent[editWordID]["word"],
+        appController.dictionaryContent[editWordID]["pronunciation"],
+        appController.dictionaryContent[editWordID]["pronunciationAudio"],
+        new List.from(
+            appController.dictionaryContent[editWordID]["englishTranslations"]),
+        new List.from(appController.dictionaryContent[editWordID]
+            ["filipinoTranslations"]),
+        new List.from(appController.dictionaryContent[editWordID]["meanings"]),
+        new List.from(
+            appController.dictionaryContent[editWordID]["kulitan-form"]),
+        new Map.from(
+            appController.dictionaryContent[editWordID]["otherRelated"]),
+        new Map.from(appController.dictionaryContent[editWordID]["synonyms"]),
+        new Map.from(appController.dictionaryContent[editWordID]["antonyms"]),
+        appController.dictionaryContent[editWordID]["sources"],
+        new Map.from(
+            appController.dictionaryContent[editWordID]["contributors"]),
+        new Map.from(appController.dictionaryContent[editWordID]["expert"]));
+  }
+
+  Future getRequestDetails() async {
+    if (requestType == 0) {
+      AddRequestModel? request =
+          await DatabaseRepository.instance.getAddRequest(requestID ?? '');
+      if (request == null) {
+        Get.back();
+        Helper.errorSnackBar(
+            title: tOhSnap,
+            message: "Unable to get request. PLease try again.");
+      } else {
+        List<List<dynamic>> kulitanCharsList = [];
+        String kulitanChStr = request.kulitanChars;
+        if (kulitanChStr[kulitanChStr.length - 1] == '#') {
+          kulitanChStr = kulitanChStr.substring(0, kulitanChStr.length - 1);
+        }
+        List<dynamic> kulitanLines = kulitanChStr.split("#");
+        for (String line in kulitanLines) {
+          List<dynamic> chars = line.split(",");
+          kulitanCharsList.add(chars);
+        }
+        populateFields(
+            request.word,
+            request.prn,
+            request.prnUrl,
+            new List.from(request.engTrans),
+            new List.from(request.filTrans),
+            new List.from(request.meanings),
+            kulitanCharsList,
+            new Map.from(request.otherRelated),
+            new Map.from(request.synonyms),
+            new Map.from(request.antonyms),
+            request.sources,
+            new Map.from(request.contributors),
+            new Map.from(request.expert));
+        prnStoragePath = request.prnStoragePath;
+      }
+    } else {
+      EditRequestModel? request =
+          await DatabaseRepository.instance.getEditRequest(requestID ?? '');
+      if (request == null) {
+        Get.back();
+        Helper.errorSnackBar(
+            title: tOhSnap,
+            message: "Unable to get request. PLease try again.");
+      } else {
+        List<List<dynamic>> kulitanCharsList = [];
+        String kulitanChStr = request.kulitanChars;
+        if (kulitanChStr[kulitanChStr.length - 1] == '#') {
+          kulitanChStr = kulitanChStr.substring(0, kulitanChStr.length - 1);
+        }
+        List<dynamic> kulitanLines = kulitanChStr.split("#");
+        for (String line in kulitanLines) {
+          List<dynamic> chars = line.split(",");
+          kulitanCharsList.add(chars);
+        }
+        populateFields(
+            request.word,
+            request.prn,
+            request.prnUrl,
+            new List.from(request.engTrans),
+            new List.from(request.filTrans),
+            new List.from(request.meanings),
+            kulitanCharsList,
+            new Map.from(request.otherRelated),
+            new Map.from(request.synonyms),
+            new Map.from(request.antonyms),
+            request.sources,
+            new Map.from(request.contributors),
+            new Map.from(request.expert));
+        requestEditID = request.prevWordID;
+      }
+    }
   }
 
   Map<String, String> contributors = {};
@@ -454,29 +550,6 @@ class ModifyController extends GetxController {
     return normalWord;
   }
 
-  Future<String> availableKey(String key) async {
-    final _realtimeDB = FirebaseDatabase.instance.ref();
-    int modifier = 0;
-    String currentString = key;
-    bool notAvailable;
-    var snapshot = await _realtimeDB.child("dictionary").child(key).get();
-    if (snapshot.exists) {
-      notAvailable = true;
-      while (notAvailable) {
-        currentString = key + modifier.toString();
-        snapshot =
-            await _realtimeDB.child("dictionary").child(currentString).get();
-        if (snapshot.exists) {
-          modifier += 1;
-        } else {
-          return currentString;
-        }
-      }
-    } else {
-      return currentString;
-    }
-  }
-
   void submitWord() async {
     validateAudio();
     getEnglishTranslations();
@@ -499,7 +572,6 @@ class ModifyController extends GetxController {
     modifyWordFormKey.currentState!.save();
 
     String normalizedWord = normalizeWord(wordController.text.trim());
-    //String wordKey = await availableKey(normalizedWord);
     String wordKey = normalizedWord;
 
     List<Map<String, dynamic>> meanings = [];
@@ -540,29 +612,6 @@ class ModifyController extends GetxController {
 
     final String timestamp =
         DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
-
-    /*
-    Map<String, dynamic> details = {
-      "word": wordController.text.trim(),
-      "normalizedWord": normalizedWord,
-      "pronunciation": phoneticController.text.trim(),
-      "pronunciationAudio": audioPath,
-      "englishTranslations": engTransEmpty.value ? null : engTransList,
-      "filipinoTranslations": filTransEmpty.value ? null : filTransList,
-      "meanings": meanings,
-      "kulitan-form": kulitanStringListGetter,
-      "otherRelated": relatedMap.length == 0 ? null : relatedMap,
-      "synonyms": synonymsMap.length == 0 ? null : synonymsMap,
-      "antonyms": antonymsMap.length == 0 ? null : antonymsMap,
-      "sources": referencesController.text.isEmpty ||
-              referencesController.text.trim() == ''
-          ? null
-          : referencesController.text.trim(),
-      "contributors": null,
-      "expert": null,
-      "lastModifiedTime": timestamp
-    };
-    */
 
     List<String> types = [];
     List<List<Map<String, dynamic>>> definitions = [];

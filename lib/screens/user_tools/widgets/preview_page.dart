@@ -28,29 +28,30 @@ class PreviewPage extends StatelessWidget {
   final String lastModifiedTime;
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
+  final bool fromRequests;
 
-  PreviewPage({
-    super.key,
-    required this.wordID,
-    required this.word,
-    required this.normalizedWord,
-    required this.prn,
-    required this.prnPath,
-    required this.engTrans,
-    required this.filTrans,
-    required this.meanings,
-    required this.types,
-    required this.kulitanChars,
-    required this.otherRelated,
-    required this.synonyms,
-    required this.antonyms,
-    required this.sources,
-    required this.contributors,
-    required this.expert,
-    required this.lastModifiedTime,
-    required this.definitions,
-    required this.kulitanString,
-  });
+  PreviewPage(
+      {super.key,
+      required this.wordID,
+      required this.word,
+      required this.normalizedWord,
+      required this.prn,
+      required this.prnPath,
+      required this.engTrans,
+      required this.filTrans,
+      required this.meanings,
+      required this.types,
+      required this.kulitanChars,
+      required this.otherRelated,
+      required this.synonyms,
+      required this.antonyms,
+      required this.sources,
+      required this.contributors,
+      required this.expert,
+      required this.lastModifiedTime,
+      required this.definitions,
+      required this.kulitanString,
+      this.fromRequests = false});
 
   late final controller = Get.put(PreviewController(
       wordID: wordID,
@@ -71,7 +72,8 @@ class PreviewPage extends StatelessWidget {
       expert: expert ?? {},
       lastModifiedTime: lastModifiedTime,
       definitions: definitions,
-      kulitanString: kulitanString));
+      kulitanString: kulitanString,
+      fromRequests: fromRequests));
 
   final appController = Get.find<ApplicationController>();
 
@@ -90,7 +92,9 @@ class PreviewPage extends StatelessWidget {
             },
             label: Text(
               (appController.userIsExpert ?? false)
-                  ? tAddWord.toUpperCase()
+                  ? fromRequests
+                      ? tApprove.toUpperCase() + " " + tAddWord.toUpperCase()
+                      : tAddWord.toUpperCase()
                   : tRequestWord.toUpperCase(),
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(

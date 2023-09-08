@@ -10,27 +10,27 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 
 class PreviewController extends GetxController {
-  PreviewController({
-    required this.wordID,
-    required this.word,
-    required this.normalizedWord,
-    required this.prn,
-    required this.prnPath,
-    required this.engTrans,
-    required this.filTrans,
-    required this.meanings,
-    required this.types,
-    required this.kulitanChars,
-    required this.otherRelated,
-    required this.synonyms,
-    required this.antonyms,
-    required this.sources,
-    required this.contributors,
-    required this.expert,
-    required this.lastModifiedTime,
-    required this.definitions,
-    required this.kulitanString,
-  });
+  PreviewController(
+      {required this.wordID,
+      required this.word,
+      required this.normalizedWord,
+      required this.prn,
+      required this.prnPath,
+      required this.engTrans,
+      required this.filTrans,
+      required this.meanings,
+      required this.types,
+      required this.kulitanChars,
+      required this.otherRelated,
+      required this.synonyms,
+      required this.antonyms,
+      required this.sources,
+      required this.contributors,
+      required this.expert,
+      required this.lastModifiedTime,
+      required this.definitions,
+      required this.kulitanString,
+      required this.fromRequests});
 
   static PreviewController get instance => Get.find();
 
@@ -65,27 +65,16 @@ class PreviewController extends GetxController {
   final String lastModifiedTime;
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
-
-  Future<List<String>> uploadAudio(
-      String wordID, String audioPath, String storagePath) async {
-    final file = File(audioPath);
-    final ext = p.extension(audioPath);
-    final path = '${storagePath}/${wordID}/audio${ext}';
-    final ref = FirebaseStorage.instance.ref().child(path);
-    await ref.putFile(file);
-    String audioUrl = '';
-    await ref.getDownloadURL().then((downloadUrl) {
-      audioUrl = downloadUrl;
-    });
-    return [path, audioUrl];
-  }
+  final bool fromRequests;
 
   Future submitWord() async {
     if (appController.hasConnection.value) {
       if (appController.userIsExpert ?? false) {
         isProcessing.value = true;
-        List<String> audioPaths =
-            await uploadAudio(wordID, prnPath, 'dictionary');
+        String wordKey =
+            await DatabaseRepository.instance.getAvailableWordKey(wordID);
+        List<String> audioPaths = await DatabaseRepository.instance
+            .uploadAudio(wordID, prnPath, 'dictionary');
         String timestamp =
             DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
         var details = {
@@ -106,9 +95,8 @@ class PreviewController extends GetxController {
           "lastModifiedTime": timestamp
         };
         if (appController.hasConnection.value) {
-          await DatabaseRepository.instance.addWordOnDB(wordID, details);
+          await DatabaseRepository.instance.addWordOnDB(wordKey, details);
         } else {
-          isProcessing.value = false;
           appController.showConnectionSnackbar();
         }
         isProcessing.value = false;
@@ -120,10 +108,15 @@ class PreviewController extends GetxController {
           return;
         }
         notesFormKey.currentState!.save();
+
+        String wordKey =
+            await DatabaseRepository.instance.getAvailableWordKey(wordID);
         String timestamp =
             DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
         String timestampForPath = timestamp.replaceAll(" ", "");
-        List<String> audioPaths = await uploadAudio(wordID, prnPath,
+        List<String> audioPaths = await DatabaseRepository.instance.uploadAudio(
+            wordID,
+            prnPath,
             'requests/${timestampForPath + "-" + (appController.userID ?? '')}');
         String kulitanStr = '';
         for (var line in kulitanChars) {
@@ -146,7 +139,7 @@ class PreviewController extends GetxController {
             requestType: 0,
             isAvailable: true,
             requestNotes: notes == '' ? null : notes,
-            wordID: wordID,
+            wordID: wordKey,
             word: word,
             normalizedWord: normalizedWord,
             prn: prn,
@@ -167,7 +160,6 @@ class PreviewController extends GetxController {
           await DatabaseRepository.instance.createAddRequestOnDB(
               request, timestampForPath, appController.userID ?? '');
         } else {
-          isProcessing.value = false;
           appController.showConnectionSnackbar();
         }
         isProcessing.value = false;
