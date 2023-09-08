@@ -365,7 +365,9 @@ class RequestDetailsPage extends StatelessWidget {
             onPressed: (index) {
               print("Clicked $index");
               if (index == 0) {
+                controller.approveRequest();
               } else if (index == 1) {
+                controller.editRequest();
               } else if (index == 2) {
                 controller.deleteRequest(context);
               }

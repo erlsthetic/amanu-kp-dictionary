@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:amanu/models/add_request_model.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as p;
 
 class PreviewController extends GetxController {
   PreviewController(

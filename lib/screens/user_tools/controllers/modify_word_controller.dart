@@ -11,7 +11,6 @@ import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
@@ -259,6 +258,7 @@ class ModifyController extends GetxController {
             title: tOhSnap,
             message: "Unable to get request. PLease try again.");
       } else {
+        await DatabaseRepository.instance.changeRequestState(requestID!, false);
         List<List<dynamic>> kulitanCharsList = [];
         String kulitanChStr = request.kulitanChars;
         if (kulitanChStr[kulitanChStr.length - 1] == '#') {
@@ -294,6 +294,7 @@ class ModifyController extends GetxController {
             title: tOhSnap,
             message: "Unable to get request. PLease try again.");
       } else {
+        await DatabaseRepository.instance.changeRequestState(requestID!, false);
         List<List<dynamic>> kulitanCharsList = [];
         String kulitanChStr = request.kulitanChars;
         if (kulitanChStr[kulitanChStr.length - 1] == '#') {
@@ -650,7 +651,7 @@ class ModifyController extends GetxController {
             appController.userID ?? "";
       }
       Get.to(() => PreviewEditsPage(
-            prevWordID: editWordID!,
+            prevWordID: requestMode ? requestEditID! : editWordID!,
             wordID: wordKey,
             word: wordController.text.trim(),
             normalizedWord: normalizedWord,

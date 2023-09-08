@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:amanu/components/loader_dialog.dart';
 import 'package:amanu/screens/requests_screen/controllers/requests_controller.dart';
+import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -157,7 +158,7 @@ class RequestDetailsController extends GetxController {
     showLoaderDialog(context);
     if (appController.hasConnection.value) {
       DatabaseRepository.instance
-          .removeRequest(requestID)
+          .removeRequest(requestID, null)
           .whenComplete(() async {
         final requestController = Get.find<RequestsController>();
         if (appController.hasConnection.value) {
@@ -176,6 +177,10 @@ class RequestDetailsController extends GetxController {
 
   Future editRequest() async {
     if (appController.hasConnection.value) {
+      Get.to(() => ModifyWordPage(
+            requestMode: true,
+            requestID: requestID,
+          ));
     } else {
       appController.showConnectionSnackbar();
     }
@@ -193,9 +198,7 @@ class RequestDetailsController extends GetxController {
           .child(prnAudioPath)
           .writeToFile(tempAudioFile)
           .then((taskSnapshot) async {
-        if (taskSnapshot.state == TaskState.success) {
-          await FirebaseStorage.instance.ref().child(prnAudioPath).delete();
-        } else {
+        if (taskSnapshot.state == TaskState.error) {
           Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
         }
       });
@@ -224,7 +227,8 @@ class RequestDetailsController extends GetxController {
         await DatabaseRepository.instance
             .addWordOnDB(wordKey, details)
             .whenComplete(() async {
-          await DatabaseRepository.instance.removeRequest(requestID);
+          await DatabaseRepository.instance
+              .removeRequest(requestID, prnAudioPath);
         });
       } else {
         appController.showConnectionSnackbar();

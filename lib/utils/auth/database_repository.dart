@@ -300,7 +300,10 @@ class DatabaseRepository extends GetxController {
     return [path, audioUrl];
   }
 
-  Future removeRequest(String requestID) async {
+  Future removeRequest(String requestID, String? audioPath) async {
+    if (audioPath != null) {
+      await FirebaseStorage.instance.ref().child(audioPath).delete();
+    }
     await _db
         .collection("requests")
         .doc(requestID)
