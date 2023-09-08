@@ -29,30 +29,35 @@ class PreviewEditsPage extends StatelessWidget {
   final String lastModifiedTime;
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
+  final bool fromRequests;
+  final String requestID;
+  final String requestAudioPath;
 
-  PreviewEditsPage({
-    super.key,
-    required this.wordID,
-    required this.word,
-    required this.normalizedWord,
-    required this.prn,
-    required this.prnPath,
-    required this.engTrans,
-    required this.filTrans,
-    required this.meanings,
-    required this.types,
-    required this.kulitanChars,
-    required this.otherRelated,
-    required this.synonyms,
-    required this.antonyms,
-    required this.sources,
-    required this.contributors,
-    required this.expert,
-    required this.lastModifiedTime,
-    required this.definitions,
-    required this.kulitanString,
-    required this.prevWordID,
-  });
+  PreviewEditsPage(
+      {super.key,
+      required this.wordID,
+      required this.word,
+      required this.normalizedWord,
+      required this.prn,
+      required this.prnPath,
+      required this.engTrans,
+      required this.filTrans,
+      required this.meanings,
+      required this.types,
+      required this.kulitanChars,
+      required this.otherRelated,
+      required this.synonyms,
+      required this.antonyms,
+      required this.sources,
+      required this.contributors,
+      required this.expert,
+      required this.lastModifiedTime,
+      required this.definitions,
+      required this.kulitanString,
+      required this.prevWordID,
+      this.fromRequests = false,
+      this.requestID = '',
+      this.requestAudioPath = ''});
 
   late final controller = Get.put(PreviewEditsController(
       prevWordID: prevWordID,
@@ -74,7 +79,10 @@ class PreviewEditsPage extends StatelessWidget {
       expert: expert ?? {},
       lastModifiedTime: lastModifiedTime,
       definitions: definitions,
-      kulitanString: kulitanString));
+      kulitanString: kulitanString,
+      fromRequests: fromRequests,
+      requestID: requestID,
+      requestAudioPath: requestAudioPath));
 
   final appController = Get.find<ApplicationController>();
 

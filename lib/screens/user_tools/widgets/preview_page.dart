@@ -29,6 +29,8 @@ class PreviewPage extends StatelessWidget {
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
   final bool fromRequests;
+  final String requestID;
+  final String requestAudioPath;
 
   PreviewPage(
       {super.key,
@@ -51,7 +53,9 @@ class PreviewPage extends StatelessWidget {
       required this.lastModifiedTime,
       required this.definitions,
       required this.kulitanString,
-      this.fromRequests = false});
+      this.fromRequests = false,
+      this.requestID = '',
+      this.requestAudioPath = ''});
 
   late final controller = Get.put(PreviewController(
       wordID: wordID,
@@ -73,7 +77,9 @@ class PreviewPage extends StatelessWidget {
       lastModifiedTime: lastModifiedTime,
       definitions: definitions,
       kulitanString: kulitanString,
-      fromRequests: fromRequests));
+      fromRequests: fromRequests,
+      requestID: requestID,
+      requestAudioPath: requestAudioPath));
 
   final appController = Get.find<ApplicationController>();
 

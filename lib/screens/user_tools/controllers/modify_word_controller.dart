@@ -674,6 +674,9 @@ class ModifyController extends GetxController {
             lastModifiedTime: timestamp,
             definitions: definitions,
             kulitanString: kulitanString,
+            fromRequests: requestMode,
+            requestID: requestID ?? '',
+            requestAudioPath: prnStoragePath ?? '',
           ));
     } else {
       if (appController.userIsExpert ?? false) {
@@ -708,6 +711,9 @@ class ModifyController extends GetxController {
             lastModifiedTime: timestamp,
             definitions: definitions,
             kulitanString: kulitanString,
+            fromRequests: requestMode,
+            requestID: requestID ?? '',
+            requestAudioPath: prnStoragePath ?? '',
           ));
     }
   }

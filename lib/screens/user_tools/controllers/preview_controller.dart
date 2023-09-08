@@ -26,7 +26,9 @@ class PreviewController extends GetxController {
       required this.lastModifiedTime,
       required this.definitions,
       required this.kulitanString,
-      required this.fromRequests});
+      required this.fromRequests,
+      required this.requestID,
+      required this.requestAudioPath});
 
   static PreviewController get instance => Get.find();
 
@@ -62,6 +64,8 @@ class PreviewController extends GetxController {
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
   final bool fromRequests;
+  final String requestID;
+  final String requestAudioPath;
 
   Future submitWord() async {
     if (appController.hasConnection.value) {
@@ -92,6 +96,10 @@ class PreviewController extends GetxController {
         };
         if (appController.hasConnection.value) {
           await DatabaseRepository.instance.addWordOnDB(wordKey, details);
+          if (fromRequests) {
+            await DatabaseRepository.instance
+                .removeRequest(requestID, requestAudioPath);
+          }
         } else {
           appController.showConnectionSnackbar();
         }

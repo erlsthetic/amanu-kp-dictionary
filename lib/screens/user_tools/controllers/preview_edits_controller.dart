@@ -7,28 +7,30 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class PreviewEditsController extends GetxController {
-  PreviewEditsController({
-    required this.prevWordID,
-    required this.wordID,
-    required this.word,
-    required this.normalizedWord,
-    required this.prn,
-    required this.prnPath,
-    required this.engTrans,
-    required this.filTrans,
-    required this.meanings,
-    required this.types,
-    required this.kulitanChars,
-    required this.otherRelated,
-    required this.synonyms,
-    required this.antonyms,
-    required this.sources,
-    required this.contributors,
-    required this.expert,
-    required this.lastModifiedTime,
-    required this.definitions,
-    required this.kulitanString,
-  });
+  PreviewEditsController(
+      {required this.prevWordID,
+      required this.wordID,
+      required this.word,
+      required this.normalizedWord,
+      required this.prn,
+      required this.prnPath,
+      required this.engTrans,
+      required this.filTrans,
+      required this.meanings,
+      required this.types,
+      required this.kulitanChars,
+      required this.otherRelated,
+      required this.synonyms,
+      required this.antonyms,
+      required this.sources,
+      required this.contributors,
+      required this.expert,
+      required this.lastModifiedTime,
+      required this.definitions,
+      required this.kulitanString,
+      required this.fromRequests,
+      required this.requestID,
+      required this.requestAudioPath});
 
   static PreviewEditsController get instance => Get.find();
 
@@ -65,6 +67,9 @@ class PreviewEditsController extends GetxController {
   final String lastModifiedTime;
   final List<List<Map<String, dynamic>>> definitions;
   final String kulitanString;
+  final bool fromRequests;
+  final String requestID;
+  final String requestAudioPath;
 
   final AudioPlayer player = AudioPlayer();
 
@@ -171,6 +176,10 @@ class PreviewEditsController extends GetxController {
         if (appController.hasConnection.value) {
           await DatabaseRepository.instance
               .updateWordOnDB(wordID, prevWordID, details);
+          if (fromRequests) {
+            await DatabaseRepository.instance
+                .removeRequest(requestID, requestAudioPath);
+          }
         } else {
           isProcessing.value = false;
           appController.showConnectionSnackbar();
