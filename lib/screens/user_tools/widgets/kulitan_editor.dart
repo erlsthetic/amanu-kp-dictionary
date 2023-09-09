@@ -206,8 +206,13 @@ class KulitanEditorPage extends StatelessWidget {
                                                                   .replaceAll(
                                                                       "ii", "í")
                                                                   .replaceAll(
-                                                                      "uu",
-                                                                      "ú"),
+                                                                      "uu", "ú")
+                                                                  .replaceAll(
+                                                                      "ia",
+                                                                      "ya")
+                                                                  .replaceAll(
+                                                                      "ua",
+                                                                      "wa"),
                                                               style: TextStyle(
                                                                   fontSize: 15,
                                                                   color:

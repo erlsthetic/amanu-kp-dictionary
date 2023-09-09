@@ -80,7 +80,9 @@ class KulitanPreview extends StatelessWidget {
                                           .replaceAll("ai", "e")
                                           .replaceAll("au", "o")
                                           .replaceAll("ii", "í")
-                                          .replaceAll("uu", "ú"),
+                                          .replaceAll("uu", "ú")
+                                          .replaceAll("ia", "ya")
+                                          .replaceAll("ua", "wa"),
                                       style: TextStyle(
                                           fontSize: 12, color: disabledGrey),
                                     ),
