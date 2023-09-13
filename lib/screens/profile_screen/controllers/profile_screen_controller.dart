@@ -34,14 +34,19 @@ class ProfileController extends GetxController {
   File newProfile = File("");
   RxString newProfilePath = ''.obs;
   bool newExpertRequest = false;
+  RxBool newEmailPublic = false.obs;
+  RxBool newPhonePublic = false.obs;
 
   RxString userName = ''.obs,
       userEmail = ''.obs,
       userFullName = ''.obs,
       userBio = ''.obs,
       userPic = ''.obs;
-  RxBool userIsExpert = false.obs, userExpertRequest = false.obs;
-  int userPhoneNo = 0;
+  RxBool userIsExpert = false.obs,
+      userExpertRequest = false.obs,
+      userEmailPublic = false.obs,
+      userPhonePublic = false.obs;
+  RxInt userPhoneNo = 0.obs;
   List<String> userContributions = [];
   String contributionCount = '';
   RxBool userNotFound = true.obs;
@@ -75,7 +80,7 @@ class ProfileController extends GetxController {
     isProcessing.value = true;
     userName.value = appController.userName ?? '';
     userEmail.value = appController.userEmail ?? '';
-    userPhoneNo = appController.userPhone ?? 0;
+    userPhoneNo.value = appController.userPhone ?? 0;
     userIsExpert.value = appController.userIsExpert ?? false;
     userExpertRequest.value = appController.userExpertRequest ?? false;
     userPic.value = appController.userPicLocal ?? '';
@@ -88,6 +93,8 @@ class ProfileController extends GetxController {
     } else {
       contributionCount = '';
     }
+    userEmailPublic.value = appController.userEmailPublic ?? false;
+    userPhonePublic.value = appController.userPhonePublic ?? false;
     userNotFound.value = false;
     isProcessing.value = false;
   }
@@ -105,6 +112,8 @@ class ProfileController extends GetxController {
     newExBio = '';
     newProfilePath.value = '';
     newExpertRequest = userExpertRequest.value;
+    newEmailPublic.value = userEmailPublic.value;
+    newPhonePublic.value = userPhonePublic.value;
   }
 
   Future getUserDetails() async {
@@ -121,8 +130,10 @@ class ProfileController extends GetxController {
         print("User found.");
         userName.value = user.userName;
         userEmail.value = user.email;
-        userPhoneNo = user.phoneNo;
+        userPhoneNo.value = user.phoneNo;
         userIsExpert.value = user.isExpert;
+        userEmailPublic.value = user.emailPublic;
+        userPhonePublic.value = user.phonePublic;
         userExpertRequest.value = user.expertRequest;
         userPic.value = user.profileUrl ?? '';
         if (user.isExpert) {
@@ -260,6 +271,12 @@ class ProfileController extends GetxController {
         userChanges["profileUrl"] =
             newUserPicURL != '' ? newUserPicURL : appController.userPic;
       }
+      if (newEmailPublic.value != appController.userEmailPublic) {
+        userChanges["emailPublic"] = newEmailPublic.value;
+      }
+      if (newPhonePublic.value != appController.userPhonePublic) {
+        userChanges["phonePublic"] = newPhonePublic.value;
+      }
 
       print("User changes: " + userChanges.toString());
 
@@ -274,33 +291,40 @@ class ProfileController extends GetxController {
           await appController.changeLoginState(true);
           await appController
               .changeUserDetails(
-                  appController.userID,
-                  userChanges.containsKey("userName")
-                      ? userChanges["userName"]
-                      : appController.userName,
-                  appController.userEmail,
-                  userChanges.containsKey("phoneNo")
-                      ? userChanges["phoneNo"]
-                      : appController.userPhone,
-                  appController.userIsExpert,
-                  userChanges.containsKey("expertRequest")
-                      ? userChanges["expertRequest"]
-                      : appController.userExpertRequest,
-                  userChanges.containsKey("exFullName")
-                      ? userChanges["exFullName"]
-                      : appController.userFullName,
-                  userChanges.containsKey("exBio")
-                      ? userChanges["exBio"]
-                      : appController.userBio,
-                  userChanges.containsKey("profileUrl")
-                      ? userChanges["profileUrl"]
-                      : appController.userPic,
-                  appController.userContributions,
-                  await appController.saveUserPicToLocal(
-                          userChanges.containsKey("profileUrl")
-                              ? userChanges["profileUrl"]
-                              : appController.userPicLocal) ??
-                      appController.userPicLocal)
+            appController.userID,
+            userChanges.containsKey("userName")
+                ? userChanges["userName"]
+                : appController.userName,
+            appController.userEmail,
+            userChanges.containsKey("phoneNo")
+                ? userChanges["phoneNo"]
+                : appController.userPhone,
+            appController.userIsExpert,
+            userChanges.containsKey("expertRequest")
+                ? userChanges["expertRequest"]
+                : appController.userExpertRequest,
+            userChanges.containsKey("exFullName")
+                ? userChanges["exFullName"]
+                : appController.userFullName,
+            userChanges.containsKey("exBio")
+                ? userChanges["exBio"]
+                : appController.userBio,
+            userChanges.containsKey("profileUrl")
+                ? userChanges["profileUrl"]
+                : appController.userPic,
+            appController.userContributions,
+            await appController.saveUserPicToLocal(
+                    userChanges.containsKey("profileUrl")
+                        ? userChanges["profileUrl"]
+                        : appController.userPicLocal) ??
+                appController.userPicLocal,
+            userChanges.containsKey("emailPublic")
+                ? userChanges["emailPublic"]
+                : appController.userEmailPublic,
+            userChanges.containsKey("phonePublic")
+                ? userChanges["phonePublic"]
+                : appController.userPhonePublic,
+          )
               .whenComplete(() {
             appController.refresh();
             getCurrentUserDetails();

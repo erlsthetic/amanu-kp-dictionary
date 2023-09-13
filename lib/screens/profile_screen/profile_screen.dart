@@ -11,6 +11,7 @@ import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -690,6 +691,89 @@ class ProfileScreen extends StatelessWidget {
                                                                                               SizedBox(
                                                                                                 height: 10.0,
                                                                                               ),
+                                                                                              Container(
+                                                                                                  width: double.infinity,
+                                                                                                  alignment: Alignment.center,
+                                                                                                  child: Text(
+                                                                                                    "PRIVACY OPTIONS",
+                                                                                                    style: GoogleFonts.robotoSlab(fontSize: 20, color: primaryOrangeDark, fontWeight: FontWeight.w600),
+                                                                                                  )),
+                                                                                              SizedBox(
+                                                                                                height: 10.0,
+                                                                                              ),
+                                                                                              Container(
+                                                                                                padding: EdgeInsets.symmetric(vertical: 5),
+                                                                                                width: double.infinity,
+                                                                                                alignment: Alignment.center,
+                                                                                                child: Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                  children: [
+                                                                                                    Container(
+                                                                                                      margin: EdgeInsets.only(right: 10),
+                                                                                                      child: Text(
+                                                                                                        "Publicize Email:",
+                                                                                                        style: TextStyle(fontSize: 14, color: disabledGrey),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Container(
+                                                                                                      child: Obx(
+                                                                                                        () => FlutterSwitch(
+                                                                                                          padding: 2,
+                                                                                                          width: 55,
+                                                                                                          height: 30,
+                                                                                                          valueFontSize: 12,
+                                                                                                          toggleSize: 26,
+                                                                                                          value: controller.newEmailPublic.value,
+                                                                                                          borderRadius: 30,
+                                                                                                          showOnOff: true,
+                                                                                                          onToggle: (value) {
+                                                                                                            controller.newEmailPublic.value = value;
+                                                                                                          },
+                                                                                                          activeColor: primaryOrangeDark,
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                              Container(
+                                                                                                padding: EdgeInsets.symmetric(vertical: 5),
+                                                                                                width: double.infinity,
+                                                                                                alignment: Alignment.center,
+                                                                                                child: Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                  children: [
+                                                                                                    Container(
+                                                                                                      margin: EdgeInsets.only(right: 10),
+                                                                                                      child: Text(
+                                                                                                        "Publicize Phone:",
+                                                                                                        style: TextStyle(fontSize: 14, color: disabledGrey),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Container(
+                                                                                                      child: Obx(
+                                                                                                        () => FlutterSwitch(
+                                                                                                          padding: 2,
+                                                                                                          width: 55,
+                                                                                                          height: 30,
+                                                                                                          valueFontSize: 12,
+                                                                                                          toggleSize: 26,
+                                                                                                          value: controller.newPhonePublic.value,
+                                                                                                          borderRadius: 30,
+                                                                                                          showOnOff: true,
+                                                                                                          onToggle: (value) {
+                                                                                                            controller.newPhonePublic.value = value;
+                                                                                                          },
+                                                                                                          activeColor: primaryOrangeDark,
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                height: 10.0,
+                                                                                              ),
                                                                                               !controller.userIsExpert.value
                                                                                                   ? Container(
                                                                                                       padding: EdgeInsets.only(
@@ -894,23 +978,58 @@ class ProfileScreen extends StatelessWidget {
                                                                 ),
                                                               )
                                                             : Container(),
-                                                        Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical:
-                                                                      1.5),
-                                                          child: Text(
-                                                            controller.userEmail
-                                                                .value,
-                                                            style: TextStyle(
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .italic,
-                                                              fontSize: 14,
-                                                              color: cardText,
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        controller
+                                                                .userEmailPublic
+                                                                .value
+                                                            ? Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            1.5),
+                                                                child: Text(
+                                                                  controller
+                                                                      .userEmail
+                                                                      .value,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                    fontSize:
+                                                                        14,
+                                                                    color:
+                                                                        cardText,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                        controller
+                                                                .userPhonePublic
+                                                                .value
+                                                            ? Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            1.5),
+                                                                child: Text(
+                                                                  "+63" +
+                                                                      controller
+                                                                          .userPhoneNo
+                                                                          .value
+                                                                          .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                    fontSize:
+                                                                        14,
+                                                                    color:
+                                                                        cardText,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Container(),
                                                         SizedBox(
                                                           height: 10,
                                                         ),

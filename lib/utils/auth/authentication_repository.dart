@@ -116,7 +116,9 @@ class AuthenticationRepository extends GetxController {
                 userData.exBio,
                 userData.profileUrl,
                 userData.contributions,
-                await appController.saveUserPicToLocal(userData.profileUrl));
+                await appController.saveUserPicToLocal(userData.profileUrl),
+                userData.emailPublic,
+                userData.phonePublic);
           }
         }
         if (appController.isFirstTimeUse) {
@@ -197,8 +199,9 @@ class AuthenticationRepository extends GetxController {
                     userData.exBio,
                     userData.profileUrl,
                     userData.contributions,
-                    await appController
-                        .saveUserPicToLocal(userData.profileUrl));
+                    await appController.saveUserPicToLocal(userData.profileUrl),
+                    userData.emailPublic,
+                    userData.phonePublic);
               }
             }
             if (appController.isFirstTimeUse) {
@@ -241,8 +244,8 @@ class AuthenticationRepository extends GetxController {
         await FirebaseAuth.instance.signOut();
       }
       await appController.changeLoginState(false);
-      await appController.changeUserDetails(
-          null, null, null, null, null, null, null, null, null, null, null);
+      await appController.changeUserDetails(null, null, null, null, null, null,
+          null, null, null, null, null, null, null);
       if (appController.isFirstTimeUse) {
         await Future.delayed(Duration(milliseconds: 500));
         Get.offAll(() => OnBoardingScreen());

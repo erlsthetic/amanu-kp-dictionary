@@ -104,7 +104,7 @@ class ApplicationController extends GetxController {
   bool isLoggedIn = false;
   String? userID, userName, userEmail;
   int? userPhone;
-  bool? userIsExpert, userExpertRequest;
+  bool? userIsExpert, userExpertRequest, userEmailPublic, userPhonePublic;
   String? userFullName, userBio, userPic;
   List<String>? userContributions;
   String? userPicLocal;
@@ -134,20 +134,22 @@ class ApplicationController extends GetxController {
               userData.exBio,
               userData.profileUrl,
               userData.contributions,
-              await saveUserPicToLocal(userData.profileUrl));
+              await saveUserPicToLocal(userData.profileUrl),
+              userData.emailPublic,
+              userData.phonePublic);
         }
       } else {
         if (prefs.containsKey("userID")) {
           await getSavedUserDetails();
         } else {
           await changeLoginState(false);
-          await changeUserDetails(
-              null, null, null, null, null, null, null, null, null, null, null);
+          await changeUserDetails(null, null, null, null, null, null, null,
+              null, null, null, null, null, null);
         }
       }
     } else {
-      await changeUserDetails(
-          null, null, null, null, null, null, null, null, null, null, null);
+      await changeUserDetails(null, null, null, null, null, null, null, null,
+          null, null, null, null, null);
     }
   }
 
@@ -177,6 +179,12 @@ class ApplicationController extends GetxController {
     userPicLocal = prefs.containsKey("userPicLocal")
         ? prefs.getString("userPicLocal")
         : null;
+    userEmailPublic = prefs.containsKey("userEmailPublic")
+        ? prefs.getBool("userEmailPublic")
+        : null;
+    userPhonePublic = prefs.containsKey("userPhonePublic")
+        ? prefs.getBool("userPhonePublic")
+        : null;
   }
 
   Future changeLoginState(bool condition) async {
@@ -197,7 +205,9 @@ class ApplicationController extends GetxController {
       String? _userBio,
       String? _userPic,
       List<dynamic>? _userContributions,
-      String? _userPicLocal) async {
+      String? _userPicLocal,
+      bool? _userEmailPublic,
+      bool? _userPhonePublic) async {
     userID = _userID;
     userName = _userName;
     userEmail = _userEmail;
@@ -210,6 +220,8 @@ class ApplicationController extends GetxController {
     userContributions = _userContributions == null
         ? null
         : _userContributions.map((e) => e.toString()).toList();
+    userEmailPublic = _userEmailPublic;
+    userPhonePublic = _userPhonePublic;
     userPicLocal = _userPicLocal;
     await saveUserDetails();
     printUserDetails();
@@ -257,6 +269,11 @@ class ApplicationController extends GetxController {
     print("userContributions: " +
         (userContributions == null ? "null" : userContributions.toString()));
     print("userPicLocal: " + (userPicLocal ?? "null"));
+
+    print("userEmailPublic: " +
+        (userEmailPublic == null ? "null" : userEmailPublic.toString()));
+    print("userPhonePublic: " +
+        (userPhonePublic == null ? "null" : userPhonePublic.toString()));
   }
 
   Future saveUserDetails() async {
@@ -294,6 +311,12 @@ class ApplicationController extends GetxController {
     userPicLocal != null
         ? prefs.setString("userPicLocal", userPicLocal!)
         : prefs.remove("userPicLocal");
+    userEmailPublic != null
+        ? prefs.setBool("userEmailPublic", userIsExpert!)
+        : prefs.remove("userEmailPublic");
+    userPhonePublic != null
+        ? prefs.setBool("userPhonePublic", userIsExpert!)
+        : prefs.remove("userPhonePublic");
   }
 
   // -- WORD OF THE DAY

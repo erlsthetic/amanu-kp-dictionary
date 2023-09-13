@@ -330,7 +330,9 @@ class SignUpController extends GetxController {
             exBio: exBio == '' ? null : exBio.trim(),
             cvUrl: cvUrl == '' ? null : cvUrl,
             profileUrl: null,
-            contributions: null);
+            contributions: null,
+            emailPublic: false,
+            phonePublic: false);
 
         await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
           await appController.changeLoginState(true);
@@ -346,7 +348,9 @@ class SignUpController extends GetxController {
                   userData.exBio,
                   userData.profileUrl,
                   userData.contributions,
-                  await appController.saveUserPicToLocal(userData.profileUrl))
+                  await appController.saveUserPicToLocal(userData.profileUrl),
+                  userData.emailPublic,
+                  userData.phonePublic)
               .whenComplete(() {
             final drawerController = Get.find<DrawerXController>();
             drawerController.currentItem.value = DrawerItems.home;
@@ -430,7 +434,9 @@ class SignUpController extends GetxController {
           exBio: exBio == '' ? null : exBio.trim(),
           cvUrl: cvUrl == '' ? null : cvUrl,
           profileUrl: photoURLUploaded ?? null,
-          contributions: null);
+          contributions: null,
+          emailPublic: false,
+          phonePublic: false);
 
       await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
         await appController.changeLoginState(true);
@@ -446,7 +452,9 @@ class SignUpController extends GetxController {
                 userData.exBio,
                 userData.profileUrl,
                 userData.contributions,
-                await appController.saveUserPicToLocal(userData.profileUrl))
+                await appController.saveUserPicToLocal(userData.profileUrl),
+                  userData.emailPublic,
+                  userData.phonePublic)
             .whenComplete(() {
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;

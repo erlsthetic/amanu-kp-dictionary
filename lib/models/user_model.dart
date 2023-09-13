@@ -12,6 +12,8 @@ class UserModel {
   final String? cvUrl;
   final String? profileUrl;
   final List<dynamic>? contributions;
+  final bool emailPublic;
+  final bool phonePublic;
 
   const UserModel(
       {required this.uid,
@@ -24,7 +26,9 @@ class UserModel {
       this.exBio,
       this.cvUrl,
       this.profileUrl,
-      this.contributions});
+      this.contributions,
+      this.emailPublic = false,
+      this.phonePublic = false});
 
   toJson() {
     return {
@@ -39,6 +43,8 @@ class UserModel {
       "cvUrl": cvUrl,
       "profileUrl": profileUrl,
       "contributions": contributions,
+      "emailPublic": emailPublic,
+      "phonePublic": phonePublic,
     };
   }
 
@@ -56,6 +62,8 @@ class UserModel {
         exBio: data["exBio"],
         cvUrl: data["cvUrl"],
         profileUrl: data["profileUrl"],
-        contributions: data["contributions"]);
+        contributions: data["contributions"],
+        emailPublic: data["emailPublic"],
+        phonePublic: data["phonePublic"]);
   }
 }
