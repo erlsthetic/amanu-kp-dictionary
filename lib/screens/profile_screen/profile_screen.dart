@@ -695,7 +695,7 @@ class ProfileScreen extends StatelessWidget {
                                                                                                   width: double.infinity,
                                                                                                   alignment: Alignment.center,
                                                                                                   child: Text(
-                                                                                                    "PRIVACY OPTIONS",
+                                                                                                    "PRIVACY SETTINGS",
                                                                                                     style: GoogleFonts.robotoSlab(fontSize: 20, color: primaryOrangeDark, fontWeight: FontWeight.w600),
                                                                                                   )),
                                                                                               SizedBox(
