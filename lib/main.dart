@@ -14,6 +14,9 @@ void main() async {
         systemNavigationBarColor: primaryOrangeDark,
         systemNavigationBarIconBrightness: Brightness.light),
   );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const Amanu());
 }
 

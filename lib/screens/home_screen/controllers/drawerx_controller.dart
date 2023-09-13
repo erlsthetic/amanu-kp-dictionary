@@ -11,6 +11,7 @@ import 'package:amanu/screens/requests_screen/requests_screen.dart';
 import 'package:amanu/screens/support_screen/support_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -44,7 +45,17 @@ class DrawerXController extends GetxController {
       case DrawerItems.bookmarks:
         return BookmarksScreen();
       case DrawerItems.kulitan:
-        return KulitanScannerScreen();
+        if (appController.cameras.length > 0) {
+          return KulitanScannerScreen();
+        } else {
+          homeController.coastController = new CoastController(initialPage: 0);
+          homeController.currentIdx.value = 0;
+          homeController.crabController = new CrabController();
+          Helper.errorSnackBar(
+              title: "No Cameras Detected.",
+              message: "This device has no cameras.");
+          return HomeScreen();
+        }
       case DrawerItems.join:
         return OnBoardingScreen();
       case DrawerItems.profile:

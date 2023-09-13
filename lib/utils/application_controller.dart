@@ -10,6 +10,7 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:camera/camera.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class ApplicationController extends GetxController {
 
   // -- INSTANTIATIONS
   final _realtimeDB = FirebaseDatabase.instance.ref();
+  late List<CameraDescription> cameras;
 
   // -- ON START RUN
   @override
@@ -42,6 +44,7 @@ class ApplicationController extends GetxController {
     await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
         permanent: true);
     await Get.put(DrawerXController(), permanent: true);
+    cameras = await availableCameras();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     if (isFirstTimeUse) {
@@ -410,16 +413,6 @@ class ApplicationController extends GetxController {
     }
   }
 
-  Future<bool> checkFirstTimeBrowse() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("isFirstTimeBrowse")) {
-      return prefs.getBool("isFirstTimeBrowse")!;
-    } else {
-      prefs.setBool("isFirstTimeBrowse", true);
-      return prefs.getBool("isFirstTimeBrowse")!;
-    }
-  }
-
   Future<bool> checkFirstTimeBookmarks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeBookmarks")) {
@@ -431,16 +424,6 @@ class ApplicationController extends GetxController {
   }
 
   Future<bool> checkFirstTimeModify() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("isFirstTimeModify")) {
-      return prefs.getBool("isFirstTimeModify")!;
-    } else {
-      prefs.setBool("isFirstTimeModify", true);
-      return prefs.getBool("isFirstTimeModify")!;
-    }
-  }
-
-  Future<bool> checkFirstTimeDelete() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeModify")) {
       return prefs.getBool("isFirstTimeModify")!;
@@ -497,6 +480,16 @@ class ApplicationController extends GetxController {
     } else {
       prefs.setBool("isFirstTimeRequests", true);
       return prefs.getBool("isFirstTimeRequests")!;
+    }
+  }
+
+  Future<bool> checkFirstTimeProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeOnboarding")) {
+      return prefs.getBool("isFirstTimeOnboarding")!;
+    } else {
+      prefs.setBool("isFirstTimeOnboarding", true);
+      return prefs.getBool("isFirstTimeOnboarding")!;
     }
   }
 

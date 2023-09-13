@@ -50,8 +50,8 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app requires microphone permissions.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires camera permission.</string>
+	<string>This app requires camera permissions.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires photo library permission.</string>
+	<string>This app requires photo library permissions.</string>
 </dict>
 </plist>

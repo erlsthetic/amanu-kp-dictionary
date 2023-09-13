@@ -93,6 +93,7 @@ class SearchFilter extends StatelessWidget {
                                               "Word": "word",
                                               "Eng Trans": "engTrans",
                                               "Fil Trans": "filTrans",
+                                              "Kulitan": "kulitan",
                                               "Related": "related",
                                               "Synonym": "synonym",
                                               "Antonym": "antonym",
@@ -184,15 +185,18 @@ class FilterOption extends StatelessWidget {
                     ? controller.searchInEngTrans.value
                     : refVal == "filTrans"
                         ? controller.searchInFilTrans.value
-                        : refVal == "related"
-                            ? controller.searchInRelated.value
-                            : refVal == "synonym"
-                                ? controller.searchInSynonyms.value
-                                : refVal == "antonym"
-                                    ? controller.searchInAntonyms.value
-                                    : refVal == "definition"
-                                        ? controller.searchInDefinition.value
-                                        : false,
+                        : refVal == "kulitan"
+                            ? controller.searchInKulitan.value
+                            : refVal == "related"
+                                ? controller.searchInRelated.value
+                                : refVal == "synonym"
+                                    ? controller.searchInSynonyms.value
+                                    : refVal == "antonym"
+                                        ? controller.searchInAntonyms.value
+                                        : refVal == "definition"
+                                            ? controller
+                                                .searchInDefinition.value
+                                            : false,
             borderRadius: 30,
             showOnOff: true,
             onToggle: (value) {
@@ -202,17 +206,20 @@ class FilterOption extends StatelessWidget {
                       ? controller.searchInEngTrans.value = value
                       : refVal == "filTrans"
                           ? controller.searchInFilTrans.value = value
-                          : refVal == "related"
-                              ? controller.searchInRelated.value = value
-                              : refVal == "synonym"
-                                  ? controller.searchInSynonyms.value = value
-                                  : refVal == "antonym"
-                                      ? controller.searchInAntonyms.value =
+                          : refVal == "kulitan"
+                              ? controller.searchInKulitan.value = value
+                              : refVal == "related"
+                                  ? controller.searchInRelated.value = value
+                                  : refVal == "synonym"
+                                      ? controller.searchInSynonyms.value =
                                           value
-                                      : refVal == "definition"
-                                          ? controller
-                                              .searchInDefinition.value = value
-                                          : null;
+                                      : refVal == "antonym"
+                                          ? controller.searchInAntonyms.value =
+                                              value
+                                          : refVal == "definition"
+                                              ? controller.searchInDefinition
+                                                  .value = value
+                                              : null;
             },
             activeColor: primaryOrangeDark,
           ),

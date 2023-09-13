@@ -1,13 +1,15 @@
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/kulitan_scanner_screen/kulitan_scanner_screen.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({
+  BottomNavBar({
     super.key,
     required this.size,
     required HomePageController pController,
@@ -15,6 +17,7 @@ class BottomNavBar extends StatelessWidget {
 
   final Size size;
   final HomePageController _pController;
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +53,15 @@ class BottomNavBar extends StatelessWidget {
                           )),
                       elevation: 3,
                       onPressed: () {
-                        Get.to(() => KulitanScannerScreen(
-                              fromDrawer: false,
-                            ));
+                        if (appController.cameras.length > 0) {
+                          Get.to(() => KulitanScannerScreen(
+                                fromDrawer: false,
+                              ));
+                        } else {
+                          Helper.errorSnackBar(
+                              title: "No Cameras Detected.",
+                              message: "This device has no cameras.");
+                        }
                       }),
                 ),
               ),
@@ -63,25 +72,7 @@ class BottomNavBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Obx(() => /*IconButton(
-                      highlightColor: primaryOrangeLight.withOpacity(0.5),
-                      icon: Icon(
-                        Icons.home,
-                        size: 30,
-                        color: _pController.currentIdx.value == 0
-                            ? primaryOrangeDark
-                            : disabledGrey,
-                      ),
-                      onPressed: () {
-                        _pController.currentIdx.value = 0;
-                        _pController.coastController.animateTo(
-                            beach: 0,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.ease);
-                      },
-                      splashColor: Colors.white,
-                    ),*/
-                      GestureDetector(
+                  Obx(() => GestureDetector(
                         child: Container(
                           height: 30,
                           width: 30,
@@ -105,23 +96,7 @@ class BottomNavBar extends StatelessWidget {
                   Container(
                     width: size.width * 0.20,
                   ),
-                  Obx(() => /*IconButton(
-                        highlightColor: primaryOrangeLight.withOpacity(0.5),
-                        icon: Icon(
-                          Icons.book_rounded,
-                          size: 30,
-                          color: _pController.currentIdx.value == 1
-                              ? primaryOrangeDark
-                              : disabledGrey,
-                        ),
-                        onPressed: () {
-                          _pController.currentIdx.value = 1;
-                          _pController.coastController.animateTo(
-                              beach: 1,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease);
-                        }),*/
-                      GestureDetector(
+                  Obx(() => GestureDetector(
                         child: Container(
                           height: 30,
                           width: 30,

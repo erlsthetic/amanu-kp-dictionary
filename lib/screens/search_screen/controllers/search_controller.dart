@@ -9,6 +9,7 @@ class SearchWordController extends GetxController {
   RxBool searchInWord = true.obs;
   RxBool searchInEngTrans = true.obs;
   RxBool searchInFilTrans = true.obs;
+  RxBool searchInKulitan = true.obs;
   RxBool searchInDefinition = false.obs;
   RxBool searchInRelated = false.obs;
   RxBool searchInSynonyms = false.obs;
@@ -65,6 +66,22 @@ class SearchWordController extends GetxController {
             }
           }
           if (_found) {
+            continue;
+          }
+        }
+      }
+      if (searchInKulitan.value) {
+        if (entry.value["kulitan-form"] != null) {
+          List<List<String>> kulitanList = entry.value["kulitan-form"];
+          String kulitanString = '';
+          for (var line in kulitanList) {
+            for (var syl in line) {
+              kulitanString = kulitanString + syl;
+            }
+          }
+          if (kulitanString.contains(query)) {
+            tempMap[entry.key] = entry.value;
+            tempFoundOn[entry.key] = "engTrans";
             continue;
           }
         }

@@ -4,50 +4,61 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThreePartHeader extends StatelessWidget {
-  const ThreePartHeader(
-      {super.key,
-      required this.size,
-      required this.screenPadding,
-      required this.title,
-      this.firstIcon = Icons.arrow_back_ios_new_rounded,
-      this.secondIcon = Icons.help,
-      this.firstOnPressed,
-      this.secondOnPressed,
-      this.additionalHeight = 0,
-      this.iconWeight = 10,
-      this.secondIconDisabled = false});
+  const ThreePartHeader({
+    super.key,
+    required this.size,
+    required this.screenPadding,
+    required this.title,
+    this.firstIcon = Icons.arrow_back_ios_new_rounded,
+    this.firstIconColor = pureWhite,
+    this.secondIconColor = pureWhite,
+    this.secondIcon = Icons.help,
+    this.firstOnPressed,
+    this.secondOnPressed,
+    this.additionalHeight = 0,
+    this.iconWeight = 10,
+    this.secondIconDisabled = false,
+    this.hasTitle = true,
+    this.hasBG = true,
+  });
 
   final Size size;
   final EdgeInsets screenPadding;
   final String title;
   final IconData? firstIcon;
+  final Color? firstIconColor;
+  final Color? secondIconColor;
   final double? iconWeight;
   final IconData? secondIcon;
   final VoidCallback? firstOnPressed;
   final VoidCallback? secondOnPressed;
   final double? additionalHeight;
   final bool? secondIconDisabled;
+  final bool? hasTitle;
+  final bool? hasBG;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Hero(
-            tag: "AppBar",
-            child: Container(
-              width: size.width,
-              height: screenPadding.top + 70 + (additionalHeight ?? 0),
-              decoration: BoxDecoration(
-                  gradient: orangeGradient,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(30.0))),
-            ),
-          ),
-        ),
+        (hasBG ?? true)
+            ? Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Hero(
+                  tag: "AppBar",
+                  child: Container(
+                    width: size.width,
+                    height: screenPadding.top + 70 + (additionalHeight ?? 0),
+                    decoration: BoxDecoration(
+                        gradient: orangeGradient,
+                        borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(30.0))),
+                  ),
+                ),
+              )
+            : Container(),
         Positioned(
             top: screenPadding.top,
             left: 0,
@@ -74,22 +85,24 @@ class ThreePartHeader extends StatelessWidget {
                           child: Icon(
                             firstIcon ?? Icons.arrow_back_ios_new_rounded,
                             weight: iconWeight ?? 10,
-                            color: pureWhite,
+                            color: firstIconColor ?? pureWhite,
                             size: 30,
                           ),
                         ),
                       ),
                     ),
-                    Hero(
-                      tag: title,
-                      child: Text(
-                        title,
-                        style: GoogleFonts.robotoSlab(
-                            fontSize: 24,
-                            color: pureWhite,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    hasTitle ?? true
+                        ? Hero(
+                            tag: title,
+                            child: Text(
+                              title,
+                              style: GoogleFonts.robotoSlab(
+                                  fontSize: 24,
+                                  color: pureWhite,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : Container(),
                     secondIconDisabled ?? false
                         ? Container(width: 30, height: 30)
                         : Hero(
@@ -104,7 +117,7 @@ class ThreePartHeader extends StatelessWidget {
                                 child: Icon(
                                   secondIcon ?? Icons.help,
                                   size: 30,
-                                  color: pureWhite,
+                                  color: secondIconColor ?? pureWhite,
                                 ),
                               ),
                             ),
