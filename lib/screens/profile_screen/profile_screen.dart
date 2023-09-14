@@ -160,7 +160,7 @@ class ProfileScreen extends StatelessWidget {
                                                   Positioned(
                                                     bottom: 0,
                                                     child: controller
-                                                            .userIsExpert.value
+                                                            .userIsAdmin.value
                                                         ? Container(
                                                             height: 23,
                                                             padding: EdgeInsets
@@ -176,7 +176,7 @@ class ProfileScreen extends StatelessWidget {
                                                                             20),
                                                                 boxShadow: [
                                                                   BoxShadow(
-                                                                    color: expertBadge
+                                                                    color: adminBadge
                                                                         .withOpacity(
                                                                             0.65),
                                                                     blurRadius:
@@ -192,9 +192,9 @@ class ProfileScreen extends StatelessWidget {
                                                               children: [
                                                                 Icon(
                                                                   Icons
-                                                                      .verified_rounded,
+                                                                      .admin_panel_settings_rounded,
                                                                   size: 15,
-                                                                  color: muteBlack
+                                                                  color: pureWhite
                                                                       .withOpacity(
                                                                           0.5),
                                                                 ),
@@ -202,9 +202,9 @@ class ProfileScreen extends StatelessWidget {
                                                                   width: 2.5,
                                                                 ),
                                                                 Text(
-                                                                  tExpert,
+                                                                  tAdmin,
                                                                   style: TextStyle(
-                                                                      color: muteBlack
+                                                                      color: pureWhite
                                                                           .withOpacity(
                                                                               0.5),
                                                                       fontSize:
@@ -216,12 +216,9 @@ class ProfileScreen extends StatelessWidget {
                                                               ],
                                                             ),
                                                           )
-                                                        : (!controller
-                                                                    .userIsExpert
-                                                                    .value &&
-                                                                controller
-                                                                    .userExpertRequest
-                                                                    .value)
+                                                        : controller
+                                                                .userIsExpert
+                                                                .value
                                                             ? Container(
                                                                 height: 23,
                                                                 padding: EdgeInsets
@@ -231,13 +228,13 @@ class ProfileScreen extends StatelessWidget {
                                                                 ),
                                                                 decoration: BoxDecoration(
                                                                     color:
-                                                                        darkGrey,
+                                                                        expertBadge,
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             20),
                                                                     boxShadow: [
                                                                       BoxShadow(
-                                                                        color: darkGrey
+                                                                        color: expertBadge
                                                                             .withOpacity(0.65),
                                                                         blurRadius:
                                                                             10,
@@ -252,9 +249,9 @@ class ProfileScreen extends StatelessWidget {
                                                                   children: [
                                                                     Icon(
                                                                       Icons
-                                                                          .pending_actions_rounded,
+                                                                          .verified_rounded,
                                                                       size: 15,
-                                                                      color: pureWhite
+                                                                      color: muteBlack
                                                                           .withOpacity(
                                                                               0.5),
                                                                     ),
@@ -263,9 +260,9 @@ class ProfileScreen extends StatelessWidget {
                                                                           2.5,
                                                                     ),
                                                                     Text(
-                                                                      tPending,
+                                                                      tExpert,
                                                                       style: TextStyle(
-                                                                          color: pureWhite.withOpacity(
+                                                                          color: muteBlack.withOpacity(
                                                                               0.5),
                                                                           fontSize:
                                                                               11.5,
@@ -275,59 +272,112 @@ class ProfileScreen extends StatelessWidget {
                                                                   ],
                                                                 ),
                                                               )
-                                                            : Container(
-                                                                height: 23,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                  horizontal:
-                                                                      7.5,
-                                                                ),
-                                                                decoration: BoxDecoration(
-                                                                    color:
-                                                                        contributorBadge,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            20),
-                                                                    boxShadow: [
-                                                                      BoxShadow(
-                                                                        color: contributorBadge
-                                                                            .withOpacity(0.65),
-                                                                        blurRadius:
-                                                                            10,
-                                                                        spreadRadius:
-                                                                            -4,
-                                                                      ),
-                                                                    ]),
-                                                                child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .person_add_rounded,
-                                                                      size: 15,
-                                                                      color: pureWhite
-                                                                          .withOpacity(
-                                                                              0.5),
+                                                            : (!controller
+                                                                        .userIsExpert
+                                                                        .value &&
+                                                                    controller
+                                                                        .userExpertRequest
+                                                                        .value)
+                                                                ? Container(
+                                                                    height: 23,
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .symmetric(
+                                                                      horizontal:
+                                                                          7.5,
                                                                     ),
-                                                                    SizedBox(
-                                                                      width:
-                                                                          2.5,
+                                                                    decoration: BoxDecoration(
+                                                                        color:
+                                                                            darkGrey,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                            color:
+                                                                                darkGrey.withOpacity(0.65),
+                                                                            blurRadius:
+                                                                                10,
+                                                                            spreadRadius:
+                                                                                -4,
+                                                                          ),
+                                                                        ]),
+                                                                    child: Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .pending_actions_rounded,
+                                                                          size:
+                                                                              15,
+                                                                          color:
+                                                                              pureWhite.withOpacity(0.5),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              2.5,
+                                                                        ),
+                                                                        Text(
+                                                                          tPending,
+                                                                          style: TextStyle(
+                                                                              color: pureWhite.withOpacity(0.5),
+                                                                              fontSize: 11.5,
+                                                                              fontWeight: FontWeight.w600),
+                                                                        )
+                                                                      ],
                                                                     ),
-                                                                    Text(
-                                                                      tContributor,
-                                                                      style: TextStyle(
-                                                                          color: pureWhite.withOpacity(
-                                                                              0.5),
-                                                                          fontSize:
-                                                                              11.5,
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
+                                                                  )
+                                                                : Container(
+                                                                    height: 23,
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .symmetric(
+                                                                      horizontal:
+                                                                          7.5,
+                                                                    ),
+                                                                    decoration: BoxDecoration(
+                                                                        color:
+                                                                            contributorBadge,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                            color:
+                                                                                contributorBadge.withOpacity(0.65),
+                                                                            blurRadius:
+                                                                                10,
+                                                                            spreadRadius:
+                                                                                -4,
+                                                                          ),
+                                                                        ]),
+                                                                    child: Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .person_add_rounded,
+                                                                          size:
+                                                                              15,
+                                                                          color:
+                                                                              pureWhite.withOpacity(0.5),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              2.5,
+                                                                        ),
+                                                                        Text(
+                                                                          tContributor,
+                                                                          style: TextStyle(
+                                                                              color: pureWhite.withOpacity(0.5),
+                                                                              fontSize: 11.5,
+                                                                              fontWeight: FontWeight.w600),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
                                                   ),
                                                   ownProfile
                                                       ? Positioned(

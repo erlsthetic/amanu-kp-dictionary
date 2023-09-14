@@ -16,6 +16,7 @@ const Color disabledGrey = Color(0xFF9B9B9B);
 
 const Color contributorBadge = Color(0xFF934A32);
 const Color expertBadge = Color(0xFFFDD835);
+const Color adminBadge = Color.fromARGB(255, 255, 66, 66);
 const LinearGradient orangeGradient = LinearGradient(
     begin: Alignment(-0.9, -1),
     end: Alignment(0.9, 1),

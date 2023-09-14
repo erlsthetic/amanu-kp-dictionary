@@ -43,6 +43,7 @@ class ProfileController extends GetxController {
       userBio = ''.obs,
       userPic = ''.obs;
   RxBool userIsExpert = false.obs,
+      userIsAdmin = false.obs,
       userExpertRequest = false.obs,
       userEmailPublic = false.obs,
       userPhonePublic = false.obs;
@@ -82,6 +83,7 @@ class ProfileController extends GetxController {
     userEmail.value = appController.userEmail ?? '';
     userPhoneNo.value = appController.userPhone ?? 0;
     userIsExpert.value = appController.userIsExpert ?? false;
+    userIsAdmin.value = appController.userIsAdmin ?? false;
     userExpertRequest.value = appController.userExpertRequest ?? false;
     userPic.value = appController.userPicLocal ?? '';
     userFullName.value = appController.userFullName ?? '';
@@ -132,6 +134,7 @@ class ProfileController extends GetxController {
         userEmail.value = user.email;
         userPhoneNo.value = user.phoneNo;
         userIsExpert.value = user.isExpert;
+        userIsAdmin.value = user.isAdmin;
         userEmailPublic.value = user.emailPublic;
         userPhonePublic.value = user.phonePublic;
         userExpertRequest.value = user.expertRequest;
@@ -324,6 +327,9 @@ class ProfileController extends GetxController {
             userChanges.containsKey("phonePublic")
                 ? userChanges["phonePublic"]
                 : appController.userPhonePublic,
+            userChanges.containsKey("isAdmin")
+                ? userChanges["isAdmin"]
+                : appController.userIsAdmin,
           )
               .whenComplete(() {
             appController.refresh();

@@ -332,7 +332,8 @@ class SignUpController extends GetxController {
             profileUrl: null,
             contributions: null,
             emailPublic: false,
-            phonePublic: false);
+            phonePublic: false,
+            isAdmin: false);
 
         await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
           await appController.changeLoginState(true);
@@ -350,7 +351,8 @@ class SignUpController extends GetxController {
                   userData.contributions,
                   await appController.saveUserPicToLocal(userData.profileUrl),
                   userData.emailPublic,
-                  userData.phonePublic)
+                  userData.phonePublic,
+                  userData.isAdmin)
               .whenComplete(() {
             final drawerController = Get.find<DrawerXController>();
             drawerController.currentItem.value = DrawerItems.home;
@@ -436,7 +438,8 @@ class SignUpController extends GetxController {
           profileUrl: photoURLUploaded ?? null,
           contributions: null,
           emailPublic: false,
-          phonePublic: false);
+          phonePublic: false,
+          isAdmin: false);
 
       await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
         await appController.changeLoginState(true);
@@ -453,8 +456,9 @@ class SignUpController extends GetxController {
                 userData.profileUrl,
                 userData.contributions,
                 await appController.saveUserPicToLocal(userData.profileUrl),
-                  userData.emailPublic,
-                  userData.phonePublic)
+                userData.emailPublic,
+                userData.phonePublic,
+                userData.isAdmin)
             .whenComplete(() {
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;

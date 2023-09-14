@@ -118,7 +118,8 @@ class AuthenticationRepository extends GetxController {
                 userData.contributions,
                 await appController.saveUserPicToLocal(userData.profileUrl),
                 userData.emailPublic,
-                userData.phonePublic);
+                userData.phonePublic,
+                userData.isAdmin);
           }
         }
         if (appController.isFirstTimeUse) {
@@ -201,7 +202,8 @@ class AuthenticationRepository extends GetxController {
                     userData.contributions,
                     await appController.saveUserPicToLocal(userData.profileUrl),
                     userData.emailPublic,
-                    userData.phonePublic);
+                    userData.phonePublic,
+                    userData.isAdmin);
               }
             }
             if (appController.isFirstTimeUse) {
@@ -245,7 +247,7 @@ class AuthenticationRepository extends GetxController {
       }
       await appController.changeLoginState(false);
       await appController.changeUserDetails(null, null, null, null, null, null,
-          null, null, null, null, null, null, null);
+          null, null, null, null, null, null, null, null);
       if (appController.isFirstTimeUse) {
         await Future.delayed(Duration(milliseconds: 500));
         Get.offAll(() => OnBoardingScreen());

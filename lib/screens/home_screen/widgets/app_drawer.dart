@@ -159,15 +159,14 @@ class AppDrawer extends StatelessWidget {
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    ctl.isLoggedIn &&
-                                            (ctl.userIsExpert ?? false)
+                                    ctl.isLoggedIn && (ctl.userIsAdmin ?? false)
                                         ? Container(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 4, horizontal: 8),
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20),
-                                                color: expertBadge),
+                                                color: adminBadge),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment:
@@ -175,20 +174,22 @@ class AppDrawer extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                Icon(Icons.verified_rounded,
+                                                Icon(
+                                                    Icons
+                                                        .admin_panel_settings_rounded,
                                                     size: 14,
-                                                    color: muteBlack
+                                                    color: pureWhite
                                                         .withOpacity(0.5)),
                                                 SizedBox(
                                                   width: 3.0,
                                                 ),
                                                 Text(
-                                                  tExpert,
+                                                  tAdmin,
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
-                                                      color: muteBlack
+                                                      color: pureWhite
                                                           .withOpacity(0.5),
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -197,7 +198,8 @@ class AppDrawer extends StatelessWidget {
                                               ],
                                             ),
                                           )
-                                        : ctl.userExpertRequest ?? false
+                                        : ctl.isLoggedIn &&
+                                                (ctl.userIsExpert ?? false)
                                             ? Container(
                                                 padding: EdgeInsets.symmetric(
                                                     vertical: 4, horizontal: 8),
@@ -205,7 +207,7 @@ class AppDrawer extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             20),
-                                                    color: darkGrey),
+                                                    color: expertBadge),
                                                 child: Row(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
@@ -214,23 +216,21 @@ class AppDrawer extends StatelessWidget {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    Icon(
-                                                        Icons
-                                                            .pending_actions_rounded,
+                                                    Icon(Icons.verified_rounded,
                                                         size: 14,
-                                                        color: pureWhite
+                                                        color: muteBlack
                                                             .withOpacity(0.5)),
                                                     SizedBox(
                                                       width: 3.0,
                                                     ),
                                                     Text(
-                                                      tPending,
+                                                      tExpert,
                                                       maxLines: 1,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style:
                                                           GoogleFonts.poppins(
-                                                              color: pureWhite
+                                                              color: muteBlack
                                                                   .withOpacity(
                                                                       0.5),
                                                               fontWeight:
@@ -241,38 +241,43 @@ class AppDrawer extends StatelessWidget {
                                                   ],
                                                 ),
                                               )
-                                            : Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 4, horizontal: 8),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color: contributorBadge),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                        Icons
-                                                            .person_add_rounded,
-                                                        size: 14,
-                                                        color: pureWhite
-                                                            .withOpacity(0.5)),
-                                                    SizedBox(
-                                                      width: 3.0,
-                                                    ),
-                                                    Text(
-                                                      tContributor,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style:
-                                                          GoogleFonts.poppins(
+                                            : ctl.userExpertRequest ?? false
+                                                ? Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 4,
+                                                            horizontal: 8),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color: darkGrey),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                            Icons
+                                                                .pending_actions_rounded,
+                                                            size: 14,
+                                                            color: pureWhite
+                                                                .withOpacity(
+                                                                    0.5)),
+                                                        SizedBox(
+                                                          width: 3.0,
+                                                        ),
+                                                        Text(
+                                                          tPending,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: GoogleFonts.poppins(
                                                               color: pureWhite
                                                                   .withOpacity(
                                                                       0.5),
@@ -280,10 +285,58 @@ class AppDrawer extends StatelessWidget {
                                                                   FontWeight
                                                                       .w600,
                                                               fontSize: 12),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
-                                              )
+                                                  )
+                                                : Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 4,
+                                                            horizontal: 8),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color:
+                                                            contributorBadge),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                            Icons
+                                                                .person_add_rounded,
+                                                            size: 14,
+                                                            color: pureWhite
+                                                                .withOpacity(
+                                                                    0.5)),
+                                                        SizedBox(
+                                                          width: 3.0,
+                                                        ),
+                                                        Text(
+                                                          tContributor,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: GoogleFonts.poppins(
+                                                              color: pureWhite
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                   ],
                                 ),
                               ),

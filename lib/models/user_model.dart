@@ -14,6 +14,7 @@ class UserModel {
   final List<dynamic>? contributions;
   final bool emailPublic;
   final bool phonePublic;
+  final bool isAdmin;
 
   const UserModel(
       {required this.uid,
@@ -28,7 +29,8 @@ class UserModel {
       this.profileUrl,
       this.contributions,
       this.emailPublic = false,
-      this.phonePublic = false});
+      this.phonePublic = false,
+      this.isAdmin = false});
 
   toJson() {
     return {
@@ -45,6 +47,7 @@ class UserModel {
       "contributions": contributions,
       "emailPublic": emailPublic,
       "phonePublic": phonePublic,
+      "isAdmin": isAdmin,
     };
   }
 
@@ -64,6 +67,7 @@ class UserModel {
         profileUrl: data["profileUrl"],
         contributions: data["contributions"],
         emailPublic: data["emailPublic"],
-        phonePublic: data["phonePublic"]);
+        phonePublic: data["phonePublic"],
+        isAdmin: data["isAdmin"]);
   }
 }

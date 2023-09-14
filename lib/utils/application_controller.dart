@@ -104,7 +104,11 @@ class ApplicationController extends GetxController {
   bool isLoggedIn = false;
   String? userID, userName, userEmail;
   int? userPhone;
-  bool? userIsExpert, userExpertRequest, userEmailPublic, userPhonePublic;
+  bool? userIsExpert,
+      userExpertRequest,
+      userEmailPublic,
+      userPhonePublic,
+      userIsAdmin;
   String? userFullName, userBio, userPic;
   List<String>? userContributions;
   String? userPicLocal;
@@ -136,7 +140,8 @@ class ApplicationController extends GetxController {
               userData.contributions,
               await saveUserPicToLocal(userData.profileUrl),
               userData.emailPublic,
-              userData.phonePublic);
+              userData.phonePublic,
+              userData.isAdmin);
         }
       } else {
         if (prefs.containsKey("userID")) {
@@ -144,12 +149,12 @@ class ApplicationController extends GetxController {
         } else {
           await changeLoginState(false);
           await changeUserDetails(null, null, null, null, null, null, null,
-              null, null, null, null, null, null);
+              null, null, null, null, null, null, null);
         }
       }
     } else {
       await changeUserDetails(null, null, null, null, null, null, null, null,
-          null, null, null, null, null);
+          null, null, null, null, null, null);
     }
   }
 
@@ -207,7 +212,8 @@ class ApplicationController extends GetxController {
       List<dynamic>? _userContributions,
       String? _userPicLocal,
       bool? _userEmailPublic,
-      bool? _userPhonePublic) async {
+      bool? _userPhonePublic,
+      bool? _userIsAdmin) async {
     userID = _userID;
     userName = _userName;
     userEmail = _userEmail;
@@ -223,6 +229,7 @@ class ApplicationController extends GetxController {
     userEmailPublic = _userEmailPublic;
     userPhonePublic = _userPhonePublic;
     userPicLocal = _userPicLocal;
+    userIsAdmin = _userIsAdmin;
     await saveUserDetails();
     printUserDetails();
   }
@@ -274,6 +281,8 @@ class ApplicationController extends GetxController {
         (userEmailPublic == null ? "null" : userEmailPublic.toString()));
     print("userPhonePublic: " +
         (userPhonePublic == null ? "null" : userPhonePublic.toString()));
+    print("userPhonePublic: " +
+        (userIsAdmin == null ? "null" : userIsAdmin.toString()));
   }
 
   Future saveUserDetails() async {
@@ -317,6 +326,9 @@ class ApplicationController extends GetxController {
     userPhonePublic != null
         ? prefs.setBool("userPhonePublic", userIsExpert!)
         : prefs.remove("userPhonePublic");
+    userIsAdmin != null
+        ? prefs.setBool("userIsAdmin", userIsExpert!)
+        : prefs.remove("userIsAdmin");
   }
 
   // -- WORD OF THE DAY
