@@ -1,3 +1,4 @@
+import 'package:amanu/components/loader_dialog.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,7 +44,7 @@ class ResetPasswordController extends GetxController {
     }
   }
 
-  Future sendResetEmail() async {
+  Future sendResetEmail(BuildContext context) async {
     final credentialsValid = resetFormKey.currentState!.validate();
     if (!credentialsValid) {
       return;
@@ -53,7 +54,9 @@ class ResetPasswordController extends GetxController {
     String rEmail = resetEmail.toLowerCase().trim();
 
     if (appController.hasConnection.value) {
+      showLoaderDialog(context);
       await AuthenticationRepository.instance.resetPassword(rEmail);
+      Navigator.of(context).pop();
     } else {
       appController.showConnectionSnackbar();
     }

@@ -1,6 +1,4 @@
 import 'package:amanu/screens/login_screen/controllers/forget_password_controller.dart';
-import 'package:amanu/screens/login_screen/widgets/forgot_password_otp.dart';
-import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -76,7 +74,9 @@ class ForgotPasswordEmail extends StatelessWidget {
                               fixedSize: Size(double.infinity, 45.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0))),
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.sendResetEmail(context);
+                          },
                           child: Text(
                             tResetPassword.toUpperCase(),
                             textAlign: TextAlign.center,
