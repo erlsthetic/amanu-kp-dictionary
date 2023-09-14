@@ -1,10 +1,18 @@
 import 'package:amanu/utils/application_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchWordController extends GetxController {
   static SearchWordController get instance => Get.find();
 
+  SearchWordController({this.fromKulitan = false, this.kulitanQuery = ''});
+
+  final bool fromKulitan;
+  final String kulitanQuery;
+
   final appController = Get.find<ApplicationController>();
+
+  late TextEditingController searchBoxController;
 
   RxBool searchInWord = true.obs;
   RxBool searchInEngTrans = true.obs;
@@ -20,11 +28,23 @@ class SearchWordController extends GetxController {
   RxMap<dynamic, dynamic> suggestionMap = <dynamic, dynamic>{}.obs;
   Map<dynamic, dynamic> foundOn = {};
 
+  @override
+  void onInit() {
+    super.onInit();
+    suggestionMap.value = appController.dictionaryContent;
+    if (fromKulitan) {
+      searchWord(kulitanQuery);
+      searchBoxController = TextEditingController(text: kulitanQuery);
+    } else {
+      searchBoxController = TextEditingController();
+    }
+  }
+
   void searchWord(String input) {
     loading.value = true;
     Map<dynamic, dynamic> tempMap = {};
     Map<dynamic, dynamic> tempFoundOn = {};
-    String query = input.toLowerCase();
+    String query = appController.normalizeWord(input);
     for (var entry in appController.dictionaryContent.entries) {
       if (searchInWord.value) {
         if (entry.value["word"] != null) {
@@ -170,11 +190,5 @@ class SearchWordController extends GetxController {
         loading.value = false;
       });
     }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    suggestionMap.value = appController.dictionaryContent;
   }
 }

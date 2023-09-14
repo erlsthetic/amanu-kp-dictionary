@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:amanu/components/info_dialog.dart';
 import 'package:amanu/components/loader_dialog.dart';
+import 'package:amanu/screens/search_screen/search_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -193,6 +195,17 @@ class KulitanScannerController extends GetxController
     }
   }
 
+  Future searchInDictionary(String word) async {
+    String query = appController.normalizeWord(word);
+    Get.to(() => SearchScreen(fromKulitanScanner: true, input: query));
+  }
+
+  Future copyToClipboard(String word) async {
+    await Clipboard.setData(ClipboardData(text: word)).catchError(
+        Helper.errorSnackBar(
+            title: tOhSnap, message: "Unable to copy to clipboard."));
+  }
+
   Future<List<dynamic>?> getPrediction(imagePath) async {
     File imgFile = File(imagePath);
     var api_url = "http://35.240.137.252/";
@@ -260,7 +273,9 @@ class KulitanScannerController extends GetxController
               borderRadius: BorderRadius.circular(25),
               child: InkWell(
                 borderRadius: BorderRadius.circular(25),
-                onTap: () {},
+                onTap: () {
+                  searchInDictionary(prediction);
+                },
                 splashColor: primaryOrangeLight,
                 highlightColor: primaryOrangeLight.withOpacity(0.5),
                 child: Ink(
@@ -291,7 +306,9 @@ class KulitanScannerController extends GetxController
               borderRadius: BorderRadius.circular(25),
               child: InkWell(
                 borderRadius: BorderRadius.circular(25),
-                onTap: () {},
+                onTap: () {
+                  copyToClipboard(prediction);
+                },
                 splashColor: primaryOrangeDarkShine,
                 highlightColor: primaryOrangeDarkShine.withOpacity(0.5),
                 child: Ink(

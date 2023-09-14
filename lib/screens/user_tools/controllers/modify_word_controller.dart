@@ -538,19 +538,6 @@ class ModifyController extends GetxController {
     }
   }
 
-  String normalizeWord(String word) {
-    String normalWord = word
-        .trim()
-        .toLowerCase()
-        .replaceAll(RegExp(r'[àáâäæãåā]'), 'a')
-        .replaceAll(RegExp(r'[îïíīįì]'), 'i')
-        .replaceAll(RegExp(r'[ûüùúū]'), 'u')
-        .replaceAll(RegExp(r'[èéêëēėę]'), 'e')
-        .replaceAll(RegExp(r'[ôöòóœøōõ]'), 'o')
-        .replaceAll(RegExp(r'[!-,\.-@\[-`{-¿]'), '');
-    return normalWord;
-  }
-
   void submitWord() async {
     validateAudio();
     getEnglishTranslations();
@@ -572,7 +559,8 @@ class ModifyController extends GetxController {
     }
     modifyWordFormKey.currentState!.save();
 
-    String normalizedWord = normalizeWord(wordController.text.trim());
+    String normalizedWord =
+        appController.normalizeWord(wordController.text.trim());
     String wordKey = normalizedWord;
 
     List<Map<String, dynamic>> meanings = [];

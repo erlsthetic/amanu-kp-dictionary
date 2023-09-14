@@ -11,13 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchScreen extends StatelessWidget {
-  SearchScreen({
-    super.key,
-  });
+  SearchScreen({super.key, this.fromKulitanScanner = false, this.input = ''});
+
+  final bool fromKulitanScanner;
+  final String input;
 
   final AudioPlayer player = AudioPlayer();
   final appController = Get.find<ApplicationController>();
-  final controller = Get.put(SearchWordController());
+  late final controller = Get.put(SearchWordController(
+      fromKulitan: fromKulitanScanner, kulitanQuery: input));
 
   @override
   Widget build(BuildContext context) {
