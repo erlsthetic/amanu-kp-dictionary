@@ -3,6 +3,7 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/support_screen/pages/about_page.dart';
 import 'package:amanu/screens/support_screen/pages/feedback_page.dart';
 import 'package:amanu/screens/support_screen/pages/report_page.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -17,6 +18,7 @@ class SupportScreen extends StatelessWidget {
   });
 
   final drawerController = Get.find<DrawerXController>();
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,41 +39,58 @@ class SupportScreen extends StatelessWidget {
                 ),
                 height: size.height - screenPadding.top - 50,
                 width: size.width,
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                        child: Column(
-                          children: [
-                            SelectionOption(
-                              title: tReportAProblem,
-                              image: iWelcomePageAnim,
-                              onPressed: () =>
-                                  Get.to(() => ReportProblemPage()),
-                            ),
-                            SelectionOption(
-                              title: tFeedback,
-                              image: iWelcomePageAnim,
-                              onPressed: () => Get.to(() => FeedbackPage()),
-                            ),
-                            SelectionOption(
-                              title: tRateApp,
-                              image: iWelcomePageAnim,
-                              onPressed: () {},
-                            ),
-                            SelectionOption(
-                              title: tAboutAmanu,
-                              image: iWelcomePageAnim,
-                              onPressed: () => Get.to(() => AboutPage()),
-                            ),
-                          ],
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                    child: Column(
+                      children: [
+                        appController.userIsAdmin ?? false
+                            ? SelectionOption(
+                                title: tExpertRequests,
+                                image: iWelcomePageAnim,
+                                onPressed: () =>
+                                    Get.to(() => ReportProblemPage()), //TODO
+                              )
+                            : Container(),
+                        appController.userIsAdmin ?? false
+                            ? SelectionOption(
+                                title: tProblemReports,
+                                image: iWelcomePageAnim,
+                                onPressed: () =>
+                                    Get.to(() => ReportProblemPage()), //TODO
+                              )
+                            : SelectionOption(
+                                title: tReportAProblem,
+                                image: iWelcomePageAnim,
+                                onPressed: () =>
+                                    Get.to(() => ReportProblemPage()),
+                              ),
+                        appController.userIsAdmin ?? false
+                            ? SelectionOption(
+                                title: tFeedbacks,
+                                image: iWelcomePageAnim,
+                                onPressed: () =>
+                                    Get.to(() => FeedbackPage()), //TODO
+                              )
+                            : SelectionOption(
+                                title: tFeedback,
+                                image: iWelcomePageAnim,
+                                onPressed: () => Get.to(() => FeedbackPage()),
+                              ),
+                        SelectionOption(
+                          title: tRateApp,
+                          image: iWelcomePageAnim,
+                          onPressed: () {},
                         ),
-                      ),
+                        SelectionOption(
+                          title: tAboutAmanu,
+                          image: iWelcomePageAnim,
+                          onPressed: () => Get.to(() => AboutPage()),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 )),
           ),
           ThreePartHeader(

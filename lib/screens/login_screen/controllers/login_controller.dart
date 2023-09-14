@@ -1,3 +1,4 @@
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +10,7 @@ class LoginController extends GetxController {
 
   final authRepo = Get.find<AuthenticationRepository>();
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final appController = Get.find<ApplicationController>();
 
   RxBool isObscure = true.obs;
   RxBool isContributor = true.obs;
@@ -47,30 +49,39 @@ class LoginController extends GetxController {
 
   Future<void> userSignIn() async {
     isProcessing.value = true;
-    final credentialsValid = loginFormKey.currentState!.validate();
-    if (!credentialsValid) {
-      return;
-    }
-    loginFormKey.currentState!.save();
-    Map<String, String>? error = await AuthenticationRepository.instance
-        .logInUserWithEmailAndPassword(email, password);
-    if (error != null) {
-      Helper.errorSnackBar(title: error["title"], message: error["message"]);
+    if (appController.hasConnection.value) {
+      final credentialsValid = loginFormKey.currentState!.validate();
+      if (!credentialsValid) {
+        return;
+      }
+      loginFormKey.currentState!.save();
+      Map<String, String>? error = await AuthenticationRepository.instance
+          .logInUserWithEmailAndPassword(email, password);
+      if (error != null) {
+        Helper.errorSnackBar(title: error["title"], message: error["message"]);
+      }
+    } else {
+      appController.showConnectionSnackbar();
     }
     isProcessing.value = false;
   }
 
   Future<void> googleSignIn() async {
-    try {
-      isGoogleLoading.value = true;
-      Map<String, String>? error =
-          await AuthenticationRepository.instance.signInWithGoogle();
-      if (error != null) {
-        Helper.errorSnackBar(title: error["title"], message: error["message"]);
+    if (appController.hasConnection.value) {
+      try {
+        isGoogleLoading.value = true;
+        Map<String, String>? error =
+            await AuthenticationRepository.instance.signInWithGoogle();
+        if (error != null) {
+          Helper.errorSnackBar(
+              title: error["title"], message: error["message"]);
+        }
+        isGoogleLoading.value = false;
+      } catch (e) {
+        isGoogleLoading.value = false;
       }
-      isGoogleLoading.value = false;
-    } catch (e) {
-      isGoogleLoading.value = false;
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 

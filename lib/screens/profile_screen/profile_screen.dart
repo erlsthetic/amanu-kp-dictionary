@@ -169,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                                                             ),
                                                             decoration: BoxDecoration(
                                                                 color:
-                                                                    expertBadge,
+                                                                    adminBadge,
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
@@ -196,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                                                                   size: 15,
                                                                   color: pureWhite
                                                                       .withOpacity(
-                                                                          0.5),
+                                                                          0.75),
                                                                 ),
                                                                 SizedBox(
                                                                   width: 2.5,
@@ -206,7 +206,7 @@ class ProfileScreen extends StatelessWidget {
                                                                   style: TextStyle(
                                                                       color: pureWhite
                                                                           .withOpacity(
-                                                                              0.5),
+                                                                              0.75),
                                                                       fontSize:
                                                                           11.5,
                                                                       fontWeight:

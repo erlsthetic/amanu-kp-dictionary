@@ -1,4 +1,6 @@
+import 'package:amanu/screens/login_screen/controllers/forget_password_controller.dart';
 import 'package:amanu/screens/login_screen/widgets/forgot_password_otp.dart';
+import 'package:amanu/utils/auth/authentication_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
@@ -8,8 +10,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgotPasswordEmail extends StatelessWidget {
-  const ForgotPasswordEmail({super.key});
-
+  ForgotPasswordEmail({super.key});
+  final controller = Get.put(ResetPasswordController());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,6 +45,22 @@ class ForgotPasswordEmail extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        autofillHints: [AutofillHints.email],
+                        onSaved: (value) {
+                          controller.resetEmail = value!;
+                        },
+                        onChanged: (value) {
+                          controller.checkUserExists();
+                        },
+                        validator: (value) {
+                          if (value != null) {
+                            return controller.validateEmail(value);
+                          } else {
+                            return "Enter a valid email";
+                          }
+                        },
+                        controller: controller.emailController,
                         decoration: InputDecoration(
                             label: Text(tEmail),
                             hintText: tEmail,
@@ -58,11 +76,9 @@ class ForgotPasswordEmail extends StatelessWidget {
                               fixedSize: Size(double.infinity, 45.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0))),
-                          onPressed: () {
-                            Get.to(() => const ForgotPasswordOTP());
-                          },
+                          onPressed: () {},
                           child: Text(
-                            tSendOTP.toUpperCase(),
+                            tResetPassword.toUpperCase(),
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontSize: 16.0,

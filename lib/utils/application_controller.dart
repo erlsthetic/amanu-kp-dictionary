@@ -73,6 +73,7 @@ class ApplicationController extends GetxController {
           : false;
       print("hasConnection: ${hasConnection}");
       print("isOnWiFi: ${isOnWifi}");
+      showConnectionSnackbar();
     });
   }
 
@@ -80,23 +81,29 @@ class ApplicationController extends GetxController {
     final title = hasConnection.value ? "Connected" : "Disconnected";
     final message = hasConnection.value
         ? isOnWifi.value
-            ? "You are connected thru WiFi."
-            : "You are connected thru mobile data."
-        : "There is no internet connection";
+            ? "You are connected thru WiFi. Live functions will be available."
+            : "You are connected thru mobile data. Live functions will be available."
+        : "There is no internet connection. Running on offline mode.";
     final color = hasConnection.value
         ? Colors.green.withOpacity(0.75)
         : Colors.redAccent.withOpacity(0.75);
     final icon = hasConnection.value ? Icons.check_circle : Icons.error;
-    Get.snackbar(title, message,
-        backgroundColor: color,
-        colorText: pureWhite,
-        icon: Icon(
-          icon,
-          color: pureWhite,
-          size: 20,
-        ),
-        duration: Duration(seconds: 3),
-        shouldIconPulse: true);
+    Get.snackbar(
+      title,
+      message,
+      backgroundColor: color,
+      colorText: pureWhite,
+      icon: Icon(
+        icon,
+        color: pureWhite,
+        size: 20,
+      ),
+      duration: Duration(seconds: 3),
+      shouldIconPulse: true,
+      isDismissible: true,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.all(10),
+    );
   }
 
   // -- USER MANAGEMENT
@@ -190,6 +197,8 @@ class ApplicationController extends GetxController {
     userPhonePublic = prefs.containsKey("userPhonePublic")
         ? prefs.getBool("userPhonePublic")
         : null;
+    userIsAdmin =
+        prefs.containsKey("userIsAdmin") ? prefs.getBool("userIsAdmin") : null;
   }
 
   Future changeLoginState(bool condition) async {
@@ -235,12 +244,14 @@ class ApplicationController extends GetxController {
   }
 
   Future<String?> saveUserPicToLocal(String? userPic) async {
+    userPicLocal = null;
     if (userPic != null) {
       try {
         String picExt = userPic.split("?").first;
         final appStorage = await getApplicationDocumentsDirectory();
         final fileExt = extension(File(picExt).path);
-        final tempPhoto = File('${appStorage.path}/profilePic$fileExt');
+        final tempPhoto =
+            File('${appStorage.path}/profilePic${userID}${fileExt}');
         final response = await Dio().get(
           userPic,
           options: Options(
@@ -281,7 +292,7 @@ class ApplicationController extends GetxController {
         (userEmailPublic == null ? "null" : userEmailPublic.toString()));
     print("userPhonePublic: " +
         (userPhonePublic == null ? "null" : userPhonePublic.toString()));
-    print("userPhonePublic: " +
+    print("userIsAdmin: " +
         (userIsAdmin == null ? "null" : userIsAdmin.toString()));
   }
 

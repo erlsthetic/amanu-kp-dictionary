@@ -104,6 +104,8 @@ class AuthenticationRepository extends GetxController {
         if (appController.hasConnection.value) {
           UserModel? userData = await DatabaseRepository.instance
               .getUserDetails(firebaseUser!.uid);
+
+          print("here");
           if (userData != null) {
             await appController.changeUserDetails(
                 firebaseUser!.uid,
@@ -237,6 +239,25 @@ class AuthenticationRepository extends GetxController {
       return {"title": ex.title, "message": ex.message};
     }
     return null;
+  }
+
+  Future<void> resetPassword(String resetEmail) async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: resetEmail)
+          .then((value) {
+        Helper.successSnackBar(
+            title: "Password reset email sent!",
+            message: "Please check your inbox to reset your password");
+      });
+    } on FirebaseAuthException catch (e) {
+      throw e.message!;
+    } on FormatException catch (e) {
+      throw e.message;
+    } catch (e) {
+      Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      throw "Something went wrong. Try again.";
+    }
   }
 
   Future<void> logout() async {

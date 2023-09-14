@@ -66,7 +66,9 @@ const String tResetViaEmail = "Reset via E-Mail Verification.";
 const String tResetViaSMS = "Reset via SMS Verification.";
 const String tForgotSMSSub =
     "Enter your registered phone number\nto receive OTP.";
-const String tForgotEmailSub = "Enter your registered e-mail\nto receive OTP.";
+const String tForgotEmailSub =
+    "Enter your registered e-mail\nto receive a password reset link.";
+const String tResetEmail = "Send Reset Email";
 const String tSendOTP = "Send OTP";
 const String tResetPassword = "Reset Password";
 const String tOTPTitle = "OTP Verification";
@@ -164,8 +166,11 @@ const String tDeleteNotesHint =
 // -- Support Screen
 
 const String tSupport = "Support";
+const String tExpertRequests = "Expert Requests";
 const String tReportAProblem = "Report a Problem";
+const String tProblemReports = "Problem Reports";
 const String tFeedback = "Send Feedback";
+const String tFeedbacks = "Feedbacks";
 const String tRateApp = "Rate Application";
 const String tAboutAmanu = "About Amánu";
 

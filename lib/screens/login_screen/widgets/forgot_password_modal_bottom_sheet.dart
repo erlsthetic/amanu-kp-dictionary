@@ -12,12 +12,14 @@ class ForgotPasswordScreen {
   static Future<dynamic> buildShowModalBottomSheet(BuildContext context) {
     return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30))),
       builder: (context) => Container(
         padding: const EdgeInsets.all(40),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -38,7 +40,7 @@ class ForgotPasswordScreen {
               ),
             ),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             ForgotPasswordOption(
               btnIcon: Icons.mail_outline_rounded,

@@ -179,7 +179,7 @@ class AppDrawer extends StatelessWidget {
                                                         .admin_panel_settings_rounded,
                                                     size: 14,
                                                     color: pureWhite
-                                                        .withOpacity(0.5)),
+                                                        .withOpacity(0.75)),
                                                 SizedBox(
                                                   width: 3.0,
                                                 ),
@@ -190,7 +190,7 @@ class AppDrawer extends StatelessWidget {
                                                       TextOverflow.ellipsis,
                                                   style: GoogleFonts.poppins(
                                                       color: pureWhite
-                                                          .withOpacity(0.5),
+                                                          .withOpacity(0.75),
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 12),
