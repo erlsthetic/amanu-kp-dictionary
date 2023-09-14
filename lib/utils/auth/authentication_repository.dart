@@ -14,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -266,9 +267,23 @@ class AuthenticationRepository extends GetxController {
         await GoogleSignIn().signOut();
         await FirebaseAuth.instance.signOut();
       }
-      await appController.changeLoginState(false);
-      await appController.changeUserDetails(null, null, null, null, null, null,
-          null, null, null, null, null, null, null, null);
+      if (firebaseUser == null) {
+        await appController.changeLoginState(false);
+        await appController.changeUserDetails(null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool("isLoggedIn", false);
+        prefs.remove('userID');
+        prefs.remove('userName');
+        prefs.remove('userEmail');
+        prefs.remove('userPhone');
+        prefs.remove('userIsExpert');
+        prefs.remove('userExpertRequest');
+        prefs.remove('userFullName');
+        prefs.remove('userBio');
+        prefs.remove('userPic');
+        prefs.remove('userContributions');
+      }
       if (appController.isFirstTimeUse) {
         await Future.delayed(Duration(milliseconds: 500));
         Get.offAll(() => OnBoardingScreen());

@@ -63,6 +63,8 @@ class FeedbackController extends GetxController {
           timestamp: timestamp);
 
       await databaseRepo.createFeedbackOnDB(feedbackInfo, timestamp);
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 }

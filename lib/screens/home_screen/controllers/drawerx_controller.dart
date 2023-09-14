@@ -16,7 +16,6 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerXController extends GetxController {
   static DrawerXController get instance => Get.find();
@@ -61,7 +60,16 @@ class DrawerXController extends GetxController {
       case DrawerItems.profile:
         return ProfileScreen();
       case DrawerItems.requests:
-        return RequestsScreen();
+        if (appController.hasConnection.value) {
+          return RequestsScreen();
+        } else {
+          homeController.coastController = new CoastController(initialPage: 0);
+          homeController.currentIdx.value = 0;
+          homeController.crabController = new CrabController();
+          appController.showConnectionSnackbar();
+          return HomeScreen();
+        }
+
       case DrawerItems.support:
         return SupportScreen();
       default:
@@ -70,21 +78,13 @@ class DrawerXController extends GetxController {
   }
 
   Future<void> logoutUser(BuildContext context) async {
-    isProcessing.value = true;
-    showLoaderDialog(context);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isLoggedIn", false);
-    prefs.remove('userID');
-    prefs.remove('userName');
-    prefs.remove('userEmail');
-    prefs.remove('userPhone');
-    prefs.remove('userIsExpert');
-    prefs.remove('userExpertRequest');
-    prefs.remove('userFullName');
-    prefs.remove('userBio');
-    prefs.remove('userPic');
-    prefs.remove('userContributions');
-    await AuthenticationRepository.instance.logout();
-    isProcessing.value = false;
+    if (appController.hasConnection.value) {
+      isProcessing.value = true;
+      showLoaderDialog(context);
+      await AuthenticationRepository.instance.logout();
+      isProcessing.value = false;
+    } else {
+      appController.showConnectionSnackbar();
+    }
   }
 }

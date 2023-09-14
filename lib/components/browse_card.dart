@@ -1,9 +1,11 @@
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BrowseCard extends StatelessWidget {
@@ -23,13 +25,20 @@ class BrowseCard extends StatelessWidget {
       required this.antonyms});
 
   final AudioPlayer player;
+  final appController = Get.find<ApplicationController>();
 
   Future<void> playFromURL(String url) async {
-    try {
-      await player.stop();
-      await player.play(UrlSource(url));
-    } catch (e) {
-      Helper.errorSnackBar(title: "Error", message: "Cannot play audio.");
+    if (appController.hasConnection.value) {
+      try {
+        await player.stop();
+        await player.play(UrlSource(url));
+      } catch (e) {
+        Helper.errorSnackBar(title: "Error", message: "Cannot play audio.");
+      }
+    } else {
+      Helper.errorSnackBar(
+          title: "You are currently offline.",
+          message: "Connect to the internet to play audio.");
     }
   }
 

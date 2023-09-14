@@ -214,13 +214,17 @@ class SignUpController extends GetxController {
   }
 
   void checkCredentials() {
-    final isValid = signUpFormKey.currentState!.validate();
-    if (!isValid) {
-      return;
+    if (appController.hasConnection.value) {
+      final isValid = signUpFormKey.currentState!.validate();
+      if (!isValid) {
+        return;
+      }
+      signUpFormKey.currentState!.save();
+      accountFromGoogle = false;
+      Get.to(() => AccountSelectionScreen());
+    } else {
+      appController.showConnectionSnackbar();
     }
-    signUpFormKey.currentState!.save();
-    accountFromGoogle = false;
-    Get.to(() => AccountSelectionScreen());
   }
 
 // CV Select
@@ -384,6 +388,8 @@ class SignUpController extends GetxController {
       } catch (e) {
         isGoogleLoading.value = false;
       }
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 

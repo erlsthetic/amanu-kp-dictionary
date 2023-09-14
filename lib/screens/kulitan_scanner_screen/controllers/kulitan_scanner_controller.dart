@@ -124,14 +124,14 @@ class KulitanScannerController extends GetxController
   }
 
   Future takePicture(BuildContext context, Size screenSize) async {
-    if (!isInitialized.value || cameraController.value.isTakingPicture) {
-      return;
-    }
-    if (withImage.value) {
-      withImage.value = false;
-      imagePath.value = '';
-    } else {
-      if (appController.hasConnection.value) {
+    if (appController.hasConnection.value) {
+      if (!isInitialized.value || cameraController.value.isTakingPicture) {
+        return;
+      }
+      if (withImage.value) {
+        withImage.value = false;
+        imagePath.value = '';
+      } else {
         showLoaderDialog(context);
         XFile img = await cameraController.takePicture();
         imagePath.value = img.path;
@@ -152,40 +152,44 @@ class KulitanScannerController extends GetxController
           showPredictionDialog(
               context, prediction[0], predictionImage!, screenSize);
         }
-      } else {
-        appController.showConnectionSnackbar();
       }
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 
   Future fromUpload(BuildContext context, Size screenSize) async {
-    if (cameraController.value.isTakingPicture) {
-      return;
-    }
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
-    if (result != null) {
-      showLoaderDialog(context);
-      final filePath = result.files.first.path!;
-      imagePath.value = filePath;
-      List<dynamic>? prediction = await getPrediction(imagePath.value);
-      if (prediction == null) {
-        Navigator.of(context).pop();
-        Helper.errorSnackBar(
-            title: "Unable to process request",
-            message: "Please try again later.");
+    if (appController.hasConnection.value) {
+      if (cameraController.value.isTakingPicture) {
         return;
-      } else {
-        if (transController != null) transController!.dispose();
-        tapDownDetails = null;
-        transController = TransformationController();
-        predictionImage = prediction[1];
-        withImage.value = !withImage.value;
-        Navigator.of(context).pop();
-        showPredictionDialog(
-            context, prediction[0], predictionImage!, screenSize);
       }
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
+      if (result != null) {
+        showLoaderDialog(context);
+        final filePath = result.files.first.path!;
+        imagePath.value = filePath;
+        List<dynamic>? prediction = await getPrediction(imagePath.value);
+        if (prediction == null) {
+          Navigator.of(context).pop();
+          Helper.errorSnackBar(
+              title: "Unable to process request",
+              message: "Please try again later.");
+          return;
+        } else {
+          if (transController != null) transController!.dispose();
+          tapDownDetails = null;
+          transController = TransformationController();
+          predictionImage = prediction[1];
+          withImage.value = !withImage.value;
+          Navigator.of(context).pop();
+          showPredictionDialog(
+              context, prediction[0], predictionImage!, screenSize);
+        }
+      }
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 

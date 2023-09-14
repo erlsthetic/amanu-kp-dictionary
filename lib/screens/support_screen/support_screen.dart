@@ -49,39 +49,65 @@ class SupportScreen extends StatelessWidget {
                             ? SelectionOption(
                                 title: tExpertRequests,
                                 image: iWelcomePageAnim,
-                                onPressed: () =>
-                                    Get.to(() => ReportProblemPage()), //TODO
-                              )
+                                onPressed: () {
+                                  if (appController.hasConnection.value) {
+                                    Get.to(() => ReportProblemPage()); //TODO
+                                  } else {
+                                    appController.showConnectionSnackbar();
+                                  }
+                                })
                             : Container(),
                         appController.userIsAdmin ?? false
                             ? SelectionOption(
                                 title: tProblemReports,
                                 image: iWelcomePageAnim,
-                                onPressed: () =>
-                                    Get.to(() => ReportProblemPage()), //TODO
-                              )
+                                onPressed: () {
+                                  if (appController.hasConnection.value) {
+                                    Get.to(() => ReportProblemPage()); //TODO
+                                  } else {
+                                    appController.showConnectionSnackbar();
+                                  }
+                                })
                             : SelectionOption(
                                 title: tReportAProblem,
                                 image: iWelcomePageAnim,
-                                onPressed: () =>
-                                    Get.to(() => ReportProblemPage()),
-                              ),
+                                onPressed: () {
+                                  if (appController.hasConnection.value) {
+                                    Get.to(() => ReportProblemPage());
+                                  } else {
+                                    appController.showConnectionSnackbar();
+                                  }
+                                }),
                         appController.userIsAdmin ?? false
                             ? SelectionOption(
                                 title: tFeedbacks,
                                 image: iWelcomePageAnim,
-                                onPressed: () =>
-                                    Get.to(() => FeedbackPage()), //TODO
-                              )
+                                onPressed: () {
+                                  if (appController.hasConnection.value) {
+                                    Get.to(() => FeedbackPage()); //TODO
+                                  } else {
+                                    appController.showConnectionSnackbar();
+                                  }
+                                })
                             : SelectionOption(
                                 title: tFeedback,
                                 image: iWelcomePageAnim,
-                                onPressed: () => Get.to(() => FeedbackPage()),
-                              ),
+                                onPressed: () {
+                                  if (appController.hasConnection.value) {
+                                    Get.to(() => FeedbackPage());
+                                  } else {
+                                    appController.showConnectionSnackbar();
+                                  }
+                                }),
                         SelectionOption(
                           title: tRateApp,
                           image: iWelcomePageAnim,
-                          onPressed: () {},
+                          onPressed: () {
+                            if (appController.hasConnection.value) {
+                            } else {
+                              appController.showConnectionSnackbar();
+                            }
+                          },
                         ),
                         SelectionOption(
                           title: tAboutAmanu,

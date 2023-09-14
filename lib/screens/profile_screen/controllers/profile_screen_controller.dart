@@ -226,117 +226,122 @@ class ProfileController extends GetxController {
   }
 
   Future updateUserDetails() async {
-    if (!isOtherProfile) {
-      bool editFormIsValid = editAccountFormKey.currentState!.validate();
-      if (!editFormIsValid) {
-        return;
-      }
-      editAccountFormKey.currentState!.save();
-
-      String newUserPicURL = '';
-      if (newProfilePath.value != '') {
-        try {
-          newUserPicURL = (await DatabaseRepository.instance
-              .uploadPic(appController.userID!, newProfilePath.value, false))!;
-          print("Profile uploaded at: " + newUserPicURL.toString());
-        } catch (e) {
-          Helper.errorSnackBar(
-              title: tOhSnap,
-              message:
-                  "Unable to upload image. Please check your internet connection or contact support for help.");
+    if (appController.hasConnection.value) {
+      if (!isOtherProfile) {
+        bool editFormIsValid = editAccountFormKey.currentState!.validate();
+        if (!editFormIsValid) {
           return;
         }
-      }
+        editAccountFormKey.currentState!.save();
 
-      Map<String, dynamic> userChanges = {};
-      if (newPhoneNo != '' &&
-          int.tryParse(newPhoneNo) != appController.userPhone) {
-        userChanges["phoneNo"] = newPhoneNo != ''
-            ? int.tryParse(newPhoneNo) ?? 0
-            : appController.userPhone;
-      }
-      if (newExpertRequest != appController.userExpertRequest) {
-        userChanges["expertRequest"] = newExpertRequest;
-      }
-      if (newUserName != '' && newUserName != appController.userName) {
-        userChanges["userName"] =
-            newUserName != '' ? newUserName : appController.userName;
-      }
-      if (newExFullName != '' && newExFullName != appController.userFullName) {
-        userChanges["exFullName"] =
-            newExFullName != '' ? newExFullName : appController.userFullName;
-      }
-      if (newExBio != '' && newExBio != appController.userBio) {
-        userChanges["exBio"] =
-            newExBio != '' ? newExBio : appController.userBio;
-      }
-      if (newUserPicURL != '') {
-        userChanges["profileUrl"] =
-            newUserPicURL != '' ? newUserPicURL : appController.userPic;
-      }
-      if (newEmailPublic.value != appController.userEmailPublic) {
-        userChanges["emailPublic"] = newEmailPublic.value;
-      }
-      if (newPhonePublic.value != appController.userPhonePublic) {
-        userChanges["phonePublic"] = newPhonePublic.value;
-      }
+        String newUserPicURL = '';
+        if (newProfilePath.value != '') {
+          try {
+            newUserPicURL = (await DatabaseRepository.instance.uploadPic(
+                appController.userID!, newProfilePath.value, false))!;
+            print("Profile uploaded at: " + newUserPicURL.toString());
+          } catch (e) {
+            Helper.errorSnackBar(
+                title: tOhSnap,
+                message:
+                    "Unable to upload image. Please check your internet connection or contact support for help.");
+            return;
+          }
+        }
 
-      print("User changes: " + userChanges.toString());
+        Map<String, dynamic> userChanges = {};
+        if (newPhoneNo != '' &&
+            int.tryParse(newPhoneNo) != appController.userPhone) {
+          userChanges["phoneNo"] = newPhoneNo != ''
+              ? int.tryParse(newPhoneNo) ?? 0
+              : appController.userPhone;
+        }
+        if (newExpertRequest != appController.userExpertRequest) {
+          userChanges["expertRequest"] = newExpertRequest;
+        }
+        if (newUserName != '' && newUserName != appController.userName) {
+          userChanges["userName"] =
+              newUserName != '' ? newUserName : appController.userName;
+        }
+        if (newExFullName != '' &&
+            newExFullName != appController.userFullName) {
+          userChanges["exFullName"] =
+              newExFullName != '' ? newExFullName : appController.userFullName;
+        }
+        if (newExBio != '' && newExBio != appController.userBio) {
+          userChanges["exBio"] =
+              newExBio != '' ? newExBio : appController.userBio;
+        }
+        if (newUserPicURL != '') {
+          userChanges["profileUrl"] =
+              newUserPicURL != '' ? newUserPicURL : appController.userPic;
+        }
+        if (newEmailPublic.value != appController.userEmailPublic) {
+          userChanges["emailPublic"] = newEmailPublic.value;
+        }
+        if (newPhonePublic.value != appController.userPhonePublic) {
+          userChanges["phonePublic"] = newPhonePublic.value;
+        }
 
-      if (userChanges.length <= 0) {
-        Helper.successSnackBar(
-            title: "No change detected.",
-            message: "Account details remained the same.");
-      } else {
-        await DatabaseRepository.instance
-            .updateUserOnDB(userChanges, appController.userID!)
-            .whenComplete(() async {
-          await appController.changeLoginState(true);
-          await appController
-              .changeUserDetails(
-            appController.userID,
-            userChanges.containsKey("userName")
-                ? userChanges["userName"]
-                : appController.userName,
-            appController.userEmail,
-            userChanges.containsKey("phoneNo")
-                ? userChanges["phoneNo"]
-                : appController.userPhone,
-            appController.userIsExpert,
-            userChanges.containsKey("expertRequest")
-                ? userChanges["expertRequest"]
-                : appController.userExpertRequest,
-            userChanges.containsKey("exFullName")
-                ? userChanges["exFullName"]
-                : appController.userFullName,
-            userChanges.containsKey("exBio")
-                ? userChanges["exBio"]
-                : appController.userBio,
-            userChanges.containsKey("profileUrl")
-                ? userChanges["profileUrl"]
-                : appController.userPic,
-            appController.userContributions,
-            await appController.saveUserPicToLocal(
-                    userChanges.containsKey("profileUrl")
-                        ? userChanges["profileUrl"]
-                        : appController.userPicLocal) ??
-                appController.userPicLocal,
-            userChanges.containsKey("emailPublic")
-                ? userChanges["emailPublic"]
-                : appController.userEmailPublic,
-            userChanges.containsKey("phonePublic")
-                ? userChanges["phonePublic"]
-                : appController.userPhonePublic,
-            userChanges.containsKey("isAdmin")
-                ? userChanges["isAdmin"]
-                : appController.userIsAdmin,
-          )
-              .whenComplete(() {
-            appController.refresh();
-            getCurrentUserDetails();
+        print("User changes: " + userChanges.toString());
+
+        if (userChanges.length <= 0) {
+          Helper.successSnackBar(
+              title: "No change detected.",
+              message: "Account details remained the same.");
+        } else {
+          await DatabaseRepository.instance
+              .updateUserOnDB(userChanges, appController.userID!)
+              .whenComplete(() async {
+            await appController.changeLoginState(true);
+            await appController
+                .changeUserDetails(
+              appController.userID,
+              userChanges.containsKey("userName")
+                  ? userChanges["userName"]
+                  : appController.userName,
+              appController.userEmail,
+              userChanges.containsKey("phoneNo")
+                  ? userChanges["phoneNo"]
+                  : appController.userPhone,
+              appController.userIsExpert,
+              userChanges.containsKey("expertRequest")
+                  ? userChanges["expertRequest"]
+                  : appController.userExpertRequest,
+              userChanges.containsKey("exFullName")
+                  ? userChanges["exFullName"]
+                  : appController.userFullName,
+              userChanges.containsKey("exBio")
+                  ? userChanges["exBio"]
+                  : appController.userBio,
+              userChanges.containsKey("profileUrl")
+                  ? userChanges["profileUrl"]
+                  : appController.userPic,
+              appController.userContributions,
+              await appController.saveUserPicToLocal(
+                      userChanges.containsKey("profileUrl")
+                          ? userChanges["profileUrl"]
+                          : appController.userPicLocal) ??
+                  appController.userPicLocal,
+              userChanges.containsKey("emailPublic")
+                  ? userChanges["emailPublic"]
+                  : appController.userEmailPublic,
+              userChanges.containsKey("phonePublic")
+                  ? userChanges["phonePublic"]
+                  : appController.userPhonePublic,
+              userChanges.containsKey("isAdmin")
+                  ? userChanges["isAdmin"]
+                  : appController.userIsAdmin,
+            )
+                .whenComplete(() {
+              appController.refresh();
+              getCurrentUserDetails();
+            });
           });
-        });
+        }
       }
+    } else {
+      appController.showConnectionSnackbar();
     }
   }
 }
