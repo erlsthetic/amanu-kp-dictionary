@@ -30,60 +30,90 @@ class RequestsScreen extends StatelessWidget {
           body: Stack(
         children: [
           Positioned(
-            top: screenPadding.top + 50,
-            left: 0,
-            right: 0,
-            child: FutureBuilder(
-              future: controller.getAllRequests(),
-              builder: (ctx, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done)
-                  return Container(
-                    height: size.height - 110,
-                    width: size.width,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                else
-                  return Container(
-                    height: size.height - 110,
-                    width: size.width,
-                    child: controller.requests.length != 0
-                        ? ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.only(top: 30, bottom: 50),
-                            itemCount: controller.requests.length,
-                            itemBuilder: (context, index) {
-                              return RequestCard(
-                                timestamp: controller.requests[index].timestamp,
-                                requestType:
-                                    controller.requests[index].requestType,
-                                word: controller.requests[index].word,
-                                userName: controller.requests[index].userName,
-                                notes: controller.requests[index].requestNotes,
-                                onTap: () async {
-                                  if (appController.hasConnection.value) {
-                                    await controller.requestSelect(
-                                        controller.requests[index].requestId,
-                                        controller.requests[index].requestType);
-                                  } else {
-                                    appController.showConnectionSnackbar();
-                                  }
-                                },
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Text(
-                              "No requests at the moment.",
-                              style:
-                                  TextStyle(fontSize: 16, color: disabledGrey),
+              top: screenPadding.top + 50,
+              left: 0,
+              right: 0,
+              child: appController.hasConnection.value
+                  ? FutureBuilder(
+                      future: controller.getAllRequests(),
+                      builder: (ctx, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done)
+                          return Container(
+                            height: size.height - 110,
+                            width: size.width,
+                            child: Center(
+                              child: CircularProgressIndicator(),
                             ),
+                          );
+                        else
+                          return Container(
+                            height: size.height - 110,
+                            width: size.width,
+                            child: controller.requests.length != 0
+                                ? ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    padding:
+                                        EdgeInsets.only(top: 30, bottom: 50),
+                                    itemCount: controller.requests.length,
+                                    itemBuilder: (context, index) {
+                                      return RequestCard(
+                                        timestamp: controller
+                                            .requests[index].timestamp,
+                                        requestType: controller
+                                            .requests[index].requestType,
+                                        word: controller.requests[index].word,
+                                        userName:
+                                            controller.requests[index].userName,
+                                        notes: controller
+                                            .requests[index].requestNotes,
+                                        onTap: () async {
+                                          if (appController
+                                              .hasConnection.value) {
+                                            await controller.requestSelect(
+                                                controller
+                                                    .requests[index].requestId,
+                                                controller.requests[index]
+                                                    .requestType);
+                                          } else {
+                                            appController
+                                                .showConnectionSnackbar();
+                                          }
+                                        },
+                                      );
+                                    },
+                                  )
+                                : Center(
+                                    child: Text(
+                                      "No requests at the moment.",
+                                      style: TextStyle(
+                                          fontSize: 16, color: disabledGrey),
+                                    ),
+                                  ),
+                          );
+                      },
+                    )
+                  : Container(
+                      height: size.height - 110,
+                      width: size.width,
+                      child: Center(
+                          child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.signal_wifi_connected_no_internet_4_rounded,
+                            color: disabledGrey,
+                            size: 40,
                           ),
-                  );
-              },
-            ),
-          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "No internet connection.",
+                            style: TextStyle(color: disabledGrey, fontSize: 16),
+                          )
+                        ],
+                      )),
+                    )),
           ThreePartHeader(
             size: size,
             screenPadding: screenPadding,

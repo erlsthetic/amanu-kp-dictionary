@@ -17,6 +17,7 @@ class SearchField extends StatelessWidget {
         width: double.infinity,
         alignment: Alignment.center,
         child: TextField(
+          controller: controller.searchBoxController,
           style: TextStyle(fontSize: 18, color: muteBlack),
           decoration: InputDecoration.collapsed(hintText: "Search"),
           onChanged: (value) => controller.searchWord(value),

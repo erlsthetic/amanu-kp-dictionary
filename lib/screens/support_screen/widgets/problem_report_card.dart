@@ -3,22 +3,25 @@ import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
-class RequestCard extends StatelessWidget {
-  RequestCard(
+class ProblemReportCard extends StatelessWidget {
+  ProblemReportCard(
       {super.key,
       required this.timestamp,
-      required this.requestType,
-      required this.word,
-      required this.userName,
+      required this.subject,
+      required this.details,
+      required this.problemType,
+      required this.email,
       required this.onTap,
-      this.notes = ''});
+      required this.imgUrl});
 
   final String timestamp;
-  final int requestType;
-  final String word;
-  final String userName;
-  final String notes;
+  final String problemType;
+  final String? email;
+  final String subject;
+  final String details;
+  final String? imgUrl;
   final VoidCallback onTap;
 
   @override
@@ -44,55 +47,49 @@ class RequestCard extends StatelessWidget {
                   spreadRadius: -8,
                 ),
               ]),
-          child: Row(
-            children: [
-              Container(
-                height: double.infinity,
-                width: 25,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.horizontal(left: Radius.circular(20)),
-                    color: requestType == 0
-                        ? primaryOrangeDark
-                        : requestType == 1
-                            ? primaryOrangeLight
-                            : darkerOrange.withOpacity(0.8)),
-                child: Icon(
-                  requestType == 0
-                      ? Icons.add
-                      : requestType == 1
-                          ? Icons.edit
-                          : Icons.delete,
-                  size: 20,
-                  color: pureWhite,
+          child: Container(
+            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: double.infinity,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border:
+                            Border.all(color: primaryOrangeDark, width: 1.5)),
+                    padding: EdgeInsets.all(2.5),
+                    child: Container(),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        height: 35,
-                        child: AutoSizeText(
-                          word.toLowerCase(),
+                        alignment: Alignment.topLeft,
+                        height: 20,
+                        child: Text(
+                          problemType.toUpperCase(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.robotoSlab(
-                              color: primaryOrangeDark,
-                              fontWeight: FontWeight.w800),
-                          presetFontSizes: [30, 29, 28, 27, 26, 25, 24, 23, 22],
+                          style: GoogleFonts.roboto(
+                              fontSize: 11,
+                              color: disabledGrey,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       Container(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.centerLeft,
                         height: 35,
                         child: Text(
-                          notes,
-                          maxLines: 2,
+                          subject,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                               fontSize: 14,
@@ -100,51 +97,34 @@ class RequestCard extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 22,
-                            child: Text(
-                              "by:",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14,
-                                  color: disabledGrey,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          TagCreator(
-                            label: userName,
-                            color: contributorBadge,
-                            textColor: pureWhite.withOpacity(0.75),
-                            isBadge: true,
-                          ),
-                          Flexible(
-                            child: Container(
-                              margin: EdgeInsets.only(left: 10),
-                              alignment: Alignment.topLeft,
-                              height: 22,
-                              child: Text(
-                                timestamp,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.roboto(
-                                    fontSize: 14,
-                                    color: disabledGrey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          )
-                        ],
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 35,
+                        child: Text(
+                          details,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              color: disabledGrey,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
+                      imgUrl != null || imgUrl != ''
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 25,
+                              child: TagCreator(
+                                label: "with Image",
+                                color: primaryOrangeLight,
+                                textColor: pureWhite,
+                              ))
+                          : Container(),
                     ],
                   ),
-                ),
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

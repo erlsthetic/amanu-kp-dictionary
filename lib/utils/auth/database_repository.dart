@@ -91,6 +91,21 @@ class DatabaseRepository extends GetxController {
     return null;
   }
 
+  Future<List<UserModel>> getAllExpertRequests() async {
+    final snapshot = await _db
+        .collection("requests")
+        .where("expertRequest", isEqualTo: true)
+        .where("isExpert", isEqualTo: false)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final requests =
+        snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList();
+    return requests;
+  }
+
   Future<UserModel?> getUserDetails(String uid) async {
     final snapshot = await _db
         .collection("users")
@@ -135,6 +150,17 @@ class DatabaseRepository extends GetxController {
     });
   }
 
+  Future<List<ReportModel>> getAllReports() async {
+    final snapshot =
+        await _db.collection("reports").get().catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final reports =
+        snapshot.docs.map((e) => ReportModel.fromSnapshot(e)).toList();
+    return reports;
+  }
+
   Future createFeedbackOnDB(FeedbackModel feedback, String timestamp) async {
     await _db
         .collection("feedbacks")
@@ -147,6 +173,17 @@ class DatabaseRepository extends GetxController {
       Get.back();
       Helper.successSnackBar(title: tFeedbackSent, message: tFeedbackSentBody);
     });
+  }
+
+  Future<List<FeedbackModel>> getAllFeedbacks() async {
+    final snapshot =
+        await _db.collection("feedbacks").get().catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    final feedbacks =
+        snapshot.docs.map((e) => FeedbackModel.fromSnapshot(e)).toList();
+    return feedbacks;
   }
 
   Future createDeleteRequestOnDB(

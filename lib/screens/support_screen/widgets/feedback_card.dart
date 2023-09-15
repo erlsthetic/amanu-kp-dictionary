@@ -1,25 +1,25 @@
-import 'package:amanu/components/tag_creator.dart';
+import 'package:amanu/screens/support_screen/controllers/feedbacks_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
-class RequestCard extends StatelessWidget {
-  RequestCard(
+class FeedbackCard extends StatelessWidget {
+  FeedbackCard(
       {super.key,
       required this.timestamp,
-      required this.requestType,
-      required this.word,
-      required this.userName,
+      required this.rating,
+      required this.additionalNotes,
       required this.onTap,
-      this.notes = ''});
+      required this.controller});
 
   final String timestamp;
-  final int requestType;
-  final String word;
-  final String userName;
-  final String notes;
+  final int rating;
+  final String? additionalNotes;
   final VoidCallback onTap;
+  final FeedbacksController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class RequestCard extends StatelessWidget {
         highlightColor: primaryOrangeLight.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20),
         child: Ink(
-          height: 120,
+          height: 100,
           width: double.infinity,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -44,55 +44,87 @@ class RequestCard extends StatelessWidget {
                   spreadRadius: -8,
                 ),
               ]),
-          child: Row(
-            children: [
-              Container(
-                height: double.infinity,
-                width: 25,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.horizontal(left: Radius.circular(20)),
-                    color: requestType == 0
-                        ? primaryOrangeDark
-                        : requestType == 1
-                            ? primaryOrangeLight
-                            : darkerOrange.withOpacity(0.8)),
-                child: Icon(
-                  requestType == 0
-                      ? Icons.add
-                      : requestType == 1
-                          ? Icons.edit
-                          : Icons.delete,
-                  size: 20,
-                  color: pureWhite,
+          child: Container(
+            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(right: 10),
+                  alignment: Alignment.center,
+                  height: double.infinity,
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    height: 40,
+                    width: 40,
+                    child: Container(
+                      child: Center(
+                          child: SvgPicture.asset(
+                        controller.ratesIcon[rating - 1],
+                        colorFilter: ColorFilter.mode(
+                            primaryOrangeDark, BlendMode.srcIn),
+                      )),
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
+                        alignment: Alignment.centerLeft,
                         height: 35,
-                        child: AutoSizeText(
-                          word.toLowerCase(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.robotoSlab(
-                              color: primaryOrangeDark,
-                              fontWeight: FontWeight.w800),
-                          presetFontSizes: [30, 29, 28, 27, 26, 25, 24, 23, 22],
+                        child: Row(
+                          children: [
+                            Text(
+                              "Rating",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.roboto(
+                                  fontSize: 16,
+                                  color: disabledGrey,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            for (int i = 0; i < 5; i++)
+                              Icon(Icons.star_rate_rounded,
+                                  size: 20,
+                                  color: rating > i
+                                      ? primaryOrangeDark
+                                      : disabledGrey),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "${rating} / 5" +
+                                  (rating == 1
+                                      ? "(Very Bad)"
+                                      : rating == 2
+                                          ? "(Bad)"
+                                          : rating == 3
+                                              ? "(Fair)"
+                                              : rating == 4
+                                                  ? "(Good)"
+                                                  : "(Very Good)"),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.roboto(
+                                  fontSize: 16,
+                                  color: disabledGrey,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
                       ),
                       Container(
-                        alignment: Alignment.topLeft,
-                        height: 35,
+                        margin: EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerLeft,
+                        height: 22,
                         child: Text(
-                          notes,
-                          maxLines: 2,
+                          additionalNotes ?? "No additional comments.",
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                               fontSize: 14,
@@ -100,51 +132,25 @@ class RequestCard extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 22,
-                            child: Text(
-                              "by:",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14,
-                                  color: disabledGrey,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          TagCreator(
-                            label: userName,
-                            color: contributorBadge,
-                            textColor: pureWhite.withOpacity(0.75),
-                            isBadge: true,
-                          ),
-                          Flexible(
-                            child: Container(
-                              margin: EdgeInsets.only(left: 10),
-                              alignment: Alignment.topLeft,
-                              height: 22,
-                              child: Text(
-                                timestamp,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.roboto(
-                                    fontSize: 14,
-                                    color: disabledGrey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          )
-                        ],
+                      Container(
+                        margin: EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerLeft,
+                        height: 22,
+                        child: Text(
+                          timestamp,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              color: disabledGrey,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

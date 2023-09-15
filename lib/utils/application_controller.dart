@@ -549,6 +549,19 @@ class ApplicationController extends GetxController {
     }
   }
 
+  String normalizeWord(String word) {
+    String normalWord = word
+        .trim()
+        .toLowerCase()
+        .replaceAll(RegExp(r'[àáâäæãåā]'), 'a')
+        .replaceAll(RegExp(r'[îïíīįì]'), 'i')
+        .replaceAll(RegExp(r'[ûüùúū]'), 'u')
+        .replaceAll(RegExp(r'[èéêëēėę]'), 'e')
+        .replaceAll(RegExp(r'[ôöòóœøōõ]'), 'o')
+        .replaceAll(RegExp(r'[!-,\.-@\[-`{-¿]'), '');
+    return normalWord;
+  }
+
   //
   Map<String, dynamic> dictionaryContentUnsorted = {
     "hello": {

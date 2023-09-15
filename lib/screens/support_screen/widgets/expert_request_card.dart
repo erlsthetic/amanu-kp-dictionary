@@ -2,6 +2,7 @@ import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ExpertRequestCard extends StatelessWidget {
   ExpertRequestCard(
@@ -17,7 +18,7 @@ class ExpertRequestCard extends StatelessWidget {
   final String userID;
   final int phoneNo;
   final String userName;
-  final String userFullName;
+  final String? userFullName;
   final String? bio;
   final String? profileUrl;
   final VoidCallback onTap;
@@ -48,6 +49,7 @@ class ExpertRequestCard extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   alignment: Alignment.center,
@@ -61,13 +63,28 @@ class ExpertRequestCard extends StatelessWidget {
                             Border.all(color: primaryOrangeDark, width: 1.5)),
                     padding: EdgeInsets.all(2.5),
                     child: Container(
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: disabledGrey,
-                          image: (profileUrl == null || profileUrl == '')
-                              ? null
-                              : DecorationImage(
-                                  image: NetworkImage(profileUrl ?? ''))),
+                          color: disabledGrey),
+                      child: profileUrl != null || profileUrl != ''
+                          ? Image.network(
+                              profileUrl ?? '',
+                              errorBuilder: (context, error, stackTrace) {
+                                return Shimmer.fromColors(
+                                  child: Container(
+                                    color: disabledGrey,
+                                  ),
+                                  baseColor: disabledGrey,
+                                  highlightColor: lightGrey,
+                                );
+                              },
+                            )
+                          : Icon(
+                              Icons.person_rounded,
+                              size: 30,
+                              color: darkGrey,
+                            ),
                     ),
                   ),
                 ),
@@ -88,19 +105,21 @@ class ExpertRequestCard extends StatelessWidget {
                           presetFontSizes: [30, 29, 28, 27, 26, 25, 24, 23, 22],
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        height: 35,
-                        child: Text(
-                          userFullName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              color: disabledGrey,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      userFullName == null || userFullName == ''
+                          ? Container(
+                              alignment: Alignment.topLeft,
+                              height: 35,
+                              child: Text(
+                                userFullName ?? "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    color: disabledGrey,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          : Container(),
                       Container(
                         alignment: Alignment.topLeft,
                         height: 35,
