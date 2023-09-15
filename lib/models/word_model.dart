@@ -6,16 +6,12 @@ class KPWord {
   final List<String> filTranslation;
   final String phonetic;
   final String pronunciationLink;
-
   final List<dynamic> meanings;
-
   final List<String> kulitanForm;
-
   final List<String> synonyms;
   final List<String> antonyms;
   final List<String> relatedWords;
   final List<String> searchIndex;
-
   final int contributorID;
   final int expertID;
   final String dateUpdated;

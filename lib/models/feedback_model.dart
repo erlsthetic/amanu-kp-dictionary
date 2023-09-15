@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FeedbackModel {
   final int rating;
   final String? additionalNotes;
@@ -15,5 +17,15 @@ class FeedbackModel {
       "additionalNotes": this.additionalNotes,
       "timestamp": this.timestamp,
     };
+  }
+
+  factory FeedbackModel.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+    return FeedbackModel(
+      additionalNotes: data["additionalNotes"],
+      rating: data["rating"],
+      timestamp: data["timestamp"],
+    );
   }
 }

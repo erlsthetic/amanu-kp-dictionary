@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ReportModel {
   final String? email;
   final String problemType;
@@ -24,5 +26,18 @@ class ReportModel {
       "imgUrl": this.imgUrl,
       "timestamp": this.timestamp,
     };
+  }
+
+  factory ReportModel.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+    return ReportModel(
+      email: data["email"],
+      problemType: data["problemType"],
+      subject: data["subject"],
+      details: data["details"],
+      imgUrl: data["imgUrl"],
+      timestamp: data["timestamp"],
+    );
   }
 }
