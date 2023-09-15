@@ -1,10 +1,8 @@
 import 'package:amanu/screens/support_screen/controllers/feedbacks_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
 
 class FeedbackCard extends StatelessWidget {
   FeedbackCard(
@@ -54,8 +52,8 @@ class FeedbackCard extends StatelessWidget {
                   height: double.infinity,
                   child: Container(
                     padding: EdgeInsets.all(5),
-                    height: 40,
-                    width: 40,
+                    height: 45,
+                    width: 45,
                     child: Container(
                       child: Center(
                           child: SvgPicture.asset(
@@ -69,24 +67,27 @@ class FeedbackCard extends StatelessWidget {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
                         alignment: Alignment.centerLeft,
-                        height: 35,
-                        child: Row(
+                        height: 20,
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          alignment: WrapAlignment.center,
+                          runAlignment: WrapAlignment.center,
                           children: [
                             Text(
-                              "Rating",
+                              "Rating:",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
                                   fontSize: 16,
-                                  color: disabledGrey,
-                                  fontWeight: FontWeight.w600),
+                                  color: cardText,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 5,
                             ),
                             for (int i = 0; i < 5; i++)
                               Icon(Icons.star_rate_rounded,
@@ -98,30 +99,28 @@ class FeedbackCard extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              "${rating} / 5" +
-                                  (rating == 1
-                                      ? "(Very Bad)"
-                                      : rating == 2
-                                          ? "(Bad)"
-                                          : rating == 3
-                                              ? "(Fair)"
-                                              : rating == 4
-                                                  ? "(Good)"
-                                                  : "(Very Good)"),
+                              (rating == 1
+                                  ? "(Very Bad)"
+                                  : rating == 2
+                                      ? "(Bad)"
+                                      : rating == 3
+                                          ? "(Fair)"
+                                          : rating == 4
+                                              ? "(Good)"
+                                              : "(Very Good)"),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
-                                  fontSize: 16,
-                                  color: disabledGrey,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 14,
+                                  color: cardText,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 10),
                         alignment: Alignment.centerLeft,
-                        height: 22,
+                        height: 18,
                         child: Text(
                           additionalNotes ?? "No additional comments.",
                           maxLines: 1,
@@ -129,11 +128,10 @@ class FeedbackCard extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               fontSize: 14,
                               color: disabledGrey,
-                              fontWeight: FontWeight.w600),
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 10),
                         alignment: Alignment.centerLeft,
                         height: 22,
                         child: Text(
@@ -143,7 +141,7 @@ class FeedbackCard extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               fontSize: 14,
                               color: disabledGrey,
-                              fontWeight: FontWeight.w500),
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                     ],

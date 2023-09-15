@@ -1,9 +1,7 @@
 import 'package:amanu/components/tag_creator.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ProblemReportCard extends StatelessWidget {
   ProblemReportCard(
@@ -48,81 +46,116 @@ class ProblemReportCard extends StatelessWidget {
                 ),
               ]),
           child: Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+            width: double.infinity,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  alignment: Alignment.center,
                   height: double.infinity,
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: primaryOrangeDark, width: 1.5)),
-                    padding: EdgeInsets.all(2.5),
-                    child: Container(),
+                  width: 40,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(20)),
+                    color: problemType.toLowerCase() ==
+                            "account related problem"
+                        ? primaryOrangeDark
+                        : problemType.toLowerCase() == "content related problem"
+                            ? primaryOrangeLight
+                            : problemType.toLowerCase() == "Bugs and crashes"
+                                ? darkerOrange.withOpacity(0.8)
+                                : orangeCard,
+                  ),
+                  child: Icon(
+                    problemType.toLowerCase() == "account related problem"
+                        ? Icons.account_circle_rounded
+                        : problemType.toLowerCase() == "content related problem"
+                            ? Icons.library_books_rounded
+                            : problemType.toLowerCase() == "Bugs and crashes"
+                                ? Icons.bug_report_rounded
+                                : Icons.app_shortcut_rounded,
+                    size: 25,
+                    color: pureWhite,
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        height: 20,
-                        child: Text(
-                          problemType.toUpperCase(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                              fontSize: 11,
-                              color: disabledGrey,
-                              fontWeight: FontWeight.w400),
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          alignment: Alignment.topLeft,
+                          height: 14,
+                          child: Text(
+                            problemType.toUpperCase(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                color: disabledGrey,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        height: 35,
-                        child: Text(
-                          subject,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              color: disabledGrey,
-                              fontWeight: FontWeight.w600),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          height: 18,
+                          child: Text(
+                            subject,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                fontSize: 16,
+                                color: cardText,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        height: 35,
-                        child: Text(
-                          details,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              color: disabledGrey,
-                              fontWeight: FontWeight.w600),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          height: 18,
+                          child: Text(
+                            details,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                color: disabledGrey,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      imgUrl != null || imgUrl != ''
-                          ? Container(
+                        Row(
+                          children: [
+                            imgUrl != null
+                                ? Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    alignment: Alignment.topLeft,
+                                    height: 25,
+                                    child: TagCreator(
+                                      label: "with Image",
+                                      color: primaryOrangeLight,
+                                      textColor: pureWhite,
+                                    ))
+                                : Container(),
+                            Container(
                               alignment: Alignment.topLeft,
-                              height: 25,
-                              child: TagCreator(
-                                label: "with Image",
-                                color: primaryOrangeLight,
-                                textColor: pureWhite,
-                              ))
-                          : Container(),
-                    ],
+                              height: 22,
+                              child: Text(
+                                timestamp,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    color: disabledGrey,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),

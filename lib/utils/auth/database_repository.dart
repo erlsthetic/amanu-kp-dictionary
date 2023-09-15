@@ -45,7 +45,6 @@ class DatabaseRepository extends GetxController {
         title: tSuccess,
         message: tAccountUpdated,
       );
-      // ignore: body_might_complete_normally_catch_error
     }).catchError((error, stackTrace) {
       Helper.errorSnackBar(
         title: tOhSnap,
@@ -93,7 +92,7 @@ class DatabaseRepository extends GetxController {
 
   Future<List<UserModel>> getAllExpertRequests() async {
     final snapshot = await _db
-        .collection("requests")
+        .collection("users")
         .where("expertRequest", isEqualTo: true)
         .where("isExpert", isEqualTo: false)
         .get()
@@ -148,6 +147,31 @@ class DatabaseRepository extends GetxController {
       Get.back();
       Helper.successSnackBar(title: tReportSent, message: tReportSentBody);
     });
+  }
+
+  Future deleteReportOnDB(
+      String problemType, String subject, String timestamp) async {
+    final snapshot = await _db
+        .collection("reports")
+        .where("timestamp", isEqualTo: timestamp)
+        .where("problemType", isEqualTo: problemType)
+        .where("subject", isEqualTo: subject)
+        .get()
+        .catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+    });
+    for (QueryDocumentSnapshot doc in snapshot.docs) {
+      await _db
+          .collection("reports")
+          .doc(doc.id)
+          .delete()
+          .catchError((error, stackTrace) {
+        print(error.toString());
+        return Helper.errorSnackBar(
+            title: tOhSnap, message: tSomethingWentWrong);
+      });
+    }
   }
 
   Future<List<ReportModel>> getAllReports() async {

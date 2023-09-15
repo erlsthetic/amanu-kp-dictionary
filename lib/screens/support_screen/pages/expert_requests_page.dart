@@ -41,40 +41,48 @@ class ExpertRequestsPage extends StatelessWidget {
                             ),
                           );
                         else
-                          return Container(
-                            height: size.height - 110,
-                            width: size.width,
-                            child: controller.expertRequests.length != 0
-                                ? ListView.builder(
-                                    physics: BouncingScrollPhysics(),
-                                    padding:
-                                        EdgeInsets.only(top: 30, bottom: 50),
-                                    itemCount: controller.expertRequests.length,
-                                    itemBuilder: (context, index) {
-                                      return ExpertRequestCard(
-                                        userID: controller
-                                            .expertRequests[index].uid,
-                                        userName: controller
-                                            .expertRequests[index].userName,
-                                        userFullName: controller
-                                            .expertRequests[index].exFullName,
-                                        phoneNo: controller
-                                            .expertRequests[index].phoneNo,
-                                        bio: controller
-                                            .expertRequests[index].exBio,
-                                        profileUrl: controller
-                                            .expertRequests[index].profileUrl,
-                                        onTap: () {},
-                                      );
-                                    },
-                                  )
-                                : Center(
-                                    child: Text(
-                                      "No expert requests at the moment.",
-                                      style: TextStyle(
-                                          fontSize: 16, color: disabledGrey),
+                          return Obx(
+                            () => Container(
+                              height: size.height - 110,
+                              width: size.width,
+                              child: controller.expertRequests.length != 0
+                                  ? ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      padding:
+                                          EdgeInsets.only(top: 30, bottom: 50),
+                                      itemCount:
+                                          controller.expertRequests.length,
+                                      itemBuilder: (context, index) {
+                                        return ExpertRequestCard(
+                                          userID: controller
+                                              .expertRequests[index].uid,
+                                          userName: controller
+                                              .expertRequests[index].userName,
+                                          userFullName: controller
+                                              .expertRequests[index].exFullName,
+                                          phoneNo: controller
+                                              .expertRequests[index].phoneNo,
+                                          bio: controller
+                                              .expertRequests[index].exBio,
+                                          profileUrl: controller
+                                              .expertRequests[index].profileUrl,
+                                          cvUrl: controller
+                                              .expertRequests[index].cvUrl,
+                                          onTap: () {
+                                            controller.openRequest(
+                                                context, index);
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        "No expert requests at the moment.",
+                                        style: TextStyle(
+                                            fontSize: 16, color: disabledGrey),
+                                      ),
                                     ),
-                                  ),
+                            ),
                           );
                       },
                     )

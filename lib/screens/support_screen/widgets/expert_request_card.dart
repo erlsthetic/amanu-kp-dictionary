@@ -1,3 +1,4 @@
+import 'package:amanu/components/tag_creator.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ class ExpertRequestCard extends StatelessWidget {
       required this.userName,
       required this.userFullName,
       required this.onTap,
-      required this.profileUrl});
+      required this.profileUrl,
+      required this.cvUrl});
 
   final String userID;
   final int phoneNo;
@@ -21,6 +23,7 @@ class ExpertRequestCard extends StatelessWidget {
   final String? userFullName;
   final String? bio;
   final String? profileUrl;
+  final String? cvUrl;
   final VoidCallback onTap;
 
   @override
@@ -55,17 +58,18 @@ class ExpertRequestCard extends StatelessWidget {
                   alignment: Alignment.center,
                   height: double.infinity,
                   child: Container(
-                    height: 40,
-                    width: 40,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(30),
                         border:
-                            Border.all(color: primaryOrangeDark, width: 1.5)),
+                            Border.all(color: primaryOrangeDark, width: 2.5)),
                     padding: EdgeInsets.all(2.5),
                     child: Container(
+                      clipBehavior: Clip.antiAlias,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(30),
                           color: disabledGrey),
                       child: profileUrl != null || profileUrl != ''
                           ? Image.network(
@@ -73,7 +77,8 @@ class ExpertRequestCard extends StatelessWidget {
                               errorBuilder: (context, error, stackTrace) {
                                 return Shimmer.fromColors(
                                   child: Container(
-                                    color: disabledGrey,
+                                    height: double.infinity,
+                                    width: double.infinity,
                                   ),
                                   baseColor: disabledGrey,
                                   highlightColor: lightGrey,
@@ -82,35 +87,53 @@ class ExpertRequestCard extends StatelessWidget {
                             )
                           : Icon(
                               Icons.person_rounded,
-                              size: 30,
+                              size: 40,
                               color: darkGrey,
                             ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 35,
-                        child: AutoSizeText(
-                          userName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.robotoSlab(
-                              color: primaryOrangeDark,
-                              fontWeight: FontWeight.w800),
-                          presetFontSizes: [30, 29, 28, 27, 26, 25, 24, 23, 22],
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          height: 25,
+                          child: AutoSizeText(
+                            userName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.robotoSlab(
+                                color: primaryOrangeDark,
+                                fontWeight: FontWeight.w800),
+                            presetFontSizes: [28, 27, 26, 25, 24, 23, 22],
+                          ),
                         ),
-                      ),
-                      userFullName == null || userFullName == ''
-                          ? Container(
-                              alignment: Alignment.topLeft,
-                              height: 35,
-                              child: Text(
-                                userFullName ?? "",
+                        userFullName != null || userFullName != ''
+                            ? Container(
+                                alignment: Alignment.topLeft,
+                                height: 16,
+                                child: Text(
+                                  userFullName ?? "",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 15,
+                                      color: disabledGrey,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              )
+                            : Container(),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          height: 15,
+                          child: Row(
+                            children: [
+                              Text(
+                                "+63" + phoneNo.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.roboto(
@@ -118,52 +141,56 @@ class ExpertRequestCard extends StatelessWidget {
                                     color: disabledGrey,
                                     fontWeight: FontWeight.w600),
                               ),
-                            )
-                          : Container(),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        height: 35,
-                        child: Text(
-                          "+63" + phoneNo.toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              color: disabledGrey,
-                              fontWeight: FontWeight.w600),
+                              cvUrl != null || cvUrl != ''
+                                  ? Container(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: TagCreator(
+                                        label: "with CV",
+                                        color: primaryOrangeLight,
+                                        textColor: pureWhite,
+                                        height: 15,
+                                        padding:
+                                            EdgeInsets.fromLTRB(4, 1, 4, 1),
+                                        margin: EdgeInsets.all(0),
+                                      ),
+                                    )
+                                  : Container()
+                            ],
+                          ),
                         ),
-                      ),
-                      bio != null || bio != ''
-                          ? Container(
-                              alignment: Alignment.topLeft,
-                              height: 35,
-                              child: Text(
-                                bio ?? '',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.roboto(
-                                    fontSize: 14,
-                                    color: disabledGrey,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            )
-                          : Container(),
-                    ],
+                        bio != null || bio != ''
+                            ? Container(
+                                alignment: Alignment.topLeft,
+                                height: 15,
+                                child: Text(
+                                  bio ?? '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 14,
+                                      color: disabledGrey,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 10),
-                  child: Row(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: Feedback.wrapForTap(() {}, context),
                         child: Container(
-                          height: 30,
-                          width: 30,
+                          height: 40,
+                          width: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: primaryOrangeLight,
-                              borderRadius: BorderRadius.circular(15)),
+                              color: primaryOrangeDark,
+                              borderRadius: BorderRadius.circular(20)),
                           child: Icon(
                             Icons.check_rounded,
                             color: pureWhite,
@@ -172,17 +199,17 @@ class ExpertRequestCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: 10,
+                        height: 10,
                       ),
                       GestureDetector(
                         onTap: Feedback.wrapForTap(() {}, context),
                         child: Container(
-                          height: 30,
-                          width: 30,
+                          height: 40,
+                          width: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: primaryOrangeLight,
-                              borderRadius: BorderRadius.circular(15)),
+                              color: darkerOrange.withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Icon(
                             Icons.close_rounded,
                             color: pureWhite,

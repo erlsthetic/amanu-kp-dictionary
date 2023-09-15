@@ -82,6 +82,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.9
   camera: ^0.10.5+4
   http: ^1.1.0
+  open_file: ^3.3.2
 
 dev_dependencies:
   flutter_test:

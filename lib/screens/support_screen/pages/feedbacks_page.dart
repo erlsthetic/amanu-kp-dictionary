@@ -58,7 +58,18 @@ class FeedbacksPage extends StatelessWidget {
                                               .feedbacks[index].rating,
                                           additionalNotes: controller
                                               .feedbacks[index].additionalNotes,
-                                          onTap: () {},
+                                          onTap: () {
+                                            controller.openFeedback(
+                                                context,
+                                                controller
+                                                    .feedbacks[index].timestamp,
+                                                controller
+                                                    .feedbacks[index].rating,
+                                                controller.feedbacks[index]
+                                                    .additionalNotes,
+                                                controller.feedbacks[index]
+                                                    .timestamp);
+                                          },
                                           controller: controller);
                                     },
                                   )
@@ -97,7 +108,7 @@ class FeedbacksPage extends StatelessWidget {
           ThreePartHeader(
             size: size,
             screenPadding: screenPadding,
-            title: tExpertRequests,
+            title: tFeedbacks,
           ),
         ],
       )),

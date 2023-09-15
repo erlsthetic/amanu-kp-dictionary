@@ -30,7 +30,9 @@ class RequestsController extends GetxController {
             textAlign: TextAlign.center,
             style: TextStyle(color: cardText, fontSize: 16),
           ),
-        ));
+        ),
+        null,
+        null);
   }
 
   Future requestSelect(String requestID, int requestType) async {

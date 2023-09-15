@@ -119,7 +119,9 @@ class SignUpController extends GetxController {
               ),
             ),
           ]),
-        ));
+        ),
+        null,
+        null);
   }
 
 //Validation

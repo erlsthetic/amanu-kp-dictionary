@@ -1,7 +1,10 @@
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/support_screen/pages/about_page.dart';
+import 'package:amanu/screens/support_screen/pages/expert_requests_page.dart';
 import 'package:amanu/screens/support_screen/pages/feedback_page.dart';
+import 'package:amanu/screens/support_screen/pages/feedbacks_page.dart';
+import 'package:amanu/screens/support_screen/pages/problem_reports_page.dart';
 import 'package:amanu/screens/support_screen/pages/report_page.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -51,7 +54,7 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => ReportProblemPage()); //TODO
+                                    Get.to(() => ExpertRequestsPage()); //TODO
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -63,7 +66,7 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => ReportProblemPage()); //TODO
+                                    Get.to(() => ProblemReportsPage()); //TODO
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -84,7 +87,7 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => FeedbackPage()); //TODO
+                                    Get.to(() => FeedbacksPage()); //TODO
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }

@@ -33,7 +33,6 @@ class KulitanScannerController extends GetxController
   RxBool isInitialized = false.obs;
   Image? predictionImage = null;
   TransformationController? transController;
-  TapDownDetails? tapDownDetails;
   late AnimationController zoomAnimController;
   Animation<Matrix4>? anim;
 
@@ -146,7 +145,6 @@ class KulitanScannerController extends GetxController
           return;
         } else {
           if (transController != null) transController!.dispose();
-          tapDownDetails = null;
           transController = TransformationController();
           predictionImage = prediction[1];
           withImage.value = !withImage.value;
@@ -181,7 +179,6 @@ class KulitanScannerController extends GetxController
           return;
         } else {
           if (transController != null) transController!.dispose();
-          tapDownDetails = null;
           transController = TransformationController();
           predictionImage = prediction[1];
           withImage.value = !withImage.value;
@@ -333,6 +330,8 @@ class KulitanScannerController extends GetxController
               ),
             ),
           ]),
-        ));
+        ),
+        null,
+        null);
   }
 }

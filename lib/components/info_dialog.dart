@@ -2,8 +2,8 @@ import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<dynamic> showInfoDialog(
-    BuildContext context, String title, Widget childWidget) {
+Future<dynamic> showInfoDialog(BuildContext context, String title,
+    Widget childWidget, Widget? bottomWidget, VoidCallback? onClose) {
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -45,7 +45,8 @@ Future<dynamic> showInfoDialog(
                         physics: BouncingScrollPhysics(),
                         child: childWidget,
                       ),
-                    )
+                    ),
+                    bottomWidget != null ? bottomWidget : Container()
                   ],
                 ),
               ),
@@ -54,6 +55,9 @@ Future<dynamic> showInfoDialog(
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
+                    if (onClose != null) {
+                      onClose;
+                    }
                   },
                   child: Align(
                     alignment: Alignment.topRight,

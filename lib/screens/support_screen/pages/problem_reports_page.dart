@@ -1,5 +1,4 @@
 import 'package:amanu/screens/support_screen/controllers/problem_reports_controller.dart';
-import 'package:amanu/screens/support_screen/widgets/expert_request_card.dart';
 import 'package:amanu/screens/support_screen/widgets/problem_report_card.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -42,39 +41,56 @@ class ProblemReportsPage extends StatelessWidget {
                             ),
                           );
                         else
-                          return Container(
-                            height: size.height - 110,
-                            width: size.width,
-                            child: controller.reports.length != 0
-                                ? ListView.builder(
-                                    physics: BouncingScrollPhysics(),
-                                    padding:
-                                        EdgeInsets.only(top: 30, bottom: 50),
-                                    itemCount: controller.reports.length,
-                                    itemBuilder: (context, index) {
-                                      return ProblemReportCard(
-                                          timestamp: controller
-                                              .reports[index].timestamp,
-                                          subject:
-                                              controller.reports[index].subject,
-                                          details:
-                                              controller.reports[index].details,
-                                          problemType: controller
-                                              .reports[index].problemType,
-                                          email:
-                                              controller.reports[index].email,
-                                          onTap: () {},
-                                          imgUrl:
-                                              controller.reports[index].imgUrl);
-                                    },
-                                  )
-                                : Center(
-                                    child: Text(
-                                      "No problem reports at the moment.",
-                                      style: TextStyle(
-                                          fontSize: 16, color: disabledGrey),
+                          return Obx(
+                            () => Container(
+                              height: size.height - 110,
+                              width: size.width,
+                              child: controller.reports.length != 0
+                                  ? ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      padding:
+                                          EdgeInsets.only(top: 30, bottom: 50),
+                                      itemCount: controller.reports.length,
+                                      itemBuilder: (context, index) {
+                                        return ProblemReportCard(
+                                            timestamp: controller
+                                                .reports[index].timestamp,
+                                            subject: controller
+                                                .reports[index].subject,
+                                            details: controller
+                                                .reports[index].details,
+                                            problemType: controller
+                                                .reports[index].problemType,
+                                            email:
+                                                controller.reports[index].email,
+                                            onTap: () {
+                                              controller.openReport(
+                                                  context,
+                                                  controller
+                                                      .reports[index].timestamp,
+                                                  controller.reports[index]
+                                                      .problemType,
+                                                  controller
+                                                      .reports[index].email,
+                                                  controller
+                                                      .reports[index].subject,
+                                                  controller
+                                                      .reports[index].details,
+                                                  controller
+                                                      .reports[index].imgUrl);
+                                            },
+                                            imgUrl: controller
+                                                .reports[index].imgUrl);
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        "No problem reports at the moment.",
+                                        style: TextStyle(
+                                            fontSize: 16, color: disabledGrey),
+                                      ),
                                     ),
-                                  ),
+                            ),
                           );
                       },
                     )
@@ -103,7 +119,7 @@ class ProblemReportsPage extends StatelessWidget {
           ThreePartHeader(
             size: size,
             screenPadding: screenPadding,
-            title: tExpertRequests,
+            title: tProblemReports,
           ),
         ],
       )),
