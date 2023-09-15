@@ -15,7 +15,9 @@ class ExpertRequestCard extends StatelessWidget {
       required this.userFullName,
       required this.onTap,
       required this.profileUrl,
-      required this.cvUrl});
+      required this.cvUrl,
+      required this.onTapOpt1,
+      required this.onTapOpt2});
 
   final String userID;
   final int phoneNo;
@@ -25,6 +27,8 @@ class ExpertRequestCard extends StatelessWidget {
   final String? profileUrl;
   final String? cvUrl;
   final VoidCallback onTap;
+  final VoidCallback onTapOpt1;
+  final VoidCallback onTapOpt2;
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +187,7 @@ class ExpertRequestCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: Feedback.wrapForTap(() {}, context),
+                        onTap: Feedback.wrapForTap(onTapOpt1, context),
                         child: Container(
                           height: 40,
                           width: 40,
@@ -202,7 +206,7 @@ class ExpertRequestCard extends StatelessWidget {
                         height: 10,
                       ),
                       GestureDetector(
-                        onTap: Feedback.wrapForTap(() {}, context),
+                        onTap: Feedback.wrapForTap(onTapOpt2, context),
                         child: Container(
                           height: 40,
                           width: 40,

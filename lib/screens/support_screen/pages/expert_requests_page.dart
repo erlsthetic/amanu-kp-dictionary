@@ -72,6 +72,24 @@ class ExpertRequestsPage extends StatelessWidget {
                                             controller.openRequest(
                                                 context, index);
                                           },
+                                          onTapOpt1: () async {
+                                            await controller.updateUser(
+                                                context,
+                                                true,
+                                                controller
+                                                    .expertRequests[index],
+                                                false);
+                                            controller.getAllRequests();
+                                          },
+                                          onTapOpt2: () async {
+                                            await controller.updateUser(
+                                                context,
+                                                false,
+                                                controller
+                                                    .expertRequests[index],
+                                                false);
+                                            controller.getAllRequests();
+                                          },
                                         );
                                       },
                                     )

@@ -44,8 +44,8 @@ class ExpertRequestsController extends GetxController {
     expertRequests.refresh();
   }
 
-  Future updateUser(
-      BuildContext context, bool accept, UserModel currentDetails) async {
+  Future updateUser(BuildContext context, bool accept, UserModel currentDetails,
+      bool fromDetails) async {
     showLoaderDialog(context);
     Map<String, dynamic> newDetails = currentDetails.toJson();
     String userID = currentDetails.uid;
@@ -59,7 +59,9 @@ class ExpertRequestsController extends GetxController {
         .updateUserOnDB(newDetails, userID)
         .then((value) {
       Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      if (fromDetails) {
+        Navigator.of(context).pop();
+      }
     });
   }
 
@@ -72,12 +74,13 @@ class ExpertRequestsController extends GetxController {
       Navigator.of(context).pop();
     } else {
       Navigator.of(context).pop();
+      print(file.path);
       OpenFile.open(file.path);
     }
   }
 
   Future<File?> downloadFile(String url) async {
-    final appStorage = await getApplicationDocumentsDirectory();
+    final appStorage = await getTemporaryDirectory();
     String prnExt = url.split("?").first;
     final fileExt = extension(File(prnExt).path);
     final tempFile = File('${appStorage.path}/cv$fileExt');
@@ -417,7 +420,8 @@ class ExpertRequestsController extends GetxController {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(25),
                     onTap: () async {
-                      await updateUser(context, true, expertRequests[index]);
+                      await updateUser(
+                          context, true, expertRequests[index], true);
                       getAllRequests();
                       player.dispose();
                     },
@@ -454,7 +458,8 @@ class ExpertRequestsController extends GetxController {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(25),
                     onTap: () async {
-                      await updateUser(context, false, expertRequests[index]);
+                      await updateUser(
+                          context, false, expertRequests[index], true);
                       getAllRequests();
                       player.dispose();
                     },
