@@ -44,12 +44,12 @@ class BrowseCard extends StatelessWidget {
 
   final String wordId;
   final String word;
-  final List<String> type;
-  final List<String> engTrans;
-  final List<String> filTrans;
-  final List<String> otherRelated;
-  final List<String> synonyms;
-  final List<String> antonyms;
+  final List<dynamic> type;
+  final List<dynamic> engTrans;
+  final List<dynamic> filTrans;
+  final List<dynamic> otherRelated;
+  final List<dynamic> synonyms;
+  final List<dynamic> antonyms;
   final String prnLink;
   final String foundOn;
   final VoidCallback onTap;

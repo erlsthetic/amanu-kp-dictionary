@@ -69,7 +69,7 @@ class RequestDetailsController extends GetxController {
   final String prnUrl;
   final List<dynamic> engTrans;
   final List<dynamic> filTrans;
-  final List<Map<String, dynamic>> meanings;
+  final List<dynamic> meanings;
   final List<String> types;
   final List<List<dynamic>> kulitanChars;
   final Map<dynamic, dynamic> otherRelated;
@@ -87,7 +87,7 @@ class RequestDetailsController extends GetxController {
   String prevPrnUrl = '';
   List<dynamic> prevEngTrans = [];
   List<dynamic> prevFilTrans = [];
-  List<Map<String, dynamic>> prevMeanings = [];
+  List<dynamic> prevMeanings = [];
   List<String> prevTypes = [];
   List<List<Map<String, dynamic>>> prevDefinitions = [];
   var prevKulitanChars = [];
@@ -127,8 +127,10 @@ class RequestDetailsController extends GetxController {
     prevKulitanChars = new List.from(
         appController.dictionaryContent[prevWordID]["kulitan-form"]);
     for (var line in prevKulitanChars) {
-      for (var syl in line) {
-        prevKulitanString = prevKulitanString + syl;
+      if (line != null) {
+        for (var syl in line) {
+          prevKulitanString = prevKulitanString + syl;
+        }
       }
     }
     prevOtherRelated =

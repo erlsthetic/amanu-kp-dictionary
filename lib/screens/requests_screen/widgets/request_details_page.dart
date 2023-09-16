@@ -24,7 +24,7 @@ class RequestDetailsPage extends StatelessWidget {
   final String prnUrl;
   final List<dynamic>? engTrans;
   final List<dynamic>? filTrans;
-  final List<Map<String, dynamic>> meanings;
+  final List<dynamic> meanings;
   final List<String> types;
   final List<List<dynamic>> kulitanChars;
   final Map<dynamic, dynamic>? otherRelated;

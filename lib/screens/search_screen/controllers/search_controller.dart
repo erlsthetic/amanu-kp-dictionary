@@ -59,7 +59,7 @@ class SearchWordController extends GetxController {
       if (searchInEngTrans.value) {
         if (entry.value["englishTranslations"] != null) {
           bool _found = false;
-          List<String> engTransList = entry.value["englishTranslations"];
+          List<dynamic> engTransList = entry.value["englishTranslations"];
           for (var trans in engTransList) {
             if (trans.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
@@ -76,7 +76,7 @@ class SearchWordController extends GetxController {
       if (searchInFilTrans.value) {
         if (entry.value["filipinoTranslations"] != null) {
           bool _found = false;
-          List<String> filTransList = entry.value["filipinoTranslations"];
+          List<dynamic> filTransList = entry.value["filipinoTranslations"];
           for (var trans in filTransList) {
             if (trans.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
@@ -95,8 +95,10 @@ class SearchWordController extends GetxController {
           var kulitanList = entry.value["kulitan-form"];
           String kulitanString = '';
           for (var line in kulitanList) {
-            for (var syl in line) {
-              kulitanString = kulitanString + syl;
+            if (line != null) {
+              for (var syl in line) {
+                kulitanString = kulitanString + syl;
+              }
             }
           }
           if (kulitanString.contains(query)) {
@@ -109,7 +111,7 @@ class SearchWordController extends GetxController {
       if (searchInDefinition.value) {
         if (entry.value["meanings"] != null) {
           bool _found = false;
-          List<Map<dynamic, dynamic>> meanings = entry.value["meanings"];
+          List<dynamic> meanings = entry.value["meanings"];
           for (var meaning in meanings) {
             bool _foundInDef = false;
             List<Map<dynamic, dynamic>> definitions = meaning["definitions"];

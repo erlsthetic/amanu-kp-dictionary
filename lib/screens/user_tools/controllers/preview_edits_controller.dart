@@ -56,7 +56,7 @@ class PreviewEditsController extends GetxController {
   final String prnPath;
   final List<dynamic> engTrans;
   final List<dynamic> filTrans;
-  final List<Map<String, dynamic>> meanings;
+  final List<dynamic> meanings;
   final List<String> types;
   final List<List<dynamic>> kulitanChars;
   final Map<dynamic, dynamic> otherRelated;
@@ -79,7 +79,7 @@ class PreviewEditsController extends GetxController {
   String prevPrnUrl = '';
   List<dynamic> prevEngTrans = [];
   List<dynamic> prevFilTrans = [];
-  List<Map<String, dynamic>> prevMeanings = [];
+  List<dynamic> prevMeanings = [];
   List<String> prevTypes = [];
   List<List<Map<String, dynamic>>> prevDefinitions = [];
   var prevKulitanChars = [];
@@ -119,8 +119,10 @@ class PreviewEditsController extends GetxController {
     prevKulitanChars = new List.from(
         appController.dictionaryContent[prevWordID]["kulitan-form"]);
     for (var line in prevKulitanChars) {
-      for (var syl in line) {
-        prevKulitanString = prevKulitanString + syl;
+      if (line != null) {
+        for (var syl in line) {
+          prevKulitanString = prevKulitanString + syl;
+        }
       }
     }
     prevOtherRelated =
@@ -177,6 +179,7 @@ class PreviewEditsController extends GetxController {
         if (appController.hasConnection.value) {
           await DatabaseRepository.instance
               .updateWordOnDB(wordID, prevWordID, details);
+
           if (fromRequests) {
             await DatabaseRepository.instance
                 .removeRequest(requestID, requestAudioPath);

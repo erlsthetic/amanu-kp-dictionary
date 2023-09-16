@@ -25,7 +25,7 @@ class HomePageController extends GetxController {
   String prnUrl = '';
   List<dynamic> engTrans = [];
   List<dynamic> filTrans = [];
-  List<Map<String, dynamic>> meanings = [];
+  List<dynamic> meanings = [];
   List<String> types = [];
   List<List<Map<String, dynamic>>> definitions = [];
   var kulitanChars = [];
@@ -55,7 +55,8 @@ class HomePageController extends GetxController {
               null
           ? []
           : appController.dictionaryContent[wordID]["filipinoTranslations"];
-      meanings = appController.dictionaryContent[wordID]["meanings"];
+      meanings =
+          appController.dictionaryContent[wordID]["meanings"] as List<dynamic>;
       for (Map<String, dynamic> meaning in meanings) {
         types.add(meaning["partOfSpeech"]);
         List<Map<String, dynamic>> tempDef = [];

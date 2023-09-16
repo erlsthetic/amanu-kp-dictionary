@@ -117,7 +117,7 @@ class ModifyController extends GetxController {
     playerController.preparePlayer(path: audioPath);
     playerController.seekTo(0);
     hasFile.value = true;
-    List<Map<String, dynamic>> meaningsGetList = List.from(meaningsList);
+    List<dynamic> meaningsGetList = List.from(meaningsList);
     List<String> _types = [];
     List<List<Map<String, dynamic>>> _definitions = [];
     for (Map<String, dynamic> meaning in meaningsGetList) {
@@ -175,8 +175,10 @@ class ModifyController extends GetxController {
     currentSpace = kulitanStringListGetter[currentLine].length;
     String kulitanString = '';
     for (var line in kulitanStringListGetter) {
-      for (var syl in line) {
-        kulitanString = kulitanString + syl;
+      if (line != null) {
+        for (var syl in line) {
+          kulitanString = kulitanString + syl;
+        }
       }
     }
     if (kulitanString == '') {
@@ -586,7 +588,7 @@ class ModifyController extends GetxController {
         appController.normalizeWord(wordController.text.trim());
     String wordKey = normalizedWord;
 
-    List<Map<String, dynamic>> meanings = [];
+    List<dynamic> meanings = [];
 
     for (MapEntry type in typeFields.asMap().entries) {
       Map<String, dynamic> tempMeaning = {};
@@ -638,8 +640,10 @@ class ModifyController extends GetxController {
     }
     String kulitanString = '';
     for (var line in kulitanStringListGetter) {
-      for (var syl in line) {
-        kulitanString = kulitanString + syl;
+      if (line != null) {
+        for (var syl in line) {
+          kulitanString = kulitanString + syl;
+        }
       }
     }
 

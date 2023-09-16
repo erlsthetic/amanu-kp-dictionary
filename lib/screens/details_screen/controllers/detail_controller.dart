@@ -21,7 +21,7 @@ class DetailController extends GetxController {
   String prnUrl = '';
   List<dynamic> engTrans = [];
   List<dynamic> filTrans = [];
-  List<Map<String, dynamic>> meanings = [];
+  List<dynamic> meanings = [];
   List<String> types = [];
   List<List<Map<String, dynamic>>> definitions = [];
   var kulitanChars = [];
@@ -58,8 +58,10 @@ class DetailController extends GetxController {
     kulitanChars =
         new List.from(appController.dictionaryContent[wordID]["kulitan-form"]);
     for (var line in kulitanChars) {
-      for (var syl in line) {
-        kulitanString = kulitanString + syl;
+      if (line != null) {
+        for (var syl in line) {
+          kulitanString = kulitanString + syl;
+        }
       }
     }
     otherRelated =

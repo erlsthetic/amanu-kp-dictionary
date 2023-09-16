@@ -64,7 +64,7 @@ class RequestsController extends GetxController {
           String prnAudioPath = request.prnStoragePath;
           List<dynamic> engTrans = new List.from(request.engTrans);
           List<dynamic> filTrans = new List.from(request.filTrans);
-          List<Map<String, dynamic>> meanings = new List.from(request.meanings);
+          List<dynamic> meanings = new List.from(request.meanings);
           List<String> types = [];
           List<List<Map<String, dynamic>>> definitions = [];
           List<List<dynamic>> kulitanChars = [];
@@ -87,8 +87,10 @@ class RequestsController extends GetxController {
             kulitanChars.add(chars);
           }
           for (var line in kulitanChars) {
-            for (var syl in line) {
-              kulitanString = kulitanString + syl;
+            if (line != null) {
+              for (var syl in line) {
+                kulitanString = kulitanString + syl;
+              }
             }
           }
           Map<dynamic, dynamic> otherRelated =
@@ -157,7 +159,7 @@ class RequestsController extends GetxController {
           String prnAudioPath = request.prnStoragePath;
           List<dynamic> engTrans = new List.from(request.engTrans);
           List<dynamic> filTrans = new List.from(request.filTrans);
-          List<Map<String, dynamic>> meanings = new List.from(request.meanings);
+          List<dynamic> meanings = new List.from(request.meanings);
           List<String> types = [];
           List<List<Map<String, dynamic>>> definitions = [];
           List<List<dynamic>> kulitanChars = [];
@@ -180,8 +182,10 @@ class RequestsController extends GetxController {
             kulitanChars.add(chars);
           }
           for (var line in kulitanChars) {
-            for (var syl in line) {
-              kulitanString = kulitanString + syl;
+            if (line != null) {
+              for (var syl in line) {
+                kulitanString = kulitanString + syl;
+              }
             }
           }
           Map<dynamic, dynamic> otherRelated =
@@ -259,7 +263,7 @@ class RequestsController extends GetxController {
           List<dynamic> filTrans = new List.from(
               appController.dictionaryContent[wordID]["filipinoTranslations"] ??
                   []);
-          List<Map<String, dynamic>> meanings = new List.from(
+          List<dynamic> meanings = new List.from(
               appController.dictionaryContent[wordID]["meanings"] ?? []);
           List<String> types = [];
           List<List<Map<String, dynamic>>> definitions = [];
@@ -275,8 +279,10 @@ class RequestsController extends GetxController {
             definitions.add(_tempDef);
           }
           for (var line in kulitanChars) {
-            for (var syl in line) {
-              kulitanString = kulitanString + syl;
+            if (line != null) {
+              for (var syl in line) {
+                kulitanString = kulitanString + syl;
+              }
             }
           }
           Map<dynamic, dynamic> otherRelated = new Map.from(
