@@ -175,10 +175,8 @@ class ModifyController extends GetxController {
     currentSpace = kulitanStringListGetter[currentLine].length;
     String kulitanString = '';
     for (var line in kulitanStringListGetter) {
-      if (line != null) {
-        for (var syl in line) {
-          kulitanString = kulitanString + syl;
-        }
+      for (var syl in line) {
+        kulitanString = kulitanString + syl;
       }
     }
     if (kulitanString == '') {
@@ -228,7 +226,8 @@ class ModifyController extends GetxController {
   }
 
   Future getEditDetails() async {
-    // TODO reload dictionary
+    await appController.checkDictionary();
+    appController.update();
     await populateFields(
         appController.dictionaryContent[editWordID]["word"],
         appController.dictionaryContent[editWordID]["pronunciation"],
@@ -640,10 +639,8 @@ class ModifyController extends GetxController {
     }
     String kulitanString = '';
     for (var line in kulitanStringListGetter) {
-      if (line != null) {
-        for (var syl in line) {
-          kulitanString = kulitanString + syl;
-        }
+      for (var syl in line) {
+        kulitanString = kulitanString + syl;
       }
     }
 

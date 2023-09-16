@@ -385,32 +385,38 @@ class ApplicationController extends GetxController {
   Future checkDictionary() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (hasConnection.value) {
-      if (prefs.containsKey("dictionaryVersion")) {
-        final storedVersion = prefs.getInt("dictionaryVersion");
-        final currentVersion = await getDictionaryVersion();
-        if (currentVersion != storedVersion) {
-          dictionaryContentUnsorted = await downloadDictionary();
-          dictionaryContent = sortDictionary(dictionaryContentUnsorted);
-          dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
-          prefs.setInt("dictionaryVersion", currentVersion);
-          prefs.setString(
-              "dictionaryContentAsString", dictionaryContentAsString!);
-        } else if (currentVersion == storedVersion) {
-          dictionaryVersion = prefs.getInt("dictionaryVersion");
-          dictionaryContentAsString =
-              prefs.getString("dictionaryContentAsString");
-          dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
-          dictionaryContent = sortDictionary(dictionaryContentUnsorted);
-        }
-      } else {
-        dictionaryVersion = await getDictionaryVersion();
-        dictionaryContentUnsorted = await downloadDictionary();
-        dictionaryContent = sortDictionary(dictionaryContentUnsorted);
-        dictionaryContentAsString = json.encode(dictionaryContent);
-        prefs.setInt("dictionaryVersion", dictionaryVersion!);
-        prefs.setString(
-            "dictionaryContentAsString", dictionaryContentAsString!);
-      }
+      // if (prefs.containsKey("dictionaryVersion")) {
+      //   final storedVersion = prefs.getInt("dictionaryVersion");
+      //   final currentVersion = await getDictionaryVersion();
+      //   if (currentVersion != storedVersion) {
+      //     dictionaryContentUnsorted = await downloadDictionary();
+      //     dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+      //     dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
+      //     prefs.setInt("dictionaryVersion", currentVersion);
+      //     prefs.setString(
+      //         "dictionaryContentAsString", dictionaryContentAsString!);
+      //   } else if (currentVersion == storedVersion) {
+      //     dictionaryVersion = prefs.getInt("dictionaryVersion");
+      //     dictionaryContentAsString =
+      //         prefs.getString("dictionaryContentAsString");
+      //     dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
+      //     dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+      //   }
+      // } else {
+      //   dictionaryVersion = await getDictionaryVersion();
+      //   dictionaryContentUnsorted = await downloadDictionary();
+      //   dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+      //   dictionaryContentAsString = json.encode(dictionaryContent);
+      //   prefs.setInt("dictionaryVersion", dictionaryVersion!);
+      //   prefs.setString(
+      //       "dictionaryContentAsString", dictionaryContentAsString!);
+      // }
+      dictionaryVersion = await getDictionaryVersion();
+      dictionaryContentUnsorted = await downloadDictionary();
+      dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+      dictionaryContentAsString = json.encode(dictionaryContent);
+      prefs.setInt("dictionaryVersion", dictionaryVersion!);
+      prefs.setString("dictionaryContentAsString", dictionaryContentAsString!);
     } else {
       if (prefs.containsKey("dictionaryVersion")) {
         dictionaryVersion = prefs.getInt("dictionaryVersion");

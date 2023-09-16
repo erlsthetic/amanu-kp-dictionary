@@ -4,7 +4,6 @@ import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/search_screen/controllers/search_controller.dart';
 import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:amanu/screens/user_tools/modify_word_page.dart';
-import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
