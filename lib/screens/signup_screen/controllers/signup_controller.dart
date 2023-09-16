@@ -341,7 +341,7 @@ class SignUpController extends GetxController {
             phonePublic: false,
             isAdmin: false);
 
-        await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
+        await dbRepo.createUserOnDB(userData, uid).then((value) async {
           await appController.changeLoginState(true);
           await appController
               .changeUserDetails(
@@ -359,7 +359,7 @@ class SignUpController extends GetxController {
                   userData.emailPublic,
                   userData.phonePublic,
                   userData.isAdmin)
-              .whenComplete(() {
+              .then((value) {
             final drawerController = Get.find<DrawerXController>();
             drawerController.currentItem.value = DrawerItems.home;
             Get.offAll(() => DrawerLauncher());
@@ -449,7 +449,7 @@ class SignUpController extends GetxController {
           phonePublic: false,
           isAdmin: false);
 
-      await dbRepo.createUserOnDB(userData, uid).whenComplete(() async {
+      await dbRepo.createUserOnDB(userData, uid).then((value) async {
         await appController.changeLoginState(true);
         await appController
             .changeUserDetails(
@@ -467,7 +467,7 @@ class SignUpController extends GetxController {
                 userData.emailPublic,
                 userData.phonePublic,
                 userData.isAdmin)
-            .whenComplete(() {
+            .then((value) {
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;
           Get.offAll(() => DrawerLauncher());

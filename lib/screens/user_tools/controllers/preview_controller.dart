@@ -1,4 +1,5 @@
 import 'package:amanu/models/add_request_model.dart';
+import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:flutter/material.dart';
@@ -100,10 +101,12 @@ class PreviewController extends GetxController {
             await DatabaseRepository.instance
                 .removeRequest(requestID, requestAudioPath);
           }
+          isProcessing.value = false;
+          Get.off(() => HomeScreen());
         } else {
           appController.showConnectionSnackbar();
+          isProcessing.value = false;
         }
-        isProcessing.value = false;
       } else {
         isProcessing.value = true;
         final notesValid = notesFormKey.currentState!.validate();
@@ -163,10 +166,12 @@ class PreviewController extends GetxController {
         if (appController.hasConnection.value) {
           await DatabaseRepository.instance.createAddRequestOnDB(
               request, timestampForPath, appController.userID ?? '');
+          isProcessing.value = false;
+          Get.off(() => HomeScreen());
         } else {
           appController.showConnectionSnackbar();
+          isProcessing.value = false;
         }
-        isProcessing.value = false;
       }
     } else {
       appController.showConnectionSnackbar();

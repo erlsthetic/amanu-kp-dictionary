@@ -837,13 +837,13 @@ class ProfileScreen extends StatelessWidget {
                                                                                                               if (controller.userExpertRequest.value) {
                                                                                                                 controller.newExpertRequest = false;
                                                                                                                 showLoaderDialog(context);
-                                                                                                                await controller.updateUserDetails().whenComplete(() {
+                                                                                                                await controller.updateUserDetails().then((value) {
                                                                                                                   Navigator.of(context).pop();
                                                                                                                 });
                                                                                                               } else {
                                                                                                                 controller.newExpertRequest = true;
                                                                                                                 showLoaderDialog(context);
-                                                                                                                await controller.updateUserDetails().whenComplete(() {
+                                                                                                                await controller.updateUserDetails().then((value) {
                                                                                                                   Navigator.of(context).pop();
                                                                                                                 });
                                                                                                               }
@@ -886,7 +886,7 @@ class ProfileScreen extends StatelessWidget {
                                                                                       onPressed: () async {
                                                                                         if (appController.hasConnection.value) {
                                                                                           showLoaderDialog(context);
-                                                                                          await controller.updateUserDetails().whenComplete(() {
+                                                                                          await controller.updateUserDetails().then((value) {
                                                                                             Navigator.of(context).pop();
                                                                                           });
                                                                                         }

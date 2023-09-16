@@ -24,7 +24,7 @@ class DatabaseRepository extends GetxController {
   final _realtimeDB = FirebaseDatabase.instance.ref();
 
   Future createUserOnDB(UserModel user, String uid) async {
-    await _db.collection("users").doc(uid).set(user.toJson()).whenComplete(() {
+    await _db.collection("users").doc(uid).set(user.toJson()).then((value) {
       Helper.successSnackBar(
         title: tSuccess,
         message: tAccountCreated,
@@ -40,7 +40,7 @@ class DatabaseRepository extends GetxController {
   }
 
   Future updateUserOnDB(Map<String, dynamic> changes, String uid) async {
-    await _db.collection("users").doc(uid).update(changes).whenComplete(() {
+    await _db.collection("users").doc(uid).update(changes).then((value) {
       Helper.successSnackBar(
         title: tSuccess,
         message: tAccountUpdated,
@@ -140,12 +140,12 @@ class DatabaseRepository extends GetxController {
         .collection("reports")
         .doc(timestamp)
         .set(report.toJson())
-        .catchError((error, stackTrace) {
-      print(error.toString());
-      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-    }).whenComplete(() {
+        .then((value) {
       Get.back();
       Helper.successSnackBar(title: tReportSent, message: tReportSentBody);
+    }).catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
@@ -190,12 +190,12 @@ class DatabaseRepository extends GetxController {
         .collection("feedbacks")
         .doc(timestamp)
         .set(feedback.toJson())
-        .catchError((error, stackTrace) {
-      print(error.toString());
-      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-    }).whenComplete(() {
+        .then((value) {
       Get.back();
       Helper.successSnackBar(title: tFeedbackSent, message: tFeedbackSentBody);
+    }).catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
@@ -216,15 +216,15 @@ class DatabaseRepository extends GetxController {
         .collection("requests")
         .doc(timestamp + "-" + uid)
         .set(request.toJson())
-        .catchError((error, stackTrace) {
-      print(error.toString());
-      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-    }).whenComplete(() {
+        .then((value) {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
       Get.offAll(() => DrawerLauncher());
       Helper.successSnackBar(
           title: tDeleteRequestSent, message: tRequestSentBody);
+    }).catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
@@ -262,14 +262,14 @@ class DatabaseRepository extends GetxController {
         .collection("requests")
         .doc(timestamp + "-" + uid)
         .set(request.toJson())
-        .catchError((error, stackTrace) {
-      print(error.toString());
-      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-    }).whenComplete(() {
+        .then((value) {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
       Get.offAll(() => DrawerLauncher());
       Helper.successSnackBar(title: tAddRequestSent, message: tRequestSentBody);
+    }).catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
@@ -307,15 +307,15 @@ class DatabaseRepository extends GetxController {
         .collection("requests")
         .doc(timestamp + "-" + uid)
         .set(request.toJson())
-        .catchError((error, stackTrace) {
-      print(error.toString());
-      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
-    }).whenComplete(() {
+        .then((value) {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
       Get.offAll(() => DrawerLauncher());
       Helper.successSnackBar(
           title: tEditRequestSent, message: tRequestSentBody);
+    }).catchError((error, stackTrace) {
+      print(error.toString());
+      return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
   }
 
@@ -362,7 +362,7 @@ class DatabaseRepository extends GetxController {
   }
 
   Future removeRequest(String requestID, String? audioPath) async {
-    if (audioPath != null) {
+    if (audioPath != null && audioPath != '') {
       await FirebaseStorage.instance.ref().child(audioPath).delete();
     }
     await _db
@@ -413,7 +413,7 @@ class DatabaseRepository extends GetxController {
         .child("dictionary")
         .child(wordID)
         .set(details)
-        .whenComplete(() {
+        .then((value) {
       return Helper.successSnackBar(
           title: tSuccess, message: details["word"] + tAddSuccess);
     }).catchError((error, stackTrace) {
@@ -422,21 +422,23 @@ class DatabaseRepository extends GetxController {
   }
 
   Future updateWordOnDB(String wordID, String prevWordID, Map details) async {
-    if (prevWordID != wordID) {
-      await _realtimeDB
-          .child("dictionary")
-          .child(prevWordID)
-          .remove()
-          .catchError((error, stackTrace) {
-        return Helper.errorSnackBar(
-            title: tOhSnap, message: tSomethingWentWrong);
-      });
+    if (prevWordID != '') {
+      if (prevWordID != wordID) {
+        await _realtimeDB
+            .child("dictionary")
+            .child(prevWordID)
+            .remove()
+            .catchError((error, stackTrace) {
+          return Helper.errorSnackBar(
+              title: tOhSnap, message: tSomethingWentWrong);
+        });
+      }
     }
     await _realtimeDB
         .child("dictionary")
         .child(wordID)
         .set(details)
-        .whenComplete(() {
+        .then((value) {
       return Helper.successSnackBar(
           title: tSuccess, message: details["word"] + tEditSuccess);
     }).catchError((error, stackTrace) {
@@ -451,7 +453,7 @@ class DatabaseRepository extends GetxController {
           .child("dictionary")
           .child(wordID)
           .remove()
-          .whenComplete(() {
+          .then((value) {
         return Helper.successSnackBar(
             title: tSuccess, message: word + tDeleteSuccess);
       }).catchError((error, stackTrace) {

@@ -364,12 +364,20 @@ class RequestDetailsPage extends StatelessWidget {
           CustomFloatingPanel(
             onPressed: (index) {
               print("Clicked $index");
-              if (index == 0) {
-                controller.approveRequest();
-              } else if (index == 1) {
-                controller.editRequest();
-              } else if (index == 2) {
-                controller.deleteRequest(context);
+              if (controller.requestType == 0 || controller.requestType == 1) {
+                if (index == 0) {
+                  controller.approveRequest(context);
+                } else if (index == 1) {
+                  controller.editRequest();
+                } else if (index == 2) {
+                  controller.deleteRequest(context, prnAudioPath);
+                }
+              } else {
+                if (index == 0) {
+                  controller.approveRequest(context);
+                } else if (index == 1) {
+                  controller.deleteRequest(context, prnAudioPath);
+                }
               }
             },
             positionBottom: size.height * 0.05,

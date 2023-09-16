@@ -1,4 +1,5 @@
 import 'package:amanu/models/edit_request_model.dart';
+import 'package:amanu/screens/home_screen/home_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -180,6 +181,8 @@ class PreviewEditsController extends GetxController {
             await DatabaseRepository.instance
                 .removeRequest(requestID, requestAudioPath);
           }
+          isProcessing.value = false;
+          Get.off(() => HomeScreen());
         } else {
           isProcessing.value = false;
           appController.showConnectionSnackbar();
@@ -241,11 +244,11 @@ class PreviewEditsController extends GetxController {
         if (appController.hasConnection.value) {
           await DatabaseRepository.instance.createEditRequestOnDB(
               request, timestampForPath, appController.userID ?? '');
+          isProcessing.value = false;
         } else {
           isProcessing.value = false;
           appController.showConnectionSnackbar();
         }
-        isProcessing.value = false;
       }
     } else {
       appController.showConnectionSnackbar();

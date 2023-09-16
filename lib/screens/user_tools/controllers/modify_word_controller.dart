@@ -44,7 +44,7 @@ class ModifyController extends GetxController {
     engTransController = TextfieldTagsController();
     filTransController = TextfieldTagsController();
     playerController = PlayerController();
-    if (!editMode) addTypeField(0);
+    if (!editMode && !requestMode) addTypeField(0);
     relatedController = TextfieldTagsController();
     synonymController = TextfieldTagsController();
     antonymController = TextfieldTagsController();

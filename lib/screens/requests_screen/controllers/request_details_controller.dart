@@ -154,21 +154,21 @@ class RequestDetailsController extends GetxController {
         appController.dictionaryContent[prevWordID]["lastModifiedTime"];
   }
 
-  Future deleteRequest(context) async {
+  Future deleteRequest(BuildContext context, String prnPath) async {
     showLoaderDialog(context);
     if (appController.hasConnection.value) {
       DatabaseRepository.instance
-          .removeRequest(requestID, null)
-          .whenComplete(() async {
+          .removeRequest(requestID, prnPath)
+          .then((value) async {
         final requestController = Get.find<RequestsController>();
         if (appController.hasConnection.value) {
           await requestController.getAllRequests();
         } else {
           appController.showConnectionSnackbar();
         }
-        Navigator.of(context).pop();
-        Get.back();
       });
+      Navigator.of(context).pop();
+      Get.back();
     } else {
       Navigator.of(context).pop();
       appController.showConnectionSnackbar();
@@ -180,13 +180,40 @@ class RequestDetailsController extends GetxController {
       Get.to(() => ModifyWordPage(
             requestMode: true,
             requestID: requestID,
+            requestType: requestType,
           ));
     } else {
       appController.showConnectionSnackbar();
     }
   }
 
-  Future approveRequest() async {
+  Future approveDeleteWord(BuildContext context) async {
+    showLoaderDialog(context);
+    if (appController.hasConnection.value) {
+      await DatabaseRepository.instance
+          .removeWordOnDB(wordID, word)
+          .then((value) async {
+        DatabaseRepository.instance
+            .removeRequest(requestID, prnAudioPath)
+            .then((value) async {
+          final requestController = Get.find<RequestsController>();
+          if (appController.hasConnection.value) {
+            await requestController.getAllRequests();
+          } else {
+            appController.showConnectionSnackbar();
+          }
+        });
+      });
+      Navigator.of(context).pop();
+      Get.back();
+    } else {
+      appController.showConnectionSnackbar();
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future approveRequest(BuildContext context) async {
+    showLoaderDialog(context);
     if (appController.hasConnection.value) {
       String wordKey =
           await DatabaseRepository.instance.getAvailableWordKey(wordID);
@@ -224,17 +251,35 @@ class RequestDetailsController extends GetxController {
         "lastModifiedTime": timestamp
       };
       if (appController.hasConnection.value) {
-        await DatabaseRepository.instance
-            .addWordOnDB(wordKey, details)
-            .whenComplete(() async {
+        if (requestType == 0) {
           await DatabaseRepository.instance
-              .removeRequest(requestID, prnAudioPath);
-        });
+              .addWordOnDB(wordKey, details)
+              .then((value) async {
+            await DatabaseRepository.instance
+                .removeRequest(requestID, prnAudioPath);
+          });
+        } else {
+          await DatabaseRepository.instance
+              .updateWordOnDB(wordKey, prevWordID ?? '', details)
+              .then((value) async {
+            await DatabaseRepository.instance
+                .removeRequest(requestID, prnAudioPath);
+          });
+        }
+        final requestController = Get.find<RequestsController>();
+        if (appController.hasConnection.value) {
+          await requestController.getAllRequests();
+        } else {
+          appController.showConnectionSnackbar();
+        }
+        Navigator.of(context).pop();
       } else {
         appController.showConnectionSnackbar();
+        Navigator.of(context).pop();
       }
     } else {
       appController.showConnectionSnackbar();
+      Navigator.of(context).pop();
     }
   }
 

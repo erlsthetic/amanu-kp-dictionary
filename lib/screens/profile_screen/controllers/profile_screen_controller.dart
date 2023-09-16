@@ -292,7 +292,7 @@ class ProfileController extends GetxController {
         } else {
           await DatabaseRepository.instance
               .updateUserOnDB(userChanges, appController.userID!)
-              .whenComplete(() async {
+              .then((value) async {
             await appController.changeLoginState(true);
             await appController
                 .changeUserDetails(
@@ -333,7 +333,7 @@ class ProfileController extends GetxController {
                   ? userChanges["isAdmin"]
                   : appController.userIsAdmin,
             )
-                .whenComplete(() {
+                .then((value) {
               appController.refresh();
               getCurrentUserDetails();
             });

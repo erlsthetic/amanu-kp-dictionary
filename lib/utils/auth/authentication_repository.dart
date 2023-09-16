@@ -179,7 +179,7 @@ class AuthenticationRepository extends GetxController {
       );
       await FirebaseAuth.instance
           .signInWithCredential(credential)
-          .whenComplete(() async {
+          .then((value) async {
         if (firebaseUser != null) {
           String userID = firebaseUser!.uid;
           QuerySnapshot query = await FirebaseFirestore.instance
