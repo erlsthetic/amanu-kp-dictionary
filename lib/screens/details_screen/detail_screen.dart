@@ -37,43 +37,52 @@ class DetailScreen extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                    height: size.height - screenPadding.top - 50,
-                    width: size.width,
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 40, horizontal: 30),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: orangeCard,
-                            ),
-                            child: DictionaryCard(
-                                word: controller.word,
-                                prn: controller.prn,
-                                prnUrl: controller.prnUrl,
-                                engTrans: controller.engTrans,
-                                filTrans: controller.filTrans,
-                                meanings: controller.meanings,
-                                types: controller.types,
-                                definitions: controller.definitions,
-                                kulitanChars: controller.kulitanChars,
-                                kulitanString: controller.kulitanString,
-                                otherRelated: controller.otherRelated,
-                                synonyms: controller.synonyms,
-                                antonyms: controller.antonyms,
-                                sources: controller.sources,
-                                contributors: controller.contributors,
-                                expert: controller.expert,
-                                lastModifiedTime: controller.lastModifiedTime,
-                                width: double.infinity),
-                          )),
-                    )),
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  height: size.height - screenPadding.top - 50,
+                  width: size.width,
+                  child: controller.inDictionary.value
+                      ? SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 40, horizontal: 30),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: orangeCard,
+                                ),
+                                child: DictionaryCard(
+                                    word: controller.word,
+                                    prn: controller.prn,
+                                    prnUrl: controller.prnUrl,
+                                    engTrans: controller.engTrans,
+                                    filTrans: controller.filTrans,
+                                    meanings: controller.meanings,
+                                    types: controller.types,
+                                    definitions: controller.definitions,
+                                    kulitanChars: controller.kulitanChars,
+                                    kulitanString: controller.kulitanString,
+                                    otherRelated: controller.otherRelated,
+                                    synonyms: controller.synonyms,
+                                    antonyms: controller.antonyms,
+                                    sources: controller.sources,
+                                    contributors: controller.contributors,
+                                    expert: controller.expert,
+                                    lastModifiedTime:
+                                        controller.lastModifiedTime,
+                                    width: double.infinity),
+                              )),
+                        )
+                      : Center(
+                          child: Text(
+                            "Entry not found.",
+                            style: TextStyle(fontSize: 16, color: disabledGrey),
+                          ),
+                        ),
+                ),
               ),
               Obx(
                 () => ThreePartHeader(
@@ -89,7 +98,7 @@ class DetailScreen extends StatelessWidget {
                   },
                 ),
               ),
-              appController.isLoggedIn
+              appController.isLoggedIn && controller.inDictionary.value
                   ? CustomFloatingPanel(
                       onPressed: (index) {
                         print("Clicked $index");

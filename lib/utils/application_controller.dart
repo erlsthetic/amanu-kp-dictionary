@@ -10,6 +10,7 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:amanu/utils/helper_controller.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -38,7 +39,8 @@ class ApplicationController extends GetxController {
     hasConnection.value = await InternetConnectionChecker().hasConnection;
     subscription = await listenToConnectionState();
     await updateUserInfo();
-    dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
+    dictionaryContent =
+        await sortDictionary(dictionaryContentUnsorted); //TODO:REPLACE
     wordOfTheDay = await checkWordOfTheDay();
     await checkBookmarks();
     await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
@@ -374,48 +376,57 @@ class ApplicationController extends GetxController {
   }
 
   // -- DICTIONARY MANAGEMENT
-  String? dictionaryVersion, dictionaryContentAsString;
+  String? dictionaryContentAsString;
   RxBool noData = false.obs;
+  int? dictionaryVersion;
 
   Future checkDictionary() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (hasConnection.value) {
       if (prefs.containsKey("dictionaryVersion")) {
-        final storedVersion = prefs.getString("dictionaryVersion");
+        final storedVersion = prefs.getInt("dictionaryVersion");
         final currentVersion = await getDictionaryVersion();
         if (currentVersion != storedVersion) {
           dictionaryContentUnsorted = await downloadDictionary();
+          dictionaryContent = sortDictionary(dictionaryContentUnsorted);
           dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
-          prefs.setString("dictionaryVersion", currentVersion);
+          prefs.setInt("dictionaryVersion", currentVersion);
           prefs.setString(
               "dictionaryContentAsString", dictionaryContentAsString!);
         } else if (currentVersion == storedVersion) {
-          dictionaryVersion = prefs.getString("dictionaryVersion");
+          dictionaryVersion = prefs.getInt("dictionaryVersion");
           dictionaryContentAsString =
               prefs.getString("dictionaryContentAsString");
           dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
+          dictionaryContent = sortDictionary(dictionaryContentUnsorted);
         }
       } else {
         dictionaryVersion = await getDictionaryVersion();
         dictionaryContentUnsorted = await downloadDictionary();
-        dictionaryContentAsString = json.encode(dictionaryContentUnsorted);
-        prefs.setString("dictionaryVersion", dictionaryVersion!);
+        dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+        dictionaryContentAsString = json.encode(dictionaryContent);
+        prefs.setInt("dictionaryVersion", dictionaryVersion!);
         prefs.setString(
             "dictionaryContentAsString", dictionaryContentAsString!);
       }
     } else {
       if (prefs.containsKey("dictionaryVersion")) {
-        dictionaryVersion = prefs.getString("dictionaryVersion");
+        dictionaryVersion = prefs.getInt("dictionaryVersion");
         dictionaryContentAsString =
             prefs.getString("dictionaryContentAsString");
         dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
+        dictionaryContent = sortDictionary(dictionaryContentUnsorted);
       } else {
+        Helper.errorSnackBar(
+            title: "Cannot sync dictionary data.",
+            message:
+                "Please connect to the internet to sync dictionary data with device.");
         noData.value = true;
         dictionaryVersion = null;
       }
     }
     print("dictionaryVersion: " + dictionaryVersion.toString());
-    print("dictionaryContentUnsorted: " + dictionaryContent.toString());
+    print("dictionaryContent: " + dictionaryContent.toString());
   }
 
   Future<Map<String, dynamic>> downloadDictionary() async {
@@ -423,9 +434,9 @@ class ApplicationController extends GetxController {
     return Map<String, dynamic>.from(dictionarySnapshot.value as dynamic);
   }
 
-  Future<String> getDictionaryVersion() async {
+  Future<int> getDictionaryVersion() async {
     final dictionaryVersion = await _realtimeDB.child('version').get();
-    return dictionaryVersion.value as String;
+    return dictionaryVersion.value as int;
   }
 
   SortedMap<Comparable<dynamic>, dynamic> sortDictionary(

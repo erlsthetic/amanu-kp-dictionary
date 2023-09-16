@@ -43,77 +43,85 @@ class BrowseScreenPage extends StatelessWidget {
             top: topPadding + 50,
             left: 0,
             right: 0,
-            child: Container(
-                height: size.height - 110,
-                width: size.width,
-                child: appController.dictionaryContent.length != 0
-                    ? AlphabeticalListView()
-                    /*ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(top: 30, bottom: 100),
-                        itemCount: appController.dictionaryContent.length,
-                        itemBuilder: (context, index) {
-                          String wordID = appController.dictionaryContent.keys
-                              .elementAt(index);
-                          List<String> type = [];
-                          for (var meaning in appController
-                              .dictionaryContent[wordID]['meanings']) {
-                            type.add(meaning["partOfSpeech"]);
-                          }
-                          return BrowseCard(
-                            onTap: () => Get.to(() => DetailScreen(
-                                  wordID: wordID,
-                                )),
-                            wordId: wordID,
-                            word: appController.dictionaryContent[wordID]["word"],
-                            type: type,
-                            prnLink: appController.dictionaryContent[wordID]
-                                ["pronunciationAudio"],
-                            engTrans: appController.dictionaryContent[wordID]
-                                        ["englishTranslations"] ==
-                                    null
-                                ? []
-                                : appController.dictionaryContent[wordID]
-                                    ["englishTranslations"],
-                            filTrans: appController.dictionaryContent[wordID]
-                                        ["filipinoTranslations"] ==
-                                    null
-                                ? []
-                                : appController.dictionaryContent[wordID]
-                                    ["filipinoTranslations"],
-                            otherRelated: appController.dictionaryContent[wordID]
-                                        ["otherRelated"] ==
-                                    null
-                                ? []
-                                : appController
-                                    .dictionaryContent[wordID]["otherRelated"]
-                                    .keys
-                                    .toList(),
-                            synonyms: appController.dictionaryContent[wordID]
-                                        ["synonyms"] ==
-                                    null
-                                ? []
-                                : appController
-                                    .dictionaryContent[wordID]["synonyms"].keys
-                                    .toList(),
-                            antonyms: appController.dictionaryContent[wordID]
-                                        ["antonyms"] ==
-                                    null
-                                ? []
-                                : appController
-                                    .dictionaryContent[wordID]["antonyms"].keys
-                                    .toList(),
-                            player: player,
-                          );
-                        },
-                      )*/
-                    : ListView.builder(
-                        padding: EdgeInsets.only(top: 30, bottom: 50),
-                        itemCount: 30,
-                        itemBuilder: (context, index) {
-                          return ShimmerBrowseCard();
-                        },
-                      )),
+            child: GetBuilder<ApplicationController>(builder: (ctl) {
+              return Container(
+                  height: size.height - 110,
+                  width: size.width,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await ctl.checkDictionary();
+                      ctl.update();
+                    },
+                    child: ctl.dictionaryContent.length != 0
+                        ? AlphabeticalListView()
+                        /*ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            padding: EdgeInsets.only(top: 30, bottom: 100),
+                            itemCount: appController.dictionaryContent.length,
+                            itemBuilder: (context, index) {
+                              String wordID = appController.dictionaryContent.keys
+                                  .elementAt(index);
+                              List<String> type = [];
+                              for (var meaning in appController
+                                  .dictionaryContent[wordID]['meanings']) {
+                                type.add(meaning["partOfSpeech"]);
+                              }
+                              return BrowseCard(
+                                onTap: () => Get.to(() => DetailScreen(
+                                      wordID: wordID,
+                                    )),
+                                wordId: wordID,
+                                word: appController.dictionaryContent[wordID]["word"],
+                                type: type,
+                                prnLink: appController.dictionaryContent[wordID]
+                                    ["pronunciationAudio"],
+                                engTrans: appController.dictionaryContent[wordID]
+                                            ["englishTranslations"] ==
+                                        null
+                                    ? []
+                                    : appController.dictionaryContent[wordID]
+                                        ["englishTranslations"],
+                                filTrans: appController.dictionaryContent[wordID]
+                                            ["filipinoTranslations"] ==
+                                        null
+                                    ? []
+                                    : appController.dictionaryContent[wordID]
+                                        ["filipinoTranslations"],
+                                otherRelated: appController.dictionaryContent[wordID]
+                                            ["otherRelated"] ==
+                                        null
+                                    ? []
+                                    : appController
+                                        .dictionaryContent[wordID]["otherRelated"]
+                                        .keys
+                                        .toList(),
+                                synonyms: appController.dictionaryContent[wordID]
+                                            ["synonyms"] ==
+                                        null
+                                    ? []
+                                    : appController
+                                        .dictionaryContent[wordID]["synonyms"].keys
+                                        .toList(),
+                                antonyms: appController.dictionaryContent[wordID]
+                                            ["antonyms"] ==
+                                        null
+                                    ? []
+                                    : appController
+                                        .dictionaryContent[wordID]["antonyms"].keys
+                                        .toList(),
+                                player: player,
+                              );
+                            },
+                          )*/
+                        : ListView.builder(
+                            padding: EdgeInsets.only(top: 30, bottom: 50),
+                            itemCount: 30,
+                            itemBuilder: (context, index) {
+                              return ShimmerBrowseCard();
+                            },
+                          ),
+                  ));
+            }),
           ),
           Positioned(
             top: 0,
@@ -197,82 +205,84 @@ class BrowseScreenPage extends StatelessWidget {
                           iconSize: 30,
                         ),
                       ),
-                      Crab(
-                        tag: "Requests",
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              if (appController.isLoggedIn) {
-                                if (appController.userIsExpert ?? false) {
-                                  Get.to(() => RequestsScreen(
-                                        fromDrawer: false,
-                                      ));
+                      GetBuilder<ApplicationController>(builder: (ctl) {
+                        return Crab(
+                          tag: "Requests",
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                if (ctl.isLoggedIn) {
+                                  if (ctl.userIsExpert ?? false) {
+                                    Get.to(() => RequestsScreen(
+                                          fromDrawer: false,
+                                        ));
+                                  } else {
+                                    Get.to(() => ProfileScreen(
+                                          fromDrawer: false,
+                                        ));
+                                  }
                                 } else {
-                                  Get.to(() => ProfileScreen(
-                                        fromDrawer: false,
-                                      ));
+                                  showJoinDialog(context);
                                 }
-                              } else {
-                                showJoinDialog(context);
-                              }
-                            },
-                            splashColor: primaryOrangeLight,
-                            highlightColor: primaryOrangeLight.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(20),
-                            child: Ink(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                color: appController.isLoggedIn &&
-                                        !(appController.userIsExpert ?? false)
-                                    ? Colors.transparent
-                                    : primaryOrangeLight.withOpacity(0.7),
-                                borderRadius: BorderRadius.circular(20.0),
-                                border: appController.isLoggedIn &&
-                                        !(appController.userIsExpert ?? false)
-                                    ? Border.all(width: 2, color: pureWhite)
-                                    : null,
+                              },
+                              splashColor: primaryOrangeLight,
+                              highlightColor:
+                                  primaryOrangeLight.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(20),
+                              child: Ink(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color: ctl.isLoggedIn &&
+                                          !(ctl.userIsExpert ?? false)
+                                      ? Colors.transparent
+                                      : primaryOrangeLight.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  border: ctl.isLoggedIn &&
+                                          !(ctl.userIsExpert ?? false)
+                                      ? Border.all(width: 2, color: pureWhite)
+                                      : null,
+                                ),
+                                child: ctl.isLoggedIn
+                                    ? (ctl.userIsExpert ?? false)
+                                        ? Icon(
+                                            Icons.book,
+                                            color: pureWhite,
+                                            size: 25,
+                                          )
+                                        : ctl.userPicLocal == null
+                                            ? Icon(
+                                                Icons.person_rounded,
+                                                color: pureWhite,
+                                                size: 25,
+                                              )
+                                            : FittedBox(
+                                                fit: BoxFit.cover,
+                                                child: Container(
+                                                  margin: EdgeInsets.all(3),
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              60),
+                                                      image: DecorationImage(
+                                                          image: FileImage(File(
+                                                              ctl.userPicLocal!)),
+                                                          fit: BoxFit.cover)),
+                                                ),
+                                              )
+                                    : Icon(
+                                        Icons.people_alt_rounded,
+                                        color: pureWhite,
+                                        size: 25,
+                                      ),
                               ),
-                              child: appController.isLoggedIn
-                                  ? (appController.userIsExpert ?? false)
-                                      ? Icon(
-                                          Icons.book,
-                                          color: pureWhite,
-                                          size: 25,
-                                        )
-                                      : appController.userPicLocal == null
-                                          ? Icon(
-                                              Icons.person_rounded,
-                                              color: pureWhite,
-                                              size: 25,
-                                            )
-                                          : FittedBox(
-                                              fit: BoxFit.cover,
-                                              child: Container(
-                                                margin: EdgeInsets.all(3),
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            60),
-                                                    image: DecorationImage(
-                                                        image: FileImage(File(
-                                                            appController
-                                                                .userPicLocal!)),
-                                                        fit: BoxFit.cover)),
-                                              ),
-                                            )
-                                  : Icon(
-                                      Icons.people_alt_rounded,
-                                      color: pureWhite,
-                                      size: 25,
-                                    ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ]),
               )),
         ],

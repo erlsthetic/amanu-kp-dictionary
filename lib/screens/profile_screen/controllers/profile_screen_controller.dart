@@ -331,7 +331,7 @@ class ProfileController extends GetxController {
               appController.userIsAdmin,
             )
                 .then((value) {
-              appController.refresh();
+              appController.update();
               getCurrentUserDetails();
             });
           });

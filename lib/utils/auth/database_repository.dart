@@ -408,12 +408,52 @@ class DatabaseRepository extends GetxController {
     }
   }
 
+  Future<int> getDictionaryVersion() async {
+    final dictionaryVersion = await _realtimeDB.child('version').get();
+    return dictionaryVersion.value as int;
+  }
+
   Future addWordOnDB(String wordID, Map details) async {
     await _realtimeDB
         .child("dictionary")
         .child(wordID)
         .set(details)
-        .then((value) {
+        .then((value) async {
+      Map expert = details["expert"];
+      Map contributors = details["contributors"];
+      for (var uid in expert.values) {
+        UserModel? user = await getUserDetails(uid);
+        if (user != null) {
+          Map<String, dynamic> changes = user.toJson();
+          List<dynamic>? contributions = details["contributions"];
+          if (contributions != null) {
+            contributions.remove(wordID);
+            contributions.add(wordID);
+          } else {
+            contributions = [];
+            contributions.add(wordID);
+          }
+          changes["contributions"] = contributions;
+          updateUserOnDB(changes, uid);
+        }
+      }
+      for (var uid in contributors.values) {
+        UserModel? user = await getUserDetails(uid);
+        if (user != null) {
+          Map<String, dynamic> changes = user.toJson();
+          List<dynamic>? contributions = details["contributions"];
+          if (contributions != null) {
+            contributions.remove(wordID);
+            contributions.add(wordID);
+          } else {
+            contributions = [];
+            contributions.add(wordID);
+          }
+          changes["contributions"] = contributions;
+          updateUserOnDB(changes, uid);
+        }
+      }
+      //TODO: RELOAD DICTIONARY
       return Helper.successSnackBar(
           title: tSuccess, message: details["word"] + tAddSuccess);
     }).catchError((error, stackTrace) {
@@ -438,7 +478,42 @@ class DatabaseRepository extends GetxController {
         .child("dictionary")
         .child(wordID)
         .set(details)
-        .then((value) {
+        .then((value) async {
+      Map expert = details["expert"];
+      Map contributors = details["contributors"];
+      for (var uid in expert.values) {
+        UserModel? user = await getUserDetails(uid);
+        if (user != null) {
+          Map<String, dynamic> changes = user.toJson();
+          List<dynamic>? contributions = details["contributions"];
+          if (contributions != null) {
+            contributions.remove(wordID);
+            contributions.add(wordID);
+          } else {
+            contributions = [];
+            contributions.add(wordID);
+          }
+          changes["contributions"] = contributions;
+          updateUserOnDB(changes, uid);
+        }
+      }
+      for (var uid in contributors.values) {
+        UserModel? user = await getUserDetails(uid);
+        if (user != null) {
+          Map<String, dynamic> changes = user.toJson();
+          List<dynamic>? contributions = details["contributions"];
+          if (contributions != null) {
+            contributions.remove(wordID);
+            contributions.add(wordID);
+          } else {
+            contributions = [];
+            contributions.add(wordID);
+          }
+          changes["contributions"] = contributions;
+          updateUserOnDB(changes, uid);
+        }
+      }
+      //TODO: RELOAD DICTIONARY
       return Helper.successSnackBar(
           title: tSuccess, message: details["word"] + tEditSuccess);
     }).catchError((error, stackTrace) {

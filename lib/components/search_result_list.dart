@@ -35,7 +35,6 @@ class SearchResultList extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
   final VoidCallback? onTap;
   final String category;
-  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {

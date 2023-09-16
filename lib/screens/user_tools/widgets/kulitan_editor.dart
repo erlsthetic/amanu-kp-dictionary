@@ -1,4 +1,3 @@
-import 'package:amanu/components/confirm_dialog.dart';
 import 'package:amanu/screens/user_tools/controllers/kulitan_controller.dart';
 import 'package:amanu/screens/user_tools/widgets/kulitan_key.dart';
 import 'package:amanu/utils/constants/app_colors.dart';

@@ -10,6 +10,8 @@ class DetailController extends GetxController {
   static DetailController get instance => Get.find();
   DetailController({required this.wordID});
 
+  RxBool inDictionary = false.obs;
+
   final wordID;
   final appController = Get.find<ApplicationController>();
   final AudioPlayer player = AudioPlayer();
@@ -173,8 +175,13 @@ class DetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getInformation();
-    checkIfInBookmarks();
+    if (appController.dictionaryContent.containsKey(wordID)) {
+      inDictionary.value = true;
+      getInformation();
+      checkIfInBookmarks();
+    } else {
+      inDictionary.value = false;
+    }
   }
 
   @override
