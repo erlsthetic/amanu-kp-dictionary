@@ -231,21 +231,44 @@ class ModifyController extends GetxController {
         appController.dictionaryContent[editWordID]["word"],
         appController.dictionaryContent[editWordID]["pronunciation"],
         appController.dictionaryContent[editWordID]["pronunciationAudio"],
-        new List.from(
-            appController.dictionaryContent[editWordID]["englishTranslations"]),
-        new List.from(appController.dictionaryContent[editWordID]
-            ["filipinoTranslations"]),
-        new List.from(appController.dictionaryContent[editWordID]["meanings"]),
-        new List.from(
-            appController.dictionaryContent[editWordID]["kulitan-form"]),
-        new Map.from(
-            appController.dictionaryContent[editWordID]["otherRelated"]),
-        new Map.from(appController.dictionaryContent[editWordID]["synonyms"]),
-        new Map.from(appController.dictionaryContent[editWordID]["antonyms"]),
+        appController.dictionaryContent[editWordID]["englishTranslations"] !=
+                null
+            ? new List.from(appController.dictionaryContent[editWordID]
+                ["englishTranslations"])
+            : null,
+        appController.dictionaryContent[editWordID]["filipinoTranslations"] !=
+                null
+            ? new List.from(appController.dictionaryContent[editWordID]
+                ["filipinoTranslations"])
+            : null,
+        appController.dictionaryContent[editWordID]["meanings"] != null
+            ? new List.from(
+                appController.dictionaryContent[editWordID]["meanings"])
+            : [],
+        appController.dictionaryContent[editWordID]["kulitan-form"] != null
+            ? new List.from(
+                appController.dictionaryContent[editWordID]["kulitan-form"])
+            : [],
+        appController.dictionaryContent[editWordID]["otherRelated"] != null
+            ? new Map.from(
+                appController.dictionaryContent[editWordID]["otherRelated"])
+            : null,
+        appController.dictionaryContent[editWordID]["synonyms"] != null
+            ? new Map.from(
+                appController.dictionaryContent[editWordID]["synonyms"])
+            : null,
+        appController.dictionaryContent[editWordID]["antonyms"] != null
+            ? new Map.from(
+                appController.dictionaryContent[editWordID]["antonyms"])
+            : null,
         appController.dictionaryContent[editWordID]["sources"],
-        new Map.from(
-            appController.dictionaryContent[editWordID]["contributors"]),
-        new Map.from(appController.dictionaryContent[editWordID]["expert"]));
+        appController.dictionaryContent[editWordID]["contributors"] != null
+            ? new Map.from(
+                appController.dictionaryContent[editWordID]["contributors"])
+            : null,
+        appController.dictionaryContent[editWordID]["expert"] != null
+            ? new Map.from(appController.dictionaryContent[editWordID]["expert"])
+            : null);
   }
 
   Future getRequestDetails() async {
@@ -621,7 +644,7 @@ class ModifyController extends GetxController {
     }
 
     if (editMode) {
-      if (expert.isNotEmpty) {
+      if (expert.length != 0) {
         String pastUsername = expert.keys.toList().first;
         String pastUID = expert[pastUsername] ?? "";
         contributors[pastUsername] = pastUID;
@@ -669,6 +692,7 @@ class ModifyController extends GetxController {
     } else {
       if (appController.userIsExpert ?? false) {
         expert.clear();
+        contributors.clear();
         expert[appController.userName ?? "User"] = appController.userID ?? "";
       } else {
         expert.clear();

@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:amanu/components/confirm_dialog.dart';
+import 'package:amanu/components/info_dialog.dart';
 import 'package:amanu/components/loader_dialog.dart';
 import 'package:amanu/screens/requests_screen/controllers/requests_controller.dart';
 import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
+import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -154,35 +157,118 @@ class RequestDetailsController extends GetxController {
         appController.dictionaryContent[prevWordID]["lastModifiedTime"];
   }
 
+  void showRequestNotAvailableDialog(BuildContext context) {
+    showInfoDialog(
+        context,
+        "Request unavailable",
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: Text(
+            "Request is currently being assessed by other experts.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: cardText, fontSize: 16),
+          ),
+        ),
+        null,
+        null);
+  }
+
   Future deleteRequest(BuildContext context, String prnPath) async {
     showLoaderDialog(context);
     if (appController.hasConnection.value) {
-      DatabaseRepository.instance
-          .removeRequest(requestID, prnPath)
-          .then((value) async {
-        final requestController = Get.find<RequestsController>();
-        if (appController.hasConnection.value) {
-          await requestController.getAllRequests();
-        } else {
-          appController.showConnectionSnackbar();
+      bool isAvailable = false;
+
+      if (requestType == 0) {
+        final req = await DatabaseRepository.instance.getAddRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
         }
-      });
-      Navigator.of(context).pop();
-      Get.back();
+      } else if (requestType == 1) {
+        final req = await DatabaseRepository.instance.getEditRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      } else {
+        final req =
+            await DatabaseRepository.instance.getDeleteRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      }
+
+      if (!isAvailable) {
+        Navigator.of(context).pop();
+        showRequestNotAvailableDialog(context);
+      } else {
+        showConfirmDialog(
+            context,
+            "Delete confirmation",
+            "Are you sure you want to delete this request?",
+            "Delete",
+            "Cancel", () {
+          DatabaseRepository.instance
+              .removeRequest(requestID, prnPath)
+              .then((value) async {
+            final requestController = Get.find<RequestsController>();
+            if (appController.hasConnection.value) {
+              requestController.requests.clear();
+              await requestController.getAllRequests();
+            } else {
+              appController.showConnectionSnackbar();
+            }
+          });
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Get.back();
+        }, () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        });
+      }
     } else {
       Navigator.of(context).pop();
       appController.showConnectionSnackbar();
     }
   }
 
-  Future editRequest() async {
+  Future editRequest(BuildContext context) async {
+    showLoaderDialog(context);
     if (appController.hasConnection.value) {
-      Get.to(() => ModifyWordPage(
-            requestMode: true,
-            requestID: requestID,
-            requestType: requestType,
-          ));
+      bool isAvailable = false;
+
+      if (requestType == 0) {
+        final req = await DatabaseRepository.instance.getAddRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      } else if (requestType == 1) {
+        final req = await DatabaseRepository.instance.getEditRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      } else {
+        final req =
+            await DatabaseRepository.instance.getDeleteRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      }
+
+      if (!isAvailable) {
+        Navigator.of(context).pop();
+        showRequestNotAvailableDialog(context);
+      } else {
+        Navigator.of(context).pop();
+        Get.to(() => ModifyWordPage(
+              requestMode: true,
+              requestID: requestID,
+              requestType: requestType,
+            ));
+      }
     } else {
+      Navigator.of(context).pop();
       appController.showConnectionSnackbar();
     }
   }
@@ -190,96 +276,171 @@ class RequestDetailsController extends GetxController {
   Future approveDeleteWord(BuildContext context) async {
     showLoaderDialog(context);
     if (appController.hasConnection.value) {
-      await DatabaseRepository.instance
-          .removeWordOnDB(wordID, word)
-          .then((value) async {
-        DatabaseRepository.instance
-            .removeRequest(requestID, prnAudioPath)
-            .then((value) async {
-          final requestController = Get.find<RequestsController>();
-          if (appController.hasConnection.value) {
-            await requestController.getAllRequests();
-          } else {
-            appController.showConnectionSnackbar();
-          }
+      bool isAvailable = false;
+
+      if (requestType == 0) {
+        final req = await DatabaseRepository.instance.getAddRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      } else if (requestType == 1) {
+        final req = await DatabaseRepository.instance.getEditRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      } else {
+        final req =
+            await DatabaseRepository.instance.getDeleteRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      }
+
+      if (!isAvailable) {
+        showRequestNotAvailableDialog(context);
+      } else {
+        showConfirmDialog(
+            context,
+            "Approval confirmation",
+            "Are you sure you want to approve this request?",
+            "Approve",
+            "Cancel", () async {
+          await DatabaseRepository.instance
+              .removeWordOnDB(wordID, word)
+              .then((value) async {
+            DatabaseRepository.instance
+                .removeRequest(requestID, prnAudioPath)
+                .then((value) async {
+              final requestController = Get.find<RequestsController>();
+              if (appController.hasConnection.value) {
+                requestController.requests.clear();
+                await requestController.getAllRequests();
+              } else {
+                appController.showConnectionSnackbar();
+              }
+            });
+          });
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Get.back();
+        }, () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
         });
-      });
-      Navigator.of(context).pop();
-      Get.back();
+      }
     } else {
-      appController.showConnectionSnackbar();
       Navigator.of(context).pop();
+      appController.showConnectionSnackbar();
     }
   }
 
   Future approveRequest(BuildContext context) async {
     showLoaderDialog(context);
     if (appController.hasConnection.value) {
-      String wordKey =
-          await DatabaseRepository.instance.getAvailableWordKey(wordID);
-      final appStorage = await getApplicationDocumentsDirectory();
-      final fileExt = extension(File(prnAudioPath).path);
-      final tempAudioFile = File('${appStorage.path}/audio$fileExt');
-      await FirebaseStorage.instance
-          .ref()
-          .child(prnAudioPath)
-          .writeToFile(tempAudioFile)
-          .then((taskSnapshot) async {
-        if (taskSnapshot.state == TaskState.error) {
-          Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
+      bool isAvailable = false;
+
+      if (requestType == 0) {
+        final req = await DatabaseRepository.instance.getAddRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
         }
-      });
-      List<String> audioPaths = await DatabaseRepository.instance
-          .uploadAudio(wordID, tempAudioFile.path, 'dictionary');
-      String timestamp =
-          DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
-      var details = {
-        "word": word,
-        "normalizedWord": normalizedWord,
-        "pronunciation": prn,
-        "pronunciationAudio": audioPaths[1],
-        "englishTranslations": new List.from(engTrans),
-        "filipinoTranslations": new List.from(filTrans),
-        "meanings": new List.from(meanings),
-        "kulitan-form": new List.from(kulitanChars),
-        "otherRelated": new Map.from(otherRelated),
-        "synonyms": new Map.from(synonyms),
-        "antonyms": new Map.from(antonyms),
-        "sources": sources,
-        "contributors": new Map.from(contributors),
-        "expert": new Map.from(expert),
-        "lastModifiedTime": timestamp
-      };
-      if (appController.hasConnection.value) {
-        if (requestType == 0) {
-          await DatabaseRepository.instance
-              .addWordOnDB(wordKey, details)
-              .then((value) async {
-            await DatabaseRepository.instance
-                .removeRequest(requestID, prnAudioPath);
-          });
-        } else {
-          await DatabaseRepository.instance
-              .updateWordOnDB(wordKey, prevWordID ?? '', details)
-              .then((value) async {
-            await DatabaseRepository.instance
-                .removeRequest(requestID, prnAudioPath);
-          });
+      } else if (requestType == 1) {
+        final req = await DatabaseRepository.instance.getEditRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
         }
-        final requestController = Get.find<RequestsController>();
-        if (appController.hasConnection.value) {
-          await requestController.getAllRequests();
-        } else {
-          appController.showConnectionSnackbar();
-        }
-        Navigator.of(context).pop();
       } else {
-        appController.showConnectionSnackbar();
-        Navigator.of(context).pop();
+        final req =
+            await DatabaseRepository.instance.getDeleteRequest(requestID);
+        if (req != null) {
+          isAvailable = req.isAvailable;
+        }
+      }
+
+      if (!isAvailable) {
+        showRequestNotAvailableDialog(context);
+      } else {
+        showConfirmDialog(
+            context,
+            "Approval confirmation",
+            "Are you sure you want to approve this request?",
+            "Approve",
+            "Cancel", () async {
+          String wordKey =
+              await DatabaseRepository.instance.getAvailableWordKey(wordID);
+          final appStorage = await getApplicationDocumentsDirectory();
+          final fileExt = extension(File(prnAudioPath).path);
+          final tempAudioFile = File('${appStorage.path}/audio$fileExt');
+          await FirebaseStorage.instance
+              .ref()
+              .child(prnAudioPath)
+              .writeToFile(tempAudioFile)
+              .then((taskSnapshot) async {
+            if (taskSnapshot.state == TaskState.error) {
+              Helper.errorSnackBar(
+                  title: tOhSnap, message: tSomethingWentWrong);
+            }
+          });
+          List<String> audioPaths = await DatabaseRepository.instance
+              .uploadAudio(wordID, tempAudioFile.path, 'dictionary');
+          String timestamp =
+              DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
+          var details = {
+            "word": word,
+            "normalizedWord": normalizedWord,
+            "pronunciation": prn,
+            "pronunciationAudio": audioPaths[1],
+            "englishTranslations": new List.from(engTrans),
+            "filipinoTranslations": new List.from(filTrans),
+            "meanings": new List.from(meanings),
+            "kulitan-form": new List.from(kulitanChars),
+            "otherRelated": new Map.from(otherRelated),
+            "synonyms": new Map.from(synonyms),
+            "antonyms": new Map.from(antonyms),
+            "sources": sources,
+            "contributors": new Map.from(contributors),
+            "expert": new Map.from(expert),
+            "lastModifiedTime": timestamp
+          };
+          if (appController.hasConnection.value) {
+            if (requestType == 0) {
+              await DatabaseRepository.instance
+                  .addWordOnDB(wordKey, details)
+                  .then((value) async {
+                await DatabaseRepository.instance
+                    .removeRequest(requestID, prnAudioPath);
+              });
+            } else {
+              await DatabaseRepository.instance
+                  .updateWordOnDB(wordKey, prevWordID ?? '', details)
+                  .then((value) async {
+                await DatabaseRepository.instance
+                    .removeRequest(requestID, prnAudioPath);
+              });
+            }
+            final requestController = Get.find<RequestsController>();
+            if (appController.hasConnection.value) {
+              requestController.requests.clear();
+              await requestController.getAllRequests();
+            } else {
+              appController.showConnectionSnackbar();
+            }
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            Get.back();
+          } else {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            appController.showConnectionSnackbar();
+          }
+        }, () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        });
       }
     } else {
-      appController.showConnectionSnackbar();
       Navigator.of(context).pop();
+      appController.showConnectionSnackbar();
     }
   }
 

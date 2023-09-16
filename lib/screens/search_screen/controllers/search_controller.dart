@@ -92,7 +92,7 @@ class SearchWordController extends GetxController {
       }
       if (searchInKulitan.value) {
         if (entry.value["kulitan-form"] != null) {
-          List<List<String>> kulitanList = entry.value["kulitan-form"];
+          var kulitanList = entry.value["kulitan-form"];
           String kulitanString = '';
           for (var line in kulitanList) {
             for (var syl in line) {

@@ -368,13 +368,13 @@ class RequestDetailsPage extends StatelessWidget {
                 if (index == 0) {
                   controller.approveRequest(context);
                 } else if (index == 1) {
-                  controller.editRequest();
+                  controller.editRequest(context);
                 } else if (index == 2) {
                   controller.deleteRequest(context, prnAudioPath);
                 }
               } else {
                 if (index == 0) {
-                  controller.approveRequest(context);
+                  controller.approveDeleteWord(context);
                 } else if (index == 1) {
                   controller.deleteRequest(context, prnAudioPath);
                 }

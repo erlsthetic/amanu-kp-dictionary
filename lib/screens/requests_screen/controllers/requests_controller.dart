@@ -13,11 +13,10 @@ import 'package:get/get.dart';
 
 class RequestsController extends GetxController {
   static RequestsController get instance => Get.find();
-  late BuildContext context;
   final appController = Get.find<ApplicationController>();
-  List<dynamic> requests = [];
+  RxList<dynamic> requests = <dynamic>[].obs;
 
-  void showRequestNotAvailableDialog() {
+  void showRequestNotAvailableDialog(BuildContext context) {
     showInfoDialog(
         context,
         "Request unavailable",
@@ -35,7 +34,8 @@ class RequestsController extends GetxController {
         null);
   }
 
-  Future requestSelect(String requestID, int requestType) async {
+  Future requestSelect(
+      String requestID, int requestType, BuildContext context) async {
     if (appController.hasConnection.value) {}
     if (requestType == 0) {
       AddRequestModel? request =
@@ -47,7 +47,7 @@ class RequestsController extends GetxController {
             message: "Unable to get request. PLease try again.");
       } else {
         if (request.isAvailable == false) {
-          showRequestNotAvailableDialog();
+          showRequestNotAvailableDialog(context);
         } else {
           String requestId = request.requestId;
           int requestType = request.requestType;
@@ -140,7 +140,7 @@ class RequestsController extends GetxController {
             message: "Unable to get request. PLease try again.");
       } else {
         if (request.isAvailable == false) {
-          showRequestNotAvailableDialog();
+          showRequestNotAvailableDialog(context);
         } else {
           String requestId = request.requestId;
           int requestType = request.requestType;
@@ -234,7 +234,7 @@ class RequestsController extends GetxController {
             message: "Unable to get request. PLease try again.");
       } else {
         if (request.isAvailable == false) {
-          showRequestNotAvailableDialog();
+          showRequestNotAvailableDialog(context);
         } else {
           String requestId = request.requestId;
           int requestType = request.requestType;
@@ -341,16 +341,8 @@ class RequestsController extends GetxController {
     tempReq.sort(
       (a, b) => a.requestId.compareTo(b.requestId),
     );
-    requests = new List.from(tempReq);
-  }
-
-  @override
-  void onInit() async {
-    super.onInit();
-    if (appController.hasConnection.value) {
-      await getAllRequests();
-    } else {
-      appController.showConnectionSnackbar();
-    }
+    requests.clear();
+    requests.addAll(tempReq);
+    requests.refresh();
   }
 }

@@ -318,20 +318,17 @@ class ProfileController extends GetxController {
                   ? userChanges["profileUrl"]
                   : appController.userPic,
               appController.userContributions,
-              await appController.saveUserPicToLocal(
-                      userChanges.containsKey("profileUrl")
-                          ? userChanges["profileUrl"]
-                          : appController.userPicLocal) ??
-                  appController.userPicLocal,
+              userChanges.containsKey("profileUrl")
+                  ? await appController
+                      .saveUserPicToLocal(userChanges["profileUrl"])
+                  : appController.userPicLocal,
               userChanges.containsKey("emailPublic")
                   ? userChanges["emailPublic"]
                   : appController.userEmailPublic,
               userChanges.containsKey("phonePublic")
                   ? userChanges["phonePublic"]
                   : appController.userPhonePublic,
-              userChanges.containsKey("isAdmin")
-                  ? userChanges["isAdmin"]
-                  : appController.userIsAdmin,
+              appController.userIsAdmin,
             )
                 .then((value) {
               appController.refresh();

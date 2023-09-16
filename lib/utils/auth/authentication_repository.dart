@@ -263,7 +263,7 @@ class AuthenticationRepository extends GetxController {
 
   Future<void> logout() async {
     try {
-      if (firebaseUser != null) {
+      while (firebaseUser != null) {
         await GoogleSignIn().signOut();
         await FirebaseAuth.instance.signOut();
       }
@@ -283,6 +283,10 @@ class AuthenticationRepository extends GetxController {
         prefs.remove('userBio');
         prefs.remove('userPic');
         prefs.remove('userContributions');
+        prefs.remove('userPicLocal');
+        prefs.remove('userEmailPublic');
+        prefs.remove('userPhonePublic');
+        prefs.remove('userIsAdmin');
       }
       if (appController.isFirstTimeUse) {
         await Future.delayed(Duration(milliseconds: 500));

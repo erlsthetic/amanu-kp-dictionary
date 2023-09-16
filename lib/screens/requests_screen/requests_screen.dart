@@ -21,7 +21,6 @@ class RequestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.context = context;
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Padding(
@@ -50,37 +49,39 @@ class RequestsScreen extends StatelessWidget {
                             height: size.height - 110,
                             width: size.width,
                             child: controller.requests.length != 0
-                                ? ListView.builder(
-                                    physics: BouncingScrollPhysics(),
-                                    padding:
-                                        EdgeInsets.only(top: 30, bottom: 50),
-                                    itemCount: controller.requests.length,
-                                    itemBuilder: (context, index) {
-                                      return RequestCard(
-                                        timestamp: controller
-                                            .requests[index].timestamp,
-                                        requestType: controller
-                                            .requests[index].requestType,
-                                        word: controller.requests[index].word,
-                                        userName:
-                                            controller.requests[index].userName,
-                                        notes: controller
-                                            .requests[index].requestNotes,
-                                        onTap: () async {
-                                          if (appController
-                                              .hasConnection.value) {
-                                            await controller.requestSelect(
-                                                controller
-                                                    .requests[index].requestId,
-                                                controller.requests[index]
-                                                    .requestType);
-                                          } else {
-                                            appController
-                                                .showConnectionSnackbar();
-                                          }
-                                        },
-                                      );
-                                    },
+                                ? Obx(
+                                    () => ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      padding: EdgeInsets.only(top: 30),
+                                      itemCount: controller.requests.length,
+                                      itemBuilder: (context, index) {
+                                        return RequestCard(
+                                          timestamp: controller
+                                              .requests[index].timestamp,
+                                          requestType: controller
+                                              .requests[index].requestType,
+                                          word: controller.requests[index].word,
+                                          userName: controller
+                                              .requests[index].userName,
+                                          notes: controller
+                                              .requests[index].requestNotes,
+                                          onTap: () async {
+                                            if (appController
+                                                .hasConnection.value) {
+                                              await controller.requestSelect(
+                                                  controller.requests[index]
+                                                      .requestId,
+                                                  controller.requests[index]
+                                                      .requestType,
+                                                  context);
+                                            } else {
+                                              appController
+                                                  .showConnectionSnackbar();
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
                                   )
                                 : Center(
                                     child: Text(
