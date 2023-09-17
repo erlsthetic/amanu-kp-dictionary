@@ -1189,10 +1189,15 @@ class ProfileScreen extends StatelessWidget {
                                                     meaning["partOfSpeech"]);
                                               }
                                               return BrowseCard(
-                                                onTap: () =>
-                                                    Get.to(() => DetailScreen(
+                                                onTap: () => Get.to(
+                                                    () => DetailScreen(
                                                           wordID: wordID,
-                                                        )),
+                                                        ),
+                                                    duration: Duration(
+                                                        milliseconds: 500),
+                                                    transition:
+                                                        Transition.rightToLeft,
+                                                    curve: Curves.easeInOut),
                                                 wordId: wordID,
                                                 word: appController
                                                         .dictionaryContent[

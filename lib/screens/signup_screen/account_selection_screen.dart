@@ -284,14 +284,20 @@ class AccountSelectionScreen extends StatelessWidget {
                                 controller.exFullName = '';
                                 controller.exBio = '';
                                 controller.cvUrl = '';
-                                Get.to(() => AccountRegistrationScreen());
+                                Get.to(() => AccountRegistrationScreen(),
+                                    duration: Duration(milliseconds: 500),
+                                    transition: Transition.rightToLeft,
+                                    curve: Curves.easeInOut);
                                 print("Email: ${controller.email}");
                                 print("Password: ${controller.password}");
                                 print(
                                     "Account type: ${controller.userType} | Contributor");
                               } else {
                                 controller.userType = 1;
-                                Get.to(() => AccountRegistrationScreen());
+                                Get.to(() => AccountRegistrationScreen(),
+                                    duration: Duration(milliseconds: 500),
+                                    transition: Transition.rightToLeft,
+                                    curve: Curves.easeInOut);
                                 print("Email: ${controller.email}");
                                 print("Password: ${controller.password}");
                                 print(

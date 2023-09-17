@@ -1,5 +1,8 @@
 import 'package:amanu/models/add_request_model.dart';
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +65,7 @@ class PreviewController extends GetxController {
   final Map<dynamic, dynamic> contributors;
   final Map<dynamic, dynamic> expert;
   final String lastModifiedTime;
-  final List<List<Map<String, dynamic>>> definitions;
+  final List<List<Map<dynamic, dynamic>>> definitions;
   final String kulitanString;
   final bool fromRequests;
   final String requestID;
@@ -97,12 +100,19 @@ class PreviewController extends GetxController {
         };
         if (appController.hasConnection.value) {
           await DatabaseRepository.instance.addWordOnDB(wordKey, details);
+          appController.checkDictionary();
+          appController.update();
           if (fromRequests) {
             await DatabaseRepository.instance
                 .removeRequest(requestID, requestAudioPath);
           }
           isProcessing.value = false;
-          Get.off(() => HomeScreen());
+          final drawerController = Get.find<DrawerXController>();
+          drawerController.currentItem.value = DrawerItems.home;
+          Get.offAll(() => DrawerLauncher(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut);
         } else {
           appController.showConnectionSnackbar();
           isProcessing.value = false;
@@ -167,7 +177,12 @@ class PreviewController extends GetxController {
           await DatabaseRepository.instance.createAddRequestOnDB(
               request, timestampForPath, appController.userID ?? '');
           isProcessing.value = false;
-          Get.off(() => HomeScreen());
+          final drawerController = Get.find<DrawerXController>();
+          drawerController.currentItem.value = DrawerItems.home;
+          Get.offAll(() => DrawerLauncher(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut);
         } else {
           appController.showConnectionSnackbar();
           isProcessing.value = false;

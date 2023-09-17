@@ -73,7 +73,10 @@ Future<dynamic> showJoinDialog(BuildContext context) {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(25),
                                 onTap: () {
-                                  Get.to(() => OnBoardingScreen());
+                                  Get.to(() => OnBoardingScreen(),
+                                      duration: Duration(milliseconds: 500),
+                                      transition: Transition.zoom,
+                                      curve: Curves.easeInOut);
                                 },
                                 splashColor: primaryOrangeLight,
                                 highlightColor:

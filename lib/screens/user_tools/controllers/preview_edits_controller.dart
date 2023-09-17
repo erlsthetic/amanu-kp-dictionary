@@ -1,5 +1,8 @@
 import 'package:amanu/models/edit_request_model.dart';
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/home_screen.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -66,7 +69,7 @@ class PreviewEditsController extends GetxController {
   final Map<dynamic, dynamic> contributors;
   final Map<dynamic, dynamic> expert;
   final String lastModifiedTime;
-  final List<List<Map<String, dynamic>>> definitions;
+  final List<List<Map<dynamic, dynamic>>> definitions;
   final String kulitanString;
   final bool fromRequests;
   final String requestID;
@@ -81,7 +84,7 @@ class PreviewEditsController extends GetxController {
   List<dynamic> prevFilTrans = [];
   List<dynamic> prevMeanings = [];
   List<String> prevTypes = [];
-  List<List<Map<String, dynamic>>> prevDefinitions = [];
+  List<List<Map<dynamic, dynamic>>> prevDefinitions = [];
   var prevKulitanChars = [];
   String prevKulitanString = '';
   Map<dynamic, dynamic> prevOtherRelated = {};
@@ -108,10 +111,10 @@ class PreviewEditsController extends GetxController {
         ? []
         : appController.dictionaryContent[prevWordID]["filipinoTranslations"];
     prevMeanings = appController.dictionaryContent[prevWordID]["meanings"];
-    for (Map<String, dynamic> meaning in prevMeanings) {
+    for (Map<dynamic, dynamic> meaning in prevMeanings) {
       prevTypes.add(meaning["partOfSpeech"]);
-      List<Map<String, dynamic>> _tempDef = [];
-      for (Map<String, dynamic> definition in meaning["definitions"]) {
+      List<Map<dynamic, dynamic>> _tempDef = [];
+      for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
         _tempDef.add(definition);
       }
       prevDefinitions.add(_tempDef);
@@ -184,8 +187,15 @@ class PreviewEditsController extends GetxController {
             await DatabaseRepository.instance
                 .removeRequest(requestID, requestAudioPath);
           }
+          appController.checkDictionary();
+          appController.update();
           isProcessing.value = false;
-          Get.off(() => HomeScreen());
+          final drawerController = Get.find<DrawerXController>();
+          drawerController.currentItem.value = DrawerItems.home;
+          Get.offAll(() => DrawerLauncher(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut);
         } else {
           isProcessing.value = false;
           appController.showConnectionSnackbar();

@@ -54,9 +54,13 @@ class BottomNavBar extends StatelessWidget {
                       elevation: 3,
                       onPressed: () {
                         if (appController.cameras.length > 0) {
-                          Get.to(() => KulitanScannerScreen(
-                                fromDrawer: false,
-                              ));
+                          Get.to(
+                              () => KulitanScannerScreen(
+                                    fromDrawer: false,
+                                  ),
+                              duration: Duration(milliseconds: 500),
+                              transition: Transition.downToUp,
+                              curve: Curves.easeInOut);
                         } else {
                           Helper.errorSnackBar(
                               title: "No Cameras Detected.",

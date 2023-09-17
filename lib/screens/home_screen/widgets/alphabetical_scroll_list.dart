@@ -40,9 +40,21 @@ class _AlphabeticalListViewState extends State<AlphabeticalListView> {
   void convertList(Map<dynamic, dynamic> dictionaryContent) {
     this.items = dictionaryContent.entries
         .map((entry) => _AZItem(
-            word: appController.dictionaryContent[entry.key]["word"],
+            word: appController.dictionaryContent[entry.key]["word"]
+                .replaceAll("<i>", "")
+                .replaceAll("</i>", "")
+                .replaceAll("<b>", "")
+                .replaceAll("</b>", "")
+                .replaceAll("<u>", "")
+                .replaceAll("</u>", ""),
             wordID: entry.key,
-            tag: appController.dictionaryContent[entry.key]["word"][0]
+            tag: appController.dictionaryContent[entry.key]["word"]
+                .replaceAll("<i>", "")
+                .replaceAll("</i>", "")
+                .replaceAll("<b>", "")
+                .replaceAll("</b>", "")
+                .replaceAll("<u>", "")
+                .replaceAll("</u>", "")[0]
                 .toUpperCase()))
         .toList();
     SuspensionUtil.sortListBySuspensionTag(this.items);
@@ -130,9 +142,13 @@ class _AlphabeticalListViewState extends State<AlphabeticalListView> {
         Padding(
           padding: EdgeInsets.only(right: 15),
           child: BrowseCard(
-            onTap: () => Get.to(() => DetailScreen(
-                  wordID: wordID,
-                )),
+            onTap: () => Get.to(
+                () => DetailScreen(
+                      wordID: wordID,
+                    ),
+                duration: Duration(milliseconds: 500),
+                transition: Transition.rightToLeft,
+                curve: Curves.easeInOut),
             wordId: wordID,
             word: appController.dictionaryContent[wordID]["word"],
             type: type,

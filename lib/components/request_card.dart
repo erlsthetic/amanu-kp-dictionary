@@ -1,4 +1,5 @@
 import 'package:amanu/components/tag_creator.dart';
+import 'package:amanu/components/text_span_builder.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -77,8 +78,16 @@ class RequestCard extends StatelessWidget {
                     children: [
                       Container(
                         height: 35,
-                        child: AutoSizeText(
-                          word.toLowerCase(),
+                        child: AutoSizeText.rich(
+                          TextSpan(children: [
+                            buildTextSpan(
+                                text: word,
+                                style: GoogleFonts.robotoSlab(
+                                    color: primaryOrangeDark,
+                                    fontWeight: FontWeight.w800),
+                                boldWeight: FontWeight.w800,
+                                isBoldDefault: true)
+                          ]),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.robotoSlab(

@@ -68,7 +68,10 @@ class KulitanFormField extends FormField {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => KulitanEditorPage());
+                      Get.to(() => KulitanEditorPage(),
+                          duration: Duration(milliseconds: 500),
+                          transition: Transition.rightToLeft,
+                          curve: Curves.easeInOut);
                       state.reset();
                     },
                     child: Container(

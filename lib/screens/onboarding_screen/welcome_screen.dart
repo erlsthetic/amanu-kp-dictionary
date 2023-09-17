@@ -74,7 +74,10 @@ class WelcomeScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () => Get.to(() => LoginScreen()),
+                            onPressed: () => Get.to(() => LoginScreen(),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.rightToLeft,
+                                curve: Curves.easeInOut),
                             child: Text(tLogin.toUpperCase()),
                             style: OutlinedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -90,7 +93,10 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () => Get.to(() => SignupScreen()),
+                            onPressed: () => Get.to(() => SignupScreen(),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.rightToLeft,
+                                curve: Curves.easeInOut),
                             child: Text(tSignup.toUpperCase()),
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -112,7 +118,10 @@ class WelcomeScreen extends StatelessWidget {
                           final drawerController =
                               Get.find<DrawerXController>();
                           drawerController.currentItem.value = DrawerItems.home;
-                          Get.offAll(() => DrawerLauncher());
+                          Get.offAll(() => DrawerLauncher(),
+                              duration: Duration(milliseconds: 500),
+                              transition: Transition.downToUp,
+                              curve: Curves.easeInOut);
                         }, context),
                         child: Text(
                           tCancel.toUpperCase(),

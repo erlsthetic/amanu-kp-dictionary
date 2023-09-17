@@ -5,11 +5,6 @@ import 'package:shimmer/shimmer.dart';
 class ShimmerBrowseCard extends StatelessWidget {
   ShimmerBrowseCard({super.key});
 
-  final String word = "Sample";
-  final String type = "noun";
-  final List<String> engTran = ["examlple", "example", "example", "example"];
-  final String prnLink = "https://something";
-
   @override
   Widget build(BuildContext context) {
     return Container(

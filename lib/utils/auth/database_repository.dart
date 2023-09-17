@@ -9,10 +9,12 @@ import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart' as p;
@@ -39,17 +41,22 @@ class DatabaseRepository extends GetxController {
     });
   }
 
-  Future updateUserOnDB(Map<String, dynamic> changes, String uid) async {
+  Future updateUserOnDB(
+      Map<String, dynamic> changes, String uid, bool showSuccess) async {
     await _db.collection("users").doc(uid).update(changes).then((value) {
-      Helper.successSnackBar(
-        title: tSuccess,
-        message: tAccountUpdated,
-      );
+      if (showSuccess) {
+        Helper.successSnackBar(
+          title: tSuccess,
+          message: tAccountUpdated,
+        );
+      }
     }).catchError((error, stackTrace) {
-      Helper.errorSnackBar(
-        title: tOhSnap,
-        message: tSomethingWentWrong,
-      );
+      if (showSuccess) {
+        Helper.errorSnackBar(
+          title: tOhSnap,
+          message: tSomethingWentWrong,
+        );
+      }
       print(error.toString());
     });
   }
@@ -219,7 +226,10 @@ class DatabaseRepository extends GetxController {
         .then((value) {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => DrawerLauncher());
+      Get.offAll(() => DrawerLauncher(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
       Helper.successSnackBar(
           title: tDeleteRequestSent, message: tRequestSentBody);
     }).catchError((error, stackTrace) {
@@ -265,7 +275,10 @@ class DatabaseRepository extends GetxController {
         .then((value) {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => DrawerLauncher());
+      Get.offAll(() => DrawerLauncher(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
       Helper.successSnackBar(title: tAddRequestSent, message: tRequestSentBody);
     }).catchError((error, stackTrace) {
       print(error.toString());
@@ -310,7 +323,10 @@ class DatabaseRepository extends GetxController {
         .then((value) {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => DrawerLauncher());
+      Get.offAll(() => DrawerLauncher(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
       Helper.successSnackBar(
           title: tEditRequestSent, message: tRequestSentBody);
     }).catchError((error, stackTrace) {
@@ -434,7 +450,7 @@ class DatabaseRepository extends GetxController {
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
-          updateUserOnDB(changes, uid);
+          updateUserOnDB(changes, uid, false);
         }
       }
       for (var uid in contributors.values) {
@@ -450,12 +466,19 @@ class DatabaseRepository extends GetxController {
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
-          updateUserOnDB(changes, uid);
+          updateUserOnDB(changes, uid, false);
         }
       }
-      //TODO: RELOAD DICTIONARY
       return Helper.successSnackBar(
-          title: tSuccess, message: details["word"] + tAddSuccess);
+          title: tSuccess,
+          message: details["word"]
+                  .replaceAll("<i>", "")
+                  .replaceAll("</i>", "")
+                  .replaceAll("<b>", "")
+                  .replaceAll("</b>", "")
+                  .replaceAll("<u>", "")
+                  .replaceAll("</u>", "") +
+              tAddSuccess);
     }).catchError((error, stackTrace) {
       return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
@@ -494,7 +517,7 @@ class DatabaseRepository extends GetxController {
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
-          updateUserOnDB(changes, uid);
+          updateUserOnDB(changes, uid, false);
         }
       }
       for (var uid in contributors.values) {
@@ -510,12 +533,19 @@ class DatabaseRepository extends GetxController {
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
-          updateUserOnDB(changes, uid);
+          updateUserOnDB(changes, uid, false);
         }
       }
-      //TODO: RELOAD DICTIONARY
       return Helper.successSnackBar(
-          title: tSuccess, message: details["word"] + tEditSuccess);
+          title: tSuccess,
+          message: details["word"]
+                  .replaceAll("<i>", "")
+                  .replaceAll("</i>", "")
+                  .replaceAll("<b>", "")
+                  .replaceAll("</b>", "")
+                  .replaceAll("<u>", "")
+                  .replaceAll("</u>", "") +
+              tEditSuccess);
     }).catchError((error, stackTrace) {
       return Helper.errorSnackBar(title: tOhSnap, message: tSomethingWentWrong);
     });
@@ -530,14 +560,30 @@ class DatabaseRepository extends GetxController {
           .remove()
           .then((value) {
         return Helper.successSnackBar(
-            title: tSuccess, message: word + tDeleteSuccess);
+            title: tSuccess,
+            message: word
+                    .replaceAll("<i>", "")
+                    .replaceAll("</i>", "")
+                    .replaceAll("<b>", "")
+                    .replaceAll("</b>", "")
+                    .replaceAll("<u>", "")
+                    .replaceAll("</u>", "") +
+                tDeleteSuccess);
       }).catchError((error, stackTrace) {
         return Helper.errorSnackBar(
             title: tOhSnap, message: tSomethingWentWrong);
       });
     } else {
       return Helper.errorSnackBar(
-          title: word + tDeleteNotFound, message: tDeleteNotFoundBody);
+          title: word
+                  .replaceAll("<i>", "")
+                  .replaceAll("</i>", "")
+                  .replaceAll("<b>", "")
+                  .replaceAll("</b>", "")
+                  .replaceAll("<u>", "")
+                  .replaceAll("</u>", "") +
+              tDeleteNotFound,
+          message: tDeleteNotFoundBody);
     }
   }
 }

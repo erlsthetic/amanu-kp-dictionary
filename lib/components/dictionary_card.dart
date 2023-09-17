@@ -49,7 +49,7 @@ class DictionaryCard extends StatelessWidget {
   final List<dynamic> filTrans;
   final List<dynamic> meanings;
   final List<String> types;
-  final List<List<Map<String, dynamic>>> definitions;
+  final List<List<Map<dynamic, dynamic>>> definitions;
   final List<dynamic> kulitanChars;
   final String kulitanString;
   final Map<dynamic, dynamic> otherRelated;
@@ -85,8 +85,17 @@ class DictionaryCard extends StatelessWidget {
                           constraints: BoxConstraints(maxWidth: width * 0.7),
                           height: 40,
                           alignment: Alignment.centerLeft,
-                          child: AutoSizeText(
-                            word,
+                          child: AutoSizeText.rich(
+                            TextSpan(children: [
+                              buildTextSpan(
+                                  text: word,
+                                  style: GoogleFonts.robotoSlab(
+                                    color: primaryOrangeDark,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  boldWeight: FontWeight.bold,
+                                  isBoldDefault: true)
+                            ]),
                             style: GoogleFonts.robotoSlab(
                               color: primaryOrangeDark,
                               fontWeight: FontWeight.bold,
@@ -193,8 +202,15 @@ class DictionaryCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(bottom: 10.0),
             width: double.infinity,
-            child: Text(
-              "/" + prn + "/",
+            child: Text.rich(
+              TextSpan(children: [
+                TextSpan(text: "/"),
+                buildTextSpan(
+                    text: prn,
+                    style: TextStyle(fontSize: 14, color: cardText),
+                    boldWeight: FontWeight.w600),
+                TextSpan(text: "/"),
+              ]),
               style: TextStyle(fontSize: 14, color: cardText),
             ),
           ),
@@ -524,7 +540,14 @@ class DictionaryCard extends StatelessWidget {
                                                                   wordID: rel
                                                                       .value),
                                                           preventDuplicates:
-                                                              false);
+                                                              false,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          transition: Transition
+                                                              .rightToLeft,
+                                                          curve:
+                                                              Curves.easeInOut);
                                                     }, context)
                                               : () {},
                                         )
@@ -569,12 +592,18 @@ class DictionaryCard extends StatelessWidget {
                                                   ? () {}
                                                   : Feedback.wrapForTap(() {
                                                       () => Get.to(
-                                                          () =>
-                                                              new DetailScreen(
-                                                                  wordID: syn
-                                                                      .value),
+                                                          () => new DetailScreen(
+                                                              wordID:
+                                                                  syn.value),
                                                           preventDuplicates:
-                                                              false);
+                                                              false,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          transition: Transition
+                                                              .rightToLeft,
+                                                          curve:
+                                                              Curves.easeInOut);
                                                     }, context)
                                               : () {},
                                         )
@@ -619,12 +648,18 @@ class DictionaryCard extends StatelessWidget {
                                                   ? () {}
                                                   : Feedback.wrapForTap(() {
                                                       () => Get.to(
-                                                          () =>
-                                                              new DetailScreen(
-                                                                  wordID: ant
-                                                                      .value),
+                                                          () => new DetailScreen(
+                                                              wordID:
+                                                                  ant.value),
                                                           preventDuplicates:
-                                                              false);
+                                                              false,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          transition: Transition
+                                                              .rightToLeft,
+                                                          curve:
+                                                              Curves.easeInOut);
                                                     }, context)
                                               : () {},
                                         )
@@ -722,17 +757,25 @@ class DictionaryCard extends StatelessWidget {
                                               ? isPreview
                                                   ? () {}
                                                   : Feedback.wrapForTap(() {
-                                                      Get.to(() =>
-                                                          ProfileScreen(
-                                                            fromDrawer: false,
-                                                            ownProfile:
-                                                                contributor
+                                                      Get.to(
+                                                          () => ProfileScreen(
+                                                                fromDrawer:
+                                                                    false,
+                                                                ownProfile: contributor
                                                                         .value ==
                                                                     appController
                                                                         .userID,
-                                                            userID: contributor
-                                                                .value,
-                                                          ));
+                                                                userID:
+                                                                    contributor
+                                                                        .value,
+                                                              ),
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          transition: Transition
+                                                              .downToUp,
+                                                          curve:
+                                                              Curves.easeInOut);
                                                     }, context)
                                               : () {},
                                         )
@@ -773,16 +816,24 @@ class DictionaryCard extends StatelessWidget {
                                               ? isPreview
                                                   ? () {}
                                                   : Feedback.wrapForTap(() {
-                                                      Get.to(() =>
-                                                          ProfileScreen(
-                                                            fromDrawer: false,
-                                                            ownProfile: expert
-                                                                    .value ==
-                                                                appController
-                                                                    .userID,
-                                                            userID:
-                                                                expert.value,
-                                                          ));
+                                                      Get.to(
+                                                          () => ProfileScreen(
+                                                                fromDrawer:
+                                                                    false,
+                                                                ownProfile: expert
+                                                                        .value ==
+                                                                    appController
+                                                                        .userID,
+                                                                userID: expert
+                                                                    .value,
+                                                              ),
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500),
+                                                          transition: Transition
+                                                              .downToUp,
+                                                          curve:
+                                                              Curves.easeInOut);
                                                     }, context)
                                               : () {},
                                         )

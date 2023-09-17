@@ -48,7 +48,10 @@ class ForgotPasswordScreen {
               subtitle: tResetViaEmail,
               onTap: () {
                 Navigator.pop(context);
-                Get.to(() => ForgotPasswordEmail());
+                Get.to(() => ForgotPasswordEmail(),
+                    duration: Duration(milliseconds: 500),
+                    transition: Transition.rightToLeft,
+                    curve: Curves.easeInOut);
               },
             ),
             SizedBox(
@@ -60,7 +63,10 @@ class ForgotPasswordScreen {
               subtitle: tResetViaSMS,
               onTap: () {
                 Navigator.pop(context);
-                Get.to(() => ForgotPasswordPhone());
+                Get.to(() => ForgotPasswordPhone(),
+                    duration: Duration(milliseconds: 500),
+                    transition: Transition.rightToLeft,
+                    curve: Curves.easeInOut);
               },
             ),
           ],

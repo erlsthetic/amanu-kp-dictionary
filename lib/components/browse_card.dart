@@ -1,3 +1,4 @@
+import 'package:amanu/components/text_span_builder.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -92,8 +93,16 @@ class BrowseCard extends StatelessWidget {
                               maxWidth:
                                   MediaQuery.of(context).size.width * 0.6),
                           height: 35,
-                          child: Text(
-                            word.toLowerCase(),
+                          child: Text.rich(
+                            TextSpan(children: [
+                              buildTextSpan(
+                                  text: word,
+                                  style: GoogleFonts.robotoSlab(
+                                      color: primaryOrangeDark,
+                                      fontWeight: FontWeight.w800),
+                                  boldWeight: FontWeight.w800,
+                                  isBoldDefault: true)
+                            ]),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.robotoSlab(

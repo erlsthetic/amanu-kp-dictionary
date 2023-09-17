@@ -223,7 +223,10 @@ class SignUpController extends GetxController {
       }
       signUpFormKey.currentState!.save();
       accountFromGoogle = false;
-      Get.to(() => AccountSelectionScreen());
+      Get.to(() => AccountSelectionScreen(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.rightToLeft,
+          curve: Curves.easeInOut);
     } else {
       appController.showConnectionSnackbar();
     }
@@ -362,7 +365,10 @@ class SignUpController extends GetxController {
               .then((value) {
             final drawerController = Get.find<DrawerXController>();
             drawerController.currentItem.value = DrawerItems.home;
-            Get.offAll(() => DrawerLauncher());
+            Get.offAll(() => DrawerLauncher(),
+                duration: Duration(milliseconds: 500),
+                transition: Transition.downToUp,
+                curve: Curves.easeInOut);
           });
         });
       }
@@ -385,7 +391,10 @@ class SignUpController extends GetxController {
         isGoogleLoading.value = false;
         if (await authRepo.firebaseUser != null) {
           accountFromGoogle = true;
-          Get.to(() => AccountSelectionScreen());
+          Get.to(() => AccountSelectionScreen(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.rightToLeft,
+              curve: Curves.easeInOut);
         }
       } catch (e) {
         isGoogleLoading.value = false;
@@ -470,7 +479,10 @@ class SignUpController extends GetxController {
             .then((value) {
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;
-          Get.offAll(() => DrawerLauncher());
+          Get.offAll(() => DrawerLauncher(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut);
         });
       });
       isProcessing.value = false;

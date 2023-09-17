@@ -36,7 +36,10 @@ class SearchButton extends StatelessWidget {
               splashColor: primaryOrangeLight,
               highlightColor: primaryOrangeLight.withOpacity(0.5),
               onTap: () {
-                Get.to(() => SearchScreen());
+                Get.to(() => SearchScreen(),
+                    duration: Duration(milliseconds: 500),
+                    transition: Transition.upToDown,
+                    curve: Curves.easeInOut);
               },
               child: Ink(
                 width: double.infinity,

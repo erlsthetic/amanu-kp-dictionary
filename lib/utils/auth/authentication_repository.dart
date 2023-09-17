@@ -11,6 +11,7 @@ import 'package:amanu/utils/auth/exceptions/auth_failure.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -127,12 +128,18 @@ class AuthenticationRepository extends GetxController {
         }
         if (appController.isFirstTimeUse) {
           await Future.delayed(Duration(milliseconds: 500));
-          Get.offAll(() => OnBoardingScreen());
+          Get.offAll(() => OnBoardingScreen(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut);
         } else {
           await Future.delayed(Duration(milliseconds: 500));
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;
-          Get.offAll(() => DrawerLauncher());
+          Get.offAll(() => DrawerLauncher(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut);
         }
         Helper.successSnackBar(
             title: "Login successful.",
@@ -211,12 +218,18 @@ class AuthenticationRepository extends GetxController {
             }
             if (appController.isFirstTimeUse) {
               await Future.delayed(Duration(milliseconds: 500));
-              Get.offAll(() => OnBoardingScreen());
+              Get.offAll(() => OnBoardingScreen(),
+                  duration: Duration(milliseconds: 500),
+                  transition: Transition.downToUp,
+                  curve: Curves.easeInOut);
             } else {
               await Future.delayed(Duration(milliseconds: 500));
               final drawerController = Get.find<DrawerXController>();
               drawerController.currentItem.value = DrawerItems.home;
-              Get.offAll(() => DrawerLauncher());
+              Get.offAll(() => DrawerLauncher(),
+                  duration: Duration(milliseconds: 500),
+                  transition: Transition.downToUp,
+                  curve: Curves.easeInOut);
             }
             Helper.successSnackBar(
                 title: "Login successful.",
@@ -225,7 +238,10 @@ class AuthenticationRepository extends GetxController {
             final controller = Get.put(SignUpController());
             controller.email = firebaseUser!.email ?? '';
             controller.accountFromGoogle = true;
-            Get.off(() => AccountSelectionScreen());
+            Get.off(() => AccountSelectionScreen(),
+                duration: Duration(milliseconds: 500),
+                transition: Transition.rightToLeft,
+                curve: Curves.easeInOut);
             Helper.successSnackBar(
                 title: "Let's pickup where you left off.",
                 message: "Continue setting up your account to gain access.");
@@ -290,12 +306,18 @@ class AuthenticationRepository extends GetxController {
       }
       if (appController.isFirstTimeUse) {
         await Future.delayed(Duration(milliseconds: 500));
-        Get.offAll(() => OnBoardingScreen());
+        Get.offAll(() => OnBoardingScreen(),
+            duration: Duration(milliseconds: 500),
+            transition: Transition.downToUp,
+            curve: Curves.easeInOut);
       } else {
         await Future.delayed(Duration(milliseconds: 500));
         final drawerController = Get.find<DrawerXController>();
         drawerController.currentItem.value = DrawerItems.home;
-        Get.offAll(() => DrawerLauncher());
+        Get.offAll(() => DrawerLauncher(),
+            duration: Duration(milliseconds: 500),
+            transition: Transition.downToUp,
+            curve: Curves.easeInOut);
       }
       Helper.successSnackBar(
           title: "Logout success.",

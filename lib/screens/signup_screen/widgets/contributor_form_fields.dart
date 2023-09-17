@@ -71,7 +71,6 @@ class ContributorFormFields extends StatelessWidget {
           child: ElevatedButton(
               onPressed: () {
                 controller.registerUser();
-                //Get.off(() => HomeScreen());
               },
               style: ElevatedButton.styleFrom(
                 alignment: Alignment.center,

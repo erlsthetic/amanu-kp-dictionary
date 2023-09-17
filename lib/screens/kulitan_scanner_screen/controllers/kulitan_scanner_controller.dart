@@ -194,13 +194,20 @@ class KulitanScannerController extends GetxController
 
   Future searchInDictionary(String word) async {
     String query = appController.normalizeWord(word);
-    Get.to(() => SearchScreen(fromKulitanScanner: true, input: query));
+    Get.to(() => SearchScreen(fromKulitanScanner: true, input: query),
+        duration: Duration(milliseconds: 500),
+        transition: Transition.rightToLeft,
+        curve: Curves.easeInOut);
   }
 
   Future copyToClipboard(String word) async {
-    await Clipboard.setData(ClipboardData(text: word)).catchError(
-        Helper.errorSnackBar(
-            title: tOhSnap, message: "Unable to copy to clipboard."));
+    await Clipboard.setData(ClipboardData(text: word)).then((value) {
+      Helper.successSnackBar(
+          title: 'Clipboard', message: '"${word}" copied to clipboard.');
+    }).catchError((error, stackTrace) {
+      return Helper.errorSnackBar(
+          title: tOhSnap, message: "Unable to copy to clipboard.");
+    });
   }
 
   Future<List<dynamic>?> getPrediction(imagePath) async {

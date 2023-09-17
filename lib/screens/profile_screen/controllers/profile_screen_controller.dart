@@ -291,7 +291,7 @@ class ProfileController extends GetxController {
               message: "Account details remained the same.");
         } else {
           await DatabaseRepository.instance
-              .updateUserOnDB(userChanges, appController.userID!)
+              .updateUserOnDB(userChanges, appController.userID!, true)
               .then((value) async {
             await appController.changeLoginState(true);
             await appController

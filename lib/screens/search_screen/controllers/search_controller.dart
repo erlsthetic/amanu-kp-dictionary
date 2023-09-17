@@ -48,8 +48,16 @@ class SearchWordController extends GetxController {
     for (var entry in appController.dictionaryContent.entries) {
       if (searchInWord.value) {
         if (entry.value["word"] != null) {
-          String word = entry.value["word"].toLowerCase();
-          if (word.contains(query)) {
+          String word = entry.value["word"]
+              .toLowerCase()
+              .replaceAll("<i>", "")
+              .replaceAll("</i>", "")
+              .replaceAll("<b>", "")
+              .replaceAll("</b>", "")
+              .replaceAll("<u>", "")
+              .replaceAll("</u>", "");
+          String normalized = appController.normalizeWord(word);
+          if (normalized.contains(query)) {
             tempMap[entry.key] = entry.value;
             tempFoundOn[entry.key] = "engTrans";
             continue;
@@ -61,7 +69,8 @@ class SearchWordController extends GetxController {
           bool _found = false;
           List<dynamic> engTransList = entry.value["englishTranslations"];
           for (var trans in engTransList) {
-            if (trans.toLowerCase().contains(query)) {
+            var normalized = appController.normalizeWord(trans);
+            if (normalized.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
               tempFoundOn[entry.key] = "engTrans";
               _found = true;
@@ -78,7 +87,8 @@ class SearchWordController extends GetxController {
           bool _found = false;
           List<dynamic> filTransList = entry.value["filipinoTranslations"];
           for (var trans in filTransList) {
-            if (trans.toLowerCase().contains(query)) {
+            var normalized = appController.normalizeWord(trans);
+            if (normalized.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
               tempFoundOn[entry.key] = "filTrans";
               _found = true;
@@ -101,7 +111,8 @@ class SearchWordController extends GetxController {
               }
             }
           }
-          if (kulitanString.contains(query)) {
+          String normalized = appController.normalizeWord(kulitanString);
+          if (normalized.toLowerCase().contains(query)) {
             tempMap[entry.key] = entry.value;
             tempFoundOn[entry.key] = "engTrans";
             continue;
@@ -116,7 +127,16 @@ class SearchWordController extends GetxController {
             bool _foundInDef = false;
             List<Map<dynamic, dynamic>> definitions = meaning["definitions"];
             for (var definition in definitions) {
-              if (definition["definition"].toLowerCase().contains(query)) {
+              var defNoTags = definition["definition"]
+                  .toLowerCase()
+                  .replaceAll("<i>", "")
+                  .replaceAll("</i>", "")
+                  .replaceAll("<b>", "")
+                  .replaceAll("</b>", "")
+                  .replaceAll("<u>", "")
+                  .replaceAll("</u>", "");
+              var normalized = appController.normalizeWord(defNoTags);
+              if (normalized.toLowerCase().contains(query)) {
                 tempMap[entry.key] = entry.value;
                 tempFoundOn[entry.key] = "engTrans";
                 _foundInDef = true;
@@ -138,7 +158,8 @@ class SearchWordController extends GetxController {
           bool _found = false;
           Map<dynamic, dynamic> related = entry.value["otherRelated"];
           for (var rel in related.entries) {
-            if (rel.key.toLowerCase().contains(query)) {
+            var relWord = appController.normalizeWord(rel.key);
+            if (relWord.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
               tempFoundOn[entry.key] = "otherRelated";
               _found = true;
@@ -155,7 +176,8 @@ class SearchWordController extends GetxController {
           bool _found = false;
           Map<dynamic, dynamic> synonyms = entry.value["synonyms"];
           for (var syn in synonyms.entries) {
-            if (syn.key.toLowerCase().contains(query)) {
+            var synWord = appController.normalizeWord(syn.key);
+            if (synWord.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
               tempFoundOn[entry.key] = "synonyms";
               _found = true;
@@ -172,7 +194,8 @@ class SearchWordController extends GetxController {
           bool _found = false;
           Map<dynamic, dynamic> antonyms = entry.value["antonyms"];
           for (var ant in antonyms.entries) {
-            if (ant.key.toLowerCase().contains(query)) {
+            var antWord = appController.normalizeWord(ant.key);
+            if (antWord.toLowerCase().contains(query)) {
               tempMap[entry.key] = entry.value;
               tempFoundOn[entry.key] = "antonyms";
               _found = true;

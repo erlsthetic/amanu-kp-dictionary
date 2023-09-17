@@ -4,7 +4,8 @@ import 'dart:math';
 TextSpan buildTextSpan(
     {required String text,
     required TextStyle style,
-    required FontWeight boldWeight}) {
+    required FontWeight boldWeight,
+    bool isBoldDefault = false}) {
   List<List<String>> outListStr = getStyledText(text, 'r', []);
   return TextSpan(
       children: List.generate(outListStr.length, (i) {
@@ -13,8 +14,14 @@ TextSpan buildTextSpan(
             style: TextStyle(
                 fontStyle:
                     outListStr[i][1].contains("i") ? FontStyle.italic : null,
-                fontWeight:
-                    outListStr[i][1].contains("b") ? boldWeight : null));
+                fontWeight: isBoldDefault
+                    ? boldWeight
+                    : outListStr[i][1].contains("b")
+                        ? boldWeight
+                        : null,
+                decoration: outListStr[i][1].contains("u")
+                    ? TextDecoration.underline
+                    : null));
       }),
       style: style);
 }
@@ -29,19 +36,28 @@ List<List<String>> getStyledText(
   int nearestIC = inp.indexOf("</i>", cIdx);
   int nearestB = inp.indexOf("<b>", cIdx);
   int nearestBC = inp.indexOf("</b>", cIdx);
+  int nearestU = inp.indexOf("<u>", cIdx);
+  int nearestUC = inp.indexOf("</u>", cIdx);
 
-  if (nearestI == -1 && nearestB == -1 && nearestIC == -1 && nearestBC == -1) {
+  if (nearestI == -1 &&
+      nearestB == -1 &&
+      nearestU == -1 &&
+      nearestIC == -1 &&
+      nearestBC == -1 &&
+      nearestUC == -1) {
     String passString = inp
         .replaceAll("<i>", "")
         .replaceAll("</i>", "")
         .replaceAll("<b>", "")
-        .replaceAll("</b>", "");
+        .replaceAll("</b>", "")
+        .replaceAll("<u>", "")
+        .replaceAll("</u>", "");
     outStr.add([passString, cTag]);
     return outStr;
   }
 
-  int nearestTagIdx =
-      identifyNearestTagIdx(nearestI, nearestIC, nearestB, nearestBC);
+  int nearestTagIdx = identifyNearestTagIdx(
+      nearestI, nearestIC, nearestB, nearestBC, nearestU, nearestUC);
   if (nearestTagIdx > 0) {
     outStr.add([inp.substring(0, nearestTagIdx), cTag]);
   }
@@ -60,6 +76,11 @@ List<List<String>> getStyledText(
       int lastIdx = cTag.lastIndexOf("b");
       cTag = cTag.replaceFirst("b", "", lastIdx);
     }
+  } else if (nearestTag == "</u>") {
+    if (cTag.contains("u")) {
+      int lastIdx = cTag.lastIndexOf("u");
+      cTag = cTag.replaceFirst("u", "", lastIdx);
+    }
   } else {
     cTag +=
         nearestTag.replaceAll("<", "").replaceAll("/", "").replaceAll(">", "");
@@ -70,12 +91,34 @@ List<List<String>> getStyledText(
   return outStr;
 }
 
-int identifyNearestTagIdx(int nI, int nIC, int nB, int nBC) {
-  int nearestI = nI == -1 ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() : nI;
-  int nearestIC = nIC == -1 ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() : nIC;
-  int nearestB = nB == -1 ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() : nB;
-  int nearestBC = nBC == -1 ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() : nBC;
-  int nearestIdx = min(min(nearestI, nearestIC), min(nearestB, nearestBC));
+int identifyNearestTagIdx(
+  int nI,
+  int nIC,
+  int nB,
+  int nBC,
+  int nU,
+  int nUC,
+) {
+  int nearestI = nI == -1
+      ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() + nU.abs() + nUC.abs()
+      : nI;
+  int nearestIC = nIC == -1
+      ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() + nU.abs() + nUC.abs()
+      : nIC;
+  int nearestB = nB == -1
+      ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() + nU.abs() + nUC.abs()
+      : nB;
+  int nearestBC = nBC == -1
+      ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() + nU.abs() + nUC.abs()
+      : nBC;
+  int nearestU = nU == -1
+      ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() + nU.abs() + nUC.abs()
+      : nU;
+  int nearestUC = nUC == -1
+      ? nI.abs() + nIC.abs() + nB.abs() + nBC.abs() + nU.abs() + nUC.abs()
+      : nUC;
+  int nearestIdx = min(min(min(nearestI, nearestIC), min(nearestB, nearestBC)),
+      min(nearestU, nearestUC));
 
   if (nearestIdx == nearestI) {
     return nI;
@@ -83,7 +126,11 @@ int identifyNearestTagIdx(int nI, int nIC, int nB, int nBC) {
     return nIC;
   } else if (nearestIdx == nearestB) {
     return nB;
-  } else {
+  } else if (nearestIdx == nearestBC) {
     return nBC;
+  } else if (nearestIdx == nearestU) {
+    return nU;
+  } else {
+    return nUC;
   }
 }

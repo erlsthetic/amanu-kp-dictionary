@@ -52,9 +52,13 @@ class SearchScreen extends StatelessWidget {
                               type.add(meaning["partOfSpeech"]);
                             }
                             return BrowseCard(
-                              onTap: () => Get.to(() => DetailScreen(
-                                    wordID: wordID,
-                                  )),
+                              onTap: () => Get.to(
+                                  () => DetailScreen(
+                                        wordID: wordID,
+                                      ),
+                                  duration: Duration(milliseconds: 500),
+                                  transition: Transition.rightToLeft,
+                                  curve: Curves.easeInOut),
                               wordId: wordID,
                               word: controller.suggestionMap[wordID]["word"],
                               type: type,
@@ -183,13 +187,10 @@ class SearchScreen extends StatelessWidget {
                   color: pureWhite),
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Hero(
-                  tag: "SearchIcon",
-                  child: Icon(
-                    Icons.search,
-                    size: 30.0,
-                    color: primaryOrangeDark,
-                  ),
+                Icon(
+                  Icons.search,
+                  size: 30.0,
+                  color: primaryOrangeDark,
                 ),
                 SizedBox(
                   width: 10,

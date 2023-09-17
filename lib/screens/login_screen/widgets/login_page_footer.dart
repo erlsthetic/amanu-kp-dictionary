@@ -69,7 +69,10 @@ class LoginFooterWidget extends StatelessWidget {
           height: 10.0,
         ),
         TextButton(
-          onPressed: () => Get.off(() => SignupScreen()),
+          onPressed: () => Get.off(() => SignupScreen(),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOut),
           style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0))),

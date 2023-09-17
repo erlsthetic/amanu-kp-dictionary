@@ -27,7 +27,7 @@ class PreviewEditsPage extends StatelessWidget {
   final Map<dynamic, dynamic>? contributors;
   final Map<dynamic, dynamic>? expert;
   final String lastModifiedTime;
-  final List<List<Map<String, dynamic>>> definitions;
+  final List<List<Map<dynamic, dynamic>>> definitions;
   final String kulitanString;
   final bool fromRequests;
   final String requestID;

@@ -27,85 +27,98 @@ class HomeScreen extends StatelessWidget {
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(),
       child: Scaffold(
-        body: Stack(
-          children: [
-            Coast(
-              beaches: [
-                Beach(
-                    builder: (context) => HomeScreenPage(
-                          size: _size,
-                          topPadding: screenPadding.top,
-                        )),
-                Beach(
-                    builder: (context) => BrowseScreenPage(
-                          size: _size,
-                          topPadding: screenPadding.top,
-                        )),
-              ],
-              controller: controller.coastController,
-              onPageChanged: (page) {
-                controller.currentIdx.value = page;
-              },
-              observers: [controller.crabController],
-            ),
-            BottomNavBar(size: _size, pController: controller),
-            appController.isLoggedIn
-                ? CustomFloatingPanel(
-                    onPressed: (index) {
-                      print("Clicked $index");
-                      if (index == 0) {
-                        if (appController.hasConnection.value) {
-                          Get.to(() => ModifyWordPage());
-                        } else {
-                          appController.showConnectionSnackbar();
+        body: GetBuilder<HomePageController>(builder: (ctl) {
+          return Stack(
+            children: [
+              Coast(
+                beaches: [
+                  Beach(
+                      builder: (context) => HomeScreenPage(
+                            size: _size,
+                            topPadding: screenPadding.top,
+                          )),
+                  Beach(
+                      builder: (context) => BrowseScreenPage(
+                            size: _size,
+                            topPadding: screenPadding.top,
+                          )),
+                ],
+                controller: controller.coastController,
+                onPageChanged: (page) {
+                  controller.currentIdx.value = page;
+                },
+                observers: [controller.crabController],
+              ),
+              BottomNavBar(size: _size, pController: controller),
+              appController.isLoggedIn
+                  ? CustomFloatingPanel(
+                      onPressed: (index) {
+                        print("Clicked $index");
+                        if (index == 0) {
+                          if (appController.hasConnection.value) {
+                            Get.to(() => ModifyWordPage(),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.downToUp,
+                                curve: Curves.easeInOut);
+                          } else {
+                            appController.showConnectionSnackbar();
+                          }
+                        } else if (index == 1) {
+                          if (appController.hasConnection.value) {
+                            Get.to(
+                                () => ModifySearchPage(
+                                      editMode: true,
+                                    ),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.downToUp,
+                                curve: Curves.easeInOut);
+                          } else {
+                            appController.showConnectionSnackbar();
+                          }
+                        } else if (index == 2) {
+                          if (appController.hasConnection.value) {
+                            Get.to(
+                                () => ModifySearchPage(
+                                      editMode: false,
+                                    ),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.downToUp,
+                                curve: Curves.easeInOut);
+                          } else {
+                            appController.showConnectionSnackbar();
+                          }
                         }
-                      } else if (index == 1) {
-                        if (appController.hasConnection.value) {
-                          Get.to(() => ModifySearchPage(
-                                editMode: true,
-                              ));
-                        } else {
-                          appController.showConnectionSnackbar();
-                        }
-                      } else if (index == 2) {
-                        if (appController.hasConnection.value) {
-                          Get.to(() => ModifySearchPage(
-                                editMode: false,
-                              ));
-                        } else {
-                          appController.showConnectionSnackbar();
-                        }
-                      }
-                    },
-                    positionBottom: _size.height * 0.1,
-                    positionLeft: _size.width - 85,
-                    size: 70,
-                    iconSize: 30,
-                    panelIcon: iToolBox,
-                    dockType: DockType.inside,
-                    dockOffset: 15,
-                    backgroundColor: pureWhite,
-                    contentColor: pureWhite,
-                    panelShape: PanelShape.rounded,
-                    borderRadius: BorderRadius.circular(40),
-                    borderColor: primaryOrangeDark,
-                    buttons: [
-                      iToolsAdd,
-                      iToolsEdit,
-                      iToolsDelete,
-                    ],
-                    iconBGColors: [
-                      primaryOrangeDark,
-                      primaryOrangeLight,
-                      darkerOrange.withOpacity(0.8)
-                    ],
-                    iconBGSize: 60,
-                    mainIconColor: primaryOrangeDark,
-                    shadowColor: primaryOrangeDark,
-                  )
-                : Container()
-          ],
-        ),
+                      },
+                      positionBottom: _size.height * 0.1,
+                      positionLeft: _size.width - 85,
+                      size: 70,
+                      iconSize: 30,
+                      panelIcon: iToolBox,
+                      dockType: DockType.inside,
+                      dockOffset: 15,
+                      backgroundColor: pureWhite,
+                      contentColor: pureWhite,
+                      panelShape: PanelShape.rounded,
+                      borderRadius: BorderRadius.circular(40),
+                      borderColor: primaryOrangeDark,
+                      buttons: [
+                        iToolsAdd,
+                        iToolsEdit,
+                        iToolsDelete,
+                      ],
+                      iconBGColors: [
+                        primaryOrangeDark,
+                        primaryOrangeLight,
+                        darkerOrange.withOpacity(0.8)
+                      ],
+                      iconBGSize: 60,
+                      mainIconColor: primaryOrangeDark,
+                      shadowColor: primaryOrangeDark,
+                    )
+                  : Container()
+            ],
+          );
+        }),
       ),
     );
   }

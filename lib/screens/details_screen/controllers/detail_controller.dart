@@ -23,7 +23,7 @@ class DetailController extends GetxController {
   List<dynamic> filTrans = [];
   List<dynamic> meanings = [];
   List<String> types = [];
-  List<List<Map<String, dynamic>>> definitions = [];
+  List<List<Map<dynamic, dynamic>>> definitions = [];
   var kulitanChars = [];
   String kulitanString = '';
   Map<dynamic, dynamic> otherRelated = {};
@@ -47,10 +47,10 @@ class DetailController extends GetxController {
             ? []
             : appController.dictionaryContent[wordID]["filipinoTranslations"];
     meanings = appController.dictionaryContent[wordID]["meanings"];
-    for (Map<String, dynamic> meaning in meanings) {
+    for (Map<dynamic, dynamic> meaning in meanings) {
       types.add(meaning["partOfSpeech"]);
-      List<Map<String, dynamic>> tempDef = [];
-      for (Map<String, dynamic> definition in meaning["definitions"]) {
+      List<Map<dynamic, dynamic>> tempDef = [];
+      for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
         tempDef.add(definition);
       }
       definitions.add(tempDef);

@@ -25,7 +25,10 @@ class LoginScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: WillPopScope(
           onWillPop: () {
-            Get.off(() => WelcomeScreen());
+            Get.off(() => WelcomeScreen(),
+                duration: Duration(milliseconds: 500),
+                transition: Transition.leftToRight,
+                curve: Curves.easeInOut);
             return Future.value(false);
           },
           child: Stack(

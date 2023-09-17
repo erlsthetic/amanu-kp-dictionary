@@ -66,13 +66,13 @@ class RequestsController extends GetxController {
           List<dynamic> filTrans = new List.from(request.filTrans);
           List<dynamic> meanings = new List.from(request.meanings);
           List<String> types = [];
-          List<List<Map<String, dynamic>>> definitions = [];
+          List<List<Map<dynamic, dynamic>>> definitions = [];
           List<List<dynamic>> kulitanChars = [];
           String kulitanString = '';
-          for (Map<String, dynamic> meaning in meanings) {
+          for (Map<dynamic, dynamic> meaning in meanings) {
             types.add(meaning["partOfSpeech"]);
-            List<Map<String, dynamic>> _tempDef = [];
-            for (Map<String, dynamic> definition in meaning["definitions"]) {
+            List<Map<dynamic, dynamic>> _tempDef = [];
+            for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
               _tempDef.add(definition);
             }
             definitions.add(_tempDef);
@@ -102,34 +102,38 @@ class RequestsController extends GetxController {
               new Map.from(request.contributors);
           Map<dynamic, dynamic> expert = new Map.from(request.expert);
           String lastModifiedTime = request.lastModifiedTime;
-          Get.to(() => RequestDetailsPage(
-              wordID: wordID,
-              word: word,
-              prevWordID: prevWordID,
-              requestID: requestId,
-              requestType: requestType,
-              requesterID: requesterID,
-              requesterUserName: requesterUserName,
-              notes: notes,
-              timestamp: timestamp,
-              normalizedWord: normalizedWord,
-              prn: prn,
-              prnUrl: prnUrl,
-              engTrans: engTrans,
-              filTrans: filTrans,
-              meanings: meanings,
-              types: types,
-              kulitanChars: kulitanChars,
-              otherRelated: otherRelated,
-              synonyms: synonyms,
-              antonyms: antonyms,
-              sources: sources,
-              contributors: contributors,
-              expert: expert,
-              lastModifiedTime: lastModifiedTime,
-              definitions: definitions,
-              kulitanString: kulitanString,
-              prnAudioPath: prnAudioPath));
+          Get.to(
+              () => RequestDetailsPage(
+                  wordID: wordID,
+                  word: word,
+                  prevWordID: prevWordID,
+                  requestID: requestId,
+                  requestType: requestType,
+                  requesterID: requesterID,
+                  requesterUserName: requesterUserName,
+                  notes: notes,
+                  timestamp: timestamp,
+                  normalizedWord: normalizedWord,
+                  prn: prn,
+                  prnUrl: prnUrl,
+                  engTrans: engTrans,
+                  filTrans: filTrans,
+                  meanings: meanings,
+                  types: types,
+                  kulitanChars: kulitanChars,
+                  otherRelated: otherRelated,
+                  synonyms: synonyms,
+                  antonyms: antonyms,
+                  sources: sources,
+                  contributors: contributors,
+                  expert: expert,
+                  lastModifiedTime: lastModifiedTime,
+                  definitions: definitions,
+                  kulitanString: kulitanString,
+                  prnAudioPath: prnAudioPath),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.rightToLeft,
+              curve: Curves.easeInOut);
         }
       }
     } else if (requestType == 1) {
@@ -161,13 +165,13 @@ class RequestsController extends GetxController {
           List<dynamic> filTrans = new List.from(request.filTrans);
           List<dynamic> meanings = new List.from(request.meanings);
           List<String> types = [];
-          List<List<Map<String, dynamic>>> definitions = [];
+          List<List<Map<dynamic, dynamic>>> definitions = [];
           List<List<dynamic>> kulitanChars = [];
           String kulitanString = '';
-          for (Map<String, dynamic> meaning in meanings) {
+          for (Map<dynamic, dynamic> meaning in meanings) {
             types.add(meaning["partOfSpeech"]);
-            List<Map<String, dynamic>> _tempDef = [];
-            for (Map<String, dynamic> definition in meaning["definitions"]) {
+            List<Map<dynamic, dynamic>> _tempDef = [];
+            for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
               _tempDef.add(definition);
             }
             definitions.add(_tempDef);
@@ -197,35 +201,39 @@ class RequestsController extends GetxController {
               new Map.from(request.contributors);
           Map<dynamic, dynamic> expert = new Map.from(request.expert);
           String lastModifiedTime = request.lastModifiedTime;
-          Get.to(() => RequestDetailsPage(
-                wordID: wordID,
-                word: word,
-                prevWordID: prevWordID,
-                requestID: requestId,
-                requestType: requestType,
-                requesterID: requesterID,
-                requesterUserName: requesterUserName,
-                notes: notes,
-                timestamp: timestamp,
-                normalizedWord: normalizedWord,
-                prn: prn,
-                prnUrl: prnUrl,
-                engTrans: engTrans,
-                filTrans: filTrans,
-                meanings: meanings,
-                types: types,
-                kulitanChars: kulitanChars,
-                otherRelated: otherRelated,
-                synonyms: synonyms,
-                antonyms: antonyms,
-                sources: sources,
-                contributors: contributors,
-                expert: expert,
-                lastModifiedTime: lastModifiedTime,
-                definitions: definitions,
-                kulitanString: kulitanString,
-                prnAudioPath: prnAudioPath,
-              ));
+          Get.to(
+              () => RequestDetailsPage(
+                    wordID: wordID,
+                    word: word,
+                    prevWordID: prevWordID,
+                    requestID: requestId,
+                    requestType: requestType,
+                    requesterID: requesterID,
+                    requesterUserName: requesterUserName,
+                    notes: notes,
+                    timestamp: timestamp,
+                    normalizedWord: normalizedWord,
+                    prn: prn,
+                    prnUrl: prnUrl,
+                    engTrans: engTrans,
+                    filTrans: filTrans,
+                    meanings: meanings,
+                    types: types,
+                    kulitanChars: kulitanChars,
+                    otherRelated: otherRelated,
+                    synonyms: synonyms,
+                    antonyms: antonyms,
+                    sources: sources,
+                    contributors: contributors,
+                    expert: expert,
+                    lastModifiedTime: lastModifiedTime,
+                    definitions: definitions,
+                    kulitanString: kulitanString,
+                    prnAudioPath: prnAudioPath,
+                  ),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.rightToLeft,
+              curve: Curves.easeInOut);
         }
       }
     } else if (requestType == 2) {
@@ -266,14 +274,14 @@ class RequestsController extends GetxController {
           List<dynamic> meanings = new List.from(
               appController.dictionaryContent[wordID]["meanings"] ?? []);
           List<String> types = [];
-          List<List<Map<String, dynamic>>> definitions = [];
+          List<List<Map<dynamic, dynamic>>> definitions = [];
           List<List<dynamic>> kulitanChars = new List.from(
               appController.dictionaryContent[wordID]["kulitan-form"]);
           String kulitanString = '';
-          for (Map<String, dynamic> meaning in meanings) {
+          for (Map<dynamic, dynamic> meaning in meanings) {
             types.add(meaning["partOfSpeech"]);
-            List<Map<String, dynamic>> _tempDef = [];
-            for (Map<String, dynamic> definition in meaning["definitions"]) {
+            List<Map<dynamic, dynamic>> _tempDef = [];
+            for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
               _tempDef.add(definition);
             }
             definitions.add(_tempDef);
@@ -299,35 +307,39 @@ class RequestsController extends GetxController {
               appController.dictionaryContent[wordID]["expert"] ?? {});
           String lastModifiedTime =
               appController.dictionaryContent[wordID]["lastModifiedTime"] ?? '';
-          Get.to(() => RequestDetailsPage(
-                wordID: wordID,
-                word: word,
-                prevWordID: prevWordID,
-                requestID: requestId,
-                requestType: requestType,
-                requesterID: requesterID,
-                requesterUserName: requesterUserName,
-                notes: notes,
-                timestamp: timestamp,
-                normalizedWord: normalizedWord,
-                prn: prn,
-                prnUrl: prnUrl,
-                engTrans: engTrans,
-                filTrans: filTrans,
-                meanings: meanings,
-                types: types,
-                kulitanChars: kulitanChars,
-                otherRelated: otherRelated,
-                synonyms: synonyms,
-                antonyms: antonyms,
-                sources: sources,
-                contributors: contributors,
-                expert: expert,
-                lastModifiedTime: lastModifiedTime,
-                definitions: definitions,
-                kulitanString: kulitanString,
-                prnAudioPath: prnAudioPath,
-              ));
+          Get.to(
+              () => RequestDetailsPage(
+                    wordID: wordID,
+                    word: word,
+                    prevWordID: prevWordID,
+                    requestID: requestId,
+                    requestType: requestType,
+                    requesterID: requesterID,
+                    requesterUserName: requesterUserName,
+                    notes: notes,
+                    timestamp: timestamp,
+                    normalizedWord: normalizedWord,
+                    prn: prn,
+                    prnUrl: prnUrl,
+                    engTrans: engTrans,
+                    filTrans: filTrans,
+                    meanings: meanings,
+                    types: types,
+                    kulitanChars: kulitanChars,
+                    otherRelated: otherRelated,
+                    synonyms: synonyms,
+                    antonyms: antonyms,
+                    sources: sources,
+                    contributors: contributors,
+                    expert: expert,
+                    lastModifiedTime: lastModifiedTime,
+                    definitions: definitions,
+                    kulitanString: kulitanString,
+                    prnAudioPath: prnAudioPath,
+                  ),
+              duration: Duration(milliseconds: 500),
+              transition: Transition.rightToLeft,
+              curve: Curves.easeInOut);
         }
       }
     }

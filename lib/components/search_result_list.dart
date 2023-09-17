@@ -62,12 +62,16 @@ class SearchResultList extends StatelessWidget {
                       return BrowseCard(
                         onTap: () {
                           if (category == "edit") {
-                            Get.to(() => ModifyWordPage(
-                                  editMode: true,
-                                  editWordID: wordID,
-                                  editWord: controller.suggestionMap[wordID]
-                                      ["word"],
-                                ));
+                            Get.to(
+                                () => ModifyWordPage(
+                                      editMode: true,
+                                      editWordID: wordID,
+                                      editWord: controller.suggestionMap[wordID]
+                                          ["word"],
+                                    ),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.rightToLeft,
+                                curve: Curves.easeInOut);
                           } else if (category == "delete") {
                             showDeleteDialog(context, wordID, controller, true);
                           } else if (category == "related") {
@@ -85,7 +89,13 @@ class SearchResultList extends StatelessWidget {
                             modifyController.addAsImported(
                                 modifyController.importedSynonyms,
                                 modifyController.synonymController,
-                                controller.suggestionMap[wordID]["word"],
+                                controller.suggestionMap[wordID]["word"]
+                                    .replaceAll("<i>", "")
+                                    .replaceAll("</i>", "")
+                                    .replaceAll("<b>", "")
+                                    .replaceAll("</b>", "")
+                                    .replaceAll("<u>", "")
+                                    .replaceAll("</u>", ""),
                                 wordID);
                             Navigator.of(context).pop();
                           } else if (category == "antonyms") {
@@ -94,7 +104,13 @@ class SearchResultList extends StatelessWidget {
                             modifyController.addAsImported(
                                 modifyController.importedRelated,
                                 modifyController.relatedController,
-                                controller.suggestionMap[wordID]["word"],
+                                controller.suggestionMap[wordID]["word"]
+                                    .replaceAll("<i>", "")
+                                    .replaceAll("</i>", "")
+                                    .replaceAll("<b>", "")
+                                    .replaceAll("</b>", "")
+                                    .replaceAll("<u>", "")
+                                    .replaceAll("</u>", ""),
                                 wordID);
                             Navigator.of(context).pop();
                           }

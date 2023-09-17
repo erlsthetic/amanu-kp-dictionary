@@ -111,20 +111,44 @@ Future<dynamic> showDeleteDialog(BuildContext context, String wordID,
                                         ? (tDeletePrompt1 +
                                             (isFromModifySearch
                                                 ? controller!
-                                                        .suggestionMap[wordID]
-                                                    ["word"]
+                                                    .suggestionMap[wordID]
+                                                        ["word"]
+                                                    .replaceAll("<i>", "")
+                                                    .replaceAll("</i>", "")
+                                                    .replaceAll("<b>", "")
+                                                    .replaceAll("</b>", "")
+                                                    .replaceAll("<u>", "")
+                                                    .replaceAll("</u>", "")
                                                 : appController
-                                                        .dictionaryContent[
-                                                    wordID]["word"]) +
+                                                    .dictionaryContent[wordID]
+                                                        ["word"]
+                                                    .replaceAll("<i>", "")
+                                                    .replaceAll("</i>", "")
+                                                    .replaceAll("<b>", "")
+                                                    .replaceAll("</b>", "")
+                                                    .replaceAll("<u>", "")
+                                                    .replaceAll("</u>", "")) +
                                             tDeletePrompt2)
                                         : (tDeleteRequestPrompt1 +
                                             (isFromModifySearch
                                                 ? controller!
-                                                        .suggestionMap[wordID]
-                                                    ["word"]
+                                                    .suggestionMap[wordID]
+                                                        ["word"]
+                                                    .replaceAll("<i>", "")
+                                                    .replaceAll("</i>", "")
+                                                    .replaceAll("<b>", "")
+                                                    .replaceAll("</b>", "")
+                                                    .replaceAll("<u>", "")
+                                                    .replaceAll("</u>", "")
                                                 : appController
-                                                        .dictionaryContent[
-                                                    wordID]["word"]) +
+                                                    .dictionaryContent[wordID]
+                                                        ["word"]
+                                                    .replaceAll("<i>", "")
+                                                    .replaceAll("</i>", "")
+                                                    .replaceAll("<b>", "")
+                                                    .replaceAll("</b>", "")
+                                                    .replaceAll("<u>", "")
+                                                    .replaceAll("</u>", "")) +
                                             tDeleteRequestPrompt2),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(

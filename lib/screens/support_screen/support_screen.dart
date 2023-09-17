@@ -54,7 +54,10 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => ExpertRequestsPage()); //TODO
+                                    Get.to(() => ExpertRequestsPage(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.rightToLeft,
+                                        curve: Curves.easeInOut); //TODO
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -66,7 +69,10 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => ProblemReportsPage()); //TODO
+                                    Get.to(() => ProblemReportsPage(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.rightToLeft,
+                                        curve: Curves.easeInOut); //TODO
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -76,7 +82,10 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => ReportProblemPage());
+                                    Get.to(() => ReportProblemPage(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.rightToLeft,
+                                        curve: Curves.easeInOut);
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -87,7 +96,10 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => FeedbacksPage()); //TODO
+                                    Get.to(() => FeedbacksPage(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.rightToLeft,
+                                        curve: Curves.easeInOut); //TODO
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -97,7 +109,10 @@ class SupportScreen extends StatelessWidget {
                                 image: iWelcomePageAnim,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
-                                    Get.to(() => FeedbackPage());
+                                    Get.to(() => FeedbackPage(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.rightToLeft,
+                                        curve: Curves.easeInOut);
                                   } else {
                                     appController.showConnectionSnackbar();
                                   }
@@ -115,7 +130,10 @@ class SupportScreen extends StatelessWidget {
                         SelectionOption(
                           title: tAboutAmanu,
                           image: iWelcomePageAnim,
-                          onPressed: () => Get.to(() => AboutPage()),
+                          onPressed: () => Get.to(() => AboutPage(),
+                              duration: Duration(milliseconds: 500),
+                              transition: Transition.rightToLeft,
+                              curve: Curves.easeInOut),
                         ),
                       ],
                     ),

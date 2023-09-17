@@ -116,7 +116,10 @@ class StudioFormField extends FormField {
                           flex: 5,
                           child: GestureDetector(
                             onTap: () {
-                              Get.to(() => RecordingStudioPage());
+                              Get.to(() => RecordingStudioPage(), 
+                                                              duration: Duration(milliseconds: 500),
+                              transition: Transition.rightToLeft,
+                              curve: Curves.easeInOut);
                               controller.playerController.stopPlayer();
                               state.reset();
                             },

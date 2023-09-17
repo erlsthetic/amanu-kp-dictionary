@@ -57,7 +57,10 @@ class ForgotPasswordPhone extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0))),
                           onPressed: () {
-                            Get.to(() => const ForgotPasswordOTP());
+                            Get.to(() => const ForgotPasswordOTP(),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.rightToLeft,
+                                curve: Curves.easeInOut);
                           },
                           child: Text(
                             tSendOTP.toUpperCase(),

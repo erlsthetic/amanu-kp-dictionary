@@ -119,11 +119,11 @@ class ModifyController extends GetxController {
     hasFile.value = true;
     List<dynamic> meaningsGetList = List.from(meaningsList);
     List<String> _types = [];
-    List<List<Map<String, dynamic>>> _definitions = [];
-    for (Map<String, dynamic> meaning in meaningsGetList) {
+    List<List<Map<dynamic, dynamic>>> _definitions = [];
+    for (Map<dynamic, dynamic> meaning in meaningsGetList) {
       _types.add(meaning["partOfSpeech"]);
-      List<Map<String, dynamic>> tempDef = [];
-      for (Map<String, dynamic> definition in meaning["definitions"]) {
+      List<Map<dynamic, dynamic>> tempDef = [];
+      for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
         tempDef.add(definition);
       }
       _definitions.add(tempDef);
@@ -348,8 +348,8 @@ class ModifyController extends GetxController {
     }
   }
 
-  Map<String, String> contributors = {};
-  Map<String, String> expert = {};
+  Map<dynamic, dynamic> contributors = {};
+  Map<dynamic, dynamic> expert = {};
 
   late TextEditingController wordController,
       phoneticController,
@@ -534,14 +534,14 @@ class ModifyController extends GetxController {
     return null;
   }
 
-  final Map<String, String> importedSynonyms = {};
-  final Map<String, dynamic> synonymsMap = {};
-  final Map<String, String> importedAntonyms = {};
-  final Map<String, dynamic> antonymsMap = {};
-  final Map<String, String> importedRelated = {};
-  final Map<String, dynamic> relatedMap = {};
+  final Map<dynamic, dynamic> importedSynonyms = {};
+  final Map<dynamic, dynamic> synonymsMap = {};
+  final Map<dynamic, dynamic> importedAntonyms = {};
+  final Map<dynamic, dynamic> antonymsMap = {};
+  final Map<dynamic, dynamic> importedRelated = {};
+  final Map<dynamic, dynamic> relatedMap = {};
 
-  void addAsImported(Map<String, String> importedMap,
+  void addAsImported(Map<dynamic, dynamic> importedMap,
       TextfieldTagsController controller, String word, String wordID) {
     controller..addTag = word;
     importedMap[word] = wordID;
@@ -551,7 +551,7 @@ class ModifyController extends GetxController {
   }
 
   void getTextFieldTagsData(TextfieldTagsController controller,
-      Map<String, String> importedMap, Map<String, dynamic> saveMap) {
+      Map<dynamic, dynamic> importedMap, Map<dynamic, dynamic> saveMap) {
     saveMap.clear();
     for (String word in controller.getTags!) {
       if (importedMap.containsKey(word)) {
@@ -583,23 +583,30 @@ class ModifyController extends GetxController {
     }
     modifyWordFormKey.currentState!.save();
 
-    String normalizedWord =
-        appController.normalizeWord(wordController.text.trim());
+    String wordNoTag = wordController.text
+        .replaceAll("<i>", "")
+        .replaceAll("</i>", "")
+        .replaceAll("<b>", "")
+        .replaceAll("</b>", "")
+        .replaceAll("<u>", "")
+        .replaceAll("</u>", "");
+
+    String normalizedWord = appController.normalizeWord(wordNoTag.trim());
     String wordKey = normalizedWord;
 
     List<dynamic> meanings = [];
 
     for (MapEntry type in typeFields.asMap().entries) {
-      Map<String, dynamic> tempMeaning = {};
+      Map<dynamic, dynamic> tempMeaning = {};
 
       tempMeaning["partOfSpeech"] = type.value == "custom"
           ? customTypeController[type.key].text
           : type.value;
 
-      List<Map<String, dynamic>> tempDefinitions = [];
+      List<Map<dynamic, dynamic>> tempDefinitions = [];
 
       for (var definition in definitionsFields[type.key]) {
-        Map<String, dynamic> tempDef = {};
+        Map<dynamic, dynamic> tempDef = {};
         tempDef["definition"] = definition[0].text;
         tempDef["example"] =
             definition[1].text.isEmpty || definition[2].text.trim() == ""
@@ -627,12 +634,12 @@ class ModifyController extends GetxController {
         DateFormat('yyyy-MM-dd (HH:mm:ss)').format(DateTime.now());
 
     List<String> types = [];
-    List<List<Map<String, dynamic>>> definitions = [];
+    List<List<Map<dynamic, dynamic>>> definitions = [];
 
-    for (Map<String, dynamic> meaning in meanings) {
+    for (Map<dynamic, dynamic> meaning in meanings) {
       types.add(meaning["partOfSpeech"]);
-      List<Map<String, dynamic>> tempDef = [];
-      for (Map<String, dynamic> definition in meaning["definitions"]) {
+      List<Map<dynamic, dynamic>> tempDef = [];
+      for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
         tempDef.add(definition);
       }
       definitions.add(tempDef);
@@ -662,34 +669,38 @@ class ModifyController extends GetxController {
         contributors[appController.userName ?? "User"] =
             appController.userID ?? "";
       }
-      Get.to(() => PreviewEditsPage(
-            prevWordID: requestMode ? requestEditID! : editWordID!,
-            wordID: wordKey,
-            word: wordController.text.trim(),
-            normalizedWord: normalizedWord,
-            prn: phoneticController.text.trim(),
-            prnPath: audioPath,
-            engTrans: engTransEmpty.value ? null : engTransList,
-            filTrans: filTransEmpty.value ? null : filTransList,
-            meanings: meanings,
-            types: typeFields,
-            kulitanChars: kulitanStringListGetter,
-            otherRelated: relatedMap.length == 0 ? null : relatedMap,
-            synonyms: synonymsMap.length == 0 ? null : synonymsMap,
-            antonyms: antonymsMap.length == 0 ? null : antonymsMap,
-            sources: referencesController.text.isEmpty ||
-                    referencesController.text.trim() == ''
-                ? null
-                : referencesController.text.trim(),
-            contributors: contributors.length == 0 ? null : contributors,
-            expert: expert.length == 0 ? null : expert,
-            lastModifiedTime: timestamp,
-            definitions: definitions,
-            kulitanString: kulitanString,
-            fromRequests: requestMode,
-            requestID: requestID ?? '',
-            requestAudioPath: prnStoragePath ?? '',
-          ));
+      Get.to(
+          () => PreviewEditsPage(
+                prevWordID: requestMode ? requestEditID! : editWordID!,
+                wordID: wordKey,
+                word: wordController.text.trim(),
+                normalizedWord: normalizedWord,
+                prn: phoneticController.text.trim(),
+                prnPath: audioPath,
+                engTrans: engTransEmpty.value ? null : engTransList,
+                filTrans: filTransEmpty.value ? null : filTransList,
+                meanings: meanings,
+                types: typeFields,
+                kulitanChars: kulitanStringListGetter,
+                otherRelated: relatedMap.length == 0 ? null : relatedMap,
+                synonyms: synonymsMap.length == 0 ? null : synonymsMap,
+                antonyms: antonymsMap.length == 0 ? null : antonymsMap,
+                sources: referencesController.text.isEmpty ||
+                        referencesController.text.trim() == ''
+                    ? null
+                    : referencesController.text.trim(),
+                contributors: contributors.length == 0 ? null : contributors,
+                expert: expert.length == 0 ? null : expert,
+                lastModifiedTime: timestamp,
+                definitions: definitions,
+                kulitanString: kulitanString,
+                fromRequests: requestMode,
+                requestID: requestID ?? '',
+                requestAudioPath: prnStoragePath ?? '',
+              ),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.rightToLeft,
+          curve: Curves.easeInOut);
     } else {
       if (appController.userIsExpert ?? false) {
         expert.clear();
@@ -701,33 +712,37 @@ class ModifyController extends GetxController {
         contributors[appController.userName ?? "User"] =
             appController.userID ?? "";
       }
-      Get.to(() => PreviewPage(
-            wordID: wordKey,
-            word: wordController.text.trim(),
-            normalizedWord: normalizedWord,
-            prn: phoneticController.text.trim(),
-            prnPath: audioPath,
-            engTrans: engTransEmpty.value ? null : engTransList,
-            filTrans: filTransEmpty.value ? null : filTransList,
-            meanings: meanings,
-            types: typeFields,
-            kulitanChars: kulitanStringListGetter,
-            otherRelated: relatedMap.length == 0 ? null : relatedMap,
-            synonyms: synonymsMap.length == 0 ? null : synonymsMap,
-            antonyms: antonymsMap.length == 0 ? null : antonymsMap,
-            sources: referencesController.text.isEmpty ||
-                    referencesController.text.trim() == ''
-                ? null
-                : referencesController.text.trim(),
-            contributors: contributors.length == 0 ? null : contributors,
-            expert: expert.length == 0 ? null : expert,
-            lastModifiedTime: timestamp,
-            definitions: definitions,
-            kulitanString: kulitanString,
-            fromRequests: requestMode,
-            requestID: requestID ?? '',
-            requestAudioPath: prnStoragePath ?? '',
-          ));
+      Get.to(
+          () => PreviewPage(
+                wordID: wordKey,
+                word: wordController.text.trim(),
+                normalizedWord: normalizedWord,
+                prn: phoneticController.text.trim(),
+                prnPath: audioPath,
+                engTrans: engTransEmpty.value ? null : engTransList,
+                filTrans: filTransEmpty.value ? null : filTransList,
+                meanings: meanings,
+                types: typeFields,
+                kulitanChars: kulitanStringListGetter,
+                otherRelated: relatedMap.length == 0 ? null : relatedMap,
+                synonyms: synonymsMap.length == 0 ? null : synonymsMap,
+                antonyms: antonymsMap.length == 0 ? null : antonymsMap,
+                sources: referencesController.text.isEmpty ||
+                        referencesController.text.trim() == ''
+                    ? null
+                    : referencesController.text.trim(),
+                contributors: contributors.length == 0 ? null : contributors,
+                expert: expert.length == 0 ? null : expert,
+                lastModifiedTime: timestamp,
+                definitions: definitions,
+                kulitanString: kulitanString,
+                fromRequests: requestMode,
+                requestID: requestID ?? '',
+                requestAudioPath: prnStoragePath ?? '',
+              ),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.rightToLeft,
+          curve: Curves.easeInOut);
     }
   }
 }

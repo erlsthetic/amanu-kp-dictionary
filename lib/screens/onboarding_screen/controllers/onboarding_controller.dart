@@ -3,6 +3,7 @@ import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import '../models/onboarding_model.dart';
@@ -64,9 +65,15 @@ class OnBoardingController extends GetxController {
       appController.isFirstTimeUse = false;
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => DrawerLauncher());
+      Get.offAll(() => DrawerLauncher(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
     } else {
-      Get.off(() => WelcomeScreen());
+      Get.off(() => WelcomeScreen(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
     }
   }
 

@@ -104,12 +104,16 @@ class DetailScreen extends StatelessWidget {
                         print("Clicked $index");
                         if (index == 0) {
                           if (appController.hasConnection.value) {
-                            Get.to(() => ModifyWordPage(
-                                  editMode: true,
-                                  editWordID: wordID,
-                                  editWord: appController
-                                      .dictionaryContent[wordID]["word"],
-                                ));
+                            Get.to(
+                                () => ModifyWordPage(
+                                      editMode: true,
+                                      editWordID: wordID,
+                                      editWord: appController
+                                          .dictionaryContent[wordID]["word"],
+                                    ),
+                                duration: Duration(milliseconds: 500),
+                                transition: Transition.rightToLeft,
+                                curve: Curves.easeInOut);
                           } else {
                             appController.showConnectionSnackbar();
                           }

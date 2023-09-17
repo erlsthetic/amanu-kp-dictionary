@@ -81,9 +81,13 @@ class BookmarksScreen extends StatelessWidget {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 3),
                                   child: BrowseCard(
-                                    onTap: () => Get.to(() => DetailScreen(
-                                          wordID: wordID,
-                                        )),
+                                    onTap: () => Get.to(
+                                        () => DetailScreen(
+                                              wordID: wordID,
+                                            ),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition.rightToLeft,
+                                        curve: Curves.easeInOut),
                                     wordId: wordID,
                                     word: appController
                                         .dictionaryContent[wordID]["word"],

@@ -1,3 +1,4 @@
+import 'package:amanu/components/text_span_builder.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -94,8 +95,17 @@ class ThreePartHeader extends StatelessWidget {
                     hasTitle ?? true
                         ? Hero(
                             tag: title,
-                            child: Text(
-                              title,
+                            child: Text.rich(
+                              TextSpan(children: [
+                                buildTextSpan(
+                                    text: title,
+                                    style: GoogleFonts.robotoSlab(
+                                        fontSize: 24,
+                                        color: pureWhite,
+                                        fontWeight: FontWeight.bold),
+                                    boldWeight: FontWeight.bold,
+                                    isBoldDefault: true)
+                              ]),
                               style: GoogleFonts.robotoSlab(
                                   fontSize: 24,
                                   color: pureWhite,

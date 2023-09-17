@@ -56,7 +56,7 @@ class ExpertRequestsController extends GetxController {
       newDetails["isExpert"] = false;
     }
     await DatabaseRepository.instance
-        .updateUserOnDB(newDetails, userID)
+        .updateUserOnDB(newDetails, userID, true)
         .then((value) {
       Navigator.of(context).pop();
       if (fromDetails) {
@@ -355,9 +355,13 @@ class ExpertRequestsController extends GetxController {
                               type.add(meaning["partOfSpeech"]);
                             }
                             return BrowseCard(
-                              onTap: () => Get.to(() => DetailScreen(
-                                    wordID: wordID,
-                                  )),
+                              onTap: () => Get.to(
+                                  () => DetailScreen(
+                                        wordID: wordID,
+                                      ),
+                                  duration: Duration(milliseconds: 500),
+                                  transition: Transition.rightToLeft,
+                                  curve: Curves.easeInOut),
                               wordId: wordID,
                               word: appController.dictionaryContent[wordID]
                                   ["word"],

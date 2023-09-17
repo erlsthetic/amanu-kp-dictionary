@@ -40,8 +40,7 @@ class ApplicationController extends GetxController {
     subscription = await listenToConnectionState();
     await updateUserInfo();
     await checkDictionary();
-    dictionaryContent =
-        await sortDictionary(dictionaryContentUnsorted); //TODO:REPLACE
+    dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
     wordOfTheDay = await checkWordOfTheDay();
     await checkBookmarks();
     await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
@@ -51,11 +50,17 @@ class ApplicationController extends GetxController {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     if (isFirstTimeUse) {
-      Get.offAll(() => OnBoardingScreen());
+      Get.offAll(() => OnBoardingScreen(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
     } else {
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;
-      Get.offAll(() => HomeScreen());
+      Get.offAll(() => HomeScreen(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
     }
   }
 

@@ -21,8 +21,13 @@ class ModifySearchController extends GetxController {
   Future submitDelete(String wordID, BuildContext context) async {
     if (appController.hasConnection.value) {
       if (appController.userIsExpert ?? false) {
-        DatabaseRepository.instance.removeWordOnDB(
-            wordID, appController.dictionaryContent[wordID]["word"]);
+        DatabaseRepository.instance
+            .removeWordOnDB(
+                wordID, appController.dictionaryContent[wordID]["word"])
+            .then((value) {
+          appController.checkDictionary();
+          appController.update();
+        });
         Navigator.pop(context);
       } else {
         final notesValid = notesFormKey.currentState!.validate();

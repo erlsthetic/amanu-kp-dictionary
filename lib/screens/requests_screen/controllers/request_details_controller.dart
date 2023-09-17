@@ -79,7 +79,7 @@ class RequestDetailsController extends GetxController {
   final Map<dynamic, dynamic> contributors;
   final Map<dynamic, dynamic> expert;
   final String lastModifiedTime;
-  final List<List<Map<String, dynamic>>> definitions;
+  final List<List<Map<dynamic, dynamic>>> definitions;
   final String kulitanString;
 
   String prevWord = '';
@@ -89,7 +89,7 @@ class RequestDetailsController extends GetxController {
   List<dynamic> prevFilTrans = [];
   List<dynamic> prevMeanings = [];
   List<String> prevTypes = [];
-  List<List<Map<String, dynamic>>> prevDefinitions = [];
+  List<List<Map<dynamic, dynamic>>> prevDefinitions = [];
   var prevKulitanChars = [];
   String prevKulitanString = '';
   Map<dynamic, dynamic> prevOtherRelated = {};
@@ -116,10 +116,10 @@ class RequestDetailsController extends GetxController {
         ? []
         : appController.dictionaryContent[prevWordID]["filipinoTranslations"];
     prevMeanings = appController.dictionaryContent[prevWordID]["meanings"];
-    for (Map<String, dynamic> meaning in prevMeanings) {
+    for (Map<dynamic, dynamic> meaning in prevMeanings) {
       prevTypes.add(meaning["partOfSpeech"]);
-      List<Map<String, dynamic>> _tempDef = [];
-      for (Map<String, dynamic> definition in meaning["definitions"]) {
+      List<Map<dynamic, dynamic>> _tempDef = [];
+      for (Map<dynamic, dynamic> definition in meaning["definitions"]) {
         _tempDef.add(definition);
       }
       prevDefinitions.add(_tempDef);
@@ -263,11 +263,15 @@ class RequestDetailsController extends GetxController {
         showRequestNotAvailableDialog(context);
       } else {
         Navigator.of(context).pop();
-        Get.to(() => ModifyWordPage(
-              requestMode: true,
-              requestID: requestID,
-              requestType: requestType,
-            ));
+        Get.to(
+            () => ModifyWordPage(
+                  requestMode: true,
+                  requestID: requestID,
+                  requestType: requestType,
+                ),
+            duration: Duration(milliseconds: 500),
+            transition: Transition.rightToLeft,
+            curve: Curves.easeInOut);
       }
     } else {
       Navigator.of(context).pop();
@@ -310,6 +314,8 @@ class RequestDetailsController extends GetxController {
           await DatabaseRepository.instance
               .removeWordOnDB(wordID, word)
               .then((value) async {
+            appController.checkDictionary();
+            appController.update();
             DatabaseRepository.instance
                 .removeRequest(requestID, prnAudioPath)
                 .then((value) async {
@@ -411,6 +417,8 @@ class RequestDetailsController extends GetxController {
                   .then((value) async {
                 await DatabaseRepository.instance
                     .removeRequest(requestID, prnAudioPath);
+                appController.checkDictionary();
+                appController.update();
               });
             } else {
               await DatabaseRepository.instance
@@ -418,6 +426,8 @@ class RequestDetailsController extends GetxController {
                   .then((value) async {
                 await DatabaseRepository.instance
                     .removeRequest(requestID, prnAudioPath);
+                appController.checkDictionary();
+                appController.update();
               });
             }
             final requestController = Get.find<RequestsController>();

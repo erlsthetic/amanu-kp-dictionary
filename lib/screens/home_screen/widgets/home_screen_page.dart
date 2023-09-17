@@ -242,13 +242,21 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                             onTap: () {
                               if (appController.isLoggedIn) {
                                 if (appController.userIsExpert ?? false) {
-                                  Get.to(() => RequestsScreen(
-                                        fromDrawer: false,
-                                      ));
+                                  Get.to(
+                                      () => RequestsScreen(
+                                            fromDrawer: false,
+                                          ),
+                                      duration: Duration(milliseconds: 500),
+                                      transition: Transition.upToDown,
+                                      curve: Curves.easeInOut);
                                 } else {
-                                  Get.to(() => ProfileScreen(
-                                        fromDrawer: false,
-                                      ));
+                                  Get.to(
+                                      () => ProfileScreen(
+                                            fromDrawer: false,
+                                          ),
+                                      duration: Duration(milliseconds: 500),
+                                      transition: Transition.upToDown,
+                                      curve: Curves.easeInOut);
                                 }
                               } else {
                                 showJoinDialog(context);
