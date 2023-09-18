@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:amanu/components/coachmark_desc.dart';
 import 'package:amanu/models/add_request_model.dart';
 import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/screens/user_tools/widgets/preview_edits_page.dart';
@@ -15,7 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class ModifyController extends GetxController {
   ModifyController(
@@ -35,6 +37,532 @@ class ModifyController extends GetxController {
   RxBool isProcessing = false.obs;
   String? prnStoragePath = '';
   String? requestEditID = '';
+  late BuildContext context;
+
+  GlobalKey modifyKey = GlobalKey();
+  GlobalKey modifyWordKey = GlobalKey();
+  GlobalKey modifyPrnKey = GlobalKey();
+  GlobalKey modifyStudioKey = GlobalKey();
+
+  GlobalKey modifyEngTransKey = GlobalKey();
+  GlobalKey modifyFilTransKey = GlobalKey();
+
+  GlobalKey modifyInformationKey = GlobalKey();
+
+  GlobalKey modifyKulitanKey = GlobalKey();
+  GlobalKey modifyOtherRelatedKey = GlobalKey();
+  GlobalKey modifySynonymKey = GlobalKey();
+  GlobalKey modifyAntonymKey = GlobalKey();
+
+  GlobalKey modifySourcesKey = GlobalKey();
+
+  GlobalKey modifyProceedKey = GlobalKey();
+
+  List<TargetFocus> initTarget() {
+    return [
+      TargetFocus(
+          identify: "modify-key",
+          keyTarget: modifyKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Modify Word Screen",
+                  text:
+                      "As a logged in user, one of your tools is the <b>Add/Modify Word screen</b>. Here, you can <i>add</i> or <i>modify a word</i> and send it to Amanu to update the dictionary (<i>or as an update request if you are a Contributor</i>).",
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-word-key",
+          keyTarget: modifyWordKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.bottom,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Word field",
+                  text:
+                      "Use this field to enter the <b>word</b> you desire to add or edit. You may use characters with diacritic marks, <b>bold</b>, <i>italic</i>, and <u>underline</u> tags if needed. Tap the help button for more information about <i>tags</i>.",
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyPrnKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-prn-key",
+          keyTarget: modifyPrnKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.bottom,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Phonetics field",
+                  text:
+                      "Use this field to enter the <b>phonetics</b> or <b>pronunciation</b> of your word. You may also use <i>diacritic characters</i> and <i>tags</i> in this field.",
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyStudioKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-studio-key",
+          keyTarget: modifyStudioKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Recording Studio",
+                  text:
+                      'The <b>Recording Studio</b> is your tool to record or upload audio pronunciations of your word. Tap the <i>"Open Studio"</i> button to launch the studio and you may use the <i>player</i> to playback your recorded audio.',
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyEngTransKey.currentContext!,
+                        alignment: 1.0,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-engtrans-key",
+          keyTarget: modifyEngTransKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "English Translations field",
+                  text:
+                      'The <b>English Translations</b> field allows you to enter the English translations of your word. To add, simply <i>type your word and end it with a "," (comma)</i> to separate it with other translations.',
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyFilTransKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-filtrans-key",
+          keyTarget: modifyFilTransKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Filipino Translations field",
+                  text:
+                      'The <b>Filipino Translations</b> field, on the other hand, allows you to enter the Filipino translations of your word, with the same rules as mentioned in the previous field.',
+                  onNext: () {
+                    Scrollable.ensureVisible(
+                        modifyInformationKey.currentContext!,
+                        alignment: 1.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Information section",
+                  text:
+                      "The <b>Information</b> section allows you to enter the details about your word. This includes its <i>definition</i>, <i>example</i> (in Kapampangan), <i>example's translation</i>, its <i>dialect</i> (if applicable), and its <i>origin</i>.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Type field",
+                  text:
+                      "The <b>Type</b> field is dedicated to supply what part of speech your word is used. A word can have multiple parts of speech depending on usage, to add, simply <i>press the add button</i> on the right of the field. If the type isn't listed in the dropdown, you may use the <i>custom type</i> and <i>fill the custom field</i> that will appear beside the dropdown.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Definition field",
+                  text:
+                      "The <b>Definition</b> field is dedicated to supply the meaning of your word. You may also use <i>diacritic characters</i> and <i>tags</i> in this field.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-next-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Example field",
+                  text:
+                      "The <b>Example</b> field is dedicated to supply an example Kapampangan phrase or sentence using your word. You may also use <i>diacritic characters</i> and <i>tags</i> in this field.",
+                  onNext: () {
+                    Scrollable.ensureVisible(
+                        modifyInformationKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Example Translation field",
+                  text:
+                      "The <b>Example Translation</b> field is dedicated to supply the English translation of the example you provided in the previous field. You may also use <i>diacritic characters</i> and <i>tags</i> in this field.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Dialect field",
+                  text:
+                      'The <b>Dialect</b> field is dedicated to supply the Kapampangan dialect you word follows. This will be displayed as "(from Dialect "Origin")" in the detail page.',
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-info-bnext-key",
+          keyTarget: modifyInformationKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(top: 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Origin field",
+                  text:
+                      'The <b>Origin</b> field is dedicated to supply the origin of your word. This will be displayed as "(from Dialect "Origin")" in the detail page.',
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyKulitanKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-kulitan-key",
+          keyTarget: modifyKulitanKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Kulitan Editor",
+                  text:
+                      'The <b>Kulitan Editor</b> is your tool to supply how your word will be written in Kulitan. Tap "<i>Open Kulitan Editor</i>" button to launch the editor.',
+                  onNext: () {
+                    Scrollable.ensureVisible(
+                        modifyOtherRelatedKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-related-key",
+          keyTarget: modifyOtherRelatedKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Other Related field",
+                  text:
+                      'The <b>Other Related</b> field is dedicated to supply other words related to your word. If related word exists within the dictionary, you may use the <i>import button</i> on the right. If not you may <i>manually type the word and end it with a "," (comma)</i>.',
+                  onNext: () {
+                    Scrollable.ensureVisible(modifySynonymKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-synonym-key",
+          keyTarget: modifySynonymKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Synonym field",
+                  text:
+                      'The <b>Synonym</b> field is dedicated to supply synonyms of your word. Similar rules from the <i>Other related field</i> are applied on this field.',
+                  onNext: () {
+                    Scrollable.ensureVisible(modifyAntonymKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-antonym-key",
+          keyTarget: modifyAntonymKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Antonym field",
+                  text:
+                      'The <b>Antonym</b> field is dedicated to supply antonyms of your word. Similar rules from the <i>Other related field and Synonyms field</i> are applied on this field.',
+                  onNext: () {
+                    Scrollable.ensureVisible(modifySourcesKey.currentContext!,
+                        alignment: 0.5,
+                        alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                        duration: Duration(milliseconds: 800));
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-sources-key",
+          keyTarget: modifySourcesKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "The Sources field",
+                  text:
+                      "The <b>Sources</b> field is dedicated to supply all the  references you used in creating or editing the word entry. You may also use <i>diacritic characters</i> and <i>tags</i> in this field.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "modify-proceed-key",
+          keyTarget: modifyProceedKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.top,
+              customPosition: CustomTargetContentPosition(
+                bottom: 80,
+              ),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Proceed to Preview",
+                  text:
+                      "The <b>Proceed</b> button redirects you to a preview of the dictionary entry you just created or modified. You may always go back to this page to edit some details from the preview.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  next: "Got it!",
+                  skip: "",
+                  withSkip: false,
+                  onSkip: () {},
+                );
+              },
+            ),
+          ]),
+    ];
+  }
 
   @override
   void onInit() {
@@ -90,7 +618,7 @@ class ModifyController extends GetxController {
     phoneticController.text = prn;
     String prnExt = prnAudioUrl.split("?").first;
     final appStorage = await getApplicationDocumentsDirectory();
-    final fileExt = extension(File(prnExt).path);
+    final fileExt = p.extension(File(prnExt).path);
     final tempAudioFile = File('${appStorage.path}/audio$fileExt');
     try {
       final response = await Dio().get(

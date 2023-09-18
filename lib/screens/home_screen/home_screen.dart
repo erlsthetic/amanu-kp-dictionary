@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:amanu/screens/user_tools/modify_word_page.dart';
 import 'package:amanu/screens/user_tools/modify_search_page.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -6,6 +8,8 @@ import 'package:amanu/components/floating_button.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'widgets/browse_screen_page.dart';
 import 'package:amanu/components/bottom_nav_bar.dart';
 import 'package:coast/coast.dart';
@@ -14,14 +18,51 @@ import 'package:flutter/material.dart';
 import 'widgets/home_screen_page.dart';
 import 'controllers/home_page_controller.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.find<HomePageController>();
   final appController = Get.find<ApplicationController>();
 
+  TutorialCoachMark? tutorialCoachMark;
+
+  @override
+  void initState() {
+    super.initState();
+    if (appController.isFirstTimeHome) {
+      Future.delayed(Duration(seconds: 1), () {
+        tutorialCoachMark = TutorialCoachMark(
+            pulseEnable: false,
+            targets: controller.initTarget(),
+            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            onClickTarget: (target) async {
+              if (target.identify == "navigation-key") {
+                await controller.coastController.animateTo(beach: 1);
+                controller.currentIdx.value = 1;
+              } else if (target.identify == "browse-card-key") {
+                await controller.coastController.animateTo(beach: 0);
+                controller.currentIdx.value = 0;
+              }
+            },
+            onFinish: () async {
+              // SharedPreferences prefs = await SharedPreferences.getInstance();
+              // prefs.setBool("isFirstTimeHome", false);
+              // appController.isFirstTimeHome = false;
+            },
+            hideSkip: true)
+          ..show(context: context);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
     final _size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return AnnotatedRegion(
@@ -34,11 +75,13 @@ class HomeScreen extends StatelessWidget {
                 beaches: [
                   Beach(
                       builder: (context) => HomeScreenPage(
+                            key: controller.homeScreenKey,
                             size: _size,
                             topPadding: screenPadding.top,
                           )),
                   Beach(
                       builder: (context) => BrowseScreenPage(
+                            key: controller.browseScreenKey,
                             size: _size,
                             topPadding: screenPadding.top,
                           )),

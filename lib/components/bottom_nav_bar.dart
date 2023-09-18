@@ -31,12 +31,14 @@ class BottomNavBar extends StatelessWidget {
         child: Stack(
           children: [
             CustomPaint(
+              key: _pController.navigationKey,
               size: Size(size.width, 80),
               painter: BNBCustomPainter(),
             ),
             Center(
               heightFactor: 0.6,
               child: SizedBox(
+                key: _pController.scannerKey,
                 height: size.width * 0.17,
                 width: size.width * 0.17,
                 child: FittedBox(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:amanu/components/delete_dialog.dart';
 import 'package:amanu/components/dictionary_card.dart';
 import 'package:amanu/components/floating_button.dart';
@@ -9,24 +11,62 @@ import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   DetailScreen({
     super.key,
     required this.wordID,
   });
 
   final wordID;
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
   final appController = Get.find<ApplicationController>();
-  late final controller =
-      Get.put(DetailController(wordID: wordID), tag: "_" + wordID);
+
+  late final controller = Get.put(DetailController(wordID: widget.wordID),
+      tag: "_" + widget.wordID);
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  TutorialCoachMark? tutorialCoachMark;
+
+  @override
+  void initState() {
+    super.initState();
+    showTutorial();
+  }
+
+  void showTutorial() {
+    if (appController.isFirstTimeBookmarks) {
+      Future.delayed(Duration(seconds: 1), () {
+        tutorialCoachMark = TutorialCoachMark(
+            pulseEnable: false,
+            targets: controller.initTarget(),
+            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            onFinish: () async {
+              // SharedPreferences prefs = await SharedPreferences.getInstance();
+              // prefs.setBool("isFirstTimeDetail", false);
+              // appController.isFirstTimeDetail = false;
+            },
+            hideSkip: true)
+          ..show(context: context);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Padding(
+      key: controller.detailsKey,
       padding: EdgeInsets.only(bottom: screenPadding.bottom),
       child: Scaffold(
           key: _scaffoldKey,
@@ -85,6 +125,7 @@ class DetailScreen extends StatelessWidget {
                 ),
               ),
               Obx(
+                key: controller.detailBookmarkKey,
                 () => ThreePartHeader(
                   size: size,
                   screenPadding: screenPadding,
@@ -107,9 +148,10 @@ class DetailScreen extends StatelessWidget {
                             Get.to(
                                 () => ModifyWordPage(
                                       editMode: true,
-                                      editWordID: wordID,
+                                      editWordID: widget.wordID,
                                       editWord: appController
-                                          .dictionaryContent[wordID]["word"],
+                                              .dictionaryContent[widget.wordID]
+                                          ["word"],
                                     ),
                                 duration: Duration(milliseconds: 500),
                                 transition: Transition.rightToLeft,
@@ -119,7 +161,8 @@ class DetailScreen extends StatelessWidget {
                           }
                         } else if (index == 1) {
                           if (appController.hasConnection.value) {
-                            showDeleteDialog(context, wordID, null, false);
+                            showDeleteDialog(
+                                context, widget.wordID, null, false);
                           } else {
                             appController.showConnectionSnackbar();
                           }

@@ -9,7 +9,6 @@ import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
-import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:firebase_database/firebase_database.dart';

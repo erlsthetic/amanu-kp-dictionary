@@ -87,10 +87,8 @@ class RequestsController extends GetxController {
             kulitanChars.add(chars);
           }
           for (var line in kulitanChars) {
-            if (line != null) {
-              for (var syl in line) {
-                kulitanString = kulitanString + syl;
-              }
+            for (var syl in line) {
+              kulitanString = kulitanString + syl;
             }
           }
           Map<dynamic, dynamic> otherRelated =
@@ -186,10 +184,8 @@ class RequestsController extends GetxController {
             kulitanChars.add(chars);
           }
           for (var line in kulitanChars) {
-            if (line != null) {
-              for (var syl in line) {
-                kulitanString = kulitanString + syl;
-              }
+            for (var syl in line) {
+              kulitanString = kulitanString + syl;
             }
           }
           Map<dynamic, dynamic> otherRelated =
@@ -287,10 +283,8 @@ class RequestsController extends GetxController {
             definitions.add(_tempDef);
           }
           for (var line in kulitanChars) {
-            if (line != null) {
-              for (var syl in line) {
-                kulitanString = kulitanString + syl;
-              }
+            for (var syl in line) {
+              kulitanString = kulitanString + syl;
             }
           }
           Map<dynamic, dynamic> otherRelated = new Map.from(

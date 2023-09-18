@@ -44,7 +44,8 @@ class HomeScreenPage extends StatelessWidget {
             delegate: SliverSearchAppBar(
                 screenSize: size,
                 topPadding: topPadding,
-                drawerController: drawerController),
+                drawerController: drawerController,
+                homeController: controller),
             pinned: true,
           ),
           SliverList(
@@ -73,6 +74,7 @@ class HomeScreenPage extends StatelessWidget {
                       ),
                       child: controller.wotdFound
                           ? DictionaryCard(
+                              key: controller.wotdKey,
                               word: controller.word,
                               prn: controller.prn,
                               prnUrl: controller.prnUrl,
@@ -114,10 +116,12 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
   SliverSearchAppBar(
       {required this.screenSize,
       required this.topPadding,
-      required this.drawerController});
+      required this.drawerController,
+      required this.homeController});
   final Size screenSize;
   final double topPadding;
   final DrawerXController drawerController;
+  final HomePageController homeController;
   final appController = Get.find<ApplicationController>();
 
   @override
@@ -176,6 +180,8 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Row(
+                    key: homeController.amanuKey,
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -205,6 +211,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                     (shrinkFactor * (topPadding + 10)),
                 topPadding + 10),
             child: SearchButton(
+              key: homeController.searchKey,
               shrinkFactor: shrinkFactor,
             ),
             left: 16,
@@ -222,6 +229,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Crab(
+                        key: homeController.drawerKey,
                         tag: 'HamburgerMenu',
                         child: IconButton(
                           onPressed: () {
@@ -235,6 +243,7 @@ class SliverSearchAppBar extends SliverPersistentHeaderDelegate {
                         ),
                       ),
                       Crab(
+                        key: homeController.requestsKey,
                         tag: "Requests",
                         child: Material(
                           color: Colors.transparent,

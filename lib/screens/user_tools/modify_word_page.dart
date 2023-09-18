@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:amanu/components/confirm_dialog.dart';
 import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:amanu/screens/user_tools/widgets/connection_selector.dart';
@@ -13,8 +15,10 @@ import 'package:amanu/components/three_part_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-class ModifyWordPage extends StatelessWidget {
+class ModifyWordPage extends StatefulWidget {
   ModifyWordPage(
       {super.key,
       this.editMode = false,
@@ -30,23 +34,131 @@ class ModifyWordPage extends StatelessWidget {
   final String? editWordID;
   final String? requestID;
   final int? requestType;
+
+  @override
+  State<ModifyWordPage> createState() => _ModifyWordPageState();
+}
+
+class _ModifyWordPageState extends State<ModifyWordPage> {
   late final controller = Get.put(ModifyController(
-      editMode: editMode ?? false,
-      editWordID: editWordID,
-      requestMode: requestMode ?? false,
-      requestID: requestID,
-      requestType: requestType));
+      editMode: widget.editMode ?? false,
+      editWordID: widget.editWordID,
+      requestMode: widget.requestMode ?? false,
+      requestID: widget.requestID,
+      requestType: widget.requestType));
 
   final appController = Get.find<ApplicationController>();
+  TutorialCoachMark? tutorialCoachMark;
+
+  @override
+  void initState() {
+    super.initState();
+    showTutorial();
+  }
+
+  void showTutorial() {
+    if (appController.isFirstTimeBookmarks) {
+      Future.delayed(Duration(seconds: 1), () {
+        tutorialCoachMark = TutorialCoachMark(
+            pulseEnable: false,
+            targets: controller.initTarget(),
+            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            onClickTarget: (target) {
+              if (target.identify == "modify-key") {
+                Scrollable.ensureVisible(controller.modifyKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-word-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyPrnKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-prn-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyStudioKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-studio-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyEngTransKey.currentContext!,
+                    alignment: 1.0,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-engtrans-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyFilTransKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-filtrans-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyInformationKey.currentContext!,
+                    alignment: 1.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-info-next-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyInformationKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-info-bnext-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyKulitanKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-kulitan-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyOtherRelatedKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-related-key") {
+                Scrollable.ensureVisible(
+                    controller.modifySynonymKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-synonym-key") {
+                Scrollable.ensureVisible(
+                    controller.modifyAntonymKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              } else if (target.identify == "modify-antonym-key") {
+                Scrollable.ensureVisible(
+                    controller.modifySourcesKey.currentContext!,
+                    alignment: 0.5,
+                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                    duration: Duration(milliseconds: 800));
+              }
+            },
+            onFinish: () async {
+              // SharedPreferences prefs = await SharedPreferences.getInstance();
+              // prefs.setBool("isFirstTimeModify", false);
+              // appController.isFirstTimeModify = false;
+            },
+            hideSkip: true)
+          ..show(context: context);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
     final size = MediaQuery.of(context).size;
     final screenPadding = MediaQuery.of(context).padding;
     return Padding(
       padding: EdgeInsets.only(bottom: screenPadding.bottom),
       child: Scaffold(
+        key: controller.modifyKey,
         floatingActionButton: FloatingActionButton.extended(
+          key: controller.modifyProceedKey,
           splashColor: primaryOrangeLight,
           focusColor: primaryOrangeLight.withOpacity(0.5),
           onPressed: () {
@@ -136,13 +248,15 @@ class ModifyWordPage extends StatelessWidget {
                                                   borderRadius:
                                                       BorderRadius.circular(25),
                                                   onTap: () {
-                                                    if ((requestMode ??
+                                                    if ((widget.requestMode ??
                                                             false) &&
-                                                        requestID != null)
+                                                        widget.requestID !=
+                                                            null)
                                                       DatabaseRepository
                                                           .instance
                                                           .changeRequestState(
-                                                              requestID!, true);
+                                                              widget.requestID!,
+                                                              true);
                                                     Navigator.pop(
                                                         context, true);
                                                   },
@@ -294,6 +408,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 20.0,
                                 ),
                                 TextFormField(
+                                  key: controller.modifyWordKey,
                                   controller: controller.wordController,
                                   validator: (value) {
                                     if (value != null) {
@@ -328,6 +443,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 8.0,
                                 ),
                                 TextFormField(
+                                  key: controller.modifyPrnKey,
                                   controller: controller.phoneticController,
                                   validator: (value) {
                                     if (value != null) {
@@ -347,6 +463,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 15.0,
                                 ),
                                 StudioFormField(
+                                    key: controller.modifyStudioKey,
                                     controller: controller,
                                     onSaved: (value) {
                                       value = controller.audioPath;
@@ -377,6 +494,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 8.0,
                                 ),
                                 TagsField(
+                                  key: controller.modifyEngTransKey,
                                   controller: controller.engTransController,
                                   width: size.width - (60.0 + 55),
                                   label: tEngTrans,
@@ -445,6 +563,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 8.0,
                                 ),
                                 TagsField(
+                                  key: controller.modifyFilTransKey,
                                   controller: controller.filTransController,
                                   width: size.width - (60.0),
                                   label: tFilTrans,
@@ -482,7 +601,9 @@ class ModifyWordPage extends StatelessWidget {
                                 SizedBox(
                                   height: 15.0,
                                 ),
-                                WordInfoSection(controller: controller),
+                                WordInfoSection(
+                                    key: controller.modifyInformationKey,
+                                    controller: controller),
                                 SizedBox(
                                   height: 30.0,
                                 ),
@@ -502,6 +623,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 15.0,
                                 ),
                                 KulitanFormField(
+                                    key: controller.modifyKulitanKey,
                                     controller: controller,
                                     onSaved: (value) {},
                                     validator: (value) {
@@ -547,6 +669,7 @@ class ModifyWordPage extends StatelessWidget {
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    key: controller.modifyOtherRelatedKey,
                                     children: [
                                       Expanded(
                                         child: TagsField(
@@ -612,6 +735,7 @@ class ModifyWordPage extends StatelessWidget {
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    key: controller.modifySynonymKey,
                                     children: [
                                       Expanded(
                                         child: TagsField(
@@ -677,6 +801,7 @@ class ModifyWordPage extends StatelessWidget {
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    key: controller.modifyAntonymKey,
                                     children: [
                                       Expanded(
                                         child: TagsField(
@@ -740,6 +865,7 @@ class ModifyWordPage extends StatelessWidget {
                                   height: 15.0,
                                 ),
                                 TextFormField(
+                                  key: controller.modifySourcesKey,
                                   controller: controller.referencesController,
                                   minLines: 1,
                                   maxLines: 4,
@@ -766,12 +892,12 @@ class ModifyWordPage extends StatelessWidget {
                 ThreePartHeader(
                   size: size,
                   screenPadding: screenPadding,
-                  title: editMode ?? false
+                  title: widget.editMode ?? false
                       ? appController.userIsExpert ?? false
-                          ? tEdit + ' "' + (editWord ?? '') + '"'
+                          ? tEdit + ' "' + (widget.editWord ?? '') + '"'
                           : tEdit +
                               ' "' +
-                              (editWord ?? '') +
+                              (widget.editWord ?? '') +
                               '"' +
                               tEditWordRequest
                       : appController.userIsExpert ?? false
@@ -784,9 +910,10 @@ class ModifyWordPage extends StatelessWidget {
                         "Are you sure you want to exit? Your edits will be discarded",
                         "Exit",
                         "Cancel", () {
-                      if ((requestMode ?? false) && requestID != null) {
+                      if ((widget.requestMode ?? false) &&
+                          widget.requestID != null) {
                         DatabaseRepository.instance
-                            .changeRequestState(requestID!, true);
+                            .changeRequestState(widget.requestID!, true);
                       }
                       Navigator.of(context).pop();
                       Get.back();

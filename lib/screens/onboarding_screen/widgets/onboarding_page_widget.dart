@@ -1,16 +1,19 @@
 import 'package:amanu/screens/onboarding_screen/controllers/onboarding_controller.dart';
+import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/onboarding_model.dart';
 
 class OnBoardingPage extends StatelessWidget {
-  const OnBoardingPage({super.key, required this.model});
+  OnBoardingPage({super.key, required this.model});
 
   final OnBoardingModel model;
+  final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +63,20 @@ class OnBoardingPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                             splashColor: primaryOrangeLight,
                             highlightColor: primaryOrangeLight.withOpacity(0.5),
-                            onTap: () {
+                            onTap: () async {
                               final obController =
                                   Get.find<OnBoardingController>();
                               obController.getStarted();
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              if (appController.isFirstTimeUse) {
+                                prefs.setBool("isFirstTimeUse", false);
+                                appController.isFirstTimeUse = false;
+                              }
+                              if (!appController.isFirstTimeHome) {
+                                prefs.setBool("isFirstTimeOnboarding", false);
+                                appController.isFirstTimeOnboarding = false;
+                              }
                             },
                             child: Ink(
                               padding: EdgeInsets.all(15),

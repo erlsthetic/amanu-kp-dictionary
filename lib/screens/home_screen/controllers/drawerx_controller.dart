@@ -6,6 +6,7 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/models/drawer_item_model.dart';
 import 'package:amanu/screens/kulitan_scanner_screen/kulitan_scanner_screen.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:amanu/screens/onboarding_screen/welcome_screen.dart';
 import 'package:amanu/screens/profile_screen/profile_screen.dart';
 import 'package:amanu/screens/requests_screen/requests_screen.dart';
 import 'package:amanu/screens/support_screen/support_screen.dart';
@@ -62,7 +63,11 @@ class DrawerXController extends GetxController {
           return HomeScreen();
         }
       case DrawerItems.join:
-        return OnBoardingScreen();
+        if (appController.isFirstTimeOnboarding) {
+          return OnBoardingScreen();
+        } else {
+          return WelcomeScreen();
+        }
       case DrawerItems.profile:
         return ProfileScreen();
       case DrawerItems.requests:
@@ -75,7 +80,6 @@ class DrawerXController extends GetxController {
           appController.showConnectionSnackbar();
           return HomeScreen();
         }
-
       case DrawerItems.support:
         return SupportScreen();
       default:

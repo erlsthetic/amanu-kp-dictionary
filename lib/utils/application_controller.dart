@@ -10,7 +10,6 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
-import 'package:amanu/utils/helper_controller.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -35,7 +34,18 @@ class ApplicationController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    isFirstTimeUse = true;
+    isFirstTimeUse = await checkFirstTimeUse();
+    isFirstTimeBookmarks = await checkFirstTimeBookmarks();
+    isFirstTimeDetail = await checkFirstTimeDetail();
+    isFirstTimeHome = await checkFirstTimeHome();
+    isFirstTimeKulitan = await checkFirstTimeKulitanEditor();
+    isFirstTimeModify = await checkFirstTimeModify();
+    isFirstTimeOnboarding = await checkFirstTimeOnboarding();
+    isFirstTimeProfile = await checkFirstTimeProfile();
+    isFirstTimeRequests = await checkFirstTimeRequests();
+    isFirstTimeScanner = await checkFirstTimeScanner();
+    isFirstTimeStudio = await checkFirstTimeStudio();
+
     hasConnection.value = await InternetConnectionChecker().hasConnection;
     subscription = await listenToConnectionState();
     await updateUserInfo();
@@ -95,7 +105,7 @@ class ApplicationController extends GetxController {
     final color = hasConnection.value
         ? Colors.green.withOpacity(0.75)
         : Colors.redAccent.withOpacity(0.75);
-    final icon = hasConnection.value ? Icons.check_circle : Icons.error;
+    final icon = hasConnection.value ? Icons.wifi : Icons.wifi_off;
     Get.snackbar(
       title,
       message,
@@ -104,7 +114,7 @@ class ApplicationController extends GetxController {
       icon: Icon(
         icon,
         color: pureWhite,
-        size: 20,
+        size: 30,
       ),
       duration: Duration(seconds: 3),
       shouldIconPulse: true,
@@ -430,10 +440,6 @@ class ApplicationController extends GetxController {
         dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
         dictionaryContent = sortDictionary(dictionaryContentUnsorted);
       } else {
-        Helper.errorSnackBar(
-            title: "Cannot sync dictionary data.",
-            message:
-                "Please connect to the internet to sync dictionary data with device.");
         noData.value = true;
         dictionaryVersion = null;
       }
@@ -473,6 +479,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeHome;
   Future<bool> checkFirstTimeHome() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeHome")) {
@@ -483,6 +490,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeBookmarks;
   Future<bool> checkFirstTimeBookmarks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeBookmarks")) {
@@ -493,6 +501,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeModify;
   Future<bool> checkFirstTimeModify() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeModify")) {
@@ -503,6 +512,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeKulitan;
   Future<bool> checkFirstTimeKulitanEditor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeKulitanEditor")) {
@@ -513,6 +523,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeStudio;
   Future<bool> checkFirstTimeStudio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeStudio")) {
@@ -523,6 +534,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeDetail;
   Future<bool> checkFirstTimeDetail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeDetail")) {
@@ -533,6 +545,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeScanner;
   Future<bool> checkFirstTimeScanner() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeScanner")) {
@@ -543,6 +556,7 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeRequests;
   Future<bool> checkFirstTimeRequests() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeRequests")) {
@@ -553,16 +567,18 @@ class ApplicationController extends GetxController {
     }
   }
 
+  late bool isFirstTimeProfile;
   Future<bool> checkFirstTimeProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("isFirstTimeOnboarding")) {
-      return prefs.getBool("isFirstTimeOnboarding")!;
+    if (prefs.containsKey("isFirstTimeProfile")) {
+      return prefs.getBool("isFirstTimeProfile")!;
     } else {
-      prefs.setBool("isFirstTimeOnboarding", true);
-      return prefs.getBool("isFirstTimeOnboarding")!;
+      prefs.setBool("isFirstTimeProfile", true);
+      return prefs.getBool("isFirstTimeProfile")!;
     }
   }
 
+  late bool isFirstTimeOnboarding;
   Future<bool> checkFirstTimeOnboarding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("isFirstTimeOnboarding")) {

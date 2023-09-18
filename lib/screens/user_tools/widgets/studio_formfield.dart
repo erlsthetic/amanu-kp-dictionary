@@ -9,7 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class StudioFormField extends FormField {
   StudioFormField(
-      {required ModifyController controller,
+      {super.key,
+      required ModifyController controller,
       required FormFieldSetter onSaved,
       required FormFieldValidator validator,
       AutovalidateMode mode = AutovalidateMode.onUserInteraction})
@@ -116,10 +117,10 @@ class StudioFormField extends FormField {
                           flex: 5,
                           child: GestureDetector(
                             onTap: () {
-                              Get.to(() => RecordingStudioPage(), 
-                                                              duration: Duration(milliseconds: 500),
-                              transition: Transition.rightToLeft,
-                              curve: Curves.easeInOut);
+                              Get.to(() => RecordingStudioPage(),
+                                  duration: Duration(milliseconds: 500),
+                                  transition: Transition.rightToLeft,
+                                  curve: Curves.easeInOut);
                               controller.playerController.stopPlayer();
                               state.reset();
                             },

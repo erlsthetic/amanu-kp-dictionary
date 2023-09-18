@@ -15,6 +15,7 @@ class Helper extends GetxController {
         icon: Icon(
           Icons.check_circle_outline,
           color: pureWhite,
+          size: 30,
         ));
   }
 
@@ -30,6 +31,7 @@ class Helper extends GetxController {
         icon: Icon(
           Icons.error_outline,
           color: pureWhite,
+          size: 30,
         ));
   }
 }

@@ -9,7 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class KulitanFormField extends FormField {
   KulitanFormField(
-      {required ModifyController controller,
+      {super.key,
+      required ModifyController controller,
       required FormFieldSetter onSaved,
       required FormFieldValidator validator,
       AutovalidateMode mode = AutovalidateMode.onUserInteraction})

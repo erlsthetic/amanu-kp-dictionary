@@ -1,14 +1,127 @@
 import 'dart:async';
 
+import 'package:amanu/components/coachmark_desc.dart';
 import 'package:amanu/screens/user_tools/controllers/modify_word_controller.dart';
 import 'package:amanu/utils/constants/kulitan_characters.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class KulitanController extends GetxController {
   static KulitanController get instance => Get.find();
 
   final addPageController = Get.find<ModifyController>();
+
+  GlobalKey kulitanScreenKey = GlobalKey();
+  GlobalKey kulitanKeyboardKey = GlobalKey();
+  GlobalKey kulitanViewerKey = GlobalKey();
+  GlobalKey kulitanSaveKey = GlobalKey();
+
+  late BuildContext context;
+
+  List<TargetFocus> initTarget() {
+    return [
+      TargetFocus(
+          identify: "kulitan-screen-key",
+          keyTarget: kulitanScreenKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Kulitan Editor",
+                  text:
+                      "This is the <b>Kulitan Editor</b>, your tool in writing Kulitan scripts. It's like a notepad, but using <i>Kulitan characters</i>.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "kulitan-keyboard-key",
+          keyTarget: kulitanScreenKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 5),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Kulitan Keyboard",
+                  text:
+                      'This is the <b>Kulitan Keyboard</b>. Use it to type <i>Kulitan characters</i> by <i>tapping</i> for an "<i>-a</i>" character, <i>hold-swiping up</i> for "<i>-i</i>" character, and <i>hold-swiping down</i> for "<i>-u</i>" characters.',
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "kulitan-viewer-key",
+          keyTarget: kulitanViewerKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.bottom,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Kulitan Viewer",
+                  text:
+                      'This is the <b>Kulitan Viewer</b> where all your typed characters will be displayed. You can <i>scroll through the viewer</i> if your Kulitan script is too long for the viewer.',
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "kulitan-save-key",
+          keyTarget: kulitanSaveKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Save your changes",
+                  text:
+                      "Save your changes using the save button on the upper left.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  next: "Got it!",
+                  skip: "",
+                  withSkip: false,
+                  onSkip: () {},
+                );
+              },
+            ),
+          ]),
+    ];
+  }
 
   List<List<List<String>>> keyboardData = [
     [

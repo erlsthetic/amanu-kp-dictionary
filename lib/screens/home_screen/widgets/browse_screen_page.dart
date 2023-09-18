@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:amanu/components/join_dialog.dart';
 import 'package:amanu/components/shimmer_browse_card.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/widgets/alphabetical_scroll_list.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/profile_screen/profile_screen.dart';
@@ -30,6 +31,7 @@ class BrowseScreenPage extends StatelessWidget {
 
   final drawerController = Get.find<DrawerXController>();
   final appController = Get.find<ApplicationController>();
+  final homeController = Get.find<HomePageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,9 @@ class BrowseScreenPage extends StatelessWidget {
                       ctl.update();
                     },
                     child: ctl.dictionaryContent.length != 0
-                        ? AlphabeticalListView()
+                        ? AlphabeticalListView(
+                            key: homeController.browseKey,
+                          )
                         /*ListView.builder(
                             physics: BouncingScrollPhysics(),
                             padding: EdgeInsets.only(top: 30, bottom: 100),

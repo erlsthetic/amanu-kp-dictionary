@@ -1,3 +1,4 @@
+import 'package:amanu/components/coachmark_desc.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -5,10 +6,72 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class DetailController extends GetxController {
   static DetailController get instance => Get.find();
   DetailController({required this.wordID});
+
+  GlobalKey detailsKey = GlobalKey();
+  GlobalKey detailBookmarkKey = GlobalKey();
+
+  late BuildContext context;
+
+  List<TargetFocus> initTarget() {
+    return [
+      TargetFocus(
+          identify: "details-key",
+          keyTarget: detailsKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Details Page",
+                  text:
+                      "This is the <b>Details screen</b>. This is where <i>all the information</i> about a word is presented.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "detail-bookmark-key",
+          keyTarget: detailBookmarkKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Bookmark the word",
+                  text:
+                      "Use the <b>bookmark toggle</b> in the upper right to bookmark and un-bookmark a word.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  next: "Got it!",
+                  skip: "",
+                  withSkip: false,
+                  onSkip: () {},
+                );
+              },
+            ),
+          ]),
+    ];
+  }
 
   RxBool inDictionary = false.obs;
 
