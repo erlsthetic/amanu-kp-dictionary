@@ -57,7 +57,7 @@ class _ModifyWordPageState extends State<ModifyWordPage> {
   }
 
   void showTutorial() {
-    if (appController.isFirstTimeBookmarks) {
+    if (appController.isFirstTimeModify) {
       Future.delayed(Duration(seconds: 1), () {
         tutorialCoachMark = TutorialCoachMark(
             pulseEnable: false,
@@ -138,9 +138,14 @@ class _ModifyWordPageState extends State<ModifyWordPage> {
               }
             },
             onFinish: () async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setBool("isFirstTimeModify", false);
-              // appController.isFirstTimeModify = false;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeModify", false);
+              appController.isFirstTimeModify = false;
+            },
+            onSkip: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeModify", false);
+              appController.isFirstTimeModify = false;
             },
             hideSkip: true)
           ..show(context: context);

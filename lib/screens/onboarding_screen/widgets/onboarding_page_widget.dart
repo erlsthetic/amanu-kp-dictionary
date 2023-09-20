@@ -64,19 +64,15 @@ class OnBoardingPage extends StatelessWidget {
                             splashColor: primaryOrangeLight,
                             highlightColor: primaryOrangeLight.withOpacity(0.5),
                             onTap: () async {
-                              final obController =
-                                  Get.find<OnBoardingController>();
-                              obController.getStarted();
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
-                              if (appController.isFirstTimeUse) {
-                                prefs.setBool("isFirstTimeUse", false);
-                                appController.isFirstTimeUse = false;
-                              }
                               if (!appController.isFirstTimeHome) {
                                 prefs.setBool("isFirstTimeOnboarding", false);
                                 appController.isFirstTimeOnboarding = false;
                               }
+                              final obController =
+                                  Get.find<OnBoardingController>();
+                              obController.getStarted();
                             },
                             child: Ink(
                               padding: EdgeInsets.all(15),

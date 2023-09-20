@@ -125,22 +125,25 @@ class SearchWordController extends GetxController {
           List<dynamic> meanings = entry.value["meanings"];
           for (var meaning in meanings) {
             bool _foundInDef = false;
-            List<Map<dynamic, dynamic>> definitions = meaning["definitions"];
-            for (var definition in definitions) {
-              var defNoTags = definition["definition"]
-                  .toLowerCase()
-                  .replaceAll("<i>", "")
-                  .replaceAll("</i>", "")
-                  .replaceAll("<b>", "")
-                  .replaceAll("</b>", "")
-                  .replaceAll("<u>", "")
-                  .replaceAll("</u>", "");
-              var normalized = appController.normalizeWord(defNoTags);
-              if (normalized.toLowerCase().contains(query)) {
-                tempMap[entry.key] = entry.value;
-                tempFoundOn[entry.key] = "engTrans";
-                _foundInDef = true;
-                break;
+            //TODO
+            if (meaning["definitions"] != null) {
+              List<dynamic> definitions = meaning["definitions"];
+              for (var definition in definitions) {
+                var defNoTags = definition["definition"]
+                    .toLowerCase()
+                    .replaceAll("<i>", "")
+                    .replaceAll("</i>", "")
+                    .replaceAll("<b>", "")
+                    .replaceAll("</b>", "")
+                    .replaceAll("<u>", "")
+                    .replaceAll("</u>", "");
+                var normalized = appController.normalizeWord(defNoTags);
+                if (normalized.toLowerCase().contains(query)) {
+                  tempMap[entry.key] = entry.value;
+                  tempFoundOn[entry.key] = "engTrans";
+                  _foundInDef = true;
+                  break;
+                }
               }
             }
             if (_foundInDef) {

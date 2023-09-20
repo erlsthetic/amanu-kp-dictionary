@@ -46,9 +46,14 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             targets: controller.initTarget(),
             imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
             onFinish: () async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setBool("isFirstTimeBookmarks", false);
-              // appController.isFirstTimeBookmarks = false;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeBookmarks", false);
+              appController.isFirstTimeBookmarks = false;
+            },
+            onSkip: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeBookmarks", false);
+              appController.isFirstTimeBookmarks = false;
             },
             hideSkip: true)
           ..show(context: context);

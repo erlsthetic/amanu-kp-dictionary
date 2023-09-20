@@ -43,16 +43,21 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   void showTutorial() {
-    if (appController.isFirstTimeBookmarks) {
+    if (appController.isFirstTimeDetail) {
       Future.delayed(Duration(seconds: 1), () {
         tutorialCoachMark = TutorialCoachMark(
             pulseEnable: false,
             targets: controller.initTarget(),
             imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
             onFinish: () async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setBool("isFirstTimeDetail", false);
-              // appController.isFirstTimeDetail = false;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeDetail", false);
+              appController.isFirstTimeDetail = false;
+            },
+            onSkip: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeDetail", false);
+              appController.isFirstTimeDetail = false;
             },
             hideSkip: true)
           ..show(context: context);

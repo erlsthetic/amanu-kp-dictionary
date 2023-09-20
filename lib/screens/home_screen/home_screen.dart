@@ -50,9 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             onFinish: () async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              // prefs.setBool("isFirstTimeHome", false);
-              // appController.isFirstTimeHome = false;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeHome", false);
+              appController.isFirstTimeHome = false;
+            },
+            onSkip: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool("isFirstTimeHome", false);
+              appController.isFirstTimeHome = false;
             },
             hideSkip: true)
           ..show(context: context);

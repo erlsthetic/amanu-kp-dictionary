@@ -6,6 +6,7 @@ import 'package:amanu/utils/application_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/onboarding_model.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../../utils/constants/image_strings.dart';
@@ -60,8 +61,10 @@ class OnBoardingController extends GetxController {
     currentPage.value = activePageIndex;
   }
 
-  void getStarted() {
+  void getStarted() async {
     if (appController.isFirstTimeUse) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool("isFirstTimeUse", false);
       appController.isFirstTimeUse = false;
       final drawerController = Get.find<DrawerXController>();
       drawerController.currentItem.value = DrawerItems.home;

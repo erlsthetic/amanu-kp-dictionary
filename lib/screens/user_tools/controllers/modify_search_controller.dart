@@ -1,4 +1,7 @@
 import 'package:amanu/models/delete_request_model.dart';
+import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/drawer_launcher.dart';
+import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +32,12 @@ class ModifySearchController extends GetxController {
           appController.update();
         });
         Navigator.pop(context);
+        final drawerController = Get.find<DrawerXController>();
+        drawerController.currentItem.value = DrawerItems.home;
+        Get.offAll(() => DrawerLauncher(),
+            duration: Duration(milliseconds: 500),
+            transition: Transition.downToUp,
+            curve: Curves.easeInOut);
       } else {
         final notesValid = notesFormKey.currentState!.validate();
         if (!notesValid) {

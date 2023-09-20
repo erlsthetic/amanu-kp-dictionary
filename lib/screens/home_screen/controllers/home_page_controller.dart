@@ -284,7 +284,9 @@ class HomePageController extends GetxController {
           radius: 30,
           contents: [
             TargetContent(
-              align: ContentAlign.bottom,
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
               builder: (context, ctl) {
                 return CoachmarkDesc(
                   title: "You are now ready!",

@@ -54,7 +54,12 @@ class _AlphabeticalListViewState extends State<AlphabeticalListView> {
                 .replaceAll("<b>", "")
                 .replaceAll("</b>", "")
                 .replaceAll("<u>", "")
-                .replaceAll("</u>", "")[0]
+                .replaceAll("</u>", "")
+        .replaceAll(RegExp(r'[àáâäæãåā]'), 'a')
+        .replaceAll(RegExp(r'[îïíīįì]'), 'i')
+        .replaceAll(RegExp(r'[ûüùúū]'), 'u')
+        .replaceAll(RegExp(r'[èéêëēėę]'), 'e')
+        .replaceAll(RegExp(r'[ôöòóœøōõ]'), 'o')[0]
                 .toUpperCase()))
         .toList();
     SuspensionUtil.sortListBySuspensionTag(this.items);

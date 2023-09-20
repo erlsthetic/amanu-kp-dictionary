@@ -106,8 +106,6 @@ class AuthenticationRepository extends GetxController {
         if (appController.hasConnection.value) {
           UserModel? userData = await DatabaseRepository.instance
               .getUserDetails(firebaseUser!.uid);
-
-          print("here");
           if (userData != null) {
             await appController.changeUserDetails(
                 firebaseUser!.uid,
@@ -125,22 +123,24 @@ class AuthenticationRepository extends GetxController {
                 userData.phonePublic,
                 userData.isAdmin);
           }
-        }
-        if (appController.isFirstTimeUse) {
-          await Future.delayed(Duration(milliseconds: 500));
-          Get.offAll(() => OnBoardingScreen(),
-              duration: Duration(milliseconds: 500),
-              transition: Transition.downToUp,
-              curve: Curves.easeInOut);
         } else {
-          await Future.delayed(Duration(milliseconds: 500));
-          final drawerController = Get.find<DrawerXController>();
-          drawerController.currentItem.value = DrawerItems.home;
-          Get.offAll(() => DrawerLauncher(),
-              duration: Duration(milliseconds: 500),
-              transition: Transition.downToUp,
-              curve: Curves.easeInOut);
+          appController.showConnectionSnackbar();
         }
+        // if (appController.isFirstTimeUse) {
+        //   await Future.delayed(Duration(milliseconds: 500));
+        //   Get.offAll(() => OnBoardingScreen(),
+        //       duration: Duration(milliseconds: 500),
+        //       transition: Transition.downToUp,
+        //       curve: Curves.easeInOut);
+        // } else {
+        await Future.delayed(Duration(milliseconds: 500));
+        final drawerController = Get.find<DrawerXController>();
+        drawerController.currentItem.value = DrawerItems.home;
+        Get.offAll(() => DrawerLauncher(),
+            duration: Duration(milliseconds: 500),
+            transition: Transition.downToUp,
+            curve: Curves.easeInOut);
+        // }
         Helper.successSnackBar(
             title: "Login successful.",
             message: "Logged in as ${appController.userName ?? ""}");
@@ -216,21 +216,21 @@ class AuthenticationRepository extends GetxController {
                     userData.isAdmin);
               }
             }
-            if (appController.isFirstTimeUse) {
-              await Future.delayed(Duration(milliseconds: 500));
-              Get.offAll(() => OnBoardingScreen(),
-                  duration: Duration(milliseconds: 500),
-                  transition: Transition.downToUp,
-                  curve: Curves.easeInOut);
-            } else {
-              await Future.delayed(Duration(milliseconds: 500));
-              final drawerController = Get.find<DrawerXController>();
-              drawerController.currentItem.value = DrawerItems.home;
-              Get.offAll(() => DrawerLauncher(),
-                  duration: Duration(milliseconds: 500),
-                  transition: Transition.downToUp,
-                  curve: Curves.easeInOut);
-            }
+            // if (appController.isFirstTimeUse) {
+            //   await Future.delayed(Duration(milliseconds: 500));
+            //   Get.offAll(() => OnBoardingScreen(),
+            //       duration: Duration(milliseconds: 500),
+            //       transition: Transition.downToUp,
+            //       curve: Curves.easeInOut);
+            // } else {
+            await Future.delayed(Duration(milliseconds: 500));
+            final drawerController = Get.find<DrawerXController>();
+            drawerController.currentItem.value = DrawerItems.home;
+            Get.offAll(() => DrawerLauncher(),
+                duration: Duration(milliseconds: 500),
+                transition: Transition.downToUp,
+                curve: Curves.easeInOut);
+            // }
             Helper.successSnackBar(
                 title: "Login successful.",
                 message: "Logged in as ${appController.userName ?? ""}");
@@ -304,21 +304,21 @@ class AuthenticationRepository extends GetxController {
         prefs.remove('userPhonePublic');
         prefs.remove('userIsAdmin');
       }
-      if (appController.isFirstTimeUse) {
-        await Future.delayed(Duration(milliseconds: 500));
-        Get.offAll(() => OnBoardingScreen(),
-            duration: Duration(milliseconds: 500),
-            transition: Transition.downToUp,
-            curve: Curves.easeInOut);
-      } else {
-        await Future.delayed(Duration(milliseconds: 500));
-        final drawerController = Get.find<DrawerXController>();
-        drawerController.currentItem.value = DrawerItems.home;
-        Get.offAll(() => DrawerLauncher(),
-            duration: Duration(milliseconds: 500),
-            transition: Transition.downToUp,
-            curve: Curves.easeInOut);
-      }
+      // if (appController.isFirstTimeUse) {
+      //   await Future.delayed(Duration(milliseconds: 500));
+      //   Get.offAll(() => OnBoardingScreen(),
+      //       duration: Duration(milliseconds: 500),
+      //       transition: Transition.downToUp,
+      //       curve: Curves.easeInOut);
+      // } else {
+      await Future.delayed(Duration(milliseconds: 500));
+      final drawerController = Get.find<DrawerXController>();
+      drawerController.currentItem.value = DrawerItems.home;
+      Get.offAll(() => DrawerLauncher(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.downToUp,
+          curve: Curves.easeInOut);
+      // }
       Helper.successSnackBar(
           title: "Logout success.",
           message: "User has been logged out of this device.");
