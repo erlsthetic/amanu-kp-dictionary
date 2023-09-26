@@ -2,7 +2,6 @@ import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
-import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/screens/signup_screen/account_selection_screen.dart';
 import 'package:amanu/screens/signup_screen/controllers/signup_controller.dart';
 import 'package:amanu/utils/application_controller.dart';

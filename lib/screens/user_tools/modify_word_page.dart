@@ -53,104 +53,105 @@ class _ModifyWordPageState extends State<ModifyWordPage> {
   @override
   void initState() {
     super.initState();
-    showTutorial();
+
+    if (appController.isFirstTimeModify) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(Duration(seconds: 1), () {
+          showTutorial();
+        });
+      });
+    }
   }
 
   void showTutorial() {
-    if (appController.isFirstTimeModify) {
-      Future.delayed(Duration(seconds: 1), () {
-        tutorialCoachMark = TutorialCoachMark(
-            pulseEnable: false,
-            targets: controller.initTarget(),
-            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-            onClickTarget: (target) {
-              if (target.identify == "modify-key") {
-                Scrollable.ensureVisible(controller.modifyKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-word-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyPrnKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-prn-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyStudioKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-studio-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyEngTransKey.currentContext!,
-                    alignment: 1.0,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-engtrans-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyFilTransKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-filtrans-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyInformationKey.currentContext!,
-                    alignment: 1.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-info-next-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyInformationKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-info-bnext-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyKulitanKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-kulitan-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyOtherRelatedKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-related-key") {
-                Scrollable.ensureVisible(
-                    controller.modifySynonymKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-synonym-key") {
-                Scrollable.ensureVisible(
-                    controller.modifyAntonymKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              } else if (target.identify == "modify-antonym-key") {
-                Scrollable.ensureVisible(
-                    controller.modifySourcesKey.currentContext!,
-                    alignment: 0.5,
-                    alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
-                    duration: Duration(milliseconds: 800));
-              }
-            },
-            onFinish: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeModify", false);
-              appController.isFirstTimeModify = false;
-            },
-            onSkip: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeModify", false);
-              appController.isFirstTimeModify = false;
-            },
-            hideSkip: true)
-          ..show(context: context);
-      });
-    }
+    tutorialCoachMark = TutorialCoachMark(
+        pulseEnable: false,
+        targets: controller.initTarget(),
+        imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+        onClickTarget: (target) {
+          if (target.identify == "modify-key") {
+            Scrollable.ensureVisible(controller.modifyKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-word-key") {
+            Scrollable.ensureVisible(controller.modifyPrnKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-prn-key") {
+            Scrollable.ensureVisible(controller.modifyStudioKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-studio-key") {
+            Scrollable.ensureVisible(
+                controller.modifyEngTransKey.currentContext!,
+                alignment: 1.0,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-engtrans-key") {
+            Scrollable.ensureVisible(
+                controller.modifyFilTransKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-filtrans-key") {
+            Scrollable.ensureVisible(
+                controller.modifyInformationKey.currentContext!,
+                alignment: 1.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-info-next-key") {
+            Scrollable.ensureVisible(
+                controller.modifyInformationKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-info-bnext-key") {
+            Scrollable.ensureVisible(
+                controller.modifyKulitanKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-kulitan-key") {
+            Scrollable.ensureVisible(
+                controller.modifyOtherRelatedKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-related-key") {
+            Scrollable.ensureVisible(
+                controller.modifySynonymKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-synonym-key") {
+            Scrollable.ensureVisible(
+                controller.modifyAntonymKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          } else if (target.identify == "modify-antonym-key") {
+            Scrollable.ensureVisible(
+                controller.modifySourcesKey.currentContext!,
+                alignment: 0.5,
+                alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+                duration: Duration(milliseconds: 800));
+          }
+        },
+        onFinish: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool("isFirstTimeModify", false);
+          appController.isFirstTimeModify = false;
+        },
+        onSkip: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool("isFirstTimeModify", false);
+          appController.isFirstTimeModify = false;
+        },
+        hideSkip: true)
+      ..show(context: context);
   }
 
   @override
@@ -925,6 +926,9 @@ class _ModifyWordPageState extends State<ModifyWordPage> {
                     }, () {
                       Navigator.of(context).pop();
                     });
+                  },
+                  secondOnPressed: () {
+                    showTutorial();
                   },
                 ),
               ],

@@ -75,6 +75,7 @@ class AppDrawer extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: screenPadding.bottom),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: primaryOrangeDark,
         body: Stack(
           children: [

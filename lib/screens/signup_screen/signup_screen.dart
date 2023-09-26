@@ -23,7 +23,7 @@ class SignupScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             Get.off(() => WelcomeScreen(),
                 duration: Duration(milliseconds: 500),
                 transition: Transition.leftToRight,
@@ -45,7 +45,7 @@ class SignupScreen extends StatelessWidget {
                         size: size,
                         header: tSignupHead,
                         subHeader: tSignupSubHead,
-                        imgString: iSignupPageAnim),
+                        imgString: iSignUpScreen),
                     SignupForm(),
                     SignupFooterWidget()
                   ],

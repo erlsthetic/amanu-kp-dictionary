@@ -12,6 +12,7 @@ import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -51,7 +52,7 @@ class SupportScreen extends StatelessWidget {
                         appController.userIsAdmin ?? false
                             ? SelectionOption(
                                 title: tExpertRequests,
-                                image: iWelcomePageAnim,
+                                image: iExpertRequests,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
                                     Get.to(() => ExpertRequestsPage(),
@@ -66,7 +67,7 @@ class SupportScreen extends StatelessWidget {
                         appController.userIsAdmin ?? false
                             ? SelectionOption(
                                 title: tProblemReports,
-                                image: iWelcomePageAnim,
+                                image: iProblemReports,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
                                     Get.to(() => ProblemReportsPage(),
@@ -79,7 +80,7 @@ class SupportScreen extends StatelessWidget {
                                 })
                             : SelectionOption(
                                 title: tReportAProblem,
-                                image: iWelcomePageAnim,
+                                image: iReportAProblem,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
                                     Get.to(() => ReportProblemPage(),
@@ -93,7 +94,7 @@ class SupportScreen extends StatelessWidget {
                         appController.userIsAdmin ?? false
                             ? SelectionOption(
                                 title: tFeedbacks,
-                                image: iWelcomePageAnim,
+                                image: iFeedbacks,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
                                     Get.to(() => FeedbacksPage(),
@@ -106,7 +107,7 @@ class SupportScreen extends StatelessWidget {
                                 })
                             : SelectionOption(
                                 title: tFeedback,
-                                image: iWelcomePageAnim,
+                                image: iFeedback,
                                 onPressed: () {
                                   if (appController.hasConnection.value) {
                                     Get.to(() => FeedbackPage(),
@@ -119,7 +120,7 @@ class SupportScreen extends StatelessWidget {
                                 }),
                         SelectionOption(
                           title: tRateApp,
-                          image: iWelcomePageAnim,
+                          image: iRateAmanu,
                           onPressed: () {
                             if (appController.hasConnection.value) {
                             } else {
@@ -129,7 +130,7 @@ class SupportScreen extends StatelessWidget {
                         ),
                         SelectionOption(
                           title: tAboutAmanu,
-                          image: iWelcomePageAnim,
+                          image: iAboutAmanu,
                           onPressed: () => Get.to(() => AboutPage(),
                               duration: Duration(milliseconds: 500),
                               transition: Transition.rightToLeft,
@@ -149,6 +150,7 @@ class SupportScreen extends StatelessWidget {
               drawerController.drawerToggle(context);
               drawerController.currentItem.value = DrawerItems.support;
             },
+            secondIconDisabled: true,
           ),
         ],
       )),
@@ -213,7 +215,7 @@ class SelectionOption extends StatelessWidget {
                       borderRadius:
                           BorderRadius.horizontal(right: Radius.circular(20))),
                   height: double.infinity,
-                  child: Image.asset(image),
+                  child: SvgPicture.asset(image),
                 ),
               ),
             ],

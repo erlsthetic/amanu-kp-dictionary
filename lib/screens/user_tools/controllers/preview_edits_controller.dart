@@ -1,5 +1,6 @@
 import 'package:amanu/models/edit_request_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
+import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
 import 'package:amanu/screens/home_screen/drawer_launcher.dart';
 import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/utils/application_controller.dart';
@@ -186,8 +187,10 @@ class PreviewEditsController extends GetxController {
             await DatabaseRepository.instance
                 .removeRequest(requestID, requestAudioPath);
           }
-          appController.checkDictionary();
+          await appController.checkDictionary();
           appController.update();
+          final homeController = Get.find<HomePageController>();
+          await homeController.getInformation();
           isProcessing.value = false;
           final drawerController = Get.find<DrawerXController>();
           drawerController.currentItem.value = DrawerItems.home;

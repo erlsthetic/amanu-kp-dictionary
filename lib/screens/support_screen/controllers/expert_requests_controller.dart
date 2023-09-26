@@ -495,6 +495,6 @@ class ExpertRequestsController extends GetxController {
           ),
         ), () {
       player.dispose();
-    });
+    }, true.obs);
   }
 }

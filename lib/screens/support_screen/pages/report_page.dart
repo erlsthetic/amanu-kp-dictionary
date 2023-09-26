@@ -4,6 +4,7 @@ import 'package:amanu/utils/constants/image_strings.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:amanu/components/three_part_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -62,10 +63,7 @@ class ReportProblemPage extends StatelessWidget {
                             children: [
                               Container(
                                   width: double.infinity,
-                                  child: Image.asset(iOnBoardingAnim1)),
-                              SizedBox(
-                                height: 20.0,
-                              ),
+                                  child: SvgPicture.asset(iReportAProblem)),
                               Container(
                                 width: double.infinity,
                                 child: Text(
@@ -310,6 +308,7 @@ class ReportProblemPage extends StatelessWidget {
                 size: size,
                 screenPadding: screenPadding,
                 title: tReportAProblem,
+                secondIconDisabled: true,
               ),
             ],
           )),

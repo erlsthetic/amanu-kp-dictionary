@@ -14,6 +14,7 @@ class ProblemReportsController extends GetxController
   static ProblemReportsController get instance => Get.find();
   final appController = Get.find<ApplicationController>();
   RxList<ReportModel> reports = <ReportModel>[].obs;
+  RxBool isVisible = true.obs;
 
   @override
   void onInit() {
@@ -108,6 +109,9 @@ class ProblemReportsController extends GetxController
                     child: InteractiveViewer(
                       clipBehavior: Clip.none,
                       transformationController: transController,
+                      onInteractionStart: (details) {
+                        isVisible.value = false;
+                      },
                       onInteractionEnd: (details) {
                         if (transController == null)
                           transController = TransformationController();
@@ -117,6 +121,7 @@ class ProblemReportsController extends GetxController
                             .animate(CurveTween(curve: Curves.easeOut)
                                 .animate(zoomAnimController));
                         zoomAnimController.forward(from: 0);
+                        isVisible.value = true;
                       },
                       minScale: 1,
                       maxScale: 5,
@@ -139,18 +144,22 @@ class ProblemReportsController extends GetxController
             SizedBox(
               height: 15,
             ),
-            Container(
-              alignment: Alignment.center,
-              height: 22,
-              child: Text(
-                timestamp,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.roboto(
-                    fontSize: 14,
-                    color: disabledGrey,
-                    fontWeight: FontWeight.w400),
-              ),
+            Obx(
+              () => isVisible.value
+                  ? Container(
+                      alignment: Alignment.center,
+                      height: 22,
+                      child: Text(
+                        timestamp,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            color: disabledGrey,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    )
+                  : Container(height: 22),
             ),
             SizedBox(
               height: 10,
@@ -163,37 +172,43 @@ class ProblemReportsController extends GetxController
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Row(
             children: [
-              Expanded(
-                child: Material(
-                  borderRadius: BorderRadius.circular(25),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(25),
-                    onTap: () async {
-                      await resolveProblem(
-                          timestamp, problemType, subject, context);
-                      if (transController != null) transController!.dispose();
-                      zoomAnimController.dispose();
-                      getReports();
-                    },
-                    splashColor: primaryOrangeLight,
-                    highlightColor: primaryOrangeLight.withOpacity(0.5),
-                    child: Ink(
-                      height: 50.0,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "RESOLVE".toUpperCase(),
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: pureWhite,
+              Obx(
+                () => Visibility(
+                  visible: isVisible.value,
+                  child: Expanded(
+                    child: Material(
+                      borderRadius: BorderRadius.circular(25),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(25),
+                        onTap: () async {
+                          await resolveProblem(
+                              timestamp, problemType, subject, context);
+                          if (transController != null)
+                            transController!.dispose();
+                          zoomAnimController.dispose();
+                          getReports();
+                        },
+                        splashColor: primaryOrangeLight,
+                        highlightColor: primaryOrangeLight.withOpacity(0.5),
+                        child: Ink(
+                          height: 50.0,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "RESOLVE".toUpperCase(),
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: pureWhite,
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: primaryOrangeDark,
+                            borderRadius: BorderRadius.circular(25),
                           ),
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                        color: primaryOrangeDark,
-                        borderRadius: BorderRadius.circular(25),
                       ),
                     ),
                   ),
@@ -204,6 +219,6 @@ class ProblemReportsController extends GetxController
         ), () {
       if (transController != null) transController!.dispose();
       zoomAnimController.dispose();
-    });
+    }, isVisible);
   }
 }

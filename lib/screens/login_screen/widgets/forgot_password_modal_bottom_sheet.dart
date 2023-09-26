@@ -1,5 +1,4 @@
 import 'package:amanu/screens/login_screen/widgets/forgot_password_email.dart';
-import 'package:amanu/screens/login_screen/widgets/forgot_password_phone.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,21 +48,6 @@ class ForgotPasswordScreen {
               onTap: () {
                 Navigator.pop(context);
                 Get.to(() => ForgotPasswordEmail(),
-                    duration: Duration(milliseconds: 500),
-                    transition: Transition.rightToLeft,
-                    curve: Curves.easeInOut);
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ForgotPasswordOption(
-              btnIcon: Icons.mobile_friendly_outlined,
-              title: tContact,
-              subtitle: tResetViaSMS,
-              onTap: () {
-                Navigator.pop(context);
-                Get.to(() => ForgotPasswordPhone(),
                     duration: Duration(milliseconds: 500),
                     transition: Transition.rightToLeft,
                     curve: Curves.easeInOut);

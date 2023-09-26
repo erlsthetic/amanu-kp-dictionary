@@ -1,25 +1,7 @@
-const String iAmanuOrangeA = "assets/svg/.svg";
-const String iAmanuGradientLogoWithLabel =
-    "assets/svg/GRADIENT_SVGS/A_AMANU_GRADIENT.svg";
-const String iAmanuGradientLogoA =
-    "assets/svg/GRADIENT_SVGS/A_GRADIENT_SCRIPT.svg";
-const String iAmanuOrangeLogoWithLabel =
-    "assets/svg/ORANGE_SVGS/A_AMANU_ORANGE.svg";
-const String iAmanuOrangeLogoA = "assets/svg/ORANGE_SVGS/A_ORANGE_SCRIPT.svg";
-const String iAmanuOrangeScriptVertical =
-    "assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_VERTICAL.svg";
-const String iAmanuOrangeScriptVerticalWithSeparator =
-    "assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg";
-const String iAmanuOrangeSeparator =
-    "assets/svg/ORANGE_SVGS/SEPARATOR_ORANGE.svg";
 const String iAmanuWhiteLogoWithLabel =
     "assets/svg/WHITE_SVGS/A_AMANU_WHITE.svg";
-const String iAmanuWhiteLogoA = "assets/svg/WHITE_SVGS/A_WHITE_SCRIPT.svg";
-const String iAmanuWhiteScriptVertical =
-    "assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL.svg";
 const String iAmanuWhiteScriptVerticalWithSeparator =
     "assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg";
-const String iAmanuWhiteSeparator = "assets/svg/WHITE_SVGS/SEPARATOR_WHITE.svg";
 const String iAmanuWhiteButtonIcon =
     "assets/svg/WHITE_SVGS/AMANU_WHITE_BUTTON_SCANNER.svg";
 
@@ -40,21 +22,35 @@ const String iToolBox = "assets/svg/ICONS/TOOLS_USER.svg";
 const String iClose = "assets/svg/ICONS/CLOSE.svg";
 //anim
 const String amanuLogoAnim = "assets/anim/AMANU_LOGO_ANIMATION.gif";
-const String iOnBoardingAnim1 = "assets/anim/onBoarding-page1.png";
-const String iOnBoardingAnim2 = "assets/anim/onBoarding-page2.png";
-const String iOnBoardingAnim3 = "assets/anim/onBoarding-page3.png";
-const String iWelcomePageAnim = "assets/anim/welcome-page.png";
-const String iLoginPageAnim = "assets/anim/login-page.png";
-const String iSignupPageAnim = "assets/anim/signup-page.png";
 const String iGoogleIcon = "assets/icons/google-icon.svg";
 const String iContributorIllus = "assets/svg/contributor-illus.svg";
 const String iExpertIllus = "assets/svg/expert-illus.svg";
-const String iResetPhone = "assets/anim/reset_Phone.png";
-const String iResetEmail = "assets/anim/reset_Email.png";
-const String iResetOTP = "assets/anim/reset_OTP.png";
 const String iJoinAmanuIllus = "assets/svg/join-amanu-illus.svg";
 const String iScrollHint = "assets/svg/scroll-hint.svg";
 const String iPrivacyPolicy = "assets/svg/privacy-policy.svg";
+const String iAboutAmanu = "assets/svg/about-amanu.svg";
+const String iKulitanReaderGuide = "assets/svg/kulitan-scanner-guide.svg";
+const String iAmanuGuide = "assets/svg/amanu-guide.svg";
+const String iExpertRequests = "assets/svg/expert-requests.svg";
+const String iFeedback = "assets/svg/feedback.svg";
+const String iFeedbacks = "assets/svg/feedbacks.svg";
+const String iLoginScreen = "assets/svg/login-screen.svg";
+const String iProblemReports = "assets/svg/problem-reports.svg";
+const String iRateAmanu = "assets/svg/rate-amanu.svg";
+const String iReportAProblem = "assets/svg/report-a-problem.svg";
+const String iResetUsingEmail = "assets/svg/reset-email.svg";
+const String iSignUpScreen = "assets/svg/signup-screen.svg";
+const String iWelcomeScreen = "assets/svg/welcome-screen.svg";
+const String iWalkthrough1 = "assets/svg/walkthrough-page1.svg";
+const String iWalkthrough2 = "assets/svg/walkthrough-page2.svg";
+const String iWalkthrough3 = "assets/svg/walkthrough-page3.svg";
+
+const String iKulitanGuide1 = "assets/svg/kulitan-guide-1.svg";
+const String iKulitanGuide2 = "assets/svg/kulitan-guide-2.svg";
+const String iKulitanGuide3 = "assets/svg/kulitan-guide-3.svg";
+const String iKulitanGuide4 = "assets/svg/kulitan-guide-4.svg";
+const String iKulitanGuide5 = "assets/svg/kulitan-guide-5.svg";
+const String iKulitanGuide6 = "assets/svg/kulitan-guide-6.svg";
 
 // -- FEEDBACK ICONS
 const String iRateVeryBad = "assets/icons/very-bad.svg";

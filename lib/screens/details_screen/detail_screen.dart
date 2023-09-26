@@ -39,30 +39,32 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
-    showTutorial();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (appController.isFirstTimeDetail) {
+        showTutorial();
+      }
+    });
   }
 
   void showTutorial() {
-    if (appController.isFirstTimeDetail) {
-      Future.delayed(Duration(seconds: 1), () {
-        tutorialCoachMark = TutorialCoachMark(
-            pulseEnable: false,
-            targets: controller.initTarget(),
-            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-            onFinish: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeDetail", false);
-              appController.isFirstTimeDetail = false;
-            },
-            onSkip: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeDetail", false);
-              appController.isFirstTimeDetail = false;
-            },
-            hideSkip: true)
-          ..show(context: context);
-      });
-    }
+    Future.delayed(Duration(seconds: 1), () {
+      tutorialCoachMark = TutorialCoachMark(
+          pulseEnable: false,
+          targets: controller.initTarget(),
+          imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+          onFinish: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool("isFirstTimeDetail", false);
+            appController.isFirstTimeDetail = false;
+          },
+          onSkip: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool("isFirstTimeDetail", false);
+            appController.isFirstTimeDetail = false;
+          },
+          hideSkip: true)
+        ..show(context: context);
+    });
   }
 
   @override
@@ -75,6 +77,7 @@ class _DetailScreenState extends State<DetailScreen> {
       padding: EdgeInsets.only(bottom: screenPadding.bottom),
       child: Scaffold(
           key: _scaffoldKey,
+          resizeToAvoidBottomInset: false,
           body: Stack(
             children: [
               Positioned(
@@ -135,6 +138,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   size: size,
                   screenPadding: screenPadding,
                   title: controller.word,
+                  secondIconDisabled: !controller.inDictionary.value,
                   secondIcon: controller.onBookmarks.value
                       ? Icons.bookmark_rounded
                       : Icons.bookmark_outline_rounded,

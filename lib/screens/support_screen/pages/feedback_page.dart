@@ -63,7 +63,7 @@ class FeedbackPage extends StatelessWidget {
                             children: [
                               Container(
                                   width: double.infinity,
-                                  child: Image.asset(iOnBoardingAnim1)),
+                                  child: SvgPicture.asset(iFeedback)),
                               SizedBox(
                                 height: 20.0,
                               ),
@@ -160,6 +160,7 @@ class FeedbackPage extends StatelessWidget {
                 size: size,
                 screenPadding: screenPadding,
                 title: tFeedback,
+                secondIconDisabled: true,
               ),
             ],
           )),

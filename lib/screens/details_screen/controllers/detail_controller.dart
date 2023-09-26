@@ -1,4 +1,5 @@
 import 'package:amanu/components/coachmark_desc.dart';
+import 'package:amanu/components/text_span_builder.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/helper_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -227,11 +228,12 @@ class DetailController extends GetxController {
                               ),
                             ),
                           ),
-                          TextSpan(
-                            text: onBookmarks.value
-                                ? word + " was added to your bookmarks."
-                                : word + " was removed from your bookmarks.",
-                          )
+                          buildTextSpan(
+                              text: onBookmarks.value
+                                  ? word + " was added to your bookmarks."
+                                  : word + " was removed from your bookmarks.",
+                              style: TextStyle(color: pureWhite, fontSize: 15),
+                              boldWeight: FontWeight.bold)
                         ]))),
           );
         });

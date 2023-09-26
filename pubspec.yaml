@@ -83,10 +83,20 @@ dependencies:
   camera: ^0.10.5+4
   http: ^1.1.0
   open_file: ^3.3.2
+  flutter_exif_rotation: ^0.5.1
+  flutter_launcher_icons: ^0.13.1 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets\app_icons\amanu_ic.png
+  adaptive_icon_background: assets\app_icons\amanu_ic_background.png
+  adaptive_icon_foreground: assets\app_icons\amanu_ic_foreground.png
+   
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -108,20 +118,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/svg/GRADIENT_SVGS/A_AMANU_GRADIENT.svg
-    - assets/svg/GRADIENT_SVGS/A_GRADIENT_SCRIPT.svg
-    - assets/svg/ORANGE_SVGS/A_AMANU_ORANGE.svg
-    - assets/svg/ORANGE_SVGS/A_ORANGE_SCRIPT.svg
-    - assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_HORIZONTAL.svg
-    - assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_VERTICAL.svg
-    - assets/svg/ORANGE_SVGS/AMANU_ORANGE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg
-    - assets/svg/ORANGE_SVGS/SEPARATOR_ORANGE.svg
     - assets/svg/WHITE_SVGS/A_AMANU_WHITE.svg
-    - assets/svg/WHITE_SVGS/A_WHITE_SCRIPT.svg
-    - assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_HORIZONTAL.svg
-    - assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL.svg
     - assets/svg/WHITE_SVGS/AMANU_WHITE_SCRIPT_VERTICAL_WITH_SEPARATOR.svg
-    - assets/svg/WHITE_SVGS/SEPARATOR_WHITE.svg
     - assets/svg/WHITE_SVGS/AMANU_WHITE_BUTTON_SCANNER.svg
 
     - assets/svg/ICONS/LISTEN.svg
@@ -141,21 +139,7 @@ flutter:
     - assets/svg/ICONS/CLOSE.svg
 
     - assets/anim/AMANU_LOGO_ANIMATION.gif
-
-    - assets/anim/walkthrough-page1.svg
-    - assets/anim/walkthrough-page2.svg
-    - assets/anim/walkthrough-page3.svg
-    - assets/anim/onBoarding-page1.png
-    - assets/anim/onBoarding-page2.png
-    - assets/anim/onBoarding-page3.png
-    - assets/anim/reset_Phone.png
-    - assets/anim/reset_Email.png
-    - assets/anim/reset_OTP.png
   
-    - assets/anim/welcome-page.png
-    
-    - assets/anim/login-page.png
-    - assets/anim/signup-page.png
     - assets/icons/google-icon.svg
     
     - assets/icons/very-bad.svg
@@ -170,6 +154,31 @@ flutter:
     - assets/svg/join-amanu-illus.svg
     - assets/svg/scroll-hint.svg
     - assets/svg/privacy-policy.svg
+    
+    - assets/svg/about-amanu.svg
+    - assets/svg/expert-requests.svg
+    - assets/svg/feedback.svg
+    - assets/svg/feedbacks.svg
+    - assets/svg/kulitan-scanner-guide.svg
+    - assets/svg/amanu-guide.svg
+    - assets/svg/login-screen.svg
+    - assets/svg/problem-reports.svg
+    - assets/svg/rate-amanu.svg
+    - assets/svg/report-a-problem.svg
+    - assets/svg/reset-email.svg
+    - assets/svg/signup-screen.svg
+    - assets/svg/welcome-screen.svg
+    - assets/svg/walkthrough-page1.svg
+    - assets/svg/walkthrough-page2.svg
+    - assets/svg/walkthrough-page3.svg
+
+    
+    - assets/svg/kulitan-guide-1.svg
+    - assets/svg/kulitan-guide-2.svg
+    - assets/svg/kulitan-guide-3.svg
+    - assets/svg/kulitan-guide-4.svg
+    - assets/svg/kulitan-guide-5.svg
+    - assets/svg/kulitan-guide-6.svg
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

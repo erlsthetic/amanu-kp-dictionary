@@ -113,15 +113,18 @@ class SignUpController extends GetxController {
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 tPrivacyPolicyBody,
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.left,
                 style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w500, color: cardText),
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: cardText),
               ),
             ),
           ]),
         ),
         null,
-        null);
+        null,
+        true.obs);
   }
 
 //Validation

@@ -33,7 +33,7 @@ class ForgotPasswordOTP extends StatelessWidget {
                   size: size,
                   header: tOTPTitle,
                   subHeader: tOTPSubtitle + "\n sample@sample.com",
-                  imgString: iResetOTP,
+                  imgString: iResetUsingEmail,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   heightBetween: 30,
                 ),

@@ -1,4 +1,5 @@
 import 'package:amanu/components/browse_card.dart';
+import 'package:amanu/models/az_list_item.dart';
 import 'package:amanu/screens/details_screen/detail_screen.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
@@ -10,17 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class _AZItem extends ISuspensionBean {
-  final String word;
-  final String wordID;
-  final String tag;
-
-  _AZItem({required this.word, required this.wordID, required this.tag});
-
-  @override
-  String getSuspensionTag() => tag;
-}
-
 class AlphabeticalListView extends StatefulWidget {
   AlphabeticalListView({super.key});
 
@@ -29,111 +19,78 @@ class AlphabeticalListView extends StatefulWidget {
 }
 
 class _AlphabeticalListViewState extends State<AlphabeticalListView> {
-  List<_AZItem> items = [];
-
-  @override
-  void initState() {
-    super.initState();
-    convertList(appController.dictionaryContent);
-  }
-
-  void convertList(Map<dynamic, dynamic> dictionaryContent) {
-    this.items = dictionaryContent.entries
-        .map((entry) => _AZItem(
-            word: appController.dictionaryContent[entry.key]["word"]
-                .replaceAll("<i>", "")
-                .replaceAll("</i>", "")
-                .replaceAll("<b>", "")
-                .replaceAll("</b>", "")
-                .replaceAll("<u>", "")
-                .replaceAll("</u>", ""),
-            wordID: entry.key,
-            tag: appController.dictionaryContent[entry.key]["word"]
-                .replaceAll("<i>", "")
-                .replaceAll("</i>", "")
-                .replaceAll("<b>", "")
-                .replaceAll("</b>", "")
-                .replaceAll("<u>", "")
-                .replaceAll("</u>", "")
-        .replaceAll(RegExp(r'[àáâäæãåā]'), 'a')
-        .replaceAll(RegExp(r'[îïíīįì]'), 'i')
-        .replaceAll(RegExp(r'[ûüùúū]'), 'u')
-        .replaceAll(RegExp(r'[èéêëēėę]'), 'e')
-        .replaceAll(RegExp(r'[ôöòóœøōõ]'), 'o')[0]
-                .toUpperCase()))
-        .toList();
-    SuspensionUtil.sortListBySuspensionTag(this.items);
-    SuspensionUtil.setShowSuspensionStatus(this.items);
-  }
-
   final AudioPlayer player = AudioPlayer();
   final appController = Get.find<ApplicationController>();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return AzListView(
-      data: items,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return _buildListItem(item, player);
-      },
-      padding: EdgeInsets.only(top: 30, bottom: size.width * 0.2),
-      physics: BouncingScrollPhysics(),
-      indexBarItemHeight: (size.height - 70 - 20 - (size.width * 0.2)) / 27,
-      indexBarMargin: EdgeInsets.only(right: 5, top: 10),
-      indexHintBuilder: (context, hint) {
-        return Container(
-          height: 60,
-          width: 85,
-          alignment: Alignment.center,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  height: 60,
-                  width: 85,
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: SvgPicture.asset(iScrollHint),
+    return GetBuilder<ApplicationController>(
+      builder: (controller) {
+        return AzListView(
+          data: controller.aZitems,
+          itemCount: controller.aZitems.length,
+          itemBuilder: (context, index) {
+            final item = controller.aZitems[index];
+            return _buildListItem(item, player);
+          },
+          padding: EdgeInsets.only(top: 30, bottom: size.width * 0.2),
+          physics: BouncingScrollPhysics(),
+          indexBarItemHeight: (size.height - 70 - 20 - (size.width * 0.2)) / 27,
+          indexBarMargin: EdgeInsets.only(right: 5, top: 10),
+          indexHintBuilder: (context, hint) {
+            return Container(
+              height: 60,
+              width: 85,
+              alignment: Alignment.center,
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      height: 60,
+                      width: 85,
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: SvgPicture.asset(iScrollHint),
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      alignment: Alignment.center,
+                      child: Text(hint,
+                          style: GoogleFonts.robotoSlab(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: pureWhite,
+                          )),
+                    ),
+                  ),
+                ],
               ),
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  alignment: Alignment.center,
-                  child: Text(hint,
-                      style: GoogleFonts.robotoSlab(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: pureWhite,
-                      )),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
+          indexBarOptions: IndexBarOptions(
+              indexHintOffset: Offset(-15, 5),
+              textStyle: TextStyle(color: lightGrey, fontSize: 11.5),
+              needRebuild: true,
+              indexHintAlignment: Alignment.centerRight,
+              selectTextStyle:
+                  TextStyle(color: pureWhite, fontWeight: FontWeight.bold),
+              selectItemDecoration: BoxDecoration(
+                  shape: BoxShape.circle, color: primaryOrangeDark)),
         );
       },
-      indexBarOptions: IndexBarOptions(
-          indexHintOffset: Offset(8, 5),
-          textStyle: TextStyle(color: lightGrey, fontSize: 11.5),
-          needRebuild: true,
-          indexHintAlignment: Alignment.centerRight,
-          selectTextStyle:
-              TextStyle(color: pureWhite, fontWeight: FontWeight.bold),
-          selectItemDecoration:
-              BoxDecoration(shape: BoxShape.circle, color: primaryOrangeDark)),
     );
   }
 
-  Widget _buildListItem(_AZItem item, AudioPlayer player) {
+  Widget _buildListItem(AZItem item, AudioPlayer player) {
     final tag = item.getSuspensionTag();
     final offstage = !item.isShowSuspension;
     String wordID = item.wordID;

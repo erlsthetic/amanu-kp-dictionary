@@ -134,6 +134,7 @@ class FeedbacksController extends GetxController {
           ),
         ),
         null,
-        null);
+        null,
+        true.obs);
   }
 }

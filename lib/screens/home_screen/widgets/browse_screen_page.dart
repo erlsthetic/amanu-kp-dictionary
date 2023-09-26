@@ -56,7 +56,9 @@ class BrowseScreenPage extends StatelessWidget {
                     },
                     child: ctl.dictionaryContent.length != 0
                         ? AlphabeticalListView(
-                            key: homeController.browseKey,
+                            key: appController.isFirstTimeHome
+                                ? homeController.browseKey
+                                : null,
                           )
                         /*ListView.builder(
                             physics: BouncingScrollPhysics(),

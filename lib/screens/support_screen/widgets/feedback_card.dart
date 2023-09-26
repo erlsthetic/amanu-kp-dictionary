@@ -72,10 +72,8 @@ class FeedbackCard extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         height: 20,
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          alignment: WrapAlignment.center,
-                          runAlignment: WrapAlignment.center,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "Rating:",
@@ -98,22 +96,24 @@ class FeedbackCard extends StatelessWidget {
                             SizedBox(
                               width: 5,
                             ),
-                            Text(
-                              (rating == 1
-                                  ? "(Very Bad)"
-                                  : rating == 2
-                                      ? "(Bad)"
-                                      : rating == 3
-                                          ? "(Fair)"
-                                          : rating == 4
-                                              ? "(Good)"
-                                              : "(Very Good)"),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14,
-                                  color: cardText,
-                                  fontWeight: FontWeight.w400),
+                            Expanded(
+                              child: Text(
+                                (rating == 1
+                                    ? "(Very Bad)"
+                                    : rating == 2
+                                        ? "(Bad)"
+                                        : rating == 3
+                                            ? "(Fair)"
+                                            : rating == 4
+                                                ? "(Good)"
+                                                : "(Very Good)"),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    color: cardText,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ],
                         ),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:amanu/models/az_list_item.dart';
 import 'package:amanu/models/user_model.dart';
 import 'package:amanu/screens/home_screen/controllers/drawerx_controller.dart';
 import 'package:amanu/screens/home_screen/controllers/home_page_controller.dart';
@@ -10,11 +11,11 @@ import 'package:amanu/screens/home_screen/widgets/app_drawer.dart';
 import 'package:amanu/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:amanu/utils/auth/database_repository.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
+import 'package:azlistview/azlistview.dart';
 import 'package:camera/camera.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +29,8 @@ class ApplicationController extends GetxController {
 
   // -- INSTANTIATIONS
   final _realtimeDB = FirebaseDatabase.instance.ref();
-  late List<CameraDescription> cameras;
+  List<CameraDescription> cameras = [];
+  bool cameraError = false;
 
   // -- ON START RUN
   @override
@@ -38,6 +40,7 @@ class ApplicationController extends GetxController {
     isFirstTimeBookmarks = await checkFirstTimeBookmarks();
     isFirstTimeDetail = await checkFirstTimeDetail();
     isFirstTimeHome = await checkFirstTimeHome();
+    isFirstTimeSearch = await checkFirstTimeSearch();
     isFirstTimeKulitan = await checkFirstTimeKulitanEditor();
     isFirstTimeModify = await checkFirstTimeModify();
     isFirstTimeOnboarding = await checkFirstTimeOnboarding();
@@ -46,22 +49,29 @@ class ApplicationController extends GetxController {
     isFirstTimeScanner = await checkFirstTimeScanner();
     isFirstTimeStudio = await checkFirstTimeStudio();
 
-    print(isFirstTimeUse);
-
     hasConnection.value = await InternetConnectionChecker().hasConnection;
     subscription = await listenToConnectionState();
+
     // await putToDictionary(dcContent, "crqRUSQ7u0OjJJHvZWMvjNxROML2");
     await updateUserInfo();
+
     await checkDictionary();
     dictionaryContent = await sortDictionary(dictionaryContentUnsorted);
     wordOfTheDay = await checkWordOfTheDay();
+
     await checkBookmarks();
+
     await Get.put(HomePageController(wordOfTheDay: wordOfTheDay),
         permanent: true);
     await Get.put(DrawerXController(), permanent: true);
-    cameras = await availableCameras();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+
+    try {
+      cameras = await availableCameras();
+    } on CameraException catch (e) {
+      cameraError = true;
+      print('Error in fetching the cameras: $e');
+    }
+
     if (isFirstTimeUse) {
       Get.offAll(() => OnBoardingScreen(),
           duration: Duration(milliseconds: 500),
@@ -432,6 +442,7 @@ class ApplicationController extends GetxController {
       dictionaryVersion = await getDictionaryVersion();
       dictionaryContentUnsorted = await downloadDictionary();
       dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+      sortAZ();
       dictionaryContentAsString = json.encode(dictionaryContent);
       prefs.setInt("dictionaryVersion", dictionaryVersion!);
       prefs.setString("dictionaryContentAsString", dictionaryContentAsString!);
@@ -442,6 +453,7 @@ class ApplicationController extends GetxController {
             prefs.getString("dictionaryContentAsString");
         dictionaryContentUnsorted = json.decode(dictionaryContentAsString!);
         dictionaryContent = sortDictionary(dictionaryContentUnsorted);
+        sortAZ();
       } else {
         noData.value = true;
         dictionaryVersion = null;
@@ -470,6 +482,29 @@ class ApplicationController extends GetxController {
 
   var dictionaryContent = {};
 
+  List<AZItem> aZitems = [];
+
+  void sortAZ() {
+    aZitems = dictionaryContent.entries
+        .map((entry) => AZItem(
+            wordID: entry.key,
+            tag: dictionaryContent[entry.key]["word"]
+                .replaceAll("<i>", "")
+                .replaceAll("</i>", "")
+                .replaceAll("<b>", "")
+                .replaceAll("</b>", "")
+                .replaceAll("<u>", "")
+                .replaceAll("</u>", "")
+                .replaceAll(RegExp(r'[àáâäæãåā]'), 'a')
+                .replaceAll(RegExp(r'[îïíīįì]'), 'i')
+                .replaceAll(RegExp(r'[ûüùúū]'), 'u')
+                .replaceAll(RegExp(r'[èéêëēėę]'), 'e')
+                .replaceAll(RegExp(r'[ôöòóœøōõ]'), 'o')[0]
+                .toUpperCase()))
+        .toList();
+    SuspensionUtil.setShowSuspensionStatus(aZitems);
+  }
+
   // -- USE MANAGEMENT
   late bool isFirstTimeUse;
   Future<bool> checkFirstTimeUse() async {
@@ -491,6 +526,17 @@ class ApplicationController extends GetxController {
     } else {
       prefs.setBool("isFirstTimeHome", true);
       return prefs.getBool("isFirstTimeHome")!;
+    }
+  }
+
+  late bool isFirstTimeSearch;
+  Future<bool> checkFirstTimeSearch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("isFirstTimeSearch")) {
+      return prefs.getBool("isFirstTimeSearch")!;
+    } else {
+      prefs.setBool("isFirstTimeSearch", true);
+      return prefs.getBool("isFirstTimeSearch")!;
     }
   }
 
@@ -627,7 +673,7 @@ class ApplicationController extends GetxController {
   }
 
   Map<String, dynamic> dcContent = {
-    "A": {
+    "a": {
       "word": "A",
       "normalizedWord": "A",
       "pronunciation": "a",
@@ -835,7 +881,7 @@ class ApplicationController extends GetxController {
       "expert": {"AmanuKP": "crqRUSQ7u0OjJJHvZWMvjNxROML2"},
       "lastModifiedTime": "2023-09-01 (12:00:00)"
     },
-    "AB": {
+    "ab": {
       "word": "AB",
       "normalizedWord": "AB",
       "pronunciation": "AB",
@@ -2747,7 +2793,7 @@ class ApplicationController extends GetxController {
       "expert": {"AmanuKP": "crqRUSQ7u0OjJJHvZWMvjNxROML2"},
       "lastModifiedTime": "2023-09-01 (12:00:00)"
     },
-    "Juan Tamad": {
+    "juan tamad": {
       "word": "Juan Tamad",
       "normalizedWord": "Juan Tamad",
       "pronunciation": "Juan·Ta·mad",

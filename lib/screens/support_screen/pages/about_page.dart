@@ -37,6 +37,7 @@ class AboutPage extends StatelessWidget {
             size: size,
             screenPadding: screenPadding,
             title: tAboutAmanu,
+            secondIconDisabled: true,
           ),
         ],
       )),

@@ -109,6 +109,7 @@ class FeedbacksPage extends StatelessWidget {
             size: size,
             screenPadding: screenPadding,
             title: tFeedbacks,
+            secondIconDisabled: true,
           ),
         ],
       )),

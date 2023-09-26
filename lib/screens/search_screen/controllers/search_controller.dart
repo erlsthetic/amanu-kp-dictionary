@@ -1,11 +1,121 @@
+import 'package:amanu/components/coachmark_desc.dart';
 import 'package:amanu/utils/application_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class SearchWordController extends GetxController {
   static SearchWordController get instance => Get.find();
 
   SearchWordController({this.fromKulitan = false, this.kulitanQuery = ''});
+
+  GlobalKey searchKey = GlobalKey();
+  GlobalKey searchBoxKey = GlobalKey();
+  GlobalKey searchListKey = GlobalKey();
+  GlobalKey searchFilterKey = GlobalKey();
+
+  late BuildContext context;
+
+  List<TargetFocus> initTarget() {
+    return [
+      TargetFocus(
+          identify: "search-key",
+          keyTarget: searchKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(
+                  top: MediaQuery.of(context).size.height / 2 - 100),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Search Screen",
+                  text:
+                      "This is the <b>Search screen</b>, where you can look up your <i>word queries</i>.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "search-box-key",
+          keyTarget: searchBoxKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.bottom,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Search Box",
+                  text:
+                      "Type your queries using this <b>Search box</b>, and we'll automatically look for your <i>word query</i>.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "search-results-key",
+          keyTarget: searchListKey,
+          shape: ShapeLightFocus.RRect,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.custom,
+              customPosition: CustomTargetContentPosition(bottom: 10),
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Search Results",
+                  text:
+                      "<b>Search results</b> will be listed here, in which, you can open the details page of a particular word by <i>tapping on its browse card</i>.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  onSkip: () {
+                    ctl.skip();
+                  },
+                );
+              },
+            ),
+          ]),
+      TargetFocus(
+          identify: "search-filter-key",
+          keyTarget: searchFilterKey,
+          shape: ShapeLightFocus.Circle,
+          radius: 30,
+          contents: [
+            TargetContent(
+              align: ContentAlign.bottom,
+              builder: (context, ctl) {
+                return CoachmarkDesc(
+                  title: "Search Filter",
+                  text:
+                      "You may use the <b>Search filter</b> button to refine your searches. Just enable which parts of a word we should run your search query.",
+                  onNext: () {
+                    ctl.next();
+                  },
+                  next: "Got it!",
+                  skip: "",
+                  withSkip: false,
+                  onSkip: () {},
+                );
+              },
+            ),
+          ]),
+    ];
+  }
 
   final bool fromKulitan;
   final String kulitanQuery;

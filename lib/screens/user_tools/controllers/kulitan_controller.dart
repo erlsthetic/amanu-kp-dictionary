@@ -217,21 +217,34 @@ class KulitanController extends GetxController {
         ], kulitanChar)) {
           addLine();
           insertCharacter(kulitanChar);
-        } else if (classifyKulitan(
+        } else if (classifyKulitan(//2nd char is vowel
             [baseVowels], kulitanStringList[currentLine.value][1])) {
-          if (classifyKulitan(
+          if (classifyKulitan(// 1st char is vowel
               [baseVowels], kulitanStringList[currentLine.value][0])) {
-            if (kulitanStringList[currentLine.value][0] ==
+            if (kulitanStringList[currentLine.value]
+                        [0] == // 1st and 2nd are same, and entry is vowel
                     kulitanStringList[currentLine.value][1] &&
                 (classifyKulitan([baseVowels], kulitanChar))) {
               addLine();
               insertCharacter(kulitanChar);
-            } else if (kulitanStringList[currentLine.value][0] ==
+            } else if (kulitanStringList[currentLine.value][
+                        0] == // 1st and 2nd are same, and entry is base consonant
                     kulitanStringList[currentLine.value][1] &&
                 (classifyKulitan([baseConsonants], kulitanChar))) {
               insertCharacter(chopCharacter(kulitanChar));
+            } else if (classifyKulitan([
+              // 1st and 2nd are vowels !=, and input is BC or BV
+              baseConsonants,
+              baseVowels
+            ], kulitanChar)) {
+              if (classifyKulitan([baseConsonants], kulitanChar)) {
+                insertCharacter(chopCharacter(kulitanChar));
+              } else if (classifyKulitan([baseVowels], kulitanChar)) {
+                insertCharacter(kulitanChar);
+              }
             }
           } else if (classifyKulitan([
+            // 2nd is vowels and 1st are BC GUC GLC GUV GLV
             baseConsonants,
             garlitUpperConsonants,
             garlitLowerConsonants,

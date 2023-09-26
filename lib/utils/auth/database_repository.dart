@@ -440,12 +440,12 @@ class DatabaseRepository extends GetxController {
         UserModel? user = await getUserDetails(uid);
         if (user != null) {
           Map<String, dynamic> changes = user.toJson();
-          List<dynamic>? contributions = details["contributions"];
-          if (contributions != null) {
-            contributions.remove(wordID);
+          List<dynamic>? contributions = changes["contributions"];
+          if (contributions == null) {
+            contributions = [];
             contributions.add(wordID);
           } else {
-            contributions = [];
+            contributions.remove(wordID);
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
@@ -456,12 +456,12 @@ class DatabaseRepository extends GetxController {
         UserModel? user = await getUserDetails(uid);
         if (user != null) {
           Map<String, dynamic> changes = user.toJson();
-          List<dynamic>? contributions = details["contributions"];
-          if (contributions != null) {
-            contributions.remove(wordID);
+          List<dynamic>? contributions = changes["contributions"];
+          if (contributions == null) {
+            contributions = [];
             contributions.add(wordID);
           } else {
-            contributions = [];
+            contributions.remove(wordID);
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
@@ -507,12 +507,12 @@ class DatabaseRepository extends GetxController {
         UserModel? user = await getUserDetails(uid);
         if (user != null) {
           Map<String, dynamic> changes = user.toJson();
-          List<dynamic>? contributions = details["contributions"];
-          if (contributions != null) {
-            contributions.remove(wordID);
+          List<dynamic>? contributions = changes["contributions"];
+          if (contributions == null) {
+            contributions = [];
             contributions.add(wordID);
           } else {
-            contributions = [];
+            contributions.remove(wordID);
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;
@@ -523,12 +523,12 @@ class DatabaseRepository extends GetxController {
         UserModel? user = await getUserDetails(uid);
         if (user != null) {
           Map<String, dynamic> changes = user.toJson();
-          List<dynamic>? contributions = details["contributions"];
-          if (contributions != null) {
-            contributions.remove(wordID);
+          List<dynamic>? contributions = changes["contributions"];
+          if (contributions == null) {
+            contributions = [];
             contributions.add(wordID);
           } else {
-            contributions = [];
+            contributions.remove(wordID);
             contributions.add(wordID);
           }
           changes["contributions"] = contributions;

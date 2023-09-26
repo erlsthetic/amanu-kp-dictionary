@@ -31,14 +31,18 @@ class BottomNavBar extends StatelessWidget {
         child: Stack(
           children: [
             CustomPaint(
-              key: _pController.navigationKey,
+              key: appController.isFirstTimeHome
+                  ? _pController.navigationKey
+                  : null,
               size: Size(size.width, 80),
               painter: BNBCustomPainter(),
             ),
             Center(
               heightFactor: 0.6,
               child: SizedBox(
-                key: _pController.scannerKey,
+                key: appController.isFirstTimeHome
+                    ? _pController.scannerKey
+                    : null,
                 height: size.width * 0.17,
                 width: size.width * 0.17,
                 child: FittedBox(
@@ -55,7 +59,8 @@ class BottomNavBar extends StatelessWidget {
                           )),
                       elevation: 3,
                       onPressed: () {
-                        if (appController.cameras.length > 0) {
+                        if (!appController.cameraError &&
+                            appController.cameras.length > 0) {
                           Get.to(
                               () => KulitanScannerScreen(
                                     fromDrawer: false,
@@ -72,60 +77,64 @@ class BottomNavBar extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              width: size.width,
-              height: 80,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Obx(() => GestureDetector(
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          child: SvgPicture.asset(
-                            iHomeIcon,
-                            colorFilter: ColorFilter.mode(
-                                _pController.currentIdx.value == 0
-                                    ? primaryOrangeDark
-                                    : disabledGrey,
-                                BlendMode.srcIn),
-                          ),
+            GetBuilder<HomePageController>(builder: (ctl) {
+              return Container(
+                width: size.width,
+                height: 80,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        child: SvgPicture.asset(
+                          iHomeIcon,
+                          colorFilter: ColorFilter.mode(
+                              ctl.currentIdx.value == 0
+                                  ? primaryOrangeDark
+                                  : disabledGrey,
+                              BlendMode.srcIn),
                         ),
-                        onTap: Feedback.wrapForTap(() {
-                          _pController.currentIdx.value = 0;
-                          _pController.coastController.animateTo(
-                              beach: 0,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease);
-                        }, context),
-                      )),
-                  Container(
-                    width: size.width * 0.20,
-                  ),
-                  Obx(() => GestureDetector(
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          child: SvgPicture.asset(
-                            iDictionaryIcon,
-                            colorFilter: ColorFilter.mode(
-                                _pController.currentIdx.value == 1
-                                    ? primaryOrangeDark
-                                    : disabledGrey,
-                                BlendMode.srcIn),
-                          ),
+                      ),
+                      onTap: Feedback.wrapForTap(() async {
+                        ctl.currentIdx.value = 0;
+                        await ctl.coastController.animateTo(
+                            beach: 0,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease);
+                        ctl.update();
+                      }, context),
+                    ),
+                    Container(
+                      width: size.width * 0.20,
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        child: SvgPicture.asset(
+                          iDictionaryIcon,
+                          colorFilter: ColorFilter.mode(
+                              ctl.currentIdx.value == 1
+                                  ? primaryOrangeDark
+                                  : disabledGrey,
+                              BlendMode.srcIn),
                         ),
-                        onTap: Feedback.wrapForTap(() {
-                          _pController.currentIdx.value = 1;
-                          _pController.coastController.animateTo(
-                              beach: 1,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease);
-                        }, context),
-                      )),
-                ],
-              ),
-            )
+                      ),
+                      onTap: Feedback.wrapForTap(() async {
+                        ctl.currentIdx.value = 1;
+                        await ctl.coastController.animateTo(
+                            beach: 1,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease);
+                        ctl.update();
+                      }, context),
+                    ),
+                  ],
+                ),
+              );
+            })
           ],
         ),
       ),

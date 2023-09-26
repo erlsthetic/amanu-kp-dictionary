@@ -21,7 +21,7 @@ class OnBoardingController extends GetxController {
   List<OnBoardingPage> onBoardingPages = [
     OnBoardingPage(
         model: OnBoardingModel(
-      image: iOnBoardingAnim1,
+      image: iWalkthrough1,
       header: tOnBoardingHead1,
       subheading: tOnBoardingSubHead1,
       colors: [pureWhite, pureWhite],
@@ -33,7 +33,7 @@ class OnBoardingController extends GetxController {
     )),
     OnBoardingPage(
         model: OnBoardingModel(
-      image: iOnBoardingAnim2,
+      image: iWalkthrough2,
       header: tOnBoardingHead2,
       subheading: tOnBoardingSubHead2,
       colors: [primaryOrangeLight, primaryOrangeDark],
@@ -45,7 +45,7 @@ class OnBoardingController extends GetxController {
     )),
     OnBoardingPage(
         model: OnBoardingModel(
-      image: iOnBoardingAnim3,
+      image: iWalkthrough3,
       header: tOnBoardingHead3,
       subheading: tOnBoardingSubHead3,
       colors: [pureWhite, pureWhite],

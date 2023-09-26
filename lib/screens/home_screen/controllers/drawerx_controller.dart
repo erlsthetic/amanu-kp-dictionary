@@ -33,33 +33,28 @@ class DrawerXController extends GetxController {
   Widget getScreen() {
     switch (currentItem.value) {
       case DrawerItems.home:
-        homeController.coastController.dispose();
         homeController.coastController = new CoastController(initialPage: 0);
         homeController.currentIdx.value = 0;
         homeController.crabController = new CrabController();
-        homeController.update();
         return HomeScreen();
       case DrawerItems.browse:
-        homeController.coastController.dispose();
         homeController.coastController = new CoastController(initialPage: 1);
         homeController.currentIdx.value = 1;
         homeController.crabController = new CrabController();
-        homeController.update();
         return HomeScreen();
       case DrawerItems.bookmarks:
         return BookmarksScreen();
       case DrawerItems.kulitan:
-        if (appController.cameras.length > 0) {
+        if (!appController.cameraError && appController.cameras.length > 0) {
           return KulitanScannerScreen();
         } else {
-          homeController.coastController.dispose();
           homeController.coastController = new CoastController(initialPage: 0);
           homeController.currentIdx.value = 0;
           homeController.crabController = new CrabController();
-          homeController.update();
           Helper.errorSnackBar(
               title: "No Cameras Detected.",
-              message: "This device has no cameras.");
+              message:
+                  "Error getting cameras. Either this device has no cameras or permissions has not been set.");
           return HomeScreen();
         }
       case DrawerItems.join:

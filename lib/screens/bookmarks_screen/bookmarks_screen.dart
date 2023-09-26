@@ -35,30 +35,32 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   @override
   void initState() {
     super.initState();
-    showTutorial();
+    if (appController.isFirstTimeBookmarks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(Duration(seconds: 1), () {
+          showTutorial();
+        });
+      });
+    }
   }
 
   void showTutorial() {
-    if (appController.isFirstTimeBookmarks) {
-      Future.delayed(Duration(seconds: 1), () {
-        tutorialCoachMark = TutorialCoachMark(
-            pulseEnable: false,
-            targets: controller.initTarget(),
-            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-            onFinish: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeBookmarks", false);
-              appController.isFirstTimeBookmarks = false;
-            },
-            onSkip: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeBookmarks", false);
-              appController.isFirstTimeBookmarks = false;
-            },
-            hideSkip: true)
-          ..show(context: context);
-      });
-    }
+    tutorialCoachMark = TutorialCoachMark(
+        pulseEnable: false,
+        targets: controller.initTarget(),
+        imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+        onFinish: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool("isFirstTimeBookmarks", false);
+          appController.isFirstTimeBookmarks = false;
+        },
+        onSkip: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool("isFirstTimeBookmarks", false);
+          appController.isFirstTimeBookmarks = false;
+        },
+        hideSkip: true)
+      ..show(context: context);
   }
 
   @override
@@ -212,6 +214,9 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                 firstOnPressed: () {
                   drawerController.drawerToggle(context);
                   drawerController.currentItem.value = DrawerItems.bookmarks;
+                },
+                secondOnPressed: () {
+                  showTutorial();
                 },
               ),
             ],

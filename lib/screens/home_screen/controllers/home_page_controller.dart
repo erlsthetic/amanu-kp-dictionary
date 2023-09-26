@@ -15,6 +15,20 @@ class HomePageController extends GetxController {
   CoastController coastController = CoastController(initialPage: 0);
   CrabController crabController = CrabController();
 
+  @override
+  void onInit() async {
+    super.onInit();
+    print("wordOfTheDay: " + wordOfTheDay);
+    wotdFound = appController.dictionaryContent.containsKey(wordOfTheDay);
+    await getInformation();
+    if (appController.noData.value) {
+      Helper.errorSnackBar(
+          title: "Dictionary currently has no data",
+          message:
+              "Please connect to the internet to sync dictionary's data to local device.");
+    }
+  }
+
   GlobalKey navigationKey = GlobalKey();
   GlobalKey homeScreenKey = GlobalKey();
   GlobalKey wotdKey = GlobalKey();
@@ -22,7 +36,6 @@ class HomePageController extends GetxController {
   GlobalKey searchKey = GlobalKey();
   GlobalKey drawerKey = GlobalKey();
   GlobalKey requestsKey = GlobalKey();
-  GlobalKey browseScreenKey = GlobalKey();
   GlobalKey browseKey = GlobalKey();
   GlobalKey amanuKey = GlobalKey();
 
@@ -192,6 +205,7 @@ class HomePageController extends GetxController {
                   onNext: () async {
                     await coastController.animateTo(beach: 1);
                     currentIdx.value = 1;
+                    this.update();
                     ctl.next();
                   },
                   onSkip: () {
@@ -203,7 +217,7 @@ class HomePageController extends GetxController {
           ]),
       TargetFocus(
           identify: "browse-screen-key",
-          keyTarget: browseScreenKey,
+          keyTarget: homeScreenKey,
           shape: ShapeLightFocus.RRect,
           radius: 30,
           contents: [
@@ -245,6 +259,7 @@ class HomePageController extends GetxController {
                   onNext: () async {
                     await coastController.animateTo(beach: 0);
                     currentIdx.value = 0;
+                    this.update();
                     ctl.next();
                   },
                   onSkip: () {
@@ -334,7 +349,7 @@ class HomePageController extends GetxController {
 
   late bool wotdFound;
 
-  void getInformation() {
+  Future getInformation() async {
     if (wordOfTheDay != "" && wotdFound) {
       String wordID = wordOfTheDay;
       word = appController.dictionaryContent[wordID]["word"];
@@ -388,20 +403,6 @@ class HomePageController extends GetxController {
           : appController.dictionaryContent[wordID]["expert"];
       lastModifiedTime =
           appController.dictionaryContent[wordID]["lastModifiedTime"];
-    }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    print("wordOfTheDay: " + wordOfTheDay);
-    wotdFound = appController.dictionaryContent.containsKey(wordOfTheDay);
-    getInformation();
-    if (appController.noData.value) {
-      Helper.errorSnackBar(
-          title: "Dictionary currently has no data",
-          message:
-              "Please connect to the internet to sync dictionary's data to local device.");
     }
   }
 }

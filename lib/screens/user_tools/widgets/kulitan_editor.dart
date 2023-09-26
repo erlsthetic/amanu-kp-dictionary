@@ -28,30 +28,32 @@ class _KulitanEditorPageState extends State<KulitanEditorPage> {
   @override
   void initState() {
     super.initState();
-    showTutorial();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (appController.isFirstTimeKulitan) {
+        showTutorial();
+      }
+    });
   }
 
   void showTutorial() {
-    if (appController.isFirstTimeKulitan) {
-      Future.delayed(Duration(seconds: 1), () {
-        tutorialCoachMark = TutorialCoachMark(
-            pulseEnable: false,
-            targets: controller.initTarget(),
-            imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-            onFinish: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeKulitan", false);
-              appController.isFirstTimeKulitan = false;
-            },
-            onSkip: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool("isFirstTimeKulitan", false);
-              appController.isFirstTimeKulitan = false;
-            },
-            hideSkip: true)
-          ..show(context: context);
-      });
-    }
+    Future.delayed(Duration(seconds: 1), () {
+      tutorialCoachMark = TutorialCoachMark(
+          pulseEnable: false,
+          targets: controller.initTarget(),
+          imageFilter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+          onFinish: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool("isFirstTimeKulitan", false);
+            appController.isFirstTimeKulitan = false;
+          },
+          onSkip: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool("isFirstTimeKulitan", false);
+            appController.isFirstTimeKulitan = false;
+          },
+          hideSkip: true)
+        ..show(context: context);
+    });
   }
 
   @override

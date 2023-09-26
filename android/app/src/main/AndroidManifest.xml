@@ -2,7 +2,7 @@
     package="com.example.amanu">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="amanu"
+        android:label="Amánu"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

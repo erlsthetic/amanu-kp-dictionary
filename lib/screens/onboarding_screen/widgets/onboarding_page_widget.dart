@@ -3,6 +3,7 @@ import 'package:amanu/utils/application_controller.dart';
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:amanu/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +24,8 @@ class OnBoardingPage extends StatelessWidget {
         children: [
           Expanded(
             flex: 6,
-            child: Image(
-              image: AssetImage(model.image),
+            child: SvgPicture.asset(
+              model.image,
             ),
           ),
           Expanded(

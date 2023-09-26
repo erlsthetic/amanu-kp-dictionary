@@ -29,7 +29,7 @@ class ForgotPasswordPhone extends StatelessWidget {
                   size: size,
                   header: tResetViaSMS,
                   subHeader: tForgotSMSSub,
-                  imgString: iResetPhone,
+                  imgString: iResetUsingEmail,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   heightBetween: 30,
                 ),

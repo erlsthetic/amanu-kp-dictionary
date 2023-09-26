@@ -93,23 +93,28 @@ class ThreePartHeader extends StatelessWidget {
                       ),
                     ),
                     hasTitle ?? true
-                        ? Hero(
-                            tag: title,
-                            child: Text.rich(
-                              TextSpan(children: [
-                                buildTextSpan(
-                                    text: title,
-                                    style: GoogleFonts.robotoSlab(
-                                        fontSize: 24,
-                                        color: pureWhite,
-                                        fontWeight: FontWeight.bold),
-                                    boldWeight: FontWeight.bold,
-                                    isBoldDefault: true)
-                              ]),
-                              style: GoogleFonts.robotoSlab(
-                                  fontSize: 24,
-                                  color: pureWhite,
-                                  fontWeight: FontWeight.bold),
+                        ? Expanded(
+                            child: Center(
+                              child: Hero(
+                                tag: title,
+                                child: Text.rich(
+                                  TextSpan(children: [
+                                    buildTextSpan(
+                                        text: title,
+                                        style: GoogleFonts.robotoSlab(
+                                            fontSize: 24,
+                                            color: pureWhite,
+                                            fontWeight: FontWeight.bold),
+                                        boldWeight: FontWeight.bold,
+                                        isBoldDefault: true)
+                                  ]),
+                                  style: GoogleFonts.robotoSlab(
+                                      fontSize: 24,
+                                      color: pureWhite,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
                           )
                         : Container(),

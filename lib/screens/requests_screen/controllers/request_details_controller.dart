@@ -174,7 +174,8 @@ class RequestDetailsController extends GetxController {
           ),
         ),
         null,
-        null);
+        null,
+        true.obs);
   }
 
   Future deleteRequest(BuildContext context, String prnPath) async {
@@ -314,7 +315,7 @@ class RequestDetailsController extends GetxController {
           await DatabaseRepository.instance
               .removeWordOnDB(wordID, word)
               .then((value) async {
-            appController.checkDictionary();
+            await appController.checkDictionary();
             appController.update();
             DatabaseRepository.instance
                 .removeRequest(requestID, prnAudioPath)
@@ -417,7 +418,7 @@ class RequestDetailsController extends GetxController {
                   .then((value) async {
                 await DatabaseRepository.instance
                     .removeRequest(requestID, prnAudioPath);
-                appController.checkDictionary();
+                await appController.checkDictionary();
                 appController.update();
               });
             } else {
@@ -426,7 +427,7 @@ class RequestDetailsController extends GetxController {
                   .then((value) async {
                 await DatabaseRepository.instance
                     .removeRequest(requestID, prnAudioPath);
-                appController.checkDictionary();
+                await appController.checkDictionary();
                 appController.update();
               });
             }

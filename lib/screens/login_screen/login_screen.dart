@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             Get.off(() => WelcomeScreen(),
                 duration: Duration(milliseconds: 500),
                 transition: Transition.leftToRight,
@@ -48,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                             size: size,
                             header: tLoginHead,
                             subHeader: tLoginSubHead,
-                            imgString: iLoginPageAnim),
+                            imgString: iLoginScreen),
                         LoginForm(),
                         LoginFooterWidget()
                       ],

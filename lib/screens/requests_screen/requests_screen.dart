@@ -125,6 +125,7 @@ class RequestsScreen extends StatelessWidget {
             firstOnPressed: () {
               fromDrawer ? drawerController.drawerToggle(context) : Get.back();
             },
+            secondIconDisabled: true,
           ),
         ],
       )),

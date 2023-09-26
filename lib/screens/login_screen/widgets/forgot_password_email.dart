@@ -32,7 +32,7 @@ class ForgotPasswordEmail extends StatelessWidget {
                   size: size,
                   header: tResetViaEmail,
                   subHeader: tForgotEmailSub,
-                  imgString: iResetEmail,
+                  imgString: iResetUsingEmail,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   heightBetween: 30,
                 ),

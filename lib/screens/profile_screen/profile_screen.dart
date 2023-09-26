@@ -1290,6 +1290,7 @@ class ProfileScreen extends StatelessWidget {
                     ? drawerController.drawerToggle(context)
                     : Get.back();
               },
+              secondIconDisabled: true,
             ),
           ),
         ],

@@ -1,9 +1,15 @@
 import 'package:amanu/utils/constants/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<dynamic> showInfoDialog(BuildContext context, String title,
-    Widget childWidget, Widget? bottomWidget, VoidCallback? onClose) {
+Future<dynamic> showInfoDialog(
+    BuildContext context,
+    String title,
+    Widget childWidget,
+    Widget? bottomWidget,
+    VoidCallback? onClose,
+    RxBool isVisible) {
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -52,19 +58,24 @@ Future<dynamic> showInfoDialog(BuildContext context, String title,
               ),
               Positioned(
                 right: 0.0,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    if (onClose != null) {
-                      onClose;
-                    }
-                  },
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: CircleAvatar(
-                      radius: 18.0,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.close, color: primaryOrangeDark),
+                child: Obx(
+                  () => Visibility(
+                    visible: isVisible.value,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        if (onClose != null) {
+                          onClose;
+                        }
+                      },
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 18.0,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.close, color: primaryOrangeDark),
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/constants/app_colors.dart';
@@ -31,8 +32,8 @@ class HeaderSubheaderWithImage extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        Image(
-          image: AssetImage(imgString),
+        SvgPicture.asset(
+          imgString,
           height: size.height * imageHeight,
         ),
         SizedBox(
